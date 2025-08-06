@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, memo, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,7 +24,33 @@ interface FilterState {
   startDate: string;
 }
 
-export function EmployeeFilters() {
+// Memoized active filter component
+const ActiveFilter = memo(({ 
+  filter, 
+  onRemove 
+}: { 
+  filter: { key: string; label: string; value: string }; 
+  onRemove: (key: string) => void;
+}) => {
+  const handleRemove = useCallback(() => {
+    onRemove(filter.key);
+  }, [filter.key, onRemove]);
+
+  return (
+    <Badge variant="secondary" className="flex items-center space-x-1 animate-fade-in">
+      <span>{filter.label}: {filter.value}</span>
+      <X 
+        className="h-3 w-3 cursor-pointer hover:text-destructive transition-colors" 
+        onClick={handleRemove}
+        aria-label={`Remover filtro ${filter.label}`}
+      />
+    </Badge>
+  );
+});
+
+ActiveFilter.displayName = 'ActiveFilter';
+
+export const EmployeeFilters = memo(() => {
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     department: '',
@@ -35,11 +61,11 @@ export function EmployeeFilters() {
 
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const handleFilterChange = (key: keyof FilterState, value: string) => {
+  const handleFilterChange = useCallback((key: keyof FilterState, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
-  };
+  }, []);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setFilters({
       search: '',
       department: '',
@@ -47,42 +73,57 @@ export function EmployeeFilters() {
       position: '',
       startDate: ''
     });
-  };
+  }, []);
 
-  const getActiveFiltersCount = () => {
+  const toggleExpanded = useCallback(() => {
+    setIsExpanded(prev => !prev);
+  }, []);
+
+  const activeFiltersCount = useMemo(() => {
     return Object.values(filters).filter(value => value !== '').length;
-  };
+  }, [filters]);
 
-  const getActiveFilters = () => {
+  const activeFilters = useMemo(() => {
     const activeFilters = [];
     if (filters.department) activeFilters.push({ key: 'department', label: 'Departamento', value: filters.department });
     if (filters.status) activeFilters.push({ key: 'status', label: 'Status', value: filters.status });
     if (filters.position) activeFilters.push({ key: 'position', label: 'Cargo', value: filters.position });
     if (filters.startDate) activeFilters.push({ key: 'startDate', label: 'Período', value: filters.startDate });
     return activeFilters;
-  };
+  }, [filters]);
+
+  const handleRemoveFilter = useCallback((key: string) => {
+    handleFilterChange(key as keyof FilterState, '');
+  }, [handleFilterChange]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-spacing-sm">
       {/* Search and Quick Filters */}
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex flex-col lg:flex-row gap-4">
+      <Card className="animate-fade-in">
+        <CardContent className="p-spacing-sm">
+          <div className="flex flex-col lg:flex-row gap-spacing-xs">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search 
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" 
+                aria-hidden="true"
+              />
               <Input
                 placeholder="Buscar funcionários, cargos, departamentos..."
                 value={filters.search}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
                 className="pl-10"
+                aria-label="Campo de busca para funcionários"
               />
             </div>
 
             {/* Quick Filters */}
-            <div className="flex items-center space-x-2">
-              <Select value={filters.status || undefined} onValueChange={(value) => handleFilterChange('status', value)}>
-                <SelectTrigger className="w-40">
+            <div className="flex items-center space-x-2 flex-wrap gap-2">
+              <Select 
+                value={filters.status || undefined} 
+                onValueChange={(value) => handleFilterChange('status', value)}
+              >
+                <SelectTrigger className="w-40" aria-label="Filtrar por status">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -92,8 +133,11 @@ export function EmployeeFilters() {
                 </SelectContent>
               </Select>
 
-              <Select value={filters.department || undefined} onValueChange={(value) => handleFilterChange('department', value)}>
-                <SelectTrigger className="w-40">
+              <Select 
+                value={filters.department || undefined} 
+                onValueChange={(value) => handleFilterChange('department', value)}
+              >
+                <SelectTrigger className="w-40" aria-label="Filtrar por departamento">
                   <SelectValue placeholder="Departamento" />
                 </SelectTrigger>
                 <SelectContent>
@@ -107,14 +151,16 @@ export function EmployeeFilters() {
 
               <Button
                 variant="outline"
-                onClick={() => setIsExpanded(!isExpanded)}
-                className={getActiveFiltersCount() > 2 ? "border-primary text-primary" : ""}
+                onClick={toggleExpanded}
+                className={`hover-scale ${activeFiltersCount > 2 ? "border-primary text-primary" : ""}`}
+                aria-label={`${isExpanded ? 'Ocultar' : 'Mostrar'} filtros avançados`}
+                aria-expanded={isExpanded}
               >
-                <Filter className="h-4 w-4 mr-2" />
+                <Filter className="h-4 w-4 mr-2" aria-hidden="true" />
                 Filtros
-                {getActiveFiltersCount() > 2 && (
+                {activeFiltersCount > 2 && (
                   <Badge variant="secondary" className="ml-2">
-                    {getActiveFiltersCount() - 2}
+                    {activeFiltersCount - 2}
                   </Badge>
                 )}
               </Button>
@@ -122,21 +168,25 @@ export function EmployeeFilters() {
           </div>
 
           {/* Active Filters Display */}
-          {getActiveFilters().length > 0 && (
+          {activeFilters.length > 0 && (
             <div className="flex items-center space-x-2 mt-3 pt-3 border-t">
               <span className="text-sm text-muted-foreground">Filtros ativos:</span>
               <div className="flex flex-wrap gap-2">
-                {getActiveFilters().map((filter) => (
-                  <Badge key={filter.key} variant="secondary" className="flex items-center space-x-1">
-                    <span>{filter.label}: {filter.value}</span>
-                    <X 
-                      className="h-3 w-3 cursor-pointer hover:text-destructive" 
-                      onClick={() => handleFilterChange(filter.key as keyof FilterState, '')}
-                    />
-                  </Badge>
+                {activeFilters.map((filter) => (
+                  <ActiveFilter 
+                    key={filter.key} 
+                    filter={filter} 
+                    onRemove={handleRemoveFilter}
+                  />
                 ))}
-                <Button variant="ghost" size="sm" onClick={clearFilters}>
-                  <X className="h-3 w-3 mr-1" />
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={clearFilters}
+                  className="hover-scale"
+                  aria-label="Limpar todos os filtros"
+                >
+                  <X className="h-3 w-3 mr-1" aria-hidden="true" />
                   Limpar todos
                 </Button>
               </div>
@@ -147,13 +197,16 @@ export function EmployeeFilters() {
 
       {/* Advanced Filters */}
       {isExpanded && (
-        <Card className="border-primary/20">
-          <CardContent className="p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="border-primary/20 animate-fade-in">
+          <CardContent className="p-spacing-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-spacing-xs">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Cargo</label>
-                <Select value={filters.position || undefined} onValueChange={(value) => handleFilterChange('position', value)}>
-                  <SelectTrigger>
+                <label className="text-sm font-medium text-foreground">Cargo</label>
+                <Select 
+                  value={filters.position || undefined} 
+                  onValueChange={(value) => handleFilterChange('position', value)}
+                >
+                  <SelectTrigger aria-label="Filtrar por cargo">
                     <SelectValue placeholder="Todos" />
                   </SelectTrigger>
                   <SelectContent>
@@ -168,9 +221,12 @@ export function EmployeeFilters() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Tempo na Empresa</label>
-                <Select value={filters.startDate || undefined} onValueChange={(value) => handleFilterChange('startDate', value)}>
-                  <SelectTrigger>
+                <label className="text-sm font-medium text-foreground">Tempo na Empresa</label>
+                <Select 
+                  value={filters.startDate || undefined} 
+                  onValueChange={(value) => handleFilterChange('startDate', value)}
+                >
+                  <SelectTrigger aria-label="Filtrar por tempo na empresa">
                     <SelectValue placeholder="Todos" />
                   </SelectTrigger>
                   <SelectContent>
@@ -182,9 +238,9 @@ export function EmployeeFilters() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Tipo de Contrato</label>
+                <label className="text-sm font-medium text-foreground">Tipo de Contrato</label>
                 <Select>
-                  <SelectTrigger>
+                  <SelectTrigger aria-label="Filtrar por tipo de contrato">
                     <SelectValue placeholder="Todos" />
                   </SelectTrigger>
                   <SelectContent>
@@ -197,9 +253,9 @@ export function EmployeeFilters() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Turno Preferido</label>
+                <label className="text-sm font-medium text-foreground">Turno Preferido</label>
                 <Select>
-                  <SelectTrigger>
+                  <SelectTrigger aria-label="Filtrar por turno preferido">
                     <SelectValue placeholder="Todos" />
                   </SelectTrigger>
                   <SelectContent>
@@ -216,25 +272,25 @@ export function EmployeeFilters() {
       )}
 
       {/* Action Buttons */}
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
+      <Card className="animate-fade-in">
+        <CardContent className="p-spacing-sm">
+          <div className="flex items-center justify-between flex-wrap gap-spacing-xs">
             <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-primary" />
-              <span className="font-medium">Ações da Página</span>
+              <Users className="h-5 w-5 text-primary" aria-hidden="true" />
+              <span className="font-medium text-foreground">Ações da Página</span>
             </div>
             
-            <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm">
-                <RefreshCw className="h-4 w-4 mr-2" />
+            <div className="flex items-center space-x-2 flex-wrap gap-2">
+              <Button variant="outline" size="sm" className="hover-scale" aria-label="Atualizar lista de funcionários">
+                <RefreshCw className="h-4 w-4 mr-2" aria-hidden="true" />
                 Atualizar
               </Button>
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
+              <Button variant="outline" size="sm" className="hover-scale" aria-label="Exportar dados dos funcionários">
+                <Download className="h-4 w-4 mr-2" aria-hidden="true" />
                 Exportar
               </Button>
-              <Button variant="outline" size="sm">
-                <Printer className="h-4 w-4 mr-2" />
+              <Button variant="outline" size="sm" className="hover-scale" aria-label="Imprimir lista de funcionários">
+                <Printer className="h-4 w-4 mr-2" aria-hidden="true" />
                 Imprimir
               </Button>
             </div>
@@ -243,4 +299,6 @@ export function EmployeeFilters() {
       </Card>
     </div>
   );
-}
+});
+
+EmployeeFilters.displayName = 'EmployeeFilters';

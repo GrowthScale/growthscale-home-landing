@@ -172,12 +172,16 @@ const Auth = () => {
 
   if (showResetForm) {
     return (
-      <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4" role="main" aria-label="Página de recuperação de senha">
         <div className="w-full max-w-md">
           {/* Header */}
-          <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center gap-2 text-white hover:text-white/80 transition-colors mb-6">
-              <ArrowLeft className="w-5 h-5" />
+          <div className="text-center mb-spacing-lg">
+            <Link 
+              to="/" 
+              className="inline-flex items-center gap-2 text-white hover:text-white/80 transition-colors mb-spacing-sm"
+              aria-label="Voltar para a página inicial"
+            >
+              <ArrowLeft className="w-5 h-5" aria-hidden="true" />
               <span className="text-2xl font-bold">GrowthScale</span>
             </Link>
           </div>
