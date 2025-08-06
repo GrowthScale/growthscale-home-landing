@@ -23,12 +23,6 @@ const Header = () => {
             <a href="#precos" className="text-foreground hover:text-primary transition-colors font-medium">
               Preços
             </a>
-            <a href="#casos" className="text-foreground hover:text-primary transition-colors font-medium">
-              Casos de Sucesso
-            </a>
-            <a href="#blog" className="text-foreground hover:text-primary transition-colors font-medium">
-              Blog
-            </a>
             <a href="#contato" className="text-foreground hover:text-primary transition-colors font-medium">
               Contato
             </a>

@@ -17,6 +17,21 @@ const plans = [
     popular: false
   },
   {
+    name: "Essencial",
+    price: "R$ 49",
+    period: "/mês",
+    description: "Ideal para pequenos estabelecimentos que querem dar o próximo passo na gestão de suas escalas",
+    features: [
+      "Até 10 funcionários",
+      "Escalas Inteligentes (IA básica)",
+      "Previsão de Ausências (5 por mês)",
+      "Suporte por email (24h)",
+      "Acesso via Web"
+    ],
+    buttonText: "Assinar Essencial",
+    popular: false
+  },
+  {
     name: "Starter",
     price: "R$ 99",
     period: "/mês",
@@ -24,11 +39,11 @@ const plans = [
     features: [
       "Até 15 funcionários",
       "Escalas inteligentes completas",
-      "Previsão de ausências",
+      "Previsão de ausências ilimitadas",
       "Compliance automático",
       "App mobile"
     ],
-    buttonText: "Assinar Plano",
+    buttonText: "Assinar Starter",
     popular: true
   }
 ];
