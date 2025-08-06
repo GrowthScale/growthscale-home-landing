@@ -17,6 +17,7 @@ const Employees = React.lazy(() => import("./pages/Employees"));
 const Settings = React.lazy(() => import("./pages/Settings"));
 const Compliance = React.lazy(() => import("./pages/Compliance"));
 const Legal = React.lazy(() => import("./pages/Legal"));
+const Contact = React.lazy(() => import("./pages/Contact"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
@@ -67,6 +68,7 @@ const App = () => (
                 <Route path="/termos-de-uso" element={<Legal />} />
                 <Route path="/politica-de-cookies" element={<Legal />} />
                 <Route path="/central-de-ajuda" element={<Legal />} />
+                <Route path="/contato" element={<Contact />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
