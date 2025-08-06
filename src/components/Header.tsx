@@ -1,12 +1,33 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, X } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Menu, X, LogOut, User, Settings } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const isHomePage = location.pathname === '/';
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
+
+  const getUserInitials = (name?: string) => {
+    if (!name) return "U";
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  };
+
+  const getUserDisplayName = () => {
+    return user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || "Usuário";
+  };
 
   const scrollToSection = (sectionId: string) => {
     // Se estamos em uma página diferente, navegar para home primeiro
@@ -43,67 +64,112 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <button 
-              onClick={() => scrollToSection('recursos')}
-              className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
-            >
-              Recursos
-            </button>
-            <button 
-              onClick={() => scrollToSection('precos')}
-              className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
-            >
-              Preços
-            </button>
-            <button 
-              onClick={() => scrollToSection('contato')}
-              className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
-            >
-              Contato
-            </button>
+            {user ? (
+              <>
+                <button 
+                  onClick={() => navigate('/dashboard')}
+                  className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                >
+                  Dashboard
+                </button>
+                <button 
+                  onClick={() => navigate('/funcionarios')}
+                  className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                >
+                  Funcionários
+                </button>
+                <button 
+                  onClick={() => navigate('/escalas')}
+                  className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                >
+                  Escalas
+                </button>
+                <button 
+                  onClick={() => navigate('/compliance')}
+                  className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                >
+                  Compliance
+                </button>
+              </>
+            ) : (
+              <>
+                <button 
+                  onClick={() => scrollToSection('recursos')}
+                  className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                >
+                  Recursos
+                </button>
+                <button 
+                  onClick={() => scrollToSection('precos')}
+                  className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                >
+                  Preços
+                </button>
+                <button 
+                  onClick={() => scrollToSection('contato')}
+                  className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                >
+                  Contato
+                </button>
+              </>
+            )}
           </nav>
 
-          {/* Desktop CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-3">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate('/dashboard')}
-              className="text-foreground hover:text-primary border-border hover:border-primary/20"
-            >
-              Dashboard
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate('/escalas')}
-              className="text-foreground hover:text-primary border-border hover:border-primary/20"
-            >
-              Escalas
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate('/funcionarios')}
-              className="text-foreground hover:text-primary border-border hover:border-primary/20"
-            >
-              Funcionários
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate('/compliance')}
-              className="text-foreground hover:text-primary border-border hover:border-primary/20"
-            >
-              Compliance
-            </Button>
-            <Button 
-              variant="default" 
-              onClick={() => scrollToSection('contato')}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-6 py-2 shadow-elegant"
-            >
-              Experimente Grátis
-            </Button>
+          {/* Desktop Auth Section */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback className="bg-primary text-primary-foreground">
+                        {getUserInitials(getUserDisplayName())}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{getUserDisplayName()}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/configuracoes")}>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Perfil</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/configuracoes")}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Configurações</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sair</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate("/login")}
+                  className="text-foreground hover:text-primary"
+                >
+                  Login
+                </Button>
+                <Button 
+                  onClick={() => navigate("/login")}
+                  className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-6 py-2 shadow-elegant"
+                >
+                  Começar Grátis
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -125,75 +191,139 @@ const Header = () => {
                 </div>
                 
                 <nav className="flex flex-col space-y-4">
-                  <button 
-                    onClick={() => {
-                      scrollToSection('recursos');
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
-                  >
-                    Recursos
-                  </button>
-                  <button 
-                    onClick={() => {
-                      scrollToSection('precos');
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
-                  >
-                    Preços
-                  </button>
-                  <button 
-                    onClick={() => {
-                      scrollToSection('contato');
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
-                  >
-                    Contato
-                  </button>
+                  {user ? (
+                    <>
+                      <button 
+                        onClick={() => {
+                          navigate('/dashboard');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
+                      >
+                        Dashboard
+                      </button>
+                      <button 
+                        onClick={() => {
+                          navigate('/funcionarios');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
+                      >
+                        Funcionários
+                      </button>
+                      <button 
+                        onClick={() => {
+                          navigate('/escalas');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
+                      >
+                        Escalas
+                      </button>
+                      <button 
+                        onClick={() => {
+                          navigate('/compliance');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
+                      >
+                        Compliance
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button 
+                        onClick={() => {
+                          scrollToSection('recursos');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
+                      >
+                        Recursos
+                      </button>
+                      <button 
+                        onClick={() => {
+                          scrollToSection('precos');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
+                      >
+                        Preços
+                      </button>
+                      <button 
+                        onClick={() => {
+                          scrollToSection('contato');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
+                      >
+                        Contato
+                      </button>
+                    </>
+                  )}
                 </nav>
 
+                {/* Mobile Auth Section */}
                 <div className="border-t pt-6 space-y-3">
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => {
-                      navigate('/dashboard');
-                      setIsMobileMenuOpen(false);
-                    }}
-                  >
-                    Dashboard
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => {
-                      navigate('/escalas');
-                      setIsMobileMenuOpen(false);
-                    }}
-                  >
-                    Escalas
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => {
-                      navigate('/funcionarios');
-                      setIsMobileMenuOpen(false);
-                    }}
-                  >
-                    Funcionários
-                  </Button>
-                  <Button 
-                    className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
-                    onClick={() => {
-                      scrollToSection('contato');
-                      setIsMobileMenuOpen(false);
-                    }}
-                  >
-                    Experimente Grátis
-                  </Button>
+                  {user ? (
+                    <>
+                      <div className="flex items-center space-x-3 mb-4 p-2">
+                        <Avatar className="h-10 w-10">
+                          <AvatarFallback className="bg-primary text-primary-foreground">
+                            {getUserInitials(getUserDisplayName())}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-foreground font-medium">{getUserDisplayName()}</p>
+                          <p className="text-muted-foreground text-sm">{user.email}</p>
+                        </div>
+                      </div>
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                        onClick={() => {
+                          navigate('/configuracoes');
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        <Settings className="mr-2 h-4 w-4" />
+                        Configurações
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                        onClick={() => {
+                          handleSignOut();
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sair
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                        onClick={() => {
+                          navigate('/login');
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        Login
+                      </Button>
+                      <Button 
+                        className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                        onClick={() => {
+                          navigate('/login');
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        Começar Grátis
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </SheetContent>
