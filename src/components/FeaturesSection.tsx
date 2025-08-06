@@ -23,7 +23,7 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section className="py-20 bg-muted/30">
+    <section id="recursos" className="py-20 bg-muted/30">{/* Added id="recursos" for anchor navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">

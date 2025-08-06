@@ -35,7 +35,7 @@ const Footer = () => {
             <h4 className="font-semibold text-card-foreground mb-4">Contato</h4>
             <ul className="space-y-2">
               <li><a href="#contato" className="text-muted-foreground hover:text-primary transition-colors">Fale Conosco</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Central de Ajuda</a></li>
+              <li><a href="/central-de-ajuda" className="text-muted-foreground hover:text-primary transition-colors">Central de Ajuda</a></li>
             </ul>
           </div>
         </div>
@@ -44,9 +44,9 @@ const Footer = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-primary transition-colors">Política de Privacidade</a>
-            <a href="#" className="hover:text-primary transition-colors">Termos de Uso</a>
-            <a href="#" className="hover:text-primary transition-colors">Política de Cookies</a>
+            <a href="/politica-de-privacidade" className="hover:text-primary transition-colors">Política de Privacidade</a>
+            <a href="/termos-de-uso" className="hover:text-primary transition-colors">Termos de Uso</a>
+            <a href="/politica-de-cookies" className="hover:text-primary transition-colors">Política de Cookies</a>
           </div>
           <p className="text-sm text-muted-foreground">
             © 2024 GrowthScale. Todos os direitos reservados.

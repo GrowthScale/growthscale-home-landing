@@ -5,7 +5,7 @@ import { ArrowRight, Clock, Users, Zap } from "lucide-react";
 
 const CTASection = () => {
   return (
-    <section className="py-20 bg-gradient-hero">
+    <section id="contato" className="py-20 bg-gradient-hero">{/* Added id="contato" for anchor navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
@@ -127,11 +127,11 @@ const CTASection = () => {
             <div className="mt-6 text-center">
               <p className="text-white/80 text-sm">
                 Ao se cadastrar, você concorda com nossos{" "}
-                <a href="#" className="text-secondary hover:underline">
+                <a href="/termos-de-uso" className="text-secondary hover:underline">
                   Termos de Uso
                 </a>{" "}
                 e{" "}
-                <a href="#" className="text-secondary hover:underline">
+                <a href="/politica-de-privacidade" className="text-secondary hover:underline">
                   Política de Privacidade
                 </a>
               </p>

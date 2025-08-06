@@ -1,33 +1,53 @@
+import React, { Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
-import Schedules from "./pages/Schedules";
-import Employees from "./pages/Employees";
-import NotFound from "./pages/NotFound";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { LoadingSpinner } from "@/components/ui/loading";
+
+// Lazy load pages for better performance
+const Index = React.lazy(() => import("./pages/Index"));
+const Dashboard = React.lazy(() => import("./pages/Dashboard"));
+const Schedules = React.lazy(() => import("./pages/Schedules"));
+const Employees = React.lazy(() => import("./pages/Employees"));
+const Settings = React.lazy(() => import("./pages/Settings"));
+const Legal = React.lazy(() => import("./pages/Legal"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/escalas" element={<Schedules />} />
-          <Route path="/funcionarios" element={<Employees />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+              <LoadingSpinner size="lg" text="Carregando..." />
+            </div>
+          }>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/escalas" element={<Schedules />} />
+              <Route path="/funcionarios" element={<Employees />} />
+              <Route path="/configuracoes" element={<Settings />} />
+              <Route path="/politica-de-privacidade" element={<Legal />} />
+              <Route path="/termos-de-uso" element={<Legal />} />
+              <Route path="/politica-de-cookies" element={<Legal />} />
+              <Route path="/central-de-ajuda" element={<Legal />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

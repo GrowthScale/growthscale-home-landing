@@ -99,13 +99,13 @@ export function ScheduleCalendar() {
           </h2>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm" onClick={() => navigateMonth('prev')}>
+          <Button variant="outline" size="sm" onClick={() => navigateMonth('prev')} aria-label="Mês anterior">
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="sm" onClick={() => setCurrentDate(new Date())}>
+          <Button variant="outline" size="sm" onClick={() => setCurrentDate(new Date())} aria-label="Ir para hoje">
             Hoje
           </Button>
-          <Button variant="outline" size="sm" onClick={() => navigateMonth('next')}>
+          <Button variant="outline" size="sm" onClick={() => navigateMonth('next')} aria-label="Próximo mês">
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
