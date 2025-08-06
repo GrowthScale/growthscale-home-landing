@@ -17,54 +17,70 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* GrowthScale Brand Colors */
-    --primary: 194 74% 53%; /* Blue #29ABE2 */
+    /* GrowthScale Brand Colors - Enhanced for WCAG AA */
+    --primary: 194 74% 45%; /* Darker blue for better contrast */
     --primary-foreground: 0 0% 100%;
+    --primary-hover: 194 74% 40%;
 
-    --secondary: 120 73% 75%; /* Light Green #90EE90 */
-    --secondary-foreground: 222.2 84% 4.9%;
+    --secondary: 120 60% 35%; /* Darker green for better contrast */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 120 60% 30%;
 
-    --accent: 36 100% 50%; /* Orange #FF9900 */
+    --accent: 25 95% 45%; /* Adjusted orange for better contrast */
     --accent-foreground: 0 0% 100%;
+    --accent-hover: 25 95% 40%;
 
-    --muted: 0 0% 94.1%; /* Light Gray #F0F0F0 */
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 96%; /* Slightly darker for better contrast */
+    --muted-foreground: 215.4 16.3% 40%; /* Darker for WCAG AA compliance */
 
-    --success: 120 73% 75%; /* Green for success states */
-    --success-foreground: 222.2 84% 4.9%;
+    --success: 120 60% 35%; /* Darker green for better contrast */
+    --success-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --warning: 38 92% 45%; /* Better contrast warning color */
+    --warning-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 194 74% 53%;
+    --destructive: 0 84.2% 50%; /* Slightly adjusted for better contrast */
+    --destructive-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --border: 214.3 31.8% 85%; /* Slightly darker for better visibility */
+    --input: 214.3 31.8% 85%;
+    --ring: 194 74% 45%;
 
-    /* Custom gradients */
+    --radius: 0.75rem; /* Increased for better touch targets */
+
+    /* Enhanced gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
     --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
     
-    /* Shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
-    --shadow-soft: 0 4px 20px -4px hsl(var(--primary) / 0.1);
+    /* Enhanced shadows for better depth */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.25);
+    --shadow-soft: 0 4px 20px -4px hsl(var(--primary) / 0.08);
+    --shadow-card: 0 2px 10px -2px hsl(var(--foreground) / 0.1);
 
+    /* Sidebar variables */
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Semantic spacing tokens */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+
+    /* Animation tokens */
+    --transition-fast: 150ms ease-out;
+    --transition-normal: 250ms ease-out;
+    --transition-slow: 350ms ease-out;
   }
 
   .dark {
@@ -112,6 +128,46 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-roboto antialiased;
+  }
+
+  /* Improved focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Better tap targets for mobile */
+  button, [role="button"], input[type="submit"], input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .transition-smooth {
+    transition: all var(--transition-normal);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
   }
 }

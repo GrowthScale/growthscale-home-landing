@@ -56,16 +56,16 @@ export default function Employees() {
     <TooltipProvider>
       <div className="min-h-screen bg-background">
         {/* Page Header */}
-        <div className="border-b bg-muted/30">
-          <div className="container mx-auto px-6 py-8">
+        <header className="border-b bg-muted/30">
+          <div className="container mx-auto px-6 py-xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-gradient-primary rounded-lg shadow-soft">
-                  <Users className="h-8 w-8 text-white" />
+                <div className="p-3 bg-gradient-primary rounded-lg shadow-soft" role="img" aria-label="Ícone de gestão de funcionários">
+                  <Users className="h-8 w-8 text-white" aria-hidden="true" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold text-foreground font-roboto">Funcionários</h1>
-                  <p className="text-muted-foreground mt-1">
+                  <h1 className="text-3xl font-bold text-foreground font-roboto text-balance">Funcionários</h1>
+                  <p className="text-muted-foreground mt-1 leading-relaxed">
                     Gerencie e acompanhe os dados da sua equipe em tempo real
                   </p>
                 </div>
@@ -74,8 +74,8 @@ export default function Employees() {
               <div className="flex items-center space-x-3">
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <HelpCircle className="h-4 w-4" />
+                    <Button variant="outline" size="sm" aria-label="Ajuda para gerenciar funcionários">
+                      <HelpCircle className="h-4 w-4" aria-hidden="true" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -96,13 +96,14 @@ export default function Employees() {
         </div>
 
         {/* Quick Stats */}
-        <div className="container mx-auto px-6 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <Card className="hover:shadow-soft transition-shadow">
+        <main className="container mx-auto px-6 py-xl">
+          <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6" aria-labelledby="stats-section">
+            <h2 id="stats-section" className="sr-only">Estatísticas rápidas da equipe</h2>
+            <Card className="hover:shadow-card transition-smooth">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-success/10 rounded-lg">
-                    <UserCheck className="h-5 w-5 text-success" />
+                  <div className="p-2 bg-success/10 rounded-lg" role="img" aria-label="Funcionários ativos">
+                    <UserCheck className="h-5 w-5 text-success" aria-hidden="true" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Funcionários Ativos</p>
@@ -153,7 +154,7 @@ export default function Employees() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </section>
 
           {/* Main Content */}
           <div className="space-y-6">
@@ -166,7 +167,7 @@ export default function Employees() {
               selectedEmployee={selectedEmployee}
             />
           </div>
-        </div>
+        </main>
 
         {/* Employee Details Side Panel */}
         <Sheet open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
@@ -228,7 +229,8 @@ export default function Employees() {
             </div>
           </div>
         </div>
-      </div>
+      </header>
+    </div>
     </TooltipProvider>
   );
 }

@@ -70,24 +70,25 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background font-roboto">
       <DashboardHeader />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-xl">
         {/* Welcome Section */}
-        <div className="mb-8">
+        <section className="mb-8" aria-labelledby="welcome-title">
           <div className="bg-gradient-primary rounded-2xl p-6 text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" aria-hidden="true"></div>
             <div className="relative z-10">
-              <h1 className="text-2xl font-bold mb-2">
-                Bem-vindo ao seu Dashboard, João! 👋
+              <h1 id="welcome-title" className="text-2xl font-bold mb-2 text-balance">
+                Bem-vindo ao seu Dashboard, João! <span role="img" aria-label="Emoji de mão acenando">👋</span>
               </h1>
-              <p className="text-white/90 text-lg">
+              <p className="text-white/90 text-lg leading-relaxed">
                 Aqui está um resumo das principais métricas da sua operação.
               </p>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* KPI Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" aria-labelledby="kpi-title">
+          <h2 id="kpi-title" className="sr-only">Indicadores principais de desempenho</h2>
           {kpiData.map((kpi, index) => (
             <KPICard
               key={index}
@@ -99,7 +100,7 @@ const Dashboard = () => {
               status={kpi.status}
             />
           ))}
-        </div>
+        </section>
 
         {/* Main Content Grid */}
         <div className="grid lg:grid-cols-4 gap-6 mb-8">
@@ -116,27 +117,39 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Actions Bar */}
-        <div className="bg-card border border-border rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-4">Ações Rápidas</h3>
+        <section className="bg-card border border-border rounded-lg p-6" aria-labelledby="quick-actions-title">
+          <h3 id="quick-actions-title" className="text-lg font-semibold mb-4">Ações Rápidas</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-soft transition-all duration-200 hover:border-primary/20">
-              <Calendar className="h-6 w-6 text-primary" />
+            <button 
+              className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20 focus:ring-2 focus:ring-primary"
+              aria-label="Criar nova escala de trabalho"
+            >
+              <Calendar className="h-6 w-6 text-primary" aria-hidden="true" />
               <span className="text-sm font-medium">Nova Escala</span>
             </button>
-            <button className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-soft transition-all duration-200 hover:border-primary/20">
-              <Users className="h-6 w-6 text-primary" />
+            <button 
+              className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20 focus:ring-2 focus:ring-primary"
+              aria-label="Adicionar novo funcionário"
+            >
+              <Users className="h-6 w-6 text-primary" aria-hidden="true" />
               <span className="text-sm font-medium">Adicionar Funcionário</span>
             </button>
-            <button className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-soft transition-all duration-200 hover:border-primary/20">
-              <AlertTriangle className="h-6 w-6 text-primary" />
+            <button 
+              className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20 focus:ring-2 focus:ring-primary"
+              aria-label="Visualizar alertas pendentes"
+            >
+              <AlertTriangle className="h-6 w-6 text-primary" aria-hidden="true" />
               <span className="text-sm font-medium">Ver Alertas</span>
             </button>
-            <button className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-soft transition-all duration-200 hover:border-primary/20">
-              <CheckCircle className="h-6 w-6 text-primary" />
+            <button 
+              className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20 focus:ring-2 focus:ring-primary"
+              aria-label="Acessar relatórios detalhados"
+            >
+              <CheckCircle className="h-6 w-6 text-primary" aria-hidden="true" />
               <span className="text-sm font-medium">Relatórios</span>
             </button>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );

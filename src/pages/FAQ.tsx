@@ -178,28 +178,29 @@ const FAQ = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="py-12">
+      <main className="py-xl">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-roboto">
+          <header className="text-center mb-12">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-roboto text-balance">
               Perguntas <span className="text-primary">Frequentes</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto leading-relaxed">
               Encontre respostas para as dúvidas mais comuns sobre o uso do GrowthScale
             </p>
-          </div>
+          </header>
 
           {/* Search Bar */}
           <div className="mb-8">
             <div className="relative max-w-2xl mx-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" aria-hidden="true" />
               <Input
                 type="text"
                 placeholder="Digite sua dúvida ou palavra-chave"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 h-12 text-base"
+                aria-label="Buscar perguntas frequentes"
               />
             </div>
           </div>
@@ -273,9 +274,12 @@ const FAQ = () => {
                       <AccordionItem 
                         key={faq.id} 
                         value={faq.id}
-                        className="bg-card border border-border rounded-lg px-6 shadow-soft hover:shadow-elegant transition-shadow duration-200"
+                        className="bg-card border border-border rounded-lg px-6 shadow-card hover:shadow-elegant transition-smooth"
                       >
-                        <AccordionTrigger className="text-left font-semibold text-card-foreground hover:text-primary transition-colors">
+                        <AccordionTrigger 
+                          className="text-left font-semibold text-card-foreground hover:text-primary transition-smooth focus:text-primary"
+                          aria-expanded="false"
+                        >
                           {faq.question}
                         </AccordionTrigger>
                         <AccordionContent className="text-muted-foreground leading-relaxed">

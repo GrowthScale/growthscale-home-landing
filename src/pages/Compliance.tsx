@@ -83,35 +83,36 @@ export default function CompliancePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b bg-muted/30">
-        <div className="container mx-auto px-6 py-8">
+      <header className="border-b bg-muted/30">
+        <div className="container mx-auto px-6 py-xl">
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-gradient-primary rounded-lg shadow-soft">
-              <Shield className="h-8 w-8 text-white" />
+            <div className="p-3 bg-gradient-primary rounded-lg shadow-soft" role="img" aria-label="Ícone de compliance trabalhista">
+              <Shield className="h-8 w-8 text-white" aria-hidden="true" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-foreground font-roboto">Compliance Trabalhista</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-3xl font-bold text-foreground font-roboto text-balance">Compliance Trabalhista</h1>
+              <p className="text-muted-foreground mt-1 leading-relaxed">
                 Mantenha-se alinhado com as normas trabalhistas e evite riscos em tempo real
               </p>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-6 py-xl">
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="hover:shadow-soft transition-shadow">
+        <section className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8" aria-labelledby="kpi-section">
+          <h2 id="kpi-section" className="sr-only">Indicadores principais de compliance</h2>
+          <Card className="hover:shadow-card transition-smooth">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Conformidade Atual</p>
                   <p className="text-3xl font-bold text-success">{kpiData.conformityRate}%</p>
                 </div>
-                <CheckCircle className="h-8 w-8 text-success" />
+                <CheckCircle className="h-8 w-8 text-success" aria-hidden="true" />
               </div>
-              <Progress value={kpiData.conformityRate} className="mt-4" />
+              <Progress value={kpiData.conformityRate} className="mt-4" aria-label={`Conformidade atual: ${kpiData.conformityRate}%`} />
             </CardContent>
           </Card>
 
@@ -153,7 +154,7 @@ export default function CompliancePage() {
               <p className="text-xs text-muted-foreground mt-2">Situação controlada</p>
             </CardContent>
           </Card>
-        </div>
+        </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Alertas Ativos */}
@@ -261,7 +262,7 @@ export default function CompliancePage() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </main>
     </div>
   );
 }

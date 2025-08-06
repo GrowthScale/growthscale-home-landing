@@ -28,15 +28,17 @@ const HeroSection = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button 
                 size="lg" 
-                className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-4 text-lg shadow-elegant group"
+                className="bg-accent hover:bg-accent-hover text-accent-foreground font-semibold px-8 py-4 text-lg shadow-elegant group transition-smooth focus:ring-accent"
+                aria-label="Cadastre-se gratuitamente no GrowthScale"
               >
                 Cadastre-se
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg"
+                className="border-2 border-white/80 text-white bg-white/10 hover:bg-white hover:text-primary px-8 py-4 text-lg backdrop-blur-sm transition-smooth focus:ring-white"
+                aria-label="Solicite mais informações sobre o GrowthScale"
               >
                 Solicite Mais Informações
               </Button>
@@ -48,17 +50,20 @@ const HeroSection = () => {
                 <span className="text-sm font-medium">Solução inovadora para gestão de escalas</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
+                <div className="flex -space-x-2" role="img" aria-label="Indicadores de usuários satisfeitos">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <div
                       key={i}
                       className="w-8 h-8 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white text-xs font-semibold"
+                      aria-hidden="true"
                     >
                       {i}
                     </div>
                   ))}
                 </div>
-                <span className="text-white/80 text-sm ml-2">⭐ Avaliação positiva</span>
+                <span className="text-white/80 text-sm ml-2" role="img" aria-label="Estrela de avaliação">
+                  <span aria-hidden="true">⭐</span> Avaliação positiva
+                </span>
               </div>
             </div>
           </div>
@@ -68,8 +73,8 @@ const HeroSection = () => {
             <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-elegant">
               <div className="aspect-video bg-white/20 rounded-lg flex items-center justify-center">
                 <div className="text-center text-white">
-                  <div className="w-20 h-20 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Brain className="h-10 w-10" />
+                  <div className="w-20 h-20 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-4" role="img" aria-label="Ícone representando inteligência artificial">
+                    <Brain className="h-10 w-10" aria-hidden="true" />
                   </div>
                   <p className="text-lg font-semibold">Escalas Inteligentes</p>
                   <p className="text-sm opacity-80">Otimização com IA</p>

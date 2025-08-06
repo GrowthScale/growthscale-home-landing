@@ -159,19 +159,19 @@ const Contact = () => {
       name: "LinkedIn",
       icon: Linkedin,
       href: "https://linkedin.com/company/growthscale",
-      color: "text-blue-600 hover:text-blue-700"
+      color: "text-primary hover:text-primary-hover"
     },
     {
       name: "Twitter",
       icon: Twitter,
       href: "https://twitter.com/growthscale",
-      color: "text-blue-400 hover:text-blue-500"
+      color: "text-primary hover:text-primary-hover"
     },
     {
       name: "Facebook",
       icon: Facebook,
       href: "https://facebook.com/growthscale",
-      color: "text-blue-500 hover:text-blue-600"
+      color: "text-primary hover:text-primary-hover"
     }
   ];
 
@@ -179,16 +179,16 @@ const Contact = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="container mx-auto px-4 py-16">
+      <main className="container mx-auto px-4 py-xl">
         {/* Header Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
+        <header className="text-center mb-16">
+          <h1 className="text-4xl font-bold text-foreground mb-4 font-roboto text-balance">
             Contato e Suporte
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-roboto leading-relaxed">
             Estamos aqui para ajudar! Envie sua mensagem ou encontre respostas rápidas em nossos recursos.
           </p>
-        </div>
+        </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Contact Form */}
@@ -232,7 +232,11 @@ const Contact = () => {
                         onChange={handleInputChange}
                         placeholder="Seu nome completo"
                         required
+                        aria-describedby="name-hint"
                       />
+                      <div id="name-hint" className="sr-only">
+                        Digite seu nome completo para que possamos entrar em contato
+                      </div>
                     </div>
 
                     <div className="space-y-2">
@@ -274,20 +278,21 @@ const Contact = () => {
                       />
                     </div>
 
-                    <Button 
-                      type="submit" 
-                      className="w-full"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? (
-                        <>
-                          <LoadingSpinner size="sm" />
-                          Enviando...
-                        </>
-                      ) : (
-                        'Enviar Mensagem'
-                      )}
-                    </Button>
+                      <Button 
+                        type="submit" 
+                        className="w-full"
+                        disabled={isLoading}
+                        aria-label={isLoading ? "Enviando mensagem, aguarde" : "Enviar mensagem de contato"}
+                      >
+                        {isLoading ? (
+                          <>
+                            <LoadingSpinner size="sm" />
+                            Enviando...
+                          </>
+                        ) : (
+                          'Enviar Mensagem'
+                        )}
+                      </Button>
                   </form>
                 )}
               </CardContent>
@@ -304,11 +309,11 @@ const Contact = () => {
               {supportResources.map((resource, index) => {
                 const Icon = resource.icon;
                 return (
-                  <Card key={index} className="hover:shadow-md transition-shadow">
+                  <Card key={index} className="hover:shadow-card transition-smooth focus-within:ring-2 focus-within:ring-primary">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0">
-                          <Icon className="h-6 w-6 text-primary" />
+                        <div className="flex-shrink-0" role="img" aria-label={`Ícone de ${resource.title}`}>
+                          <Icon className="h-6 w-6 text-primary" aria-hidden="true" />
                         </div>
                         <div className="flex-1">
                           <h3 className="font-semibold text-foreground mb-2">
@@ -327,8 +332,9 @@ const Contact = () => {
                                 window.location.href = resource.href;
                               }
                             }}
+                            aria-label={`Acessar ${resource.title}${resource.external ? ' (abre em nova aba)' : ''}`}
                           >
-                            Acessar {resource.external && <ExternalLink className="h-3 w-3 ml-1" />}
+                            Acessar {resource.external && <ExternalLink className="h-3 w-3 ml-1" aria-hidden="true" />}
                           </Button>
                         </div>
                       </div>
@@ -352,10 +358,10 @@ const Contact = () => {
                       variant="outline"
                       size="icon"
                       onClick={() => window.open(social.href, '_blank')}
-                      className="hover:bg-accent"
+                      className="hover:bg-accent transition-smooth"
+                      aria-label={`Seguir GrowthScale no ${social.name} (abre em nova aba)`}
                     >
-                      <Icon className={`h-5 w-5 ${social.color}`} />
-                      <span className="sr-only">{social.name}</span>
+                      <Icon className={`h-5 w-5 ${social.color}`} aria-hidden="true" />
                     </Button>
                   );
                 })}

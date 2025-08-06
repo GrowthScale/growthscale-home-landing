@@ -279,28 +279,29 @@ const Integrations = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="py-12">
+      <main className="py-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-roboto">
+          <header className="text-center mb-12">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-roboto text-balance">
               <span className="text-primary">Integrações</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto leading-relaxed">
               Conecte o GrowthScale com as ferramentas que você já utiliza e potencialize sua gestão
             </p>
-          </div>
+          </header>
 
           {/* Search and Filters */}
           <div className="mb-8 space-y-4">
             <div className="relative max-w-2xl mx-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" aria-hidden="true" />
               <Input
                 type="text"
                 placeholder="Buscar integrações..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 h-12 text-base"
+                aria-label="Buscar integrações disponíveis"
               />
             </div>
 
@@ -322,29 +323,34 @@ const Integrations = () => {
           {selectedCategory === 'Todas' && searchTerm === '' && (
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">Integrações em Destaque</h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {integrations.filter(i => i.featured).map((integration) => {
-                  const Icon = integration.icon;
-                  return (
-                    <Card key={integration.id} className="relative overflow-hidden bg-gradient-primary text-white">
-                      <div className="absolute top-2 right-2">
-                        <Badge variant="secondary" className="bg-accent text-accent-foreground">
-                          Destaque
-                        </Badge>
-                      </div>
-                      <CardHeader>
-                        <div className="flex items-start gap-3">
-                          <div className="bg-white/20 p-3 rounded-lg">
-                            <Icon className="h-6 w-6" />
-                          </div>
-                          <div className="flex-1">
-                            <CardTitle className="text-white">{integration.name}</CardTitle>
-                            <CardDescription className="text-white/80">
-                              {integration.description}
-                            </CardDescription>
-                          </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {integrations.filter(i => i.featured).map((integration) => {
+                const Icon = integration.icon;
+                return (
+                  <Card 
+                    key={integration.id} 
+                    className="relative overflow-hidden bg-gradient-primary text-white focus-within:ring-2 focus-within:ring-accent transition-smooth"
+                    role="article"
+                    aria-labelledby={`featured-integration-${integration.id}`}
+                  >
+                    <div className="absolute top-2 right-2">
+                      <Badge variant="secondary" className="bg-accent text-accent-foreground">
+                        Destaque
+                      </Badge>
+                    </div>
+                    <CardHeader>
+                      <div className="flex items-start gap-3">
+                        <div className="bg-white/20 p-3 rounded-lg" role="img" aria-label={`Ícone da integração ${integration.name}`}>
+                          <Icon className="h-6 w-6" aria-hidden="true" />
                         </div>
-                      </CardHeader>
+                        <div className="flex-1">
+                          <CardTitle id={`featured-integration-${integration.id}`} className="text-white">{integration.name}</CardTitle>
+                          <CardDescription className="text-white/80">
+                            {integration.description}
+                          </CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
                       <CardContent>
                         <div className="flex justify-between items-center">
                           <div className="text-sm text-white/80">
@@ -393,15 +399,20 @@ const Integrations = () => {
                 {filteredIntegrations.map((integration) => {
                   const Icon = integration.icon;
                   return (
-                    <Card key={integration.id} className="relative hover:shadow-elegant transition-shadow duration-200">
+                    <Card 
+                      key={integration.id} 
+                      className="relative hover:shadow-card transition-smooth focus-within:ring-2 focus-within:ring-primary"
+                      role="article"
+                      aria-labelledby={`integration-${integration.id}`}
+                    >
                       <CardHeader>
                         <div className="flex items-start gap-3">
-                          <div className="bg-primary/10 p-3 rounded-lg">
-                            <Icon className="h-6 w-6 text-primary" />
+                          <div className="bg-primary/10 p-3 rounded-lg" role="img" aria-label={`Ícone da integração ${integration.name}`}>
+                            <Icon className="h-6 w-6 text-primary" aria-hidden="true" />
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">
-                              <CardTitle className="text-lg">{integration.name}</CardTitle>
+                              <CardTitle id={`integration-${integration.id}`} className="text-lg">{integration.name}</CardTitle>
                               {getStatusIcon(integration.status)}
                             </div>
                             <CardDescription className="text-sm">

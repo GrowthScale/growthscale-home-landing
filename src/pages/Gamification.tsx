@@ -195,17 +195,17 @@ const Gamification = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="py-12">
+      <main className="py-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-roboto">
+          <header className="text-center mb-12">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-roboto text-balance">
               Sistema de <span className="text-primary">Gamificação</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto leading-relaxed">
               Descubra como a competição saudável e as recompensas podem impulsionar o desempenho da sua equipe
             </p>
-          </div>
+          </header>
 
           {/* How It Works Section */}
           <div className="mb-12">

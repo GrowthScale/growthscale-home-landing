@@ -93,30 +93,33 @@ const faqs = [
 
 const PricingSection = () => {
   return (
-    <section id="precos" className="py-20 bg-muted/30">
+    <section id="precos" className="py-xl bg-muted/30" aria-labelledby="pricing-title">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 font-roboto">
+        <header className="text-center mb-16">
+          <h2 id="pricing-title" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 font-roboto text-balance">
             Planos que Se <span className="text-primary">Adaptam</span> ao Seu Negócio
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto leading-relaxed">
             Escolha o plano ideal para o tamanho da sua operação e comece a transformar 
             sua gestão hoje mesmo
           </p>
-        </div>
+        </header>
 
         {/* Pricing Cards */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {plans.map((plan, index) => {
             const IconComponent = plan.icon;
             return (
               <Card 
                 key={index} 
-                className={`relative p-8 transition-all duration-300 hover:scale-105 hover:shadow-elegant ${
-                  plan.popular ? 'border-primary shadow-elegant scale-105' : 
+                className={`relative p-8 transition-smooth hover:shadow-card focus-within:ring-2 focus-within:ring-primary ${
+                  plan.popular ? 'border-primary shadow-elegant transform scale-105' : 
                   plan.recommended ? 'border-secondary shadow-soft' : 'border-border'
                 } ${plan.color}`}
+                role="article"
+                aria-labelledby={`plan-title-${index}`}
+                tabIndex={0}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -137,10 +140,10 @@ const PricingSection = () => {
                 )}
                 
                 <div className="text-center mb-8">
-                  <div className="mb-4">
-                    <IconComponent className="w-12 h-12 mx-auto text-primary mb-3" />
+                  <div className="mb-4" role="img" aria-label={`Ícone do plano ${plan.name}`}>
+                    <IconComponent className="w-12 h-12 mx-auto text-primary mb-3" aria-hidden="true" />
                   </div>
-                  <h3 className="text-2xl font-bold text-card-foreground mb-2 font-roboto">
+                  <h3 id={`plan-title-${index}`} className="text-2xl font-bold text-card-foreground mb-2 font-roboto">
                     {plan.name}
                   </h3>
                   <div className="flex items-baseline justify-center gap-1 mb-2">
@@ -180,25 +183,25 @@ const PricingSection = () => {
         </div>
 
         {/* Feature Comparison Table */}
-        <div className="mb-16">
-          <h3 className="text-2xl font-bold text-center text-foreground mb-8 font-roboto">
+        <section className="mb-16" aria-labelledby="comparison-title">
+          <h3 id="comparison-title" className="text-2xl font-bold text-center text-foreground mb-8 font-roboto">
             Compare os Recursos
           </h3>
           <div className="overflow-x-auto">
-            <div className="min-w-full bg-card rounded-lg border shadow-soft">
-              <table className="w-full">
+            <div className="min-w-full bg-card rounded-lg border shadow-card">
+              <table className="w-full" role="table" aria-label="Comparação de recursos entre planos">
                 <thead>
                   <tr className="border-b bg-muted/50">
-                    <th className="text-left p-4 font-semibold text-foreground">Recursos</th>
-                    <th className="text-center p-4 font-semibold text-foreground">Freemium</th>
-                    <th className="text-center p-4 font-semibold text-foreground">Essencial</th>
-                    <th className="text-center p-4 font-semibold text-foreground">Starter</th>
+                    <th scope="col" className="text-left p-4 font-semibold text-foreground min-w-[200px]">Recursos</th>
+                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Freemium</th>
+                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Essencial</th>
+                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Starter</th>
                   </tr>
                 </thead>
                 <tbody>
                   {comparisonFeatures.map((item, index) => (
-                    <tr key={index} className="border-b last:border-b-0 hover:bg-muted/30 transition-colors">
-                      <td className="p-4 font-medium text-card-foreground">{item.feature}</td>
+                    <tr key={index} className="border-b last:border-b-0 hover:bg-muted/30 transition-smooth">
+                      <th scope="row" className="p-4 font-medium text-card-foreground text-left">{item.feature}</th>
                       <td className="p-4 text-center text-muted-foreground">{item.freemium}</td>
                       <td className="p-4 text-center text-muted-foreground">{item.essencial}</td>
                       <td className="p-4 text-center text-muted-foreground">{item.starter}</td>
@@ -208,7 +211,7 @@ const PricingSection = () => {
               </table>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* FAQ Section */}
         <div className="mb-16">

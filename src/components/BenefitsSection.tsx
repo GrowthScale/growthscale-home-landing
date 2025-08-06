@@ -45,24 +45,34 @@ const BenefitsSection = () => {
 
         {/* Benefits Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {benefits.map((benefit, index) => (
-            <div
-              key={index}
-              className="group p-8 bg-card rounded-2xl border border-border hover:shadow-soft transition-all duration-300 hover:-translate-y-2"
-            >
-              <div className="mb-6">
-                <div className="w-16 h-16 bg-gradient-primary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <benefit.icon className="h-8 w-8 text-white" />
+          {benefits.map((benefit, index) => {
+            const IconComponent = benefit.icon;
+            return (
+              <article
+                key={index}
+                className="group p-8 bg-card rounded-2xl border border-border hover:shadow-card transition-smooth hover:-translate-y-1 focus-within:ring-2 focus-within:ring-primary"
+                tabIndex={0}
+                role="article"
+                aria-labelledby={`benefit-title-${index}`}
+              >
+                <div className="mb-6">
+                  <div 
+                    className="w-16 h-16 bg-gradient-primary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-normal" 
+                    role="img" 
+                    aria-label={`Ícone representando ${benefit.title}`}
+                  >
+                    <IconComponent className="h-8 w-8 text-white" aria-hidden="true" />
+                  </div>
+                  <h3 id={`benefit-title-${index}`} className="text-xl font-semibold text-card-foreground mb-3 font-roboto">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-muted-foreground font-roboto leading-relaxed">
+                    {benefit.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold text-card-foreground mb-3 font-roboto">
-                  {benefit.title}
-                </h3>
-                <p className="text-muted-foreground font-roboto leading-relaxed">
-                  {benefit.description}
-                </p>
-              </div>
-            </div>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
       </div>
