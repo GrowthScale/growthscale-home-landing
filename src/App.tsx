@@ -20,6 +20,7 @@ const Legal = React.lazy(() => import("./pages/Legal"));
 const Contact = React.lazy(() => import("./pages/Contact"));
 const FAQ = React.lazy(() => import("./pages/FAQ"));
 const Gamification = React.lazy(() => import("./pages/Gamification"));
+const Integrations = React.lazy(() => import("./pages/Integrations"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
@@ -73,6 +74,7 @@ const App = () => (
                 <Route path="/contato" element={<Contact />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/gamificacao" element={<Gamification />} />
+                <Route path="/integracoes" element={<Integrations />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
