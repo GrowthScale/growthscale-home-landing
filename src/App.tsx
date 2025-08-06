@@ -22,6 +22,7 @@ const FAQ = React.lazy(() => import("./pages/FAQ"));
 const Gamification = React.lazy(() => import("./pages/Gamification"));
 const Integrations = React.lazy(() => import("./pages/Integrations"));
 const Companies = React.lazy(() => import("./pages/Companies"));
+const Setup = React.lazy(() => import("./pages/Setup"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
@@ -79,6 +80,11 @@ const App = () => (
                 <Route path="/empresas" element={
                   <ProtectedRoute>
                     <Companies />
+                  </ProtectedRoute>
+                } />
+                <Route path="/setup" element={
+                  <ProtectedRoute>
+                    <Setup />
                   </ProtectedRoute>
                 } />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
