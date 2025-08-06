@@ -47,6 +47,14 @@ const Header = () => {
               Escalas
             </Button>
             <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => window.location.href = '/funcionarios'}
+              className="text-foreground hover:text-primary border-border hover:border-primary/20"
+            >
+              Funcionários
+            </Button>
+            <Button 
               variant="default" 
               className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-6 py-2 shadow-elegant"
             >
