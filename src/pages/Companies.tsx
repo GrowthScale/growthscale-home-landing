@@ -13,6 +13,7 @@ import { CompanyForm } from '@/components/companies/CompanyForm';
 import { CompanyDetails } from '@/components/companies/CompanyDetails';
 import { BranchList } from '@/components/companies/BranchList';
 import { CompanyFilters } from '@/components/companies/CompanyFilters';
+import PageLayout from '@/components/PageLayout';
 
 interface Company {
   id: string;
@@ -128,10 +129,15 @@ const Companies = () => {
     }
   };
 
+  const breadcrumbs = [
+    { label: 'Empresas' }
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card">
+    <PageLayout breadcrumbs={breadcrumbs}>
+      <div className="bg-background">
+        {/* Header */}
+        <header className="border-b border-border bg-card">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -358,7 +364,8 @@ const Companies = () => {
           )}
         </SheetContent>
       </Sheet>
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 
