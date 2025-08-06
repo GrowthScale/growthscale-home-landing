@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Play, ArrowRight } from "lucide-react";
+import { Play, ArrowRight, Brain } from "lucide-react";
 
 const HeroSection = () => {
   return (
@@ -30,7 +30,7 @@ const HeroSection = () => {
                 size="lg" 
                 className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-4 text-lg shadow-elegant group"
               >
-                Experimente Grátis
+                Cadastre-se
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button 
@@ -38,8 +38,7 @@ const HeroSection = () => {
                 variant="outline" 
                 className="border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg"
               >
-                <Play className="mr-2 h-5 w-5" />
-                Saiba Mais
+                Solicite Mais Informações
               </Button>
             </div>
 
@@ -69,11 +68,11 @@ const HeroSection = () => {
             <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-elegant">
               <div className="aspect-video bg-white/20 rounded-lg flex items-center justify-center">
                 <div className="text-center text-white">
-                  <div className="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Play className="h-8 w-8" />
+                  <div className="w-20 h-20 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Brain className="h-10 w-10" />
                   </div>
-                  <p className="text-lg font-semibold">Vídeo Demonstração</p>
-                  <p className="text-sm opacity-80">2:30 min</p>
+                  <p className="text-lg font-semibold">Escalas Inteligentes</p>
+                  <p className="text-sm opacity-80">Otimização com IA</p>
                 </div>
               </div>
               <div className="mt-6 grid grid-cols-3 gap-4">
@@ -82,12 +81,12 @@ const HeroSection = () => {
                   <div className="text-xs text-white/80">Inteligente</div>
                 </div>
                 <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <div className="text-lg font-bold text-white">24/7</div>
-                  <div className="text-xs text-white/80">Disponível</div>
+                  <div className="text-lg font-bold text-white">Auto</div>
+                  <div className="text-xs text-white/80">Compliance</div>
                 </div>
                 <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <div className="text-lg font-bold text-white">Fácil</div>
-                  <div className="text-xs text-white/80">de Usar</div>
+                  <div className="text-lg font-bold text-white">Smart</div>
+                  <div className="text-xs text-white/80">Previsões</div>
                 </div>
               </div>
             </div>

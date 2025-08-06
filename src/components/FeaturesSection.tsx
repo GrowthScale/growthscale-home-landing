@@ -18,24 +18,6 @@ const features = [
     title: "Compliance Automático",
     description: "Verificação automática de conformidade com leis trabalhistas e alertas em tempo real.",
     image: "🛡️"
-  },
-  {
-    icon: Trophy,
-    title: "Gamificação",
-    description: "Sistema de pontuação e recompensas que mantém a equipe engajada e motivada.",
-    image: "🏆"
-  },
-  {
-    icon: TrendingDown,
-    title: "Otimização de Custos",
-    description: "Análise inteligente que identifica oportunidades de redução de custos operacionais.",
-    image: "💰"
-  },
-  {
-    icon: Clock,
-    title: "Gestão de Tempo Real",
-    description: "Monitoramento em tempo real de presença, produtividade e performance da equipe.",
-    image: "⏰"
   }
 ];
 

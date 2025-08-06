@@ -15,8 +15,8 @@ const CTASection = () => {
                 Pronto para <span className="text-secondary">Transformar</span> a Gestão da Sua Equipe?
               </h2>
               <p className="text-xl text-white/90 font-roboto leading-relaxed">
-                Comece agora mesmo e veja os resultados em menos de 24 horas. 
-                Junte-se a centenas de estabelecimentos que já revolucionaram sua gestão.
+                Cadastre-se agora e descubra como nossa solução pode transformar 
+                a gestão da sua equipe com tecnologia inovadora.
               </p>
             </div>
 

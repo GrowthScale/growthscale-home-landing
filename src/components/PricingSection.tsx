@@ -4,49 +4,32 @@ import { Check, Crown } from "lucide-react";
 
 const plans = [
   {
+    name: "Freemium",
+    price: "Grátis",
+    period: "",
+    description: "Experimente as funcionalidades básicas",
+    features: [
+      "Até 5 funcionários",
+      "Escalas básicas",
+      "Recursos limitados"
+    ],
+    buttonText: "Começar Grátis",
+    popular: false
+  },
+  {
     name: "Starter",
     price: "R$ 99",
     period: "/mês",
     description: "Perfeito para estabelecimentos pequenos",
     features: [
       "Até 15 funcionários",
-      "Escalas básicas",
-      "Suporte por email",
-      "Relatórios simples",
-      "App mobile"
-    ],
-    buttonText: "Começar Grátis",
-    popular: false
-  },
-  {
-    name: "Professional",
-    price: "R$ 199",
-    period: "/mês",
-    description: "Ideal para empresas em crescimento",
-    features: [
-      "Até 50 funcionários",
-      "IA para escalas inteligentes",
+      "Escalas inteligentes completas",
       "Previsão de ausências",
       "Compliance automático",
-      "Relatórios avançados",
-      "Integrações básicas"
+      "App mobile"
     ],
-    buttonText: "Escolher Plano",
+    buttonText: "Assinar Plano",
     popular: true
-  },
-  {
-    name: "Enterprise",
-    price: "R$ 399",
-    period: "/mês",
-    description: "Para redes e grandes operações",
-    features: [
-      "Funcionários ilimitados",
-      "Todas as funcionalidades",
-      "Gamificação completa",
-      "Relatórios personalizados"
-    ],
-    buttonText: "Falar com Vendas",
-    popular: false
   }
 ];
 
