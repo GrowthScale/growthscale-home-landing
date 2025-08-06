@@ -1,0 +1,90 @@
+import { Brain, DollarSign, TrendingUp, Shield, Heart } from "lucide-react";
+
+const benefits = [
+  {
+    icon: Brain,
+    title: "Otimização de Escalas com IA",
+    description: "Algoritmos inteligentes criam escalas perfeitas automaticamente, considerando disponibilidade, habilidades e preferências da equipe."
+  },
+  {
+    icon: DollarSign,
+    title: "Redução de Custos Operacionais",
+    description: "Elimine gastos desnecessários com horas extras e otimize a alocação de recursos humanos para máxima eficiência."
+  },
+  {
+    icon: TrendingUp,
+    title: "Aumento da Produtividade da Equipe",
+    description: "Equipes mais organizadas e motivadas resultam em maior produtividade e melhor atendimento ao cliente."
+  },
+  {
+    icon: Shield,
+    title: "Garantia de Compliance Trabalhista",
+    description: "Mantenha-se sempre em conformidade com as leis trabalhistas com verificações automáticas e alertas em tempo real."
+  },
+  {
+    icon: Heart,
+    title: "Engajamento e Retenção de Funcionários",
+    description: "Funcionários mais satisfeitos com escalas justas e transparentes permanecem mais tempo na empresa."
+  }
+];
+
+const BenefitsSection = () => {
+  return (
+    <section className="py-20 bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 font-roboto">
+            Descubra os Benefícios que o <span className="text-primary">GrowthScale</span> Oferece
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto">
+            Transforme a gestão da sua equipe e alcance resultados extraordinários 
+            com nossa plataforma inovadora
+          </p>
+        </div>
+
+        {/* Benefits Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {benefits.map((benefit, index) => (
+            <div
+              key={index}
+              className="group p-8 bg-card rounded-2xl border border-border hover:shadow-soft transition-all duration-300 hover:-translate-y-2"
+            >
+              <div className="mb-6">
+                <div className="w-16 h-16 bg-gradient-primary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <benefit.icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-card-foreground mb-3 font-roboto">
+                  {benefit.title}
+                </h3>
+                <p className="text-muted-foreground font-roboto leading-relaxed">
+                  {benefit.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Stats Section */}
+        <div className="mt-20 bg-gradient-primary rounded-3xl p-8 lg:p-12">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-4xl lg:text-5xl font-bold text-white mb-2">500+</div>
+              <div className="text-white/90 font-medium">Restaurantes Atendidos</div>
+            </div>
+            <div>
+              <div className="text-4xl lg:text-5xl font-bold text-white mb-2">85%</div>
+              <div className="text-white/90 font-medium">Redução no Tempo de Gestão</div>
+            </div>
+            <div>
+              <div className="text-4xl lg:text-5xl font-bold text-white mb-2">40%</div>
+              <div className="text-white/90 font-medium">Economia em Custos Operacionais</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default BenefitsSection;
