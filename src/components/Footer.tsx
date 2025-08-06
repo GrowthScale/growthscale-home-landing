@@ -48,8 +48,6 @@ const Footer = () => {
             <h4 className="font-semibold text-card-foreground mb-4">Empresa</h4>
             <ul className="space-y-2">
               <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Sobre nós</a></li>
-              <li><a href="#casos" className="text-muted-foreground hover:text-primary transition-colors">Casos de Sucesso</a></li>
-              <li><a href="#blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</a></li>
               <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Carreira</a></li>
             </ul>
           </div>
@@ -60,8 +58,6 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><a href="#contato" className="text-muted-foreground hover:text-primary transition-colors">Contato</a></li>
               <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Central de Ajuda</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Documentação</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Status</a></li>
             </ul>
           </div>
         </div>
