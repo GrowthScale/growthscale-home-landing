@@ -36,8 +36,8 @@ const CTASection = () => {
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-semibold">Suporte 24/7</div>
-                  <div className="text-sm text-white/80">Sempre à disposição</div>
+                  <div className="font-semibold">Suporte Técnico</div>
+                  <div className="text-sm text-white/80">Sempre disponível</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -72,10 +72,10 @@ const CTASection = () => {
           <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
             <div className="mb-6">
               <h3 className="text-2xl font-bold text-white mb-2 font-roboto">
-                Experimente Grátis por 14 Dias
+                Solicite Mais Informações
               </h3>
               <p className="text-white/80">
-                Sem cartão de crédito • Sem compromisso • Cancele quando quiser
+                Entre em contato conosco e descubra como podemos ajudar
               </p>
             </div>
 
@@ -119,7 +119,7 @@ const CTASection = () => {
                 size="lg"
                 className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold py-4 group"
               >
-                Começar Teste Grátis Agora
+                Solicitar Informações
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </form>

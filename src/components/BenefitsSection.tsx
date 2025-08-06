@@ -65,23 +65,6 @@ const BenefitsSection = () => {
           ))}
         </div>
 
-        {/* Stats Section */}
-        <div className="mt-20 bg-gradient-primary rounded-3xl p-8 lg:p-12">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-4xl lg:text-5xl font-bold text-white mb-2">500+</div>
-              <div className="text-white/90 font-medium">Restaurantes Atendidos</div>
-            </div>
-            <div>
-              <div className="text-4xl lg:text-5xl font-bold text-white mb-2">85%</div>
-              <div className="text-white/90 font-medium">Redução no Tempo de Gestão</div>
-            </div>
-            <div>
-              <div className="text-4xl lg:text-5xl font-bold text-white mb-2">40%</div>
-              <div className="text-white/90 font-medium">Economia em Custos Operacionais</div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

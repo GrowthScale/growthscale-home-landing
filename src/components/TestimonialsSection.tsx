@@ -80,28 +80,6 @@ const TestimonialsSection = () => {
           ))}
         </div>
 
-        {/* Trust Indicators */}
-        <div className="bg-card rounded-3xl p-8 lg:p-12 border border-border">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-card-foreground mb-4 font-roboto">
-              Empresas que Confiam no GrowthScale
-            </h3>
-            <p className="text-muted-foreground">
-              Junte-se a centenas de estabelecimentos que já transformaram sua gestão
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
-            {['🍕 Pizzaria Roma', '🍔 Burger King', '☕ Café Expresso', '🥗 Green Salads'].map((brand, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl mb-2">{brand.split(' ')[0]}</div>
-                <div className="text-sm text-muted-foreground font-medium">
-                  {brand.split(' ').slice(1).join(' ')}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );

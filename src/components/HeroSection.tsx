@@ -39,14 +39,14 @@ const HeroSection = () => {
                 className="border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg"
               >
                 <Play className="mr-2 h-5 w-5" />
-                Ver Demonstração
+                Saiba Mais
               </Button>
             </div>
 
             {/* Trust Indicators */}
             <div className="flex flex-col sm:flex-row items-center gap-6 pt-8">
               <div className="text-white/80">
-                <span className="text-sm font-medium">Mais de 500+ restaurantes confiam em nós</span>
+                <span className="text-sm font-medium">Solução inovadora para gestão de escalas</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-2">
@@ -59,7 +59,7 @@ const HeroSection = () => {
                     </div>
                   ))}
                 </div>
-                <span className="text-white/80 text-sm ml-2">⭐ 4.9/5 estrelas</span>
+                <span className="text-white/80 text-sm ml-2">⭐ Avaliação positiva</span>
               </div>
             </div>
           </div>
@@ -78,16 +78,16 @@ const HeroSection = () => {
               </div>
               <div className="mt-6 grid grid-cols-3 gap-4">
                 <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-white">85%</div>
-                  <div className="text-xs text-white/80">Redução de Tempo</div>
+                  <div className="text-lg font-bold text-white">IA</div>
+                  <div className="text-xs text-white/80">Inteligente</div>
                 </div>
                 <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-white">40%</div>
-                  <div className="text-xs text-white/80">Menos Custos</div>
+                  <div className="text-lg font-bold text-white">24/7</div>
+                  <div className="text-xs text-white/80">Disponível</div>
                 </div>
                 <div className="bg-white/20 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-white">98%</div>
-                  <div className="text-xs text-white/80">Satisfação</div>
+                  <div className="text-lg font-bold text-white">Fácil</div>
+                  <div className="text-xs text-white/80">de Usar</div>
                 </div>
               </div>
             </div>

@@ -28,7 +28,6 @@ const plans = [
       "IA para escalas inteligentes",
       "Previsão de ausências",
       "Compliance automático",
-      "Suporte prioritário",
       "Relatórios avançados",
       "Integrações básicas"
     ],
@@ -44,10 +43,7 @@ const plans = [
       "Funcionários ilimitados",
       "Todas as funcionalidades",
       "Gamificação completa",
-      "API personalizada",
-      "Suporte dedicado 24/7",
-      "Treinamento personalizado",
-      "Implementação assistida"
+      "Relatórios personalizados"
     ],
     buttonText: "Falar com Vendas",
     popular: false
@@ -118,7 +114,7 @@ const PricingSection = () => {
         {/* Additional Info */}
         <div className="text-center space-y-4">
           <p className="text-muted-foreground">
-            💳 Todos os planos incluem <strong>14 dias grátis</strong> • 
+            💳 Planos flexíveis • 
             📞 Suporte em português • 
             🔒 Dados seguros e protegidos
           </p>
