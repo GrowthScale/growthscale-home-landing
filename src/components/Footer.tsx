@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="bg-card border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
@@ -19,17 +19,6 @@ const Footer = () => {
               A plataforma inteligente de gestão de escalas que transforma 
               a operação do seu food service.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                📧
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                📱
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                💼
-              </a>
-            </div>
           </div>
 
           {/* Product */}
@@ -38,25 +27,14 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><a href="#recursos" className="text-muted-foreground hover:text-primary transition-colors">Recursos</a></li>
               <li><a href="#precos" className="text-muted-foreground hover:text-primary transition-colors">Preços</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Integrações</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">API</a></li>
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Contact */}
           <div>
-            <h4 className="font-semibold text-card-foreground mb-4">Empresa</h4>
+            <h4 className="font-semibold text-card-foreground mb-4">Contato</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Sobre nós</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Carreira</a></li>
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h4 className="font-semibold text-card-foreground mb-4">Suporte</h4>
-            <ul className="space-y-2">
-              <li><a href="#contato" className="text-muted-foreground hover:text-primary transition-colors">Contato</a></li>
+              <li><a href="#contato" className="text-muted-foreground hover:text-primary transition-colors">Fale Conosco</a></li>
               <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Central de Ajuda</a></li>
             </ul>
           </div>
