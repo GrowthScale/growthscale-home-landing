@@ -81,24 +81,22 @@ export function ScheduleFilters() {
 
             {/* Quick Filters */}
             <div className="flex items-center space-x-2">
-              <Select value={filters.status} onValueChange={(value) => handleFilterChange('status', value)}>
+              <Select value={filters.status || undefined} onValueChange={(value) => handleFilterChange('status', value)}>
                 <SelectTrigger className="w-40">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos</SelectItem>
                   <SelectItem value="approved">Aprovado</SelectItem>
                   <SelectItem value="pending">Pendente</SelectItem>
                   <SelectItem value="warning">Alerta</SelectItem>
                 </SelectContent>
               </Select>
 
-              <Select value={filters.dateRange} onValueChange={(value) => handleFilterChange('dateRange', value)}>
+              <Select value={filters.dateRange || undefined} onValueChange={(value) => handleFilterChange('dateRange', value)}>
                 <SelectTrigger className="w-40">
                   <SelectValue placeholder="Período" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todos</SelectItem>
                   <SelectItem value="today">Hoje</SelectItem>
                   <SelectItem value="week">Esta Semana</SelectItem>
                   <SelectItem value="month">Este Mês</SelectItem>
@@ -153,12 +151,11 @@ export function ScheduleFilters() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Departamento</label>
-                <Select value={filters.department} onValueChange={(value) => handleFilterChange('department', value)}>
+                <Select value={filters.department || undefined} onValueChange={(value) => handleFilterChange('department', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Todos" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todos</SelectItem>
                     <SelectItem value="vendas">Vendas</SelectItem>
                     <SelectItem value="estoque">Estoque</SelectItem>
                     <SelectItem value="seguranca">Segurança</SelectItem>
@@ -169,12 +166,11 @@ export function ScheduleFilters() {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Turno</label>
-                <Select value={filters.shift} onValueChange={(value) => handleFilterChange('shift', value)}>
+                <Select value={filters.shift || undefined} onValueChange={(value) => handleFilterChange('shift', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Todos" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todos</SelectItem>
                     <SelectItem value="morning">☀️ Manhã</SelectItem>
                     <SelectItem value="afternoon">🌤️ Tarde</SelectItem>
                     <SelectItem value="night">🌙 Noite</SelectItem>
@@ -189,7 +185,6 @@ export function ScheduleFilters() {
                     <SelectValue placeholder="Todas" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todas</SelectItem>
                     <SelectItem value="high">Alta</SelectItem>
                     <SelectItem value="medium">Média</SelectItem>
                     <SelectItem value="low">Baixa</SelectItem>
@@ -204,7 +199,6 @@ export function ScheduleFilters() {
                     <SelectValue placeholder="Todos" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todos</SelectItem>
                     <SelectItem value="compliant">Conforme</SelectItem>
                     <SelectItem value="warning">Atenção</SelectItem>
                     <SelectItem value="error">Não conforme</SelectItem>
