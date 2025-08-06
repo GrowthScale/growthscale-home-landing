@@ -90,6 +90,14 @@ const Header = () => {
               Funcionários
             </Button>
             <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => navigate('/compliance')}
+              className="text-foreground hover:text-primary border-border hover:border-primary/20"
+            >
+              Compliance
+            </Button>
+            <Button 
               variant="default" 
               onClick={() => scrollToSection('contato')}
               className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-6 py-2 shadow-elegant"

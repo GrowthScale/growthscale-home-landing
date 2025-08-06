@@ -13,6 +13,7 @@ const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Schedules = React.lazy(() => import("./pages/Schedules"));
 const Employees = React.lazy(() => import("./pages/Employees"));
 const Settings = React.lazy(() => import("./pages/Settings"));
+const Compliance = React.lazy(() => import("./pages/Compliance"));
 const Legal = React.lazy(() => import("./pages/Legal"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/escalas" element={<Schedules />} />
               <Route path="/funcionarios" element={<Employees />} />
+              <Route path="/compliance" element={<Compliance />} />
               <Route path="/configuracoes" element={<Settings />} />
               <Route path="/politica-de-privacidade" element={<Legal />} />
               <Route path="/termos-de-uso" element={<Legal />} />
