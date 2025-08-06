@@ -93,7 +93,7 @@ export default function Employees() {
               </div>
             </div>
           </div>
-        </div>
+        </header>
 
         {/* Quick Stats */}
         <main className="container mx-auto px-6 py-xl">
@@ -229,8 +229,7 @@ export default function Employees() {
             </div>
           </div>
         </div>
-      </header>
-    </div>
+      </div>
     </TooltipProvider>
   );
 }
