@@ -6,19 +6,32 @@ import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
+import ScrollToTop from "@/components/ScrollToTop";
+import ProgressIndicator from "@/components/ProgressIndicator";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background font-roboto">
-      <Header />
-      <HeroSection />
-      <BenefitsSection />
-      <FeaturesSection />
-      <PricingSection />
-      <FAQSection />
-      <CTASection />
-      <Footer />
-    </div>
+    <>
+      <SEOHead 
+        title="GrowthScale - Gestão Inteligente de Escalas para Food Service"
+        description="Transforme a gestão da sua equipe com IA. Otimize escalas, reduza custos operacionais em até 30% e garanta compliance trabalhista automaticamente."
+      />
+      <div className="min-h-screen bg-background font-roboto">
+        <ProgressIndicator />
+        <Header />
+        <main id="main-content">
+          <HeroSection />
+          <BenefitsSection />
+          <FeaturesSection />
+          <PricingSection />
+          <FAQSection />
+          <CTASection />
+        </main>
+        <Footer />
+        <ScrollToTop />
+      </div>
+    </>
   );
 };
 

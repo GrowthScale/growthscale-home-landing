@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowRight, Clock, Users, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CTASection = () => {
   return (
@@ -127,13 +128,13 @@ const CTASection = () => {
             <div className="mt-6 text-center">
               <p className="text-white/80 text-sm">
                 Ao se cadastrar, você concorda com nossos{" "}
-                <a href="/termos-de-uso" className="text-secondary hover:underline">
+                <Link to="/termos-de-uso" className="text-secondary hover:underline">
                   Termos de Uso
-                </a>{" "}
+                </Link>{" "}
                 e{" "}
-                <a href="/politica-de-privacidade" className="text-secondary hover:underline">
+                <Link to="/politica-de-privacidade" className="text-secondary hover:underline">
                   Política de Privacidade
-                </a>
+                </Link>
               </p>
             </div>
           </div>

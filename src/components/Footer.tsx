@@ -1,4 +1,5 @@
 import { Separator } from "@/components/ui/separator";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -25,8 +26,8 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-card-foreground mb-4">Produto</h4>
             <ul className="space-y-2">
-              <li><a href="#recursos" className="text-muted-foreground hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ver recursos do GrowthScale">Recursos</a></li>
-              <li><a href="#precos" className="text-muted-foreground hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ver preços e planos">Preços</a></li>
+              <li><button onClick={() => document.getElementById('recursos')?.scrollIntoView({ behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ver recursos do GrowthScale">Recursos</button></li>
+              <li><button onClick={() => document.getElementById('precos')?.scrollIntoView({ behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ver preços e planos">Preços</button></li>
             </ul>
           </div>
 
@@ -34,8 +35,8 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-card-foreground mb-4">Contato</h4>
             <ul className="space-y-2">
-              <li><a href="#contato" className="text-muted-foreground hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Entre em contato conosco">Fale Conosco</a></li>
-              <li><a href="/central-de-ajuda" className="text-muted-foreground hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Acesse nossa central de ajuda">Central de Ajuda</a></li>
+              <li><button onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Entre em contato conosco">Fale Conosco</button></li>
+              <li><button onClick={() => document.getElementById('central-ajuda')?.scrollIntoView({ behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Acesse nossa central de ajuda">Central de Ajuda</button></li>
             </ul>
           </div>
         </div>
@@ -44,9 +45,9 @@ const Footer = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
-            <a href="/politica-de-privacidade" className="hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ler política de privacidade">Política de Privacidade</a>
-            <a href="/termos-de-uso" className="hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ler termos de uso">Termos de Uso</a>
-            <a href="/politica-de-cookies" className="hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ler política de cookies">Política de Cookies</a>
+            <Link to="/politica-de-privacidade" className="hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ler política de privacidade">Política de Privacidade</Link>
+            <Link to="/termos-de-uso" className="hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ler termos de uso">Termos de Uso</Link>
+            <Link to="/politica-de-cookies" className="hover:text-primary transition-smooth focus:text-primary focus:underline focus:outline-none" aria-label="Ler política de cookies">Política de Cookies</Link>
           </div>
           <p className="text-sm text-muted-foreground">
             © 2024 GrowthScale. Todos os direitos reservados.

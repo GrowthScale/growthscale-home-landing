@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
-import { LoadingSpinner } from "@/components/ui/loading";
+import LoadingScreen from "@/components/LoadingScreen";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
@@ -36,11 +36,11 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Suspense fallback={
-              <div className="min-h-screen flex items-center justify-center">
-                <LoadingSpinner size="lg" text="Carregando..." />
-              </div>
-            }>
+            {/* Skip to main content link for screen readers */}
+            <a href="#main-content" className="skip-to-content">
+              Pular para o conteúdo principal
+            </a>
+            <Suspense fallback={<LoadingScreen message="Carregando aplicação..." />}>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/login" element={<Auth />} />
