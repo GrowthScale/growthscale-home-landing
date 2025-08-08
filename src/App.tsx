@@ -7,7 +7,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import LoadingScreen from "@/components/LoadingScreen";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { TenantProvider } from "@/contexts/TenantContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
+import MainLayout from "@/components/layouts/MainLayout";
+import { ROUTES } from "@/constants";
+import "@/i18n"; // Initialize i18n
 
 // Lazy load pages for better performance
 const Index = React.lazy(() => import("./pages/Index"));
@@ -23,6 +28,7 @@ const Gamification = React.lazy(() => import("./pages/Gamification"));
 const Integrations = React.lazy(() => import("./pages/Integrations"));
 const Companies = React.lazy(() => import("./pages/Companies"));
 const Setup = React.lazy(() => import("./pages/Setup"));
+const CLTAssistant = React.lazy(() => import("./pages/CLTAssistant"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
@@ -32,67 +38,92 @@ const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            {/* Skip to main content link for screen readers */}
-            <a href="#main-content" className="skip-to-content">
-              Pular para o conteúdo principal
-            </a>
-            <Suspense fallback={<LoadingScreen message="Carregando aplicação..." />}>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/login" element={<Auth />} />
-                <Route path="/dashboard" element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } />
-                <Route path="/escalas" element={
-                  <ProtectedRoute>
-                    <Schedules />
-                  </ProtectedRoute>
-                } />
-                <Route path="/funcionarios" element={
-                  <ProtectedRoute>
-                    <Employees />
-                  </ProtectedRoute>
-                } />
-                <Route path="/compliance" element={
-                  <ProtectedRoute>
-                    <Compliance />
-                  </ProtectedRoute>
-                } />
-                <Route path="/configuracoes" element={
-                  <ProtectedRoute>
-                    <Settings />
-                  </ProtectedRoute>
-                } />
-                <Route path="/politica-de-privacidade" element={<Legal />} />
-                <Route path="/termos-de-uso" element={<Legal />} />
-                <Route path="/politica-de-cookies" element={<Legal />} />
-                <Route path="/central-de-ajuda" element={<Legal />} />
-                <Route path="/contato" element={<Contact />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/gamificacao" element={<Gamification />} />
-                <Route path="/integracoes" element={<Integrations />} />
-                <Route path="/empresas" element={
-                  <ProtectedRoute>
-                    <Companies />
-                  </ProtectedRoute>
-                } />
-                <Route path="/setup" element={
-                  <ProtectedRoute>
-                    <Setup />
-                  </ProtectedRoute>
-                } />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
-        </TooltipProvider>
+        <TenantProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              {/* Skip to main content link for screen readers */}
+              <a href="#main-content" className="skip-to-content">
+                Pular para o conteúdo principal
+              </a>
+              <Suspense fallback={<LoadingScreen message="Carregando aplicação..." />}>
+                <Routes>
+                  <Route path={ROUTES.HOME} element={<Index />} />
+                  <Route path={ROUTES.LOGIN} element={<Auth />} />
+                  <Route path={ROUTES.DASHBOARD} element={
+                    <ProtectedRoute>
+                      <MainLayout>
+                        <Dashboard />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path={ROUTES.SCHEDULES} element={
+                    <ProtectedRoute>
+                      <MainLayout>
+                        <Schedules />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path={ROUTES.EMPLOYEES} element={
+                    <ProtectedRoute>
+                      <MainLayout>
+                        <Employees />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path={ROUTES.COMPLIANCE} element={
+                    <ProtectedRoute>
+                      <MainLayout>
+                        <Compliance />
+                    </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path={ROUTES.SETTINGS} element={
+                    <ProtectedRoute>
+                      <MainLayout>
+                        <Settings />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path={ROUTES.LEGAL.PRIVACY} element={<Legal />} />
+                  <Route path={ROUTES.LEGAL.TERMS} element={<Legal />} />
+                  <Route path={ROUTES.LEGAL.COOKIES} element={<Legal />} />
+                  <Route path={ROUTES.LEGAL.HELP} element={<Legal />} />
+                  <Route path={ROUTES.CONTACT} element={<Contact />} />
+                  <Route path={ROUTES.FAQ} element={<FAQ />} />
+                  <Route path="/gamificacao" element={<Gamification />} />
+                  <Route path="/integracoes" element={<Integrations />} />
+                  <Route path="/assistente-clt" element={
+                    <ProtectedRoute>
+                      <MainLayout>
+                        <CLTAssistant />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path={ROUTES.COMPANIES} element={
+                    <ProtectedRoute>
+                      <MainLayout>
+                        <Companies />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path={ROUTES.SETUP} element={
+                    <ProtectedRoute>
+                      <MainLayout>
+                        <Setup />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+              {/* PWA Install Prompt */}
+              <PWAInstallPrompt />
+            </BrowserRouter>
+          </TooltipProvider>
+        </TenantProvider>
       </AuthProvider>
     </QueryClientProvider>
   </ErrorBoundary>

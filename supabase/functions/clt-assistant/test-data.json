@@ -1,0 +1,28 @@
+{
+  "testQuestions": [
+    {
+      "question": "O que é intervalo interjornada?",
+      "expectedTopics": ["intervalo entre turnos", "11 horas", "descanso"]
+    },
+    {
+      "question": "Como funciona o DSR?",
+      "expectedTopics": ["descanso semanal remunerado", "7 dias", "folga"]
+    },
+    {
+      "question": "Quantas horas extras posso pagar por mês?",
+      "expectedTopics": ["horas extras", "limite mensal", "compensação"]
+    },
+    {
+      "question": "O que acontece se não pagar horas extras?",
+      "expectedTopics": ["multas", "penalidades", "consequências"]
+    },
+    {
+      "question": "Como calcular férias de funcionário?",
+      "expectedTopics": ["cálculo de férias", "1/3 adicional", "período aquisitivo"]
+    }
+  ],
+  "sampleResponse": {
+    "question": "O que é intervalo interjornada?",
+    "answer": "O intervalo interjornada é o período de descanso obrigatório entre dois turnos de trabalho consecutivos. A CLT estabelece que deve haver um intervalo mínimo de 11 horas entre o término de um turno e o início do próximo.\n\nPor exemplo: se um funcionário termina o trabalho às 22h, ele só pode iniciar o próximo turno às 9h do dia seguinte (11 horas depois).\n\nAs consequências de não seguir essa regra podem incluir multas trabalhistas, processos judiciais e pagamento de horas extras.\n\nLembre-se, esta é uma orientação informativa e não substitui a consulta a um profissional de direito ou contabilidade."
+  }
+}

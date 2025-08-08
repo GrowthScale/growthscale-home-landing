@@ -44,7 +44,7 @@ const companyFormSchema = z.object({
 type CompanyFormData = z.infer<typeof companyFormSchema>;
 
 interface CompanyFormProps {
-  company?: any;
+  company?: CompanyFormData;
   onClose: () => void;
   isEditing?: boolean;
 }

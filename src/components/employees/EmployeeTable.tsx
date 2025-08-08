@@ -314,7 +314,7 @@ const EmployeeCard = memo(({
               <p className="text-sm text-muted-foreground truncate">{employee.position}</p>
             </div>
           </div>
-          <Badge variant={getStatusVariant(employee.status) as any} className="shrink-0">
+          <Badge variant={getStatusVariant(employee.status) as "default" | "secondary" | "destructive" | "outline"} className="shrink-0">
             {getStatusLabel(employee.status)}
           </Badge>
         </div>

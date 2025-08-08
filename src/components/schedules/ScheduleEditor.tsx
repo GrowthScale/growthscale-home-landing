@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,9 +7,11 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Progress } from '@/components/ui/progress';
+import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { 
@@ -20,16 +23,28 @@ import {
   Save, 
   X,
   UserCheck,
-  AlertCircle
+  AlertCircle,
+  Shield,
+  ShieldCheck,
+  AlertTriangle,
+  Bot,
+  BrainCircuit,
+  Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
+import { useScheduleValidation } from '@/hooks/useScheduleValidation';
+import { ValidationResults } from './ValidationResults';
+import { ScheduleSuggestion, ScheduleSuggestionSkeleton } from './ScheduleSuggestion';
+import { useScheduleSuggestion } from '@/hooks/useScheduleSuggestion';
+import { scheduleService, type Shift, type EmployeeForValidation, type ScheduleSuggestionRequest, type ScheduleSuggestionResponse } from '@/services/api';
 
 interface Employee {
   id: string;
   name: string;
   department: string;
   skills: string[];
+  workload?: number; // Adicionando workload opcional
 }
 
 interface ScheduleForm {
@@ -50,11 +65,84 @@ const mockEmployees: Employee[] = [
 export function ScheduleEditor() {
   const [isOpen, setIsOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
+  const [showSuggestion, setShowSuggestion] = useState(false);
+  const [suggestion, setSuggestion] = useState<ScheduleSuggestionResponse | null>(null);
+  const [isSuggestionModalOpen, setSuggestionModalOpen] = useState(false);
   const [form, setForm] = useState<ScheduleForm>({
     date: undefined,
     shift: '',
     employees: [],
     notes: ''
+  });
+
+  // Mutation para chamar a IA
+  const suggestionMutation = useMutation({
+    mutationFn: (context: ScheduleSuggestionRequest) => scheduleService.suggestSchedule(context),
+    onSuccess: (data) => {
+      if (data.data) {
+        setSuggestion(data.data);
+        setSuggestionModalOpen(true);
+        toast({
+          title: "✨ Sugestão Gerada!",
+          description: "A IA criou uma sugestão otimizada para sua escala.",
+        });
+      }
+    },
+    onError: (error) => {
+      console.error("Erro na sugestão:", error);
+      toast({
+        title: "Erro na sugestão",
+        description: "Ocorreu um erro ao gerar a sugestão. Tente novamente.",
+        variant: "destructive",
+      });
+    }
+  });
+
+  const { 
+    isValidating, 
+    validationResult, 
+    validateSchedule, 
+    clearValidation 
+  } = useScheduleValidation({
+    onValidationComplete: (result) => {
+      setShowValidation(true);
+    },
+    onError: (error) => {
+      toast({
+        title: "Erro na validação",
+        description: error,
+        variant: "destructive",
+      });
+    }
+  });
+
+  // Convert form data to validation format
+  const shifts = useMemo(() => {
+    if (!form.date || !form.shift || form.employees.length === 0) return [];
+    
+    return form.employees.map((employee, index) => ({
+      id: `shift-${index + 1}`,
+      employeeId: employee.id,
+      startTime: format(form.date!, "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+      endTime: format(form.date!, "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+    }));
+  }, [form.date, form.shift, form.employees]);
+
+  const employees = useMemo(() => {
+    return form.employees.map(employee => ({
+      id: employee.id,
+      workload: 44, // Default workload - should come from employee data
+    }));
+  }, [form.employees]);
+
+  // Real-time validation query
+  const { data: realTimeValidation, isLoading: isRealTimeValidating } = useQuery({
+    queryKey: ['scheduleValidation', shifts, employees],
+    queryFn: () => scheduleService.validateSchedule({ shifts, employees }),
+    enabled: shifts.length > 0 && employees.length > 0,
+    staleTime: 30000, // 30 seconds
+    gcTime: 60000, // 1 minute (cacheTime was renamed to gcTime in v4)
   });
 
   const handleEmployeeToggle = (employee: Employee) => {
@@ -73,24 +161,67 @@ export function ScheduleEditor() {
   };
 
   const handleGenerateWithAI = async () => {
-    setIsGenerating(true);
-    
-    // Simulate AI generation
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Auto-select optimal employees based on shift and skills
-    const optimalEmployees = mockEmployees.slice(0, 3);
-    setForm(prev => ({
-      ...prev,
-      employees: optimalEmployees,
-      notes: 'Escala otimizada pela IA considerando habilidades e disponibilidade dos funcionários.'
+    if (!form.date || !form.shift) {
+      toast({
+        title: "Campos obrigatórios",
+        description: "Selecione uma data e turno antes de gerar sugestões.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Preparar dados para a sugestão
+    const suggestionData: ScheduleSuggestionRequest = {
+      employees: mockEmployees.map(emp => ({
+        id: emp.id,
+        name: emp.name,
+        workload: 44, // Default workload - should come from employee data
+        constraints: emp.skills.length > 0 ? emp.skills : undefined
+      })),
+      shiftsToFill: [
+        {
+          id: `shift-${form.date?.toISOString()}-${form.shift}`,
+          startTime: form.date ? format(form.date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : new Date().toISOString(),
+          endTime: form.date ? format(form.date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : new Date().toISOString(),
+          requiredSkill: form.shift === 'manhã' ? 'Atendimento' : form.shift === 'tarde' ? 'Caixa' : 'Qualquer'
+        }
+      ],
+      rules: [
+        "Mínimo 1, máximo 3 funcionários por turno",
+        "Intervalo mínimo de 11 horas entre turnos",
+        "Respeitar carga horária semanal de cada funcionário",
+        "Distribuir turnos de forma equitativa",
+        "Considerar habilidades e restrições dos funcionários"
+      ]
+    };
+
+    await suggestionMutation.mutate(suggestionData);
+  };
+
+  const handleValidateSchedule = async () => {
+    if (!form.date || !form.shift || form.employees.length === 0) {
+      toast({
+        title: "Campos obrigatórios",
+        description: "Preencha data, turno e selecione pelo menos um funcionário.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Convert form data to validation format
+    const shifts: Shift[] = form.employees.map((employee, index) => ({
+      id: `shift-${index + 1}`,
+      employeeId: employee.id,
+      startTime: form.date ? format(form.date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : new Date().toISOString(),
+      endTime: form.date ? format(form.date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : new Date().toISOString(),
     }));
-    
-    setIsGenerating(false);
-    toast({
-      title: "Escala Otimizada com Sucesso! ✨",
-      description: "A IA selecionou os funcionários ideais para este turno.",
-    });
+
+    const employees: EmployeeForValidation[] = form.employees.map(employee => ({
+      id: employee.id,
+      workload: 44, // Default workload - should come from employee data
+    }));
+
+    await validateSchedule(shifts, employees);
   };
 
   const handleSave = () => {
@@ -123,6 +254,31 @@ export function ScheduleEditor() {
       shift: '',
       employees: [],
       notes: ''
+    });
+  };
+
+  const handleApplySuggestion = (suggestion: ScheduleSuggestionResponse) => {
+    if (!suggestion || !suggestion.suggestion) return;
+
+    // Converter sugestões para funcionários
+    const suggestedEmployees = suggestion.suggestion.map((item) => {
+      const employee = mockEmployees.find(emp => emp.id === item.employeeId);
+      return employee;
+    }).filter(Boolean) as Employee[];
+
+    setForm(prev => ({
+      ...prev,
+      employees: suggestedEmployees,
+      notes: 'Escala aplicada com base na sugestão da IA.'
+    }));
+
+    setShowSuggestion(false);
+    setSuggestion(null);
+    setSuggestionModalOpen(false);
+
+    toast({
+      title: "✅ Sugestão Aplicada!",
+      description: `${suggestedEmployees.length} funcionários foram alocados automaticamente.`,
     });
   };
 
@@ -207,28 +363,28 @@ export function ScheduleEditor() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <Sparkles className="h-5 w-5 text-primary" />
+                  <Bot className="h-5 w-5 text-primary" />
                   <div>
-                    <p className="font-medium">Otimização com IA</p>
+                    <p className="font-medium">Sugestão de Escala com IA</p>
                     <p className="text-sm text-muted-foreground">
-                      Deixe a IA selecionar os funcionários ideais
+                      Deixe a IA sugerir as melhores alocações
                     </p>
                   </div>
                 </div>
                 <Button 
                   onClick={handleGenerateWithAI}
-                  disabled={!form.date || !form.shift || isGenerating}
+                  disabled={!form.date || !form.shift || suggestionMutation.isPending}
                   className="bg-gradient-primary"
                 >
-                  {isGenerating ? (
+                  {suggestionMutation.isPending ? (
                     <>
                       <div className="animate-spin h-4 w-4 mr-2 border-2 border-white border-t-transparent rounded-full" />
-                      Gerando...
+                      Gerando sugestão...
                     </>
                   ) : (
                     <>
-                      <Sparkles className="h-4 w-4 mr-2" />
-                      Gerar com IA
+                      <Bot className="h-4 w-4 mr-2" />
+                      Sugerir com IA
                     </>
                   )}
                 </Button>
@@ -313,13 +469,190 @@ export function ScheduleEditor() {
               <X className="h-4 w-4 mr-2" />
               Limpar
             </Button>
+            <Button 
+              variant="outline" 
+              onClick={handleValidateSchedule}
+              disabled={isValidating || !form.date || !form.shift || form.employees.length === 0}
+            >
+              {isValidating ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2" />
+                  Validando...
+                </>
+              ) : (
+                <>
+                  <Shield className="h-4 w-4 mr-2" />
+                  Validar CLT
+                </>
+              )}
+            </Button>
             <Button onClick={handleSave} className="shadow-soft">
               <Save className="h-4 w-4 mr-2" />
               Salvar Escala
             </Button>
           </div>
+
+          {/* Validation Results */}
+          {showValidation && validationResult && (
+            <div className="mt-6 border-t pt-6">
+              <ValidationResults
+                result={validationResult}
+                onClose={() => {
+                  setShowValidation(false);
+                  clearValidation();
+                }}
+                onFixViolations={() => {
+                  setShowValidation(false);
+                  clearValidation();
+                  // TODO: Implement violation fixing logic
+                }}
+              />
+            </div>
+          )}
+
+          {/* Sugestão de Escala */}
+          {suggestion && (
+            <div className="mt-6 border-t pt-6">
+              <ScheduleSuggestion
+                suggestion={suggestion}
+                employees={mockEmployees.map(emp => ({
+                  id: emp.id,
+                  name: emp.name,
+                  workload: emp.workload || 44
+                }))}
+                shifts={[
+                  {
+                    id: `shift-${form.date?.toISOString()}-${form.shift}`,
+                    startTime: form.date ? format(form.date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : new Date().toISOString(),
+                    endTime: form.date ? format(form.date, "yyyy-MM-dd'T'HH:mm:ss'Z'") : new Date().toISOString(),
+                    requiredSkill: form.shift === 'manhã' ? 'Atendimento' : form.shift === 'tarde' ? 'Caixa' : 'Qualquer'
+                  }
+                ]}
+                onApplySuggestion={handleApplySuggestion}
+                onClearSuggestion={() => {
+                  setSuggestion(null);
+                  setSuggestionModalOpen(false);
+                }}
+              />
+            </div>
+          )}
+
+          {/* Novo Painel de Análise de Risco em Tempo Real */}
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ShieldCheck className="h-5 w-5" />
+                Análise de Risco em Tempo Real
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {isRealTimeValidating && (
+                <div>
+                  <Skeleton className="h-4 w-1/4 mb-2" />
+                  <Skeleton className="h-8 w-full mb-4" />
+                  <Skeleton className="h-4 w-full" />
+                </div>
+              )}
+              {!isRealTimeValidating && !realTimeValidation && (
+                <p className="text-sm text-muted-foreground">Faça alterações na escala para iniciar a análise.</p>
+              )}
+              {realTimeValidation?.data && (
+                <div>
+                  <div className="mb-4">
+                    <label className="text-sm font-medium">Score de Risco: {realTimeValidation.data.riskScore}</label>
+                    <Progress 
+                      value={realTimeValidation.data.riskScore} 
+                      className={
+                        realTimeValidation.data.riskScore > 75 ? '[&>div]:bg-red-500' :
+                        realTimeValidation.data.riskScore > 40 ? '[&>div]:bg-yellow-500' :
+                        '[&>div]:bg-green-500'
+                      }
+                    />
+                  </div>
+                  <div>
+                    <h4 className="font-medium mb-2">Pontos de Atenção:</h4>
+                    {realTimeValidation.data.violations.length === 0 ? (
+                      <p className="text-sm text-muted-foreground">Nenhuma violação encontrada.</p>
+                    ) : (
+                      <ul className="space-y-2">
+                        {realTimeValidation.data.violations.map((v, index) => (
+                          <li key={index} className="flex items-start gap-2 text-sm">
+                            <AlertTriangle className={v.severity === 'critical' ? 'text-red-500 h-4 w-4 mt-0.5' : 'text-yellow-500 h-4 w-4 mt-0.5'} />
+                            <span>
+                              {v.message} (Funcionário: { (form.employees.find(e => e.id === v.employeeId) || {}).name || v.employeeId })
+                              <Badge variant={v.severity === 'critical' ? 'destructive' : 'secondary'} className="ml-2">{v.severity}</Badge>
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </DialogContent>
+
+      {/* Modal de Sugestão de IA */}
+      <Dialog open={isSuggestionModalOpen} onOpenChange={setSuggestionModalOpen}>
+        <DialogContent className="sm:max-w-[625px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <BrainCircuit className="h-5 w-5 text-primary" />
+              Sugestão de Escala da IA
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            {suggestionMutation.isPending && (
+              <div className="flex flex-col items-center justify-center gap-4 h-40">
+                <Loader2 className="h-10 w-10 animate-spin text-primary" />
+                <p className="text-muted-foreground">Aguarde, nossa IA está montando a escala perfeita...</p>
+              </div>
+            )}
+            {suggestion && !suggestionMutation.isPending && (
+              <div>
+                <p className="mb-4">Analisamos as regras e perfis e criamos esta sugestão para você. Aplique para adicioná-la ao editor.</p>
+                {/* Renderize uma prévia da escala sugerida */}
+                <div className="max-h-60 overflow-y-auto rounded-md border p-4">
+                  <h4 className="font-medium mb-2">Sugestões de Alocação:</h4>
+                  {suggestion.suggestion.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">Nenhuma sugestão encontrada.</p>
+                  ) : (
+                    <ul className="space-y-2">
+                      {suggestion.suggestion.map((item, index) => {
+                        const employee = mockEmployees.find(emp => emp.id === item.employeeId);
+                        const shift = form.shift;
+                        return (
+                          <li key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                            <span className="font-medium">{employee?.name || item.employeeId}</span>
+                            <Badge variant="outline">{shift}</Badge>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setSuggestionModalOpen(false)}>
+              Cancelar
+            </Button>
+            <Button 
+              disabled={!suggestion} 
+              onClick={() => {
+                if (suggestion) {
+                  handleApplySuggestion(suggestion);
+                }
+              }}
+            >
+              Aplicar Sugestão
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Dialog>
   );
 }

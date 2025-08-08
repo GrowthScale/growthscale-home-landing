@@ -1,0 +1,101 @@
+{
+  "testInput": {
+    "employees": [
+      {
+        "id": "emp-1",
+        "name": "João Silva",
+        "workload": 44,
+        "constraints": ["Não trabalha domingos", "Prefere turno da manhã"]
+      },
+      {
+        "id": "emp-2",
+        "name": "Maria Santos",
+        "workload": 40,
+        "constraints": ["Disponível todos os dias", "Experiência em caixa"]
+      },
+      {
+        "id": "emp-3",
+        "name": "Pedro Costa",
+        "workload": 44,
+        "constraints": ["Não trabalha sábados", "Experiência em estoque"]
+      },
+      {
+        "id": "emp-4",
+        "name": "Ana Lima",
+        "workload": 36,
+        "constraints": ["Disponível apenas meio período", "Experiência em atendimento"]
+      }
+    ],
+    "shiftsToFill": [
+      {
+        "id": "shift-1",
+        "startTime": "2024-01-15T08:00:00Z",
+        "endTime": "2024-01-15T16:00:00Z",
+        "requiredSkill": "Atendimento"
+      },
+      {
+        "id": "shift-2",
+        "startTime": "2024-01-15T16:00:00Z",
+        "endTime": "2024-01-15T00:00:00Z",
+        "requiredSkill": "Caixa"
+      },
+      {
+        "id": "shift-3",
+        "startTime": "2024-01-16T08:00:00Z",
+        "endTime": "2024-01-16T16:00:00Z",
+        "requiredSkill": "Estoque"
+      },
+      {
+        "id": "shift-4",
+        "startTime": "2024-01-16T16:00:00Z",
+        "endTime": "2024-01-16T00:00:00Z",
+        "requiredSkill": "Atendimento"
+      }
+    ],
+    "rules": [
+      "Mínimo 1, máximo 3 funcionários por turno",
+      "Intervalo mínimo de 11 horas entre turnos",
+      "Respeitar carga horária semanal de cada funcionário",
+      "Distribuir turnos de forma equitativa",
+      "Considerar habilidades e restrições dos funcionários"
+    ]
+  },
+  "expectedOutput": [
+    {
+      "shiftId": "shift-1",
+      "employeeId": "emp-2"
+    },
+    {
+      "shiftId": "shift-2",
+      "employeeId": "emp-1"
+    },
+    {
+      "shiftId": "shift-3",
+      "employeeId": "emp-3"
+    },
+    {
+      "shiftId": "shift-4",
+      "employeeId": "emp-4"
+    }
+  ],
+  "sampleResponse": {
+    "suggestion": [
+      {
+        "shiftId": "shift-1",
+        "employeeId": "emp-2"
+      },
+      {
+        "shiftId": "shift-2",
+        "employeeId": "emp-1"
+      },
+      {
+        "shiftId": "shift-3",
+        "employeeId": "emp-3"
+      },
+      {
+        "shiftId": "shift-4",
+        "employeeId": "emp-4"
+      }
+    ]
+  }
+}

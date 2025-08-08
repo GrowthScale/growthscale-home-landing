@@ -74,16 +74,16 @@ const SetupWizard: React.FC = () => {
 
   const progress = ((currentStep - 1) / (steps.length - 1)) * 100;
 
-  const handleStepComplete = (stepData: any) => {
+  const handleStepComplete = (stepData: CompanyData | BranchData[] | EmployeeData[]) => {
     switch (currentStep) {
       case 1:
-        setCompanyData(stepData);
+        setCompanyData(stepData as CompanyData);
         break;
       case 2:
-        setBranchesData(stepData);
+        setBranchesData(stepData as BranchData[]);
         break;
       case 3:
-        setEmployeesData(stepData);
+        setEmployeesData(stepData as EmployeeData[]);
         break;
     }
 

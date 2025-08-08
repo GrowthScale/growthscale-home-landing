@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 interface NavigationSection {
@@ -13,11 +13,11 @@ export const useNavigation = () => {
   const [activeSection, setActiveSection] = useState<string>('');
 
   // Define main navigation sections
-  const sections: NavigationSection[] = [
+  const sections = useMemo<NavigationSection[]>(() => [
     { id: 'recursos', label: 'Recursos' },
     { id: 'precos', label: 'Preços' },
     { id: 'contato', label: 'Contato' }
-  ];
+  ], []);
 
   // Protected routes that require authentication
   const protectedRoutes = [

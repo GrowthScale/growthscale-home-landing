@@ -247,7 +247,7 @@ export function ScheduleList() {
                   <p className="text-sm text-muted-foreground">{schedule.shift.time}</p>
                 </div>
               </div>
-              <Badge variant={getStatusVariant(schedule.status) as any}>
+              <Badge variant={getStatusVariant(schedule.status) as "default" | "secondary" | "destructive" | "outline"}>
                 {getStatusLabel(schedule.status)}
               </Badge>
             </div>

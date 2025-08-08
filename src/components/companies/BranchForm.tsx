@@ -44,7 +44,7 @@ type BranchFormData = z.infer<typeof branchFormSchema>;
 
 interface BranchFormProps {
   companyId: string;
-  branch?: any;
+  branch?: BranchFormData;
   onClose: () => void;
   isEditing?: boolean;
 }

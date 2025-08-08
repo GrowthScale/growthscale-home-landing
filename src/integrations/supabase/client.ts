@@ -2,8 +2,9 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = "https://doldfscfnivsrhqopecu.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvbGRmc2Nmbml2c3JocW9wZWN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0OTI1NzAsImV4cCI6MjA3MDA2ODU3MH0.KqOpLR5f-57BHVsjzrGT-FR7zAhoRYXqM7auRoiODWc";
+// Use environment variables with safe fallbacks for no-code deployment
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://placeholder.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "placeholder-key";
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";

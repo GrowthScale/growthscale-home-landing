@@ -1,73 +1,149 @@
-# Welcome to your Lovable project
+# GrowthScale - PWA de Gestão Inteligente de Escalas
 
-## Project info
+## 📱 PWA (Progressive Web App)
 
-**URL**: https://lovable.dev/projects/e7418f98-b857-41cb-aec3-0df763100a73
+O GrowthScale é um PWA responsivo que oferece:
+- ✅ Instalação no dispositivo
+- ✅ Funcionalidade offline
+- ✅ Experiência nativa
+- ✅ Atualizações automáticas
 
-## How can I edit this code?
+## 🚀 Como Configurar
 
-There are several ways of editing your application.
+### Pré-requisitos
+- Node.js 18+ 
+- npm ou yarn
 
-**Use Lovable**
+### Instalação
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e7418f98-b857-41cb-aec3-0df763100a73) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# 1. Clone o repositório
 git clone <YOUR_GIT_URL>
+cd growthscale-home-landing
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# 2. Instale as dependências
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 3. Configure as variáveis de ambiente
+cp env.example .env
+# Edite o arquivo .env com suas configurações
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4. Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Variáveis de Ambiente
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Crie um arquivo `.env` baseado no `env.example`:
 
-**Use GitHub Codespaces**
+```env
+# Supabase Configuration
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# App Configuration
+VITE_APP_NAME=GrowthScale
+VITE_APP_VERSION=1.0.0
+VITE_APP_ENVIRONMENT=development
+```
 
-## What technologies are used for this project?
+## 🛠️ Tecnologias Utilizadas
 
-This project is built with:
+- **Frontend**: React 18 + TypeScript
+- **UI**: shadcn/ui + Tailwind CSS
+- **Backend**: Supabase
+- **PWA**: Service Worker + Manifest
+- **Build**: Vite
+- **Deploy**: Lovable
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📱 Funcionalidades PWA
 
-## How can I deploy this project?
+### Instalação
+- O app pode ser instalado no dispositivo
+- Funciona offline com cache inteligente
+- Atualizações automáticas
 
-Simply open [Lovable](https://lovable.dev/projects/e7418f98-b857-41cb-aec3-0df763100a73) and click on Share -> Publish.
+### Responsividade
+- Design mobile-first
+- Funciona em todos os dispositivos
+- Interface adaptativa
 
-## Can I connect a custom domain to my Lovable project?
+### Performance
+- Lazy loading de componentes
+- Otimização de imagens
+- Cache inteligente
 
-Yes, you can!
+## 🔧 Scripts Disponíveis
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```bash
+# Desenvolvimento
+npm run dev
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+# Build para produção
+npm run build
+
+# Preview da build
+npm run preview
+
+# Linting
+npm run lint
+```
+
+## 📦 Estrutura do Projeto
+
+```
+src/
+├── components/          # Componentes reutilizáveis
+│   ├── ui/             # Componentes base (shadcn/ui)
+│   ├── dashboard/      # Componentes do dashboard
+│   └── ...
+├── pages/              # Páginas da aplicação
+├── hooks/              # Hooks customizados
+├── contexts/           # Contextos React
+├── lib/                # Utilitários e configurações
+└── integrations/       # Integrações externas
+```
+
+## 🚀 Deploy
+
+### Lovable (Recomendado)
+1. Acesse [Lovable](https://lovable.dev)
+2. Conecte seu repositório
+3. Configure as variáveis de ambiente
+4. Deploy automático
+
+### Manual
+```bash
+npm run build
+# Faça upload dos arquivos da pasta dist/
+```
+
+## 🔒 Segurança
+
+- ✅ Validação de entrada
+- ✅ Rate limiting
+- ✅ Sanitização de dados
+- ✅ Variáveis de ambiente seguras
+- ✅ HTTPS obrigatório
+
+## 📊 Monitoramento
+
+- Console de erros integrado
+- Logs de performance
+- Métricas de uso
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
+
+---
+
+**Desenvolvido com ❤️ para otimizar a gestão de escalas no food service**

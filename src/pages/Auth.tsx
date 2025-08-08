@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
@@ -7,11 +7,42 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { LoadingSpinner } from '@/components/ui/loading'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useToast } from '@/hooks/use-toast'
-import { Eye, EyeOff, Mail, Lock, User, ArrowLeft, Shield, CheckCircle } from 'lucide-react'
+import { useAnalytics } from '@/hooks/useAnalytics'
+import { useNotifications } from '@/hooks/useNotifications'
+import { validateEmail, sanitizeInput, createRateLimiter } from '@/lib/utils';
+import { ROUTES } from '@/constants';
+import { useTranslation } from 'react-i18next';
+import { 
+  Eye, 
+  EyeOff, 
+  Mail, 
+  Lock, 
+  User, 
+  ArrowLeft, 
+  Shield,
+  CheckCircle,
+  AlertTriangle,
+  RefreshCw
+} from 'lucide-react';
+
+// Helper function to safely extract error message
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === 'object' && error !== null && 'message' in error) {
+    return String(error.message);
+  }
+  return 'Unknown error occurred';
+};
 
 const Auth = () => {
+  const { t } = useTranslation();
+  const { trackEvent, trackUserAction } = useAnalytics();
+  const { showSuccess, showError } = useNotifications();
+  
   const [isLogin, setIsLogin] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -29,38 +60,45 @@ const Auth = () => {
   // Error states
   const [errors, setErrors] = useState<Record<string, string>>({})
 
+  // Rate limiting for security
+  const rateLimiter = createRateLimiter(5, 60000); // 5 attempts per minute
+
   const { signIn, signUp, resetPassword } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const { toast } = useToast()
 
-  const from = location.state?.from?.pathname || '/dashboard'
+  const from = location.state?.from?.pathname || ROUTES.DASHBOARD
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
 
-    if (!email) {
-      newErrors.email = 'Email é obrigatório'
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Email inválido'
+    // Sanitize inputs
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedFullName = sanitizeInput(fullName);
+
+    if (!sanitizedEmail) {
+      newErrors.email = t('errors.required')
+    } else if (!validateEmail(sanitizedEmail)) {
+      newErrors.email = t('errors.invalidEmail')
     }
 
-    if (!isLogin && !fullName.trim()) {
-      newErrors.fullName = 'Nome completo é obrigatório'
+    if (!isLogin && !sanitizedFullName.trim()) {
+      newErrors.fullName = t('auth.fullNameRequired')
     }
 
     if (!password) {
-      newErrors.password = 'Senha é obrigatória'
+      newErrors.password = t('auth.passwordRequired')
     } else if (!isLogin && password.length < 6) {
-      newErrors.password = 'Senha deve ter pelo menos 6 caracteres'
+      newErrors.password = t('auth.passwordTooShort')
     }
 
     if (!isLogin && password !== confirmPassword) {
-      newErrors.confirmPassword = 'Senhas não coincidem'
+      newErrors.confirmPassword = t('auth.passwordsDoNotMatch')
     }
 
     if (!isLogin && !acceptTerms) {
-      newErrors.acceptTerms = 'Você deve aceitar os termos de uso'
+      newErrors.acceptTerms = t('auth.acceptTermsRequired')
     }
 
     setErrors(newErrors)
@@ -72,48 +110,66 @@ const Auth = () => {
     
     if (!validateForm()) return
 
+    // Rate limiting check
+    const clientId = email || 'anonymous';
+    if (!rateLimiter(clientId)) {
+      showError(
+        t('errors.tooManyAttempts'),
+        t('errors.tooManyAttempts')
+      );
+      trackEvent('auth_rate_limit_exceeded', { email });
+      return;
+    }
+
     setLoading(true)
 
     try {
       if (isLogin) {
+        trackUserAction('login_attempt', { email });
         const { error } = await signIn(email, password)
         if (error) {
-          toast({
-            variant: "destructive",
-            title: "Erro no login",
-            description: error.message === 'Invalid login credentials' 
-              ? 'Email ou senha incorretos' 
-              : error.message
-          })
+          const errorMessage = getErrorMessage(error);
+          showError(
+            t('auth.loginError'),
+            errorMessage === 'Invalid login credentials' 
+              ? t('auth.loginError') 
+              : errorMessage
+          );
+          trackEvent('auth_login_failed', { email, error: errorMessage });
         } else {
-          toast({
-            title: "Login realizado com sucesso!",
-            description: "Bem-vindo de volta!"
-          })
+          showSuccess(
+            t('auth.loginSuccess'),
+            t('auth.welcomeBack')
+          );
+          trackEvent('auth_login_success', { email });
           navigate(from, { replace: true })
         }
       } else {
+        trackUserAction('register_attempt', { email });
         const { error } = await signUp(email, password, fullName)
         if (error) {
-          toast({
-            variant: "destructive",
-            title: "Erro no cadastro",
-            description: error.message
-          })
+          const errorMessage = getErrorMessage(error);
+          showError(
+            t('auth.registerError'),
+            errorMessage
+          );
+          trackEvent('auth_register_failed', { email, error: errorMessage });
         } else {
-          toast({
-            title: "Cadastro realizado com sucesso!",
-            description: "Verifique seu email para confirmar sua conta."
-          })
+          showSuccess(
+            t('auth.registerSuccess'),
+            t('auth.checkEmail')
+          );
+          trackEvent('auth_register_success', { email });
           setIsLogin(true)
         }
       }
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Erro inesperado",
-        description: "Tente novamente em alguns instantes."
-      })
+      const errorMessage = getErrorMessage(error);
+      showError(
+        t('errors.unknownError'),
+        t('errors.unknownError')
+      );
+      trackEvent('auth_unexpected_error', { email, error: errorMessage });
     } finally {
       setLoading(false)
     }
@@ -123,33 +179,42 @@ const Auth = () => {
     e.preventDefault()
     
     if (!email) {
-      setErrors({ email: 'Email é obrigatório para recuperação de senha' })
+      setErrors({ email: t('auth.emailRequiredForReset') })
       return
+    }
+
+    if (!validateEmail(email)) {
+      setErrors({ email: t('errors.invalidEmail') });
+      return;
     }
 
     setLoading(true)
 
     try {
+      trackUserAction('password_reset_attempt', { email });
       const { error } = await resetPassword(email)
       if (error) {
-        toast({
-          variant: "destructive",
-          title: "Erro na recuperação",
-          description: error.message
-        })
+        const errorMessage = getErrorMessage(error);
+        showError(
+          t('auth.passwordResetError'),
+          errorMessage
+        );
+        trackEvent('auth_password_reset_failed', { email, error: errorMessage });
       } else {
-        toast({
-          title: "Email enviado!",
-          description: "Verifique sua caixa de entrada para redefinir sua senha."
-        })
+        showSuccess(
+          t('auth.passwordResetSent'),
+          t('auth.checkEmailForReset')
+        );
+        trackEvent('auth_password_reset_success', { email });
         setShowResetForm(false)
       }
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Erro inesperado",
-        description: "Tente novamente em alguns instantes."
-      })
+      const errorMessage = getErrorMessage(error);
+      showError(
+        t('errors.unknownError'),
+        t('errors.unknownError')
+      );
+      trackEvent('auth_password_reset_error', { email, error: errorMessage });
     } finally {
       setLoading(false)
     }
@@ -189,10 +254,10 @@ const Auth = () => {
           <Card className="shadow-elegant border-0">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-bold text-foreground">
-                Recuperar Senha
+                {t('auth.resetPassword')}
               </CardTitle>
               <CardDescription>
-                Digite seu email para receber instruções de recuperação
+                {t('auth.resetPasswordDescription')}
               </CardDescription>
             </CardHeader>
 
@@ -221,9 +286,12 @@ const Auth = () => {
 
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? (
-                    <LoadingSpinner size="sm" />
+                    <div className="flex items-center space-x-2">
+                      <RefreshCw className="h-4 w-4 animate-spin" />
+                      <span>{t('auth.loading')}</span>
+                    </div>
                   ) : (
-                    'Enviar Email de Recuperação'
+                    t('auth.resetPassword')
                   )}
                 </Button>
               </form>
@@ -258,12 +326,12 @@ const Auth = () => {
         <Card className="shadow-elegant border-0">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-foreground">
-              {isLogin ? 'Faça seu Login' : 'Criar Conta'}
+              {isLogin ? t('auth.loginTitle') : t('auth.registerTitle')}
             </CardTitle>
             <CardDescription>
               {isLogin 
-                ? 'Acesse sua conta para continuar' 
-                : 'Comece sua jornada conosco hoje mesmo'
+                ? t('auth.loginDescription') 
+                : t('auth.registerDescription')
               }
             </CardDescription>
           </CardHeader>
@@ -272,13 +340,13 @@ const Auth = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Nome Completo *</Label>
+                  <Label htmlFor="fullName">{t('auth.fullName')} *</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="fullName"
                       type="text"
-                      placeholder="João Silva"
+                      placeholder={t('auth.fullNamePlaceholder')}
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       className="pl-10"
@@ -294,13 +362,13 @@ const Auth = () => {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
+                <Label htmlFor="email">{t('auth.email')} *</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="seu@email.com"
+                    placeholder={t('auth.emailPlaceholder')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10"
@@ -315,13 +383,13 @@ const Auth = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Senha *</Label>
+                <Label htmlFor="password">{t('auth.password')} *</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder={isLogin ? "Sua senha" : "Mínimo 6 caracteres"}
+                    placeholder={isLogin ? t('auth.passwordPlaceholder') : t('auth.passwordMinLength')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 pr-10"
@@ -333,6 +401,7 @@ const Auth = () => {
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4 text-muted-foreground" />
@@ -350,13 +419,13 @@ const Auth = () => {
 
               {!isLogin && (
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirmar Senha *</Label>
+                  <Label htmlFor="confirmPassword">{t('auth.confirmPassword')} *</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Confirme sua senha"
+                      placeholder={t('auth.confirmPasswordPlaceholder')}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="pl-10 pr-10"
@@ -368,6 +437,7 @@ const Auth = () => {
                       size="sm"
                       className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      aria-label={showConfirmPassword ? t('auth.hidePassword') : t('auth.showPassword')}
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="h-4 w-4 text-muted-foreground" />
@@ -396,7 +466,7 @@ const Auth = () => {
                       htmlFor="remember"
                       className="text-sm font-normal cursor-pointer"
                     >
-                      Lembrar-me
+                      {t('auth.rememberMe')}
                     </Label>
                   </div>
                   <Button
@@ -406,7 +476,7 @@ const Auth = () => {
                     onClick={() => setShowResetForm(true)}
                     className="text-primary hover:text-primary/80 p-0 h-auto"
                   >
-                    Esqueceu a senha?
+                    {t('auth.forgotPassword')}
                   </Button>
                 </div>
               )}
@@ -424,13 +494,13 @@ const Auth = () => {
                       htmlFor="terms"
                       className="text-sm font-normal cursor-pointer leading-5"
                     >
-                      Aceito os{' '}
-                      <Link to="/termos-de-uso" className="text-primary hover:underline">
-                        Termos de Uso
+                      {t('auth.acceptTerms')}{' '}
+                      <Link to={ROUTES.LEGAL.TERMS} className="text-primary hover:underline">
+                        {t('navigation.terms')}
                       </Link>{' '}
-                      e{' '}
-                      <Link to="/politica-de-privacidade" className="text-primary hover:underline">
-                        Política de Privacidade
+                      {t('common.and')}{' '}
+                      <Link to={ROUTES.LEGAL.PRIVACY} className="text-primary hover:underline">
+                        {t('navigation.privacy')}
                       </Link>
                     </Label>
                   </div>
@@ -444,18 +514,21 @@ const Auth = () => {
 
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? (
-                  <LoadingSpinner size="sm" />
+                  <div className="flex items-center space-x-2">
+                    <RefreshCw className="h-4 w-4 animate-spin" />
+                    <span>{t('auth.loading')}</span>
+                  </div>
                 ) : (
                   <>
                     {isLogin ? (
                       <>
                         <Shield className="w-4 h-4 mr-2" />
-                        Entrar
+                        {t('auth.login')}
                       </>
                     ) : (
                       <>
                         <CheckCircle className="w-4 h-4 mr-2" />
-                        Criar Conta
+                        {t('auth.register')}
                       </>
                     )}
                   </>
@@ -466,7 +539,7 @@ const Auth = () => {
 
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-center text-sm text-muted-foreground">
-              {isLogin ? 'Novo na GrowthScale?' : 'Já possui uma conta?'}
+              {isLogin ? t('auth.newToGrowthScale') : t('auth.alreadyHaveAccount')}
             </div>
             <Button
               variant="outline"
@@ -474,7 +547,7 @@ const Auth = () => {
               className="w-full"
               disabled={loading}
             >
-              {isLogin ? 'Cadastre-se' : 'Fazer Login'}
+              {isLogin ? t('auth.register') : t('auth.login')}
             </Button>
           </CardFooter>
         </Card>
@@ -482,18 +555,18 @@ const Auth = () => {
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-white/80">
           <div className="flex justify-center space-x-4">
-            <Link to="/termos-de-uso" className="hover:text-white transition-colors">
-              Termos de Uso
+            <Link to={ROUTES.LEGAL.TERMS} className="hover:text-white transition-colors">
+              {t('navigation.terms')}
             </Link>
-            <Link to="/politica-de-privacidade" className="hover:text-white transition-colors">
-              Privacidade
+            <Link to={ROUTES.LEGAL.PRIVACY} className="hover:text-white transition-colors">
+              {t('navigation.privacy')}
             </Link>
-            <Link to="/central-de-ajuda" className="hover:text-white transition-colors">
-              Suporte
+            <Link to={ROUTES.LEGAL.HELP} className="hover:text-white transition-colors">
+              {t('navigation.help')}
             </Link>
           </div>
           <div className="mt-2">
-            © 2024 GrowthScale. Todos os direitos reservados.
+            © 2024 GrowthScale. {t('common.allRightsReserved')}
           </div>
         </div>
       </div>
