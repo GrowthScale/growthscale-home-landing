@@ -315,6 +315,101 @@ export const trackError = (error: Error) => {
 };
 ```
 
+## Configuração do Banco de Dados
+
+### Tabelas Necessárias
+
+#### 1. Tabela `schedule_templates`
+
+**Instruções para criar no Supabase:**
+
+1. Acesse o painel do Supabase
+2. Vá para "Table Editor"
+3. Clique em "Create a new table"
+4. Configure a tabela:
+
+**Configurações:**
+- **Table Name:** `schedule_templates`
+- **Enable Row Level Security (RLS):** ✅ Sim (marcado)
+
+**Colunas:**
+```sql
+- id (uuid, Primary Key, default: uuid_generate_v4())
+- created_at (timestamptz, default: now())
+- name (text, não nulo)
+- description (text)
+- tenant_id (uuid, Foreign Key para a tabela companies ou de tenants)
+- template_data (jsonb) - Estrutura do modelo de escala
+```
+
+**Estrutura do `template_data` (JSONB):**
+```json
+{
+  "shifts": [
+    {
+      "dayOfWeek": 1,           // 0-6 (Domingo-Sábado)
+      "startTime": "08:00",      // HH:mm
+      "endTime": "17:00",        // HH:mm
+      "requiredEmployees": 3,    // Número de funcionários necessários
+      "skills": ["atendimento"]  // Habilidades necessárias (opcional)
+    }
+  ],
+  "employees": ["emp-1", "emp-2"], // IDs dos funcionários padrão (opcional)
+  "notes": "Template para escala padrão" // Observações (opcional)
+}
+```
+
+**Políticas RLS (Row Level Security):**
+```sql
+-- Política para permitir acesso apenas aos templates da empresa do usuário
+CREATE POLICY "Users can view their company templates" ON schedule_templates
+  FOR SELECT USING (tenant_id = auth.jwt() ->> 'tenant_id');
+
+CREATE POLICY "Users can insert their company templates" ON schedule_templates
+  FOR INSERT WITH CHECK (tenant_id = auth.jwt() ->> 'tenant_id');
+
+CREATE POLICY "Users can update their company templates" ON schedule_templates
+  FOR UPDATE USING (tenant_id = auth.jwt() ->> 'tenant_id');
+
+CREATE POLICY "Users can delete their company templates" ON schedule_templates
+  FOR DELETE USING (tenant_id = auth.jwt() ->> 'tenant_id');
+```
+
+### Verificação da Configuração
+
+Após criar a tabela, você pode testar a conexão:
+
+1. **Teste de Conexão:**
+```bash
+# No terminal do projeto
+npm run dev
+```
+
+2. **Acesse a aplicação:**
+   - Vá para http://localhost:8080
+   - Navegue até "Escalas"
+   - Clique em "Nova Escala"
+   - Clique em "Gerenciar Templates"
+
+3. **Teste de Funcionalidade:**
+   - Tente criar um novo template
+   - Verifique se aparece na lista
+   - Teste editar e deletar
+
+### Troubleshooting
+
+**Erro de conexão com Supabase:**
+- Verifique as variáveis de ambiente em `.env`
+- Confirme se as chaves do Supabase estão corretas
+
+**Erro de permissão:**
+- Verifique se as políticas RLS estão configuradas
+- Confirme se o usuário tem tenant_id válido
+
+**Erro de tipo JSONB:**
+- Verifique se a coluna `template_data` é do tipo `jsonb`
+- Confirme se o JSON está no formato correto
+
 ## ✅ Checklist de Configuração
 
 - ✅ **Node.js instalado** (v18+)
