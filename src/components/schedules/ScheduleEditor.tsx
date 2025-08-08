@@ -29,7 +29,9 @@ import {
   AlertTriangle,
   Bot,
   BrainCircuit,
-  Loader2
+  Loader2,
+  FileText,
+  Copy
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
@@ -39,6 +41,8 @@ import { ScheduleSuggestion, ScheduleSuggestionSkeleton } from './ScheduleSugges
 import { useScheduleSuggestion } from '@/hooks/useScheduleSuggestion';
 import { scheduleService, type Shift, type EmployeeForValidation, type ScheduleSuggestionRequest, type ScheduleSuggestionResponse } from '@/services/api';
 import { ScheduleCalendar } from './ScheduleCalendar';
+import { ScheduleTemplateManager } from './ScheduleTemplateManager';
+import { ScheduleTemplate } from '@/services/api';
 
 interface Employee {
   id: string;
@@ -70,6 +74,8 @@ export function ScheduleEditor() {
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [suggestion, setSuggestion] = useState<ScheduleSuggestionResponse | null>(null);
   const [isSuggestionModalOpen, setSuggestionModalOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<ScheduleTemplate | null>(null);
+  const [showTemplates, setShowTemplates] = useState(false);
   const [form, setForm] = useState<ScheduleForm>({
     date: undefined,
     shift: '',
@@ -285,6 +291,29 @@ export function ScheduleEditor() {
     });
   };
 
+  const handleApplyTemplate = (template: ScheduleTemplate) => {
+    // Aplicar funcionários do template se disponíveis
+    if (template.template_data.employees && template.template_data.employees.length > 0) {
+      const templateEmployees = mockEmployees.filter(emp => 
+        template.template_data.employees!.includes(emp.id)
+      );
+      
+      setForm(prev => ({
+        ...prev,
+        employees: templateEmployees,
+        notes: `Escala aplicada com base no template: ${template.name}`
+      }));
+    }
+
+    setSelectedTemplate(template);
+    setShowTemplates(false);
+
+    toast({
+      title: "✅ Template Aplicado!",
+      description: `O template "${template.name}" foi aplicado à escala.`,
+    });
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -361,37 +390,58 @@ export function ScheduleEditor() {
             </div>
           </div>
 
-          {/* AI Generation Button */}
-          <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Bot className="h-5 w-5 text-primary" />
-                  <div>
-                    <p className="font-medium">Sugestão de Escala com IA</p>
-                    <p className="text-sm text-muted-foreground">
-                      Deixe a IA sugerir as melhores alocações
-                    </p>
-                  </div>
-                </div>
-                <Button 
-                  onClick={handleGenerateWithAI}
-                  disabled={!form.date || !form.shift || suggestionMutation.isPending}
-                  className="bg-gradient-primary"
-                >
-                  {suggestionMutation.isPending ? (
-                    <>
-                      <div className="animate-spin h-4 w-4 mr-2 border-2 border-white border-t-transparent rounded-full" />
-                      Gerando sugestão...
-                    </>
-                  ) : (
-                    <>
-                      <Bot className="h-4 w-4 mr-2" />
-                      Sugerir com IA
-                    </>
-                  )}
-                </Button>
-              </div>
+          {/* AI Suggestion Card */}
+          <Card className="border-2 border-dashed border-primary/20 hover:border-primary/40 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Bot className="h-5 w-5 text-primary" />
+                Sugestão de Escala com IA
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                Deixe a IA analisar seus funcionários e criar uma sugestão otimizada de escala.
+              </p>
+              <Button 
+                onClick={handleGenerateWithAI}
+                disabled={!form.date || !form.shift || form.employees.length === 0 || suggestionMutation.isPending}
+                className="w-full"
+              >
+                {suggestionMutation.isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Gerando sugestão...
+                  </>
+                ) : (
+                  <>
+                    <BrainCircuit className="h-4 w-4 mr-2" />
+                    Sugerir com IA
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Template Manager Card */}
+          <Card className="border-2 border-dashed border-secondary/20 hover:border-secondary/40 transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-secondary" />
+                Modelos de Escala
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                Use templates salvos para criar escalas rapidamente.
+              </p>
+              <Button 
+                onClick={() => setShowTemplates(true)}
+                variant="outline"
+                className="w-full"
+              >
+                <Copy className="h-4 w-4 mr-2" />
+                Gerenciar Templates
+              </Button>
             </CardContent>
           </Card>
 
@@ -676,6 +726,22 @@ export function ScheduleEditor() {
               Aplicar Sugestão
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Gerenciador de Templates */}
+      <Dialog open={showTemplates} onOpenChange={setShowTemplates}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-secondary" />
+              Gerenciar Modelos de Escala
+            </DialogTitle>
+          </DialogHeader>
+          <ScheduleTemplateManager
+            onTemplateSelect={handleApplyTemplate}
+            onClose={() => setShowTemplates(false)}
+          />
         </DialogContent>
       </Dialog>
     </Dialog>

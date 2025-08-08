@@ -169,6 +169,37 @@ export interface ScheduleSuggestionResponse {
   suggestion: ScheduleSuggestion[];
 }
 
+// --- Interfaces para Schedule Templates ---
+export interface ScheduleTemplate {
+  id: string;
+  created_at: string;
+  name: string;
+  description?: string;
+  tenant_id: string;
+  template_data: {
+    shifts: Array<{
+      dayOfWeek: number; // 0-6 (Domingo-Sábado)
+      startTime: string; // HH:mm
+      endTime: string;   // HH:mm
+      requiredEmployees: number;
+      skills?: string[];
+    }>;
+    employees?: string[]; // IDs dos funcionários padrão
+    notes?: string;
+  };
+}
+
+export interface CreateScheduleTemplateDto {
+  name: string;
+  description?: string;
+  tenant_id: string;
+  template_data: ScheduleTemplate['template_data'];
+}
+
+export interface UpdateScheduleTemplateDto extends Partial<CreateScheduleTemplateDto> {
+  id: string;
+}
+
 // API Response wrapper
 export interface ApiResponse<T> {
   data: T | null;
@@ -440,11 +471,94 @@ export class CLTAssistantService extends BaseApiService {
   }
 }
 
+// --- Schedule Template Service ---
+export class ScheduleTemplateService extends BaseApiService {
+  async getTemplates(): Promise<ApiResponse<ScheduleTemplate[]>> {
+    return this.handleRequest(async () => {
+      const { data, error } = await supabase
+        .from('schedule_templates')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        return { data: null, error: `Erro ao buscar templates: ${error.message}` };
+      }
+
+      return { data, error: null };
+    });
+  }
+
+  async getTemplate(id: string): Promise<ApiResponse<ScheduleTemplate>> {
+    return this.handleRequest(async () => {
+      const { data, error } = await supabase
+        .from('schedule_templates')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        return { data: null, error: `Erro ao buscar template: ${error.message}` };
+      }
+
+      return { data, error: null };
+    });
+  }
+
+  async createTemplate(template: CreateScheduleTemplateDto): Promise<ApiResponse<ScheduleTemplate>> {
+    return this.handleRequest(async () => {
+      const { data, error } = await supabase
+        .from('schedule_templates')
+        .insert([template])
+        .select()
+        .single();
+
+      if (error) {
+        return { data: null, error: `Erro ao criar template: ${error.message}` };
+      }
+
+      return { data, error: null };
+    });
+  }
+
+  async updateTemplate(id: string, updates: UpdateScheduleTemplateDto): Promise<ApiResponse<ScheduleTemplate>> {
+    return this.handleRequest(async () => {
+      const { data, error } = await supabase
+        .from('schedule_templates')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) {
+        return { data: null, error: `Erro ao atualizar template: ${error.message}` };
+      }
+
+      return { data, error: null };
+    });
+  }
+
+  async deleteTemplate(id: string): Promise<ApiResponse<void>> {
+    return this.handleRequest(async () => {
+      const { error } = await supabase
+        .from('schedule_templates')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        return { data: null, error: `Erro ao deletar template: ${error.message}` };
+      }
+
+      return { data: null, error: null };
+    });
+  }
+}
+
 // Export service instances
 export const employeeService = new EmployeeService();
 export const companyService = new CompanyService();
 export const scheduleService = new ScheduleService();
 export const cltAssistantService = new CLTAssistantService();
+export const scheduleTemplateService = new ScheduleTemplateService();
 
 // Standalone function for CLT Assistant (alternative to service method)
 export async function askCltAssistant(question: string): Promise<{ answer: string }> {
