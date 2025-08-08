@@ -643,6 +643,37 @@ src/
 
 ---
 
+## 2024-12-19 - Implementação da Pré-visualização Visual no Calendário
+
+### ✅ **Pré-visualização Visual Implementada**
+- **Arquivo**: `src/components/schedules/ScheduleCalendar.tsx`
+- **Funcionalidade**: Calendário com preview das sugestões de IA
+- **Características**:
+  - Interface visual no calendário para sugestões de IA
+  - Estilo diferenciado com bordas tracejadas e ícone Sparkles
+  - Integração com modal de sugestão no ScheduleEditor
+  - Callback para aplicação de sugestões
+  - Estatísticas e resumo das sugestões
+
+### 🔧 **Melhorias Técnicas**
+- **Props**: Adicionadas `previewShifts`, `employees`, `onPreviewClick`
+- **Estilo**: Borda tracejada e background diferenciado para sugestões
+- **UX**: Ícone Sparkles para identificar sugestões de IA
+- **Interação**: Clique para aplicar sugestões diretamente
+- **Modal**: Integração completa com o modal de sugestão
+
+### 📊 **Métricas Atualizadas**
+- **Total de arquivos**: 150+
+- **Total de linhas**: 15,000+
+- **Componentes**: 80+
+- **Hooks**: 25+
+- **Serviços**: 8+
+- **Funções Edge**: 4+
+- **Modais**: 12+
+- **Calendários**: 2+ (com preview visual)
+
+---
+
 ## 🎯 Próximas Atividades Planejadas
 
 ### **Fase 1 - Otimizações**

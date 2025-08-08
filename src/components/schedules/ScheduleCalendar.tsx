@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ChevronLeft, ChevronRight, Calendar, Clock, Users, AlertTriangle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, Clock, Users, AlertTriangle, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ScheduleEvent {
@@ -12,6 +12,17 @@ interface ScheduleEvent {
   type: 'morning' | 'afternoon' | 'night';
   status: 'approved' | 'pending' | 'warning';
   employees: string[];
+}
+
+interface PreviewShift {
+  shiftId: string;
+  employeeId: string;
+}
+
+interface ScheduleCalendarProps {
+  previewShifts?: PreviewShift[] | null;
+  employees?: { id: string; name: string }[];
+  onPreviewClick?: (event: ScheduleEvent) => void;
 }
 
 const mockEvents: ScheduleEvent[] = [
@@ -41,7 +52,19 @@ const mockEvents: ScheduleEvent[] = [
   }
 ];
 
-export function ScheduleCalendar() {
+const mockEmployees = [
+  { id: '1', name: 'João Silva' },
+  { id: '2', name: 'Maria Santos' },
+  { id: '3', name: 'Pedro Costa' },
+  { id: '4', name: 'Ana Lima' },
+  { id: '5', name: 'Carlos Oliveira' }
+];
+
+export function ScheduleCalendar({ 
+  previewShifts = null, 
+  employees = mockEmployees,
+  onPreviewClick 
+}: ScheduleCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<ScheduleEvent | null>(null);
 
@@ -76,6 +99,29 @@ export function ScheduleCalendar() {
       event.date.getDate() === day && 
       event.date.getMonth() === currentDate.getMonth()
     );
+  };
+
+  const getPreviewEventsForDay = (day: number) => {
+    if (!previewShifts) return [];
+    
+    // Simular eventos de preview baseados nas sugestões de IA
+    const previewEvents: ScheduleEvent[] = [];
+    
+    previewShifts.forEach((shift, index) => {
+      const employee = employees.find(emp => emp.id === shift.employeeId);
+      if (employee) {
+        previewEvents.push({
+          id: `preview-${shift.shiftId}`,
+          title: `Sugestão IA - ${employee.name}`,
+          date: new Date(currentDate.getFullYear(), currentDate.getMonth(), day),
+          type: 'morning', // Pode ser dinâmico baseado no turno
+          status: 'pending',
+          employees: [employee.name]
+        });
+      }
+    });
+    
+    return previewEvents;
   };
 
   const navigateMonth = (direction: 'prev' | 'next') => {
@@ -134,6 +180,7 @@ export function ScheduleCalendar() {
             {Array.from({ length: daysInMonth }, (_, i) => {
               const day = i + 1;
               const events = getEventsForDay(day);
+              const previewEvents = getPreviewEventsForDay(day);
               const isToday = new Date().getDate() === day && 
                              new Date().getMonth() === currentDate.getMonth() &&
                              new Date().getFullYear() === currentDate.getFullYear();
@@ -173,6 +220,34 @@ export function ScheduleCalendar() {
                       </div>
                     )}
                   </div>
+                  
+                  {/* Pré-visualização de sugestões de IA */}
+                  {previewEvents.length > 0 && (
+                    <div className="space-y-1 mt-1">
+                      {previewEvents.slice(0, 2).map((event) => (
+                        <div
+                          key={event.id}
+                          className={cn(
+                            "px-1 py-0.5 rounded text-xs cursor-pointer truncate transition-all hover:shadow-sm",
+                            "border-2 border-dashed border-primary bg-primary/10 text-primary-foreground opacity-80"
+                          )}
+                          onClick={() => {
+                            setSelectedEvent(event);
+                            onPreviewClick?.(event);
+                          }}
+                          title={`${event.title} - Sugestão de IA`}
+                        >
+                          <Sparkles className="h-3 w-3 mr-1 inline" />
+                          {event.title}
+                        </div>
+                      ))}
+                      {previewEvents.length > 2 && (
+                        <div className="text-xs text-primary/70">
+                          +{previewEvents.length - 2} sugestões
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -186,11 +261,18 @@ export function ScheduleCalendar() {
           <CardContent className="p-4">
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center space-x-2">
-                <span className="text-xl">{getTypeIcon(selectedEvent.type)}</span>
+                {selectedEvent.id.startsWith('preview-') ? (
+                  <Sparkles className="h-5 w-5 text-primary" />
+                ) : (
+                  <span className="text-xl">{getTypeIcon(selectedEvent.type)}</span>
+                )}
                 <h3 className="font-semibold text-lg">{selectedEvent.title}</h3>
               </div>
-              <Badge className={getStatusColor(selectedEvent.status)}>
-                {selectedEvent.status === 'approved' ? 'Aprovado' : 
+              <Badge className={selectedEvent.id.startsWith('preview-') ? 
+                "border-2 border-dashed border-primary bg-primary/10 text-primary-foreground" : 
+                getStatusColor(selectedEvent.status)}>
+                {selectedEvent.id.startsWith('preview-') ? 'Sugestão IA' :
+                 selectedEvent.status === 'approved' ? 'Aprovado' : 
                  selectedEvent.status === 'pending' ? 'Pendente' : 'Alerta'}
               </Badge>
             </div>
@@ -203,14 +285,32 @@ export function ScheduleCalendar() {
                 <Users className="h-4 w-4 text-muted-foreground" />
                 <span>{selectedEvent.employees.join(', ')}</span>
               </div>
-              {selectedEvent.status === 'warning' && (
+              {selectedEvent.id.startsWith('preview-') && (
+                <div className="flex items-center space-x-2 text-primary">
+                  <Sparkles className="h-4 w-4" />
+                  <span>Sugestão gerada por IA - Clique para aplicar</span>
+                </div>
+              )}
+              {selectedEvent.status === 'warning' && !selectedEvent.id.startsWith('preview-') && (
                 <div className="flex items-center space-x-2 text-destructive">
                   <AlertTriangle className="h-4 w-4" />
                   <span>Equipe incompleta - Necessário mais funcionários</span>
                 </div>
               )}
             </div>
-            <div className="flex justify-end mt-4">
+            <div className="flex justify-end mt-4 space-x-2">
+              {selectedEvent.id.startsWith('preview-') && (
+                <Button 
+                  size="sm" 
+                  onClick={() => {
+                    onPreviewClick?.(selectedEvent);
+                    setSelectedEvent(null);
+                  }}
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Aplicar Sugestão
+                </Button>
+              )}
               <Button variant="outline" size="sm" onClick={() => setSelectedEvent(null)}>
                 Fechar
               </Button>

@@ -38,6 +38,7 @@ import { ValidationResults } from './ValidationResults';
 import { ScheduleSuggestion, ScheduleSuggestionSkeleton } from './ScheduleSuggestion';
 import { useScheduleSuggestion } from '@/hooks/useScheduleSuggestion';
 import { scheduleService, type Shift, type EmployeeForValidation, type ScheduleSuggestionRequest, type ScheduleSuggestionResponse } from '@/services/api';
+import { ScheduleCalendar } from './ScheduleCalendar';
 
 interface Employee {
   id: string;
@@ -612,26 +613,49 @@ export function ScheduleEditor() {
             )}
             {suggestion && !suggestionMutation.isPending && (
               <div>
-                <p className="mb-4">Analisamos as regras e perfis e criamos esta sugestão para você. Aplique para adicioná-la ao editor.</p>
-                {/* Renderize uma prévia da escala sugerida */}
-                <div className="max-h-60 overflow-y-auto rounded-md border p-4">
-                  <h4 className="font-medium mb-2">Sugestões de Alocação:</h4>
-                  {suggestion.suggestion.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">Nenhuma sugestão encontrada.</p>
-                  ) : (
-                    <ul className="space-y-2">
-                      {suggestion.suggestion.map((item, index) => {
-                        const employee = mockEmployees.find(emp => emp.id === item.employeeId);
-                        const shift = form.shift;
-                        return (
-                          <li key={index} className="flex items-center justify-between p-2 bg-muted rounded">
-                            <span className="font-medium">{employee?.name || item.employeeId}</span>
-                            <Badge variant="outline">{shift}</Badge>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
+                <p className="mb-4">Analisamos as regras e perfis e criamos esta sugestão para você. Visualize no calendário e aplique para adicioná-la ao editor.</p>
+                
+                {/* Calendário com pré-visualização */}
+                <div className="mb-4">
+                  <h4 className="font-medium mb-3 flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    Pré-visualização da Sugestão
+                  </h4>
+                  <div className="border rounded-lg p-4 bg-muted/20">
+                    <ScheduleCalendar
+                      previewShifts={suggestion.suggestion}
+                      employees={mockEmployees}
+                      onPreviewClick={(event) => {
+                        console.log('Sugestão clicada:', event);
+                        // Aqui você pode adicionar lógica adicional se necessário
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Estatísticas da sugestão */}
+                <div className="rounded-md border p-4 bg-muted/20">
+                  <h4 className="font-medium mb-2">Resumo da Sugestão:</h4>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Funcionários alocados:</span>
+                      <span className="ml-2 font-medium">{suggestion.suggestion.length}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Turno:</span>
+                      <span className="ml-2 font-medium">{form.shift}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Data:</span>
+                      <span className="ml-2 font-medium">
+                        {form.date ? form.date.toLocaleDateString('pt-BR') : 'Não definida'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Status:</span>
+                      <Badge variant="outline" className="ml-2">Sugestão IA</Badge>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
