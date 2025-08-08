@@ -58,6 +58,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - **Modal de Sugestão**: Novo modal com preview das sugestões e aplicação automática
   - **Pré-visualização Visual**: Calendário com preview das sugestões de IA usando `ScheduleCalendar`
   - **Fluxo de Aplicação Melhorado**: Sistema otimizado para aplicar sugestões diretamente no estado do formulário
+  - **Melhoria na UX da Sugestão de IA**: A escala sugerida pela IA agora é exibida diretamente no componente do calendário principal com um estilo visual de "pré-visualização" (borda tracejada e destaque), em vez de ser mostrada como dados brutos. Isso permite que o gestor analise o impacto da sugestão visualmente antes de confirmar sua aplicação na escala definitiva
   - Aplicação automática de sugestões com confirmação
   - Analytics tracking de sugestões geradas e aplicadas
   - Validação de dados de entrada e tratamento de erros
