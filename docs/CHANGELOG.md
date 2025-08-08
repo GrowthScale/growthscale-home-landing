@@ -57,6 +57,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Integração completa no `ScheduleEditor` com botão "Sugerir com IA"
   - **Modal de Sugestão**: Novo modal com preview das sugestões e aplicação automática
   - **Pré-visualização Visual**: Calendário com preview das sugestões de IA usando `ScheduleCalendar`
+  - **Fluxo de Aplicação Melhorado**: Sistema otimizado para aplicar sugestões diretamente no estado do formulário
   - Aplicação automática de sugestões com confirmação
   - Analytics tracking de sugestões geradas e aplicadas
   - Validação de dados de entrada e tratamento de erros

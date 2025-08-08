@@ -258,8 +258,11 @@ export function ScheduleEditor() {
     });
   };
 
-  const handleApplySuggestion = (suggestion: ScheduleSuggestionResponse) => {
-    if (!suggestion || !suggestion.suggestion) return;
+  const handleApplySuggestion = () => {
+    if (!suggestion) return;
+
+    // Crie um mapa da sugestão para acesso rápido: { shiftId: employeeId }
+    const suggestionMap = new Map(suggestion.suggestion.map(s => [s.shiftId, s.employeeId]));
 
     // Converter sugestões para funcionários
     const suggestedEmployees = suggestion.suggestion.map((item) => {
@@ -273,13 +276,12 @@ export function ScheduleEditor() {
       notes: 'Escala aplicada com base na sugestão da IA.'
     }));
 
-    setShowSuggestion(false);
-    setSuggestion(null);
-    setSuggestionModalOpen(false);
+    setSuggestion(null); // Limpa a sugestão após aplicar
+    setSuggestionModalOpen(false); // Fecha o modal
 
     toast({
       title: "✅ Sugestão Aplicada!",
-      description: `${suggestedEmployees.length} funcionários foram alocados automaticamente.`,
+      description: `${suggestion.suggestion.length} alocações foram aplicadas automaticamente.`,
     });
   };
 
@@ -613,7 +615,10 @@ export function ScheduleEditor() {
             )}
             {suggestion && !suggestionMutation.isPending && (
               <div>
-                <p className="mb-4">Analisamos as regras e perfis e criamos esta sugestão para você. Visualize no calendário e aplique para adicioná-la ao editor.</p>
+                <div className="text-center mb-4">
+                  <p className="mb-2">Analisamos as regras e perfis e criamos esta sugestão para você.</p>
+                  <p className="text-sm text-muted-foreground">A pré-visualização da escala sugerida está destacada no calendário com uma borda tracejada. Use o botão abaixo para confirmar e aplicar.</p>
+                </div>
                 
                 {/* Calendário com pré-visualização */}
                 <div className="mb-4">
@@ -665,12 +670,8 @@ export function ScheduleEditor() {
               Cancelar
             </Button>
             <Button 
-              disabled={!suggestion} 
-              onClick={() => {
-                if (suggestion) {
-                  handleApplySuggestion(suggestion);
-                }
-              }}
+              disabled={!suggestion || suggestionMutation.isPending} 
+              onClick={handleApplySuggestion}
             >
               Aplicar Sugestão
             </Button>
