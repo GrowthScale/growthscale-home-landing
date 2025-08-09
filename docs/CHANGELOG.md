@@ -147,3 +147,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 - **Constantes Centralizadas**: Sistema de constantes
   - Arquivo `src/constants/index.ts`
+
+### Feature - **Sistema de Templates de Escala (Completo):**
+- **Página de Gerenciamento**: Nova página `/templates` com interface completa para gerenciar templates
+- **Componente TemplateManager**: Interface robusta com DataTable, modais de criação/edição/visualização
+- **Funcionalidades CRUD**: Criar, editar, visualizar, deletar e aplicar templates
+- **Integração com Rotas**: Página protegida e integrada ao sistema de navegação
+- **Visualização Detalhada**: Modal para visualizar detalhes completos dos templates
+- **Aplicação de Templates**: Botão para aplicar template diretamente na página de escalas

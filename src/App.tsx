@@ -31,6 +31,7 @@ const Setup = React.lazy(() => import("./pages/Setup"));
 const CLTAssistant = React.lazy(() => import("./pages/CLTAssistant"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
+const Templates = React.lazy(() => import("./pages/Templates"));
 
 const queryClient = new QueryClient();
 
@@ -112,6 +113,13 @@ const App = () => (
                     <ProtectedRoute>
                       <MainLayout>
                         <Setup />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/templates" element={
+                    <ProtectedRoute>
+                      <MainLayout>
+                        <Templates />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
