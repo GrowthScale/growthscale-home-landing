@@ -32,6 +32,40 @@ cp env.example .env
 npm run dev
 ```
 
+## ✨ Funcionalidades Principais
+
+### 🎯 **Gestão Inteligente de Escalas**
+- **Editor de Escalas Avançado**: Interface completa para criação e edição de escalas
+- **Aplicação de Modelos**: Sistema para aplicar templates pré-definidos diretamente no editor
+  - Modal dedicado para seleção de modelo e funcionários
+  - Geração automática de turnos baseados na estrutura do template
+  - Cálculo inteligente de datas da semana
+  - Preview da estrutura antes da aplicação
+- **Validação CLT em Tempo Real**: Motor de regras que verifica automaticamente violações da legislação trabalhista
+- **Sugestões de IA**: Sistema inteligente que gera sugestões de escala otimizadas
+
+### 🤖 **Assistente de IA para CLT**
+- **Chatbot Especializado**: Assistente virtual para dúvidas sobre legislação trabalhista
+- **Respostas em Tempo Real**: Integração com OpenAI GPT-3.5-turbo
+- **Interface Flutuante**: Disponível em todas as páginas da aplicação
+- **Histórico de Conversas**: Sistema de persistência de perguntas e respostas
+
+### 📋 **Sistema de Templates**
+- **Gerenciamento Completo**: Criar, editar, visualizar e deletar templates de escala
+- **Estrutura Flexível**: Templates configuráveis com turnos, horários e funcionários padrão
+- **Aplicação Inteligente**: Sistema que gera automaticamente escalas baseadas em modelos pré-definidos
+- **Multi-tenancy**: Suporte a templates por empresa
+
+### 📊 **Dashboard e Analytics**
+- **Métricas em Tempo Real**: KPIs de produtividade e conformidade
+- **Gráficos Interativos**: Visualizações de dados de escala e funcionários
+- **Relatórios Automáticos**: Geração de relatórios de conformidade CLT
+
+### 🔒 **Segurança e Conformidade**
+- **Validação Automática**: Verificação contínua de conformidade com a CLT
+- **Score de Risco**: Sistema de pontuação para identificar escalas problemáticas
+- **Auditoria Completa**: Log de todas as alterações e validações realizadas
+
 ### Variáveis de Ambiente
 
 Crie um arquivo `.env` baseado no `env.example`:

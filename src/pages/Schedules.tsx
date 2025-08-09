@@ -6,6 +6,9 @@ import { ScheduleCalendar } from '@/components/schedules/ScheduleCalendar';
 import { ScheduleEditor } from '@/components/schedules/ScheduleEditor';
 import { ScheduleFilters } from '@/components/schedules/ScheduleFilters';
 import { ScheduleList } from '@/components/schedules/ScheduleList';
+import { CostSimulator } from '@/components/schedules/CostSimulator';
+import { WhatsAppNotificationManager } from '@/components/WhatsAppNotificationManager';
+import { mockEmployeesForCost, mockShiftsForCost } from '@/constants/mockData';
 import { 
   Calendar,
   HelpCircle,
@@ -14,7 +17,8 @@ import {
   TrendingUp,
   Users,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  MessageCircle
 } from 'lucide-react';
 import {
   Tooltip,
@@ -136,7 +140,7 @@ export default function Schedules() {
 
             {/* Content Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 lg:w-fit">
+              <TabsList className="grid w-full grid-cols-4 lg:w-fit">
                 <TabsTrigger value="calendar" className="flex items-center space-x-2">
                   <Calendar className="h-4 w-4" />
                   <span>Calendário</span>
@@ -144,6 +148,14 @@ export default function Schedules() {
                 <TabsTrigger value="list" className="flex items-center space-x-2">
                   <Users className="h-4 w-4" />
                   <span>Lista</span>
+                </TabsTrigger>
+                <TabsTrigger value="costs" className="flex items-center space-x-2">
+                  <TrendingUp className="h-4 w-4" />
+                  <span>Custos</span>
+                </TabsTrigger>
+                <TabsTrigger value="notifications" className="flex items-center space-x-2">
+                  <MessageCircle className="h-4 w-4" />
+                  <span>Notificações</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -153,6 +165,38 @@ export default function Schedules() {
 
               <TabsContent value="list" className="mt-6">
                 <ScheduleList />
+              </TabsContent>
+
+              <TabsContent value="costs" className="mt-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <CostSimulator 
+                    shifts={mockShiftsForCost} 
+                    employees={mockEmployeesForCost}
+                    onCostUpdate={(cost) => console.log('Custos atualizados:', cost)}
+                  />
+                  <Card>
+                    <CardContent className="p-6">
+                      <h3 className="text-lg font-semibold mb-4">Informações sobre Custos</h3>
+                      <div className="space-y-3 text-sm text-muted-foreground">
+                        <p>• O simulador calcula custos em tempo real baseado nos turnos</p>
+                        <p>• Inclui horas extras e adicional noturno automaticamente</p>
+                        <p>• Atualiza automaticamente quando a escala é modificada</p>
+                        <p>• Use para otimizar custos e planejar orçamentos</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="notifications" className="mt-6">
+                <WhatsAppNotificationManager
+                  employeeIds={[]} // Será preenchido dinamicamente
+                  scheduleId="" // Será preenchido dinamicamente
+                  tenantId="tenant-001" // Será obtido do contexto
+                  onNotificationSent={() => {
+                    console.log('Notificações enviadas com sucesso!');
+                  }}
+                />
               </TabsContent>
             </Tabs>
           </div>

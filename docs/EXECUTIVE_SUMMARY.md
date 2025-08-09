@@ -15,7 +15,12 @@ O **GrowthScale** é uma aplicação PWA (Progressive Web App) para gestão inte
 - **Virtualização**: Performance para grandes datasets
 - **Service Layer**: Arquitetura de serviços
 - **Motor de Regras da CLT**: Validação automática de compliance
-- **Documentação Completa**: 11 arquivos de documentação
+- **Assistente de IA para CLT**: Chatbot especializado em legislação trabalhista
+- **Sistema de Sugestões de IA**: Otimização automática de escalas
+- **Sistema de Templates**: Gerenciamento completo de modelos de escala
+- **Aplicação de Modelos**: Sistema para aplicar templates diretamente no editor
+- **Simulador de Custo em Tempo Real**: Cálculo automático de custos trabalhistas integrado ao Editor de Escalas
+- **Documentação Completa**: 12 arquivos de documentação
 
 ### 📊 **Métricas do Projeto**
 - **Arquivos**: 50+ arquivos criados/modificados
@@ -23,7 +28,7 @@ O **GrowthScale** é uma aplicação PWA (Progressive Web App) para gestão inte
 - **Componentes**: 30+ componentes reutilizáveis
 - **Hooks**: 6 hooks personalizados
 - **Contexts**: 2 contexts para estado global
-- **Functions**: 1 Supabase Edge Function
+- **Functions**: 4 Supabase Edge Functions (validate-schedule, clt-assistant, suggest-schedule, calculate-schedule-cost)
 
 ### 🔧 **Qualidade Técnica**
 - ✅ TypeScript configurado e sem erros
@@ -55,7 +60,10 @@ src/
 
 supabase/
 └── functions/
-    └── validate-schedule/  # Motor de Regras da CLT
+    ├── validate-schedule/      # Motor de Regras da CLT
+    ├── clt-assistant/          # Assistente de IA para dúvidas CLT
+    ├── suggest-schedule/       # Sistema de sugestões de escala com IA
+    └── calculate-schedule-cost/ # Simulador de custo em tempo real
 ```
 
 ## 🎯 Funcionalidades Principais
@@ -77,14 +85,32 @@ supabase/
 - Otimização por IA
 - Conformidade automática
 - Gestão de turnos
+- **Aplicação de Modelos**: Sistema para aplicar templates pré-definidos diretamente no editor
+- **Geração Automática**: Criação de turnos baseados na estrutura de templates
+- **Preview Inteligente**: Visualização da estrutura antes da aplicação
 
 ### 4. **Compliance Trabalhista**
 - Verificação automática via Motor de Regras da CLT
 - Alertas de conformidade
 - Relatórios detalhados
 - Auditoria integrada
+- **Assistente de IA**: Chatbot especializado para dúvidas sobre CLT
+- **Validação em Tempo Real**: Análise contínua durante edição de escalas
 
-### 5. **PWA Features**
+### 5. **Simulador de Custo em Tempo Real**
+- **Cálculo Automático**: Análise de custos trabalhistas incluindo horas extras e adicional noturno
+- **Painel Integrado**: Exibição de custos diretamente no Editor de Escalas
+- **Atualização em Tempo Real**: Recálculo automático com cada alteração na escala
+- **Tomada de Decisão Estratégica**: Visão unificada de conformidade legal vs. impacto financeiro
+
+### 6. **Sistema de Templates**
+- **Gerenciamento Completo**: Criar, editar, visualizar e deletar templates
+- **Estrutura Flexível**: Configuração de turnos, horários e funcionários padrão
+- **Aplicação Inteligente**: Sistema que gera automaticamente escalas baseadas em modelos
+- **Multi-tenancy**: Suporte a templates por empresa
+- **Preview Detalhado**: Visualização completa da estrutura antes da aplicação
+
+### 6. **PWA Features**
 - Instalação no dispositivo
 - Funcionalidade offline
 - Notificações push
@@ -97,26 +123,32 @@ supabase/
 - ✅ Validação de descanso semanal remunerado (DSR)
 - ✅ Validação de carga horária semanal
 - ✅ Cálculo de risk score (0-100)
+- ✅ **Validação em Tempo Real**: Análise contínua durante edição
+- ✅ **Interface Visual**: Score de risco com indicadores visuais
+- ✅ **Relatórios Detalhados**: Lista completa de violações identificadas
 
-### **Localização**
-```
-supabase/functions/validate-schedule/index.ts
-```
+## 🤖 Sistema de IA Integrado
 
-### **Interface**
-```typescript
-// Input
-interface InputData {
-  shifts: Shift[];
-  employees: Employee[];
-}
+### **Assistente de IA para CLT**
+- ✅ **Chatbot Especializado**: Interface de chat para dúvidas sobre legislação
+- ✅ **Integração OpenAI**: GPT-3.5-turbo com prompt especializado
+- ✅ **Histórico de Conversas**: Persistência de perguntas e respostas
+- ✅ **Interface Flutuante**: Disponível em todas as páginas da aplicação
+- ✅ **Perguntas Sugeridas**: Facilita o uso com exemplos pré-definidos
 
-// Output
-interface OutputData {
-  riskScore: number;    // 0-100
-  violations: Violation[];
-}
-```
+### **Sistema de Sugestões de IA**
+- ✅ **Otimização Automática**: Geração de escalas otimizadas por IA
+- ✅ **Prompt Especializado**: Instruções específicas para logística e alocação
+- ✅ **Preview Visual**: Calendário com preview das sugestões
+- ✅ **Aplicação Automática**: Sistema para aplicar sugestões com confirmação
+- ✅ **Estatísticas Detalhadas**: Métricas de otimização e conformidade
+
+### **Sistema de Templates com IA**
+- ✅ **Gerenciamento Completo**: CRUD completo de templates
+- ✅ **Estrutura Flexível**: Configuração de turnos e funcionários padrão
+- ✅ **Aplicação Inteligente**: Sistema que gera automaticamente escalas
+- ✅ **Preview Detalhado**: Visualização completa antes da aplicação
+- ✅ **Geração Automática**: Criação de turnos baseados na estrutura do template
 
 ## 📱 PWA (Progressive Web App)
 

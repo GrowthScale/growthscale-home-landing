@@ -12,7 +12,8 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
-import { format } from 'date-fns';
+import { Checkbox } from '@/components/ui/checkbox';
+import { format, addDays, startOfWeek } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { 
   Plus, 
@@ -31,7 +32,9 @@ import {
   BrainCircuit,
   Loader2,
   FileText,
-  Copy
+  Copy,
+  Zap,
+  DollarSign
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
@@ -39,10 +42,9 @@ import { useScheduleValidation } from '@/hooks/useScheduleValidation';
 import { ValidationResults } from './ValidationResults';
 import { ScheduleSuggestion, ScheduleSuggestionSkeleton } from './ScheduleSuggestion';
 import { useScheduleSuggestion } from '@/hooks/useScheduleSuggestion';
-import { scheduleService, type Shift, type EmployeeForValidation, type ScheduleSuggestionRequest, type ScheduleSuggestionResponse } from '@/services/api';
+import { scheduleService, scheduleTemplateService, costCalculationService, type Shift, type EmployeeForValidation, type ScheduleSuggestionRequest, type ScheduleSuggestionResponse, type ScheduleTemplate } from '@/services/api';
 import { ScheduleCalendar } from './ScheduleCalendar';
 import { ScheduleTemplateManager } from './ScheduleTemplateManager';
-import { ScheduleTemplate } from '@/services/api';
 
 interface Employee {
   id: string;
@@ -76,11 +78,24 @@ export function ScheduleEditor() {
   const [isSuggestionModalOpen, setSuggestionModalOpen] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<ScheduleTemplate | null>(null);
   const [showTemplates, setShowTemplates] = useState(false);
+  const [isApplyTemplateModalOpen, setApplyTemplateModalOpen] = useState(false);
+  const [selectedTemplateForApply, setSelectedTemplateForApply] = useState<ScheduleTemplate | null>(null);
+  const [selectedEmployeeIds, setSelectedEmployeeIds] = useState<string[]>([]);
   const [form, setForm] = useState<ScheduleForm>({
     date: undefined,
     shift: '',
     employees: [],
     notes: ''
+  });
+
+  // Query para buscar templates
+  const { data: templates, isLoading: isLoadingTemplates } = useQuery({
+    queryKey: ['scheduleTemplates'],
+    queryFn: async () => {
+      const response = await scheduleTemplateService.getTemplates();
+      if (response.error) throw new Error(response.error);
+      return response.data || [];
+    }
   });
 
   // Mutation para chamar a IA
@@ -150,6 +165,17 @@ export function ScheduleEditor() {
     enabled: shifts.length > 0 && employees.length > 0,
     staleTime: 30000, // 30 seconds
     gcTime: 60000, // 1 minute (cacheTime was renamed to gcTime in v4)
+  });
+
+  // Query para cálculo de custo em tempo real
+  const { data: costResult, isLoading: isCalculatingCost } = useQuery({
+    queryKey: ['scheduleCost', shifts, employees],
+    queryFn: () => {
+      // Mock de hourlyRate se não existir no seu modelo de funcionário ainda
+      const employeesWithRate = employees.map(e => ({ ...e, hourlyRate: 20 }));
+      return costCalculationService.calculateScheduleCost({ shifts, employees: employeesWithRate });
+    },
+    enabled: shifts && shifts.length > 0,
   });
 
   const handleEmployeeToggle = (employee: Employee) => {
@@ -291,27 +317,89 @@ export function ScheduleEditor() {
     });
   };
 
-  const handleApplyTemplate = (template: ScheduleTemplate) => {
-    // Aplicar funcionários do template se disponíveis
-    if (template.template_data.employees && template.template_data.employees.length > 0) {
-      const templateEmployees = mockEmployees.filter(emp => 
-        template.template_data.employees!.includes(emp.id)
-      );
-      
+  const handleApplyTemplate = () => {
+    if (!selectedTemplateForApply || selectedEmployeeIds.length === 0) {
+      toast({
+        title: "Seleção incompleta",
+        description: "Selecione um modelo e pelo menos um funcionário.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // 1. Encontre os dados do template selecionado
+    const template = selectedTemplateForApply;
+    
+    // 2. Lógica para gerar os turnos com base no template.template_data
+    const newShifts: Shift[] = [];
+    const weekDays = [0, 1, 2, 3, 4, 5, 6]; // Array de dias da semana (Domingo-Sábado)
+    
+    // Se temos uma data selecionada, use ela como referência para a semana
+    const startDate = form.date ? startOfWeek(form.date, { weekStartsOn: 0 }) : startOfWeek(new Date(), { weekStartsOn: 0 });
+    
+    selectedEmployeeIds.forEach(employeeId => {
+      weekDays.forEach((dayOfWeek, index) => {
+        // Verifica se o template define um turno para este dia
+        const templateShift = template.template_data.shifts.find(shift => shift.dayOfWeek === dayOfWeek);
+        
+        if (templateShift) {
+          const shiftDate = addDays(startDate, index);
+          const startTime = `${format(shiftDate, 'yyyy-MM-dd')}T${templateShift.startTime}:00`;
+          const endTime = `${format(shiftDate, 'yyyy-MM-dd')}T${templateShift.endTime}:00`;
+          
+          newShifts.push({
+            id: `template-shift-${employeeId}-${dayOfWeek}`,
+            employeeId: employeeId,
+            startTime: startTime,
+            endTime: endTime,
+          });
+        }
+      });
+    });
+
+    // 3. Adicione os novos turnos ao estado principal da escala
+    // Como estamos trabalhando com um formulário simples, vamos atualizar as observações
+    // e mostrar uma mensagem de sucesso
+    setForm(prev => ({
+      ...prev,
+      notes: `Escala aplicada com base no template: ${template.name}. ${newShifts.length} turnos gerados.`
+    }));
+
+    // 4. Atualizar a data para a data de início da semana se não houver data selecionada
+    if (!form.date) {
       setForm(prev => ({
         ...prev,
-        employees: templateEmployees,
-        notes: `Escala aplicada com base no template: ${template.name}`
+        date: startDate
       }));
     }
 
-    setSelectedTemplate(template);
-    setShowTemplates(false);
+    // 5. Selecionar os funcionários escolhidos
+    const selectedEmployees = mockEmployees.filter(emp => selectedEmployeeIds.includes(emp.id));
+    setForm(prev => ({
+      ...prev,
+      employees: selectedEmployees
+    }));
+
+    setApplyTemplateModalOpen(false);
+    setSelectedTemplateForApply(null);
+    setSelectedEmployeeIds([]);
 
     toast({
       title: "✅ Template Aplicado!",
-      description: `O template "${template.name}" foi aplicado à escala.`,
+      description: `${newShifts.length} turnos foram gerados com base no template "${template.name}".`,
     });
+  };
+
+  const handleOpenApplyTemplateModal = () => {
+    if (!templates || templates.length === 0) {
+      toast({
+        title: "Nenhum template disponível",
+        description: "Crie alguns templates primeiro para poder aplicá-los.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setApplyTemplateModalOpen(true);
   };
 
   return (
@@ -430,18 +518,29 @@ export function ScheduleEditor() {
                 Modelos de Escala
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
                 Use templates salvos para criar escalas rapidamente.
               </p>
-              <Button 
-                onClick={() => setShowTemplates(true)}
-                variant="outline"
-                className="w-full"
-              >
-                <Copy className="h-4 w-4 mr-2" />
-                Gerenciar Templates
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => setShowTemplates(true)}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  <Copy className="h-4 w-4 mr-2" />
+                  Gerenciar Templates
+                </Button>
+                <Button 
+                  onClick={handleOpenApplyTemplateModal}
+                  variant="outline"
+                  className="flex-1"
+                  disabled={isLoadingTemplates || !templates || templates.length === 0}
+                >
+                  <Zap className="h-4 w-4 mr-2" />
+                  Aplicar Modelo
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
@@ -590,60 +689,91 @@ export function ScheduleEditor() {
             </div>
           )}
 
-          {/* Novo Painel de Análise de Risco em Tempo Real */}
-          <Card className="mt-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <ShieldCheck className="h-5 w-5" />
-                Análise de Risco em Tempo Real
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {isRealTimeValidating && (
-                <div>
-                  <Skeleton className="h-4 w-1/4 mb-2" />
-                  <Skeleton className="h-8 w-full mb-4" />
-                  <Skeleton className="h-4 w-full" />
-                </div>
-              )}
-              {!isRealTimeValidating && !realTimeValidation && (
-                <p className="text-sm text-muted-foreground">Faça alterações na escala para iniciar a análise.</p>
-              )}
-              {realTimeValidation?.data && (
-                <div>
-                  <div className="mb-4">
-                    <label className="text-sm font-medium">Score de Risco: {realTimeValidation.data.riskScore}</label>
-                    <Progress 
-                      value={realTimeValidation.data.riskScore} 
-                      className={
-                        realTimeValidation.data.riskScore > 75 ? '[&>div]:bg-red-500' :
-                        realTimeValidation.data.riskScore > 40 ? '[&>div]:bg-yellow-500' :
-                        '[&>div]:bg-green-500'
-                      }
-                    />
-                  </div>
+          {/* Painéis de Análise em Tempo Real */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            {/* Painel de Análise de Risco */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ShieldCheck className="h-5 w-5" />
+                  Análise de Risco em Tempo Real
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {isRealTimeValidating && (
                   <div>
-                    <h4 className="font-medium mb-2">Pontos de Atenção:</h4>
-                    {realTimeValidation.data.violations.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">Nenhuma violação encontrada.</p>
-                    ) : (
-                      <ul className="space-y-2">
-                        {realTimeValidation.data.violations.map((v, index) => (
-                          <li key={index} className="flex items-start gap-2 text-sm">
-                            <AlertTriangle className={v.severity === 'critical' ? 'text-red-500 h-4 w-4 mt-0.5' : 'text-yellow-500 h-4 w-4 mt-0.5'} />
-                            <span>
-                              {v.message} (Funcionário: { (form.employees.find(e => e.id === v.employeeId) || {}).name || v.employeeId })
-                              <Badge variant={v.severity === 'critical' ? 'destructive' : 'secondary'} className="ml-2">{v.severity}</Badge>
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <Skeleton className="h-4 w-1/4 mb-2" />
+                    <Skeleton className="h-8 w-full mb-4" />
+                    <Skeleton className="h-4 w-full" />
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                )}
+                {!isRealTimeValidating && !realTimeValidation && (
+                  <p className="text-sm text-muted-foreground">Faça alterações na escala para iniciar a análise.</p>
+                )}
+                {realTimeValidation?.data && (
+                  <div>
+                    <div className="mb-4">
+                      <label className="text-sm font-medium">Score de Risco: {realTimeValidation.data.riskScore}</label>
+                      <Progress 
+                        value={realTimeValidation.data.riskScore} 
+                        className={
+                          realTimeValidation.data.riskScore > 75 ? '[&>div]:bg-red-500' :
+                          realTimeValidation.data.riskScore > 40 ? '[&>div]:bg-yellow-500' :
+                          '[&>div]:bg-green-500'
+                        }
+                      />
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-2">Pontos de Atenção:</h4>
+                      {realTimeValidation.data.violations.length === 0 ? (
+                        <p className="text-sm text-muted-foreground">Nenhuma violação encontrada.</p>
+                      ) : (
+                        <ul className="space-y-2">
+                          {realTimeValidation.data.violations.map((v, index) => (
+                            <li key={index} className="flex items-start gap-2 text-sm">
+                              <AlertTriangle className={v.severity === 'critical' ? 'text-red-500 h-4 w-4 mt-0.5' : 'text-yellow-500 h-4 w-4 mt-0.5'} />
+                              <span>
+                                {v.message} (Funcionário: { (form.employees.find(e => e.id === v.employeeId) || {}).name || v.employeeId })
+                                <Badge variant={v.severity === 'critical' ? 'destructive' : 'secondary'} className="ml-2">{v.severity}</Badge>
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Painel de Custo */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <DollarSign className="h-5 w-5" />
+                  Custo Estimado da Escala
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {isCalculatingCost && <Skeleton className="h-20 w-full" />}
+                {costResult?.data && (
+                  <div className="space-y-2">
+                    <div className="text-3xl font-bold">
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(costResult.data.totalCost)}
+                    </div>
+                    <div className="text-sm text-muted-foreground space-y-1">
+                      <p>Custos Base: {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(costResult.data.breakdown.baseCost)}</p>
+                      <p>Horas Extras: {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(costResult.data.breakdown.overtimeCost)}</p>
+                      <p>Adicional Noturno: {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(costResult.data.breakdown.nightlyCost)}</p>
+                    </div>
+                  </div>
+                )}
+                {!isCalculatingCost && !costResult?.data && (
+                  <p className="text-sm text-muted-foreground">Aguardando dados da escala para calcular o custo.</p>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </DialogContent>
 
@@ -742,6 +872,156 @@ export function ScheduleEditor() {
             onTemplateSelect={handleApplyTemplate}
             onClose={() => setShowTemplates(false)}
           />
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Aplicação de Template */}
+      <Dialog open={isApplyTemplateModalOpen} onOpenChange={setApplyTemplateModalOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Zap className="h-5 w-5 text-secondary" />
+              Aplicar um Modelo de Escala
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6">
+            {/* Seleção do Template */}
+            <div className="space-y-3">
+              <Label>Selecione o Modelo</Label>
+              <Select 
+                value={selectedTemplateForApply?.id || ''} 
+                onValueChange={(templateId) => {
+                  const template = templates?.find(t => t.id === templateId);
+                  setSelectedTemplateForApply(template || null);
+                  setSelectedEmployeeIds([]); // Reset employee selection when template changes
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Escolha um modelo de escala" />
+                </SelectTrigger>
+                <SelectContent>
+                  {templates?.map((template) => (
+                    <SelectItem key={template.id} value={template.id}>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{template.name}</span>
+                        {template.description && (
+                          <span className="text-sm text-muted-foreground">{template.description}</span>
+                        )}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Informações do Template Selecionado */}
+            {selectedTemplateForApply && (
+              <Card className="border-l-4 border-l-secondary">
+                <CardContent className="pt-4">
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-medium text-secondary">{selectedTemplateForApply.name}</h4>
+                      {selectedTemplateForApply.description && (
+                        <p className="text-sm text-muted-foreground">{selectedTemplateForApply.description}</p>
+                      )}
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Turnos definidos:</span>
+                        <span className="ml-2 font-medium">{selectedTemplateForApply.template_data.shifts.length}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Funcionários padrão:</span>
+                        <span className="ml-2 font-medium">
+                          {selectedTemplateForApply.template_data.employees?.length || 0}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Visualização dos turnos do template */}
+                    <div>
+                      <h5 className="font-medium mb-2">Estrutura do Template:</h5>
+                      <div className="space-y-2">
+                        {selectedTemplateForApply.template_data.shifts.map((shift, index) => {
+                          const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+                          return (
+                            <div key={index} className="flex items-center justify-between p-2 bg-muted/20 rounded">
+                              <span className="text-sm font-medium">{dayNames[shift.dayOfWeek]}</span>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm">{shift.startTime} - {shift.endTime}</span>
+                                <Badge variant="outline" className="text-xs">
+                                  {shift.requiredEmployees} funcionário{shift.requiredEmployees > 1 ? 's' : ''}
+                                </Badge>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Seleção de Funcionários */}
+            <div className="space-y-3">
+              <Label>Selecione os Funcionários</Label>
+              <div className="max-h-48 overflow-y-auto border rounded-lg p-3 space-y-2">
+                {mockEmployees.map((employee) => (
+                  <div key={employee.id} className="flex items-center space-x-3">
+                    <Checkbox
+                      id={`employee-${employee.id}`}
+                      checked={selectedEmployeeIds.includes(employee.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setSelectedEmployeeIds(prev => [...prev, employee.id]);
+                        } else {
+                          setSelectedEmployeeIds(prev => prev.filter(id => id !== employee.id));
+                        }
+                      }}
+                    />
+                    <Label 
+                      htmlFor={`employee-${employee.id}`}
+                      className="flex-1 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">{employee.name}</p>
+                          <p className="text-sm text-muted-foreground">{employee.department}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {employee.skills.map((skill) => (
+                            <Badge key={skill} variant="outline" className="text-xs">
+                              {skill}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </Label>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {selectedEmployeeIds.length} funcionário{selectedEmployeeIds.length !== 1 ? 's' : ''} selecionado{selectedEmployeeIds.length !== 1 ? 's' : ''}
+              </p>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setApplyTemplateModalOpen(false)}>
+              Cancelar
+            </Button>
+            <Button 
+              onClick={handleApplyTemplate}
+              disabled={!selectedTemplateForApply || selectedEmployeeIds.length === 0}
+              className="bg-secondary hover:bg-secondary/90"
+            >
+              <Zap className="h-4 w-4 mr-2" />
+              Aplicar Modelo
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </Dialog>

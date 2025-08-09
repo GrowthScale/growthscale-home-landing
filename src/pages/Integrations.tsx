@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Filter, Smartphone, FileText, BarChart3, Users, Zap, Globe, CheckCircle, ExternalLink, Settings, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -231,6 +231,8 @@ const Integrations = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [selectedIntegration, setSelectedIntegration] = useState<Integration | null>(null);
+  const [webhookUrl, setWebhookUrl] = useState('');
+  const [isSavingWebhook, setIsSavingWebhook] = useState(false);
 
   const filteredIntegrations = useMemo(() => {
     let filtered = integrations;
@@ -274,6 +276,36 @@ const Integrations = () => {
         return null;
     }
   };
+
+  const handleSaveWebhook = async () => {
+    if (!webhookUrl.trim()) return;
+    
+    setIsSavingWebhook(true);
+    try {
+      // Aqui você pode implementar a lógica para salvar no banco de dados
+      // Por enquanto, vamos simular salvando no localStorage
+      localStorage.setItem('whatsapp-webhook-url', webhookUrl);
+      
+      // Simular delay de salvamento
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mostrar feedback de sucesso (você pode usar um toast aqui)
+      alert('Webhook salvo com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar webhook:', error);
+      alert('Erro ao salvar webhook. Tente novamente.');
+    } finally {
+      setIsSavingWebhook(false);
+    }
+  };
+
+  // Carregar webhook salvo ao montar o componente
+  useEffect(() => {
+    const savedWebhook = localStorage.getItem('whatsapp-webhook-url');
+    if (savedWebhook) {
+      setWebhookUrl(savedWebhook);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -371,6 +403,76 @@ const Integrations = () => {
               </div>
             </div>
           )}
+
+          {/* WhatsApp Webhook Configuration */}
+          <div className="mb-12">
+            <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3 text-primary">
+                  <Smartphone className="h-6 w-6" />
+                  Notificações via WhatsApp
+                </CardTitle>
+                <CardDescription>
+                  Configure o webhook para receber notificações de escalas e enviá-las automaticamente via WhatsApp
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    Insira a URL do seu webhook (criado no Make.com ou Zapier) para enviar as escalas.
+                  </p>
+                  <Input 
+                    placeholder="https://hook.make.com/sua-url-aqui" 
+                    value={webhookUrl}
+                    onChange={(e) => setWebhookUrl(e.target.value)}
+                    className="font-mono text-sm"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Exemplo: https://hook.make.com/abc123/def456
+                  </p>
+                </div>
+                
+                <div className="flex gap-3">
+                  <Button 
+                    onClick={handleSaveWebhook}
+                    disabled={isSavingWebhook || !webhookUrl.trim()}
+                    className="flex-1"
+                  >
+                    {isSavingWebhook ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Salvando...
+                      </>
+                    ) : (
+                      'Salvar Webhook'
+                    )}
+                  </Button>
+                  
+                  {webhookUrl && (
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setWebhookUrl('')}
+                      disabled={isSavingWebhook}
+                    >
+                      Limpar
+                    </Button>
+                  )}
+                </div>
+
+                {webhookUrl && (
+                  <div className="p-3 bg-muted/50 rounded-lg">
+                    <p className="text-sm font-medium text-foreground mb-2">Status da Configuração:</p>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-success" />
+                      <span className="text-sm text-muted-foreground">
+                        Webhook configurado e pronto para uso
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
 
           {/* All Integrations */}
           <div className="mb-12">

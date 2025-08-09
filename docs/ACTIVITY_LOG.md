@@ -4,6 +4,249 @@ Este documento registra todas as atividades, implementações e mudanças realiz
 
 ## 🗓️ Histórico de Atividades
 
+### **2024-12-19 - Correção de Warnings de Linting e Otimização de Performance**
+
+#### **Atividade**: Correção de warnings de ESLint e otimização de hooks React
+- **Data**: 2024-12-19
+- **Responsável**: Equipe de Desenvolvimento
+- **Status**: ✅ Concluído
+
+#### **O que foi corrigido:**
+1. **Warnings de Dependências de Hooks**:
+   - **WhatsAppNotificationManager.tsx**: ✅ Corrigido usando `useCallback` para `loadCommunicationLogs`
+   - **CostSimulator.tsx**: ✅ Corrigido usando `useCallback` e `useMemo` para `calculateCosts` e `costService`
+
+2. **Otimizações de Performance**:
+   - **useCallback**: Implementado para funções que são passadas como dependências
+   - **useMemo**: Implementado para instâncias de serviços que não devem ser recriadas a cada render
+   - **Dependências de useEffect**: Corrigidas para incluir todas as dependências necessárias
+
+3. **Correção de Regex**:
+   - **utils.ts**: ✅ Corrigido escape desnecessário em `phoneRegex` (removido `\-` para `-`)
+
+#### **Arquivos Modificados:**
+```
+src/components/WhatsAppNotificationManager.tsx # useCallback para loadCommunicationLogs
+src/components/schedules/CostSimulator.tsx     # useCallback e useMemo para calculateCosts
+src/lib/utils.ts                              # Correção de regex de telefone
+```
+
+#### **Mudanças Técnicas Implementadas:**
+
+**WhatsAppNotificationManager.tsx:**
+```typescript
+// Antes: Função recriada a cada render
+const loadCommunicationLogs = async () => { ... };
+
+// Depois: Função memoizada com useCallback
+const loadCommunicationLogs = useCallback(async () => { ... }, [tenantId]);
+```
+
+**CostSimulator.tsx:**
+```typescript
+// Antes: Serviço recriado a cada render
+const costService = new CostCalculationService();
+
+// Depois: Serviço memoizado com useMemo
+const costService = useMemo(() => new CostCalculationService(), []);
+
+// Antes: Função recriada a cada render
+const calculateCosts = async () => { ... };
+
+// Depois: Função memoizada com useCallback
+const calculateCosts = useCallback(async () => { ... }, [shifts, employees, onCostUpdate, costService, toast]);
+```
+
+**utils.ts:**
+```typescript
+// Antes: Escape desnecessário
+const phoneRegex = /^[\d\s\-()+\-]+$/;
+
+// Depois: Regex limpo
+const phoneRegex = /^[\d\s-()+-]+$/;
+```
+
+#### **Resultados da Correção:**
+- ✅ **Warnings de Dependências**: Reduzidos de 2 para 0
+- ✅ **Build de Produção**: Funcionando perfeitamente
+- ✅ **Performance**: Melhorada com memoização de funções e serviços
+- ✅ **Código Limpo**: Sem warnings de ESLint relacionados a hooks
+
+#### **Warnings Restantes (11):**
+- **Fast Refresh Warnings**: São warnings intrínsecos do shadcn/ui e React Refresh
+- **Não afetam funcionalidade**: Apenas avisos de desenvolvimento
+- **Componentes funcionais**: Todos os componentes estão funcionando corretamente
+
+#### **Validação Técnica:**
+- ✅ ESLint sem warnings de dependências de hooks
+- ✅ Build de produção bem-sucedido
+- ✅ Performance otimizada com memoização
+- ✅ Código limpo e seguindo best practices do React
+
+#### **Próximos Passos:**
+- [ ] Monitoramento de performance em produção
+- [ ] Considerar implementação de React.memo para componentes pesados
+- [ ] Avaliar necessidade de code splitting para chunks grandes
+- [ ] Implementar testes unitários para hooks otimizados
+
+---
+
+## 🗓️ Histórico de Atividades
+
+### **2024-12-19 - Simulador de Custo em Tempo Real**
+
+#### **Atividade**: Implementação do simulador de custo integrado ao Editor de Escalas
+- **Data**: 2024-12-19
+- **Responsável**: Equipe de Desenvolvimento
+- **Status**: ✅ Concluído
+
+#### **O que foi implementado:**
+1. **Painel de Custo Integrado** (`src/components/schedules/ScheduleEditor.tsx`)
+   - Painel de custo em tempo real ao lado do painel de análise de risco
+   - Layout responsivo com grid de 2 colunas em telas grandes
+   - Atualização automática de custos a cada alteração na escala
+   - Exibição de custo total, breakdown de custos base, horas extras e adicional noturno
+
+2. **Integração com Service Layer**:
+   - Query React Query para cálculo de custo em tempo real
+   - Integração com `costCalculationService.calculateScheduleCost()`
+   - Mock de `hourlyRate` para funcionários sem valor/hora configurado
+   - Cache inteligente com chave baseada em `shifts` e `employees`
+
+3. **Interface de Usuário**:
+   - **Ícone DollarSign**: Representação visual do painel de custo
+   - **Card Responsivo**: Layout que se adapta ao tamanho da tela
+   - **Estados de Loading**: Skeleton durante cálculo de custos
+   - **Formatação de Moeda**: Exibição em formato brasileiro (R$)
+   - **Breakdown Detalhado**: Separação clara entre tipos de custo
+
+4. **Funcionalidades Implementadas**:
+   - **Cálculo em Tempo Real**: Recálculo automático com cada alteração na escala
+   - **Visualização Simultânea**: Análise de risco CLT e custos financeiros lado a lado
+   - **Tomada de Decisão Estratégica**: Visão unificada para gestores
+   - **Performance Otimizada**: Query habilitada apenas quando há dados de escala
+
+#### **Arquivos Modificados:**
+```
+src/components/schedules/ScheduleEditor.tsx # Painel de custo integrado
+```
+
+#### **Novos Estados Adicionados:**
+```typescript
+const { data: costResult, isLoading: isCalculatingCost } = useQuery({
+  queryKey: ['scheduleCost', shifts, employees],
+  queryFn: () => {
+    const employeesWithRate = employees.map(e => ({ ...e, hourlyRate: e.hourlyRate || 20 }));
+    return costCalculationService.calculateScheduleCost({ shifts, employees: employeesWithRate });
+  },
+  enabled: shifts && shifts.length > 0,
+});
+```
+
+#### **Integrações Realizadas:**
+- **React Query**: Query para cálculo de custo em tempo real
+- **costCalculationService**: Serviço para cálculos de custo
+- **Lucide React**: Ícone DollarSign para representação visual
+- **Sistema de Grid**: Layout responsivo para painéis lado a lado
+
+#### **Fluxo de Funcionamento:**
+1. Usuário abre o Editor de Escalas
+2. Sistema exibe painel de análise de risco e painel de custo lado a lado
+3. A cada alteração na escala, custos são recalculados automaticamente
+4. Painel mostra custo total, breakdown de custos base, horas extras e adicional noturno
+5. Gestor pode tomar decisões baseadas em conformidade legal vs. impacto financeiro
+
+#### **Validação Técnica:**
+- ✅ TypeScript sem erros
+- ✅ Build de produção bem-sucedido
+- ✅ Componente funcional e integrado
+- ✅ Compatibilidade com sistema existente
+- ✅ Layout responsivo funcionando corretamente
+
+#### **Próximos Passos:**
+- [ ] Testes de usabilidade da interface
+- [ ] Melhorias na visualização de breakdown de custos
+- [ ] Integração com sistema de relatórios financeiros
+- [ ] Sistema de alertas para custos acima do orçado
+
+---
+
+### **2024-12-19 - Aplicação de Modelos no Editor de Escalas**
+
+#### **Atividade**: Implementação da funcionalidade de aplicação de templates diretamente no editor de escalas
+- **Data**: 2024-12-19
+- **Responsável**: Equipe de Desenvolvimento
+- **Status**: ✅ Concluído
+
+#### **O que foi implementado:**
+1. **Funcionalidade de Aplicação de Templates** (`src/components/schedules/ScheduleEditor.tsx`)
+   - Modal dedicado para aplicação de modelos com seleção de template e funcionários
+   - Integração com sistema existente de templates via `scheduleTemplateService`
+   - Lógica inteligente para geração automática de turnos baseados na estrutura do template
+   - Cálculo automático de datas da semana usando `startOfWeek` e `addDays`
+
+2. **Interface de Usuário**:
+   - **Botão "Aplicar Modelo"**: Adicionado ao card de templates para acesso rápido
+   - **Modal de Aplicação**: Interface responsiva com scroll para conteúdo extenso
+   - **Seleção de Template**: Dropdown com todos os templates disponíveis
+   - **Preview da Estrutura**: Card detalhado mostrando turnos, horários e funcionários padrão
+   - **Seleção de Funcionários**: Checkboxes para escolher quais funcionários aplicar o template
+   - **Validação de Entrada**: Controles que previnem aplicação sem seleção completa
+
+3. **Funcionalidades Implementadas**:
+   - **Geração Automática de Turnos**: Sistema que gera turnos baseados em `template_data.shifts`
+   - **Cálculo Inteligente de Datas**: Lógica para calcular datas da semana a partir de uma data de referência
+   - **Integração com Formulário**: Atualização automática do estado do formulário
+   - **Seleção de Funcionários**: Sistema flexível para escolher quais funcionários aplicar o template
+   - **Feedback Visual**: Toast notifications e atualização automática da interface
+
+#### **Arquivos Modificados:**
+```
+src/components/schedules/ScheduleEditor.tsx # Funcionalidade principal implementada
+```
+
+#### **Novos Estados Adicionados:**
+```typescript
+const [isApplyTemplateModalOpen, setApplyTemplateModalOpen] = useState(false);
+const [selectedTemplateForApply, setSelectedTemplateForApply] = useState<ScheduleTemplate | null>(null);
+const [selectedEmployeeIds, setSelectedEmployeeIds] = useState<string[]>([]);
+```
+
+#### **Novas Funções Implementadas:**
+- **`handleApplyTemplate()`**: Lógica principal para aplicar o template selecionado
+- **`handleOpenApplyTemplateModal()`**: Controle de abertura do modal com validação de templates disponíveis
+
+#### **Integrações Realizadas:**
+- **React Query**: Query para buscar templates disponíveis
+- **scheduleTemplateService**: Serviço para acesso aos templates
+- **date-fns**: Funções `addDays` e `startOfWeek` para cálculos de data
+- **Sistema de Toast**: Feedback visual para o usuário
+
+#### **Fluxo de Funcionamento:**
+1. Usuário clica em "Aplicar Modelo" no card de templates
+2. Modal abre com lista de templates disponíveis
+3. Usuário seleciona o template desejado
+4. Sistema exibe preview da estrutura do template
+5. Usuário seleciona funcionários para aplicar o template
+6. Sistema gera turnos automaticamente baseados na estrutura
+7. Template é aplicado com atualização do formulário
+8. Feedback visual é exibido via toast
+
+#### **Validação Técnica:**
+- ✅ TypeScript sem erros
+- ✅ Build de produção bem-sucedido
+- ✅ Componente funcional e integrado
+- ✅ Compatibilidade com sistema existente
+- ✅ Imports corretos de todas as dependências
+
+#### **Próximos Passos:**
+- [ ] Testes de usabilidade da interface
+- [ ] Melhorias na visualização de turnos gerados
+- [ ] Integração com sistema de calendário
+- [ ] Sistema de preview de turnos antes da aplicação
+
+---
+
 ### **2024-12-19 - Página de Gerenciamento de Templates**
 
 #### **Atividade**: Implementação da página completa de gerenciamento de templates de escala

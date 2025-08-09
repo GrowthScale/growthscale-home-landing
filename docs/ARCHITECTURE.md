@@ -108,6 +108,11 @@ Local State → Context → Supabase → Real-time Updates → UI
 Request → Service Worker → Cache → Network → Update Cache
 ```
 
+### 4. **Simulador de Custo em Tempo Real**
+```
+Schedule Changes → React Query → costCalculationService → Supabase Edge Function → Real-time Cost Updates → UI
+```
+
 ## 🛡️ Segurança
 
 ### Camadas de Segurança
@@ -164,6 +169,27 @@ self.addEventListener('fetch', (event) => {
 - **Route-based**: Lazy loading de páginas
 - **Component-based**: Componentes pesados
 - **Vendor splitting**: Bibliotecas externas
+
+## 💰 Simulador de Custo Architecture
+
+### Component Integration
+```
+ScheduleEditor
+    ↓
+Painel de Análise de Risco + Painel de Custo (Grid Layout)
+    ↓
+React Query (scheduleCost) + costCalculationService
+    ↓
+Supabase Edge Function (calculate-schedule-cost)
+    ↓
+Real-time Cost Updates
+```
+
+### Performance Features
+- **Query Optimization**: Habilitada apenas quando há dados de escala
+- **Cache Strategy**: Chave baseada em `shifts` e `employees`
+- **Real-time Updates**: Recálculo automático com cada alteração
+- **Responsive Layout**: Grid de 2 colunas em telas grandes, empilhado em telas pequenas
 
 ### Caching Strategy
 - **Static assets**: Cache longo

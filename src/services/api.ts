@@ -218,7 +218,7 @@ export class BaseApiService {
       if (error) {
         return {
           data: null,
-          error: error.message || 'Erro desconhecido',
+          error: error instanceof Error ? error.message : 'Erro desconhecido',
           loading: false
         };
       }
@@ -553,12 +553,56 @@ export class ScheduleTemplateService extends BaseApiService {
   }
 }
 
+// --- Tipos para Cálculo de Custo ---
+export interface EmployeeForCostCalculation {
+  id: string;
+  workload: number;
+  hourlyRate: number; // Valor da hora do funcionário
+}
+
+export interface ShiftForCostCalculation {
+  employeeId: string;
+  startTime: string; // Formato ISO 8601
+  endTime: string;
+}
+
+export interface CostCalculationRequest {
+  shifts: ShiftForCostCalculation[];
+  employees: EmployeeForCostCalculation[];
+}
+
+export interface CostCalculationResult {
+  totalCost: number;
+  breakdown: {
+    baseCost: number;
+    overtimeCost: number;
+    nightlyCost: number;
+  };
+}
+
+export class CostCalculationService extends BaseApiService {
+  async calculateScheduleCost(costData: CostCalculationRequest): Promise<ApiResponse<CostCalculationResult>> {
+    return this.handleRequest(async () => {
+      const { data, error } = await supabase.functions.invoke('calculate-schedule-cost', {
+        body: costData,
+      });
+
+      if (error) {
+        throw new Error(`Erro no cálculo de custo: ${error instanceof Error ? error.message : String(error)}`);
+      }
+
+      return { data, error: null };
+    });
+  }
+}
+
 // Export service instances
 export const employeeService = new EmployeeService();
 export const companyService = new CompanyService();
 export const scheduleService = new ScheduleService();
 export const cltAssistantService = new CLTAssistantService();
 export const scheduleTemplateService = new ScheduleTemplateService();
+export const costCalculationService = new CostCalculationService();
 
 // Standalone function for CLT Assistant (alternative to service method)
 export async function askCltAssistant(question: string): Promise<{ answer: string }> {
@@ -575,13 +619,99 @@ export async function askCltAssistant(question: string): Promise<{ answer: strin
 
 // Standalone function for Schedule Suggestion (alternative to service method)
 export async function suggestSchedule(context: ScheduleSuggestionRequest): Promise<{ suggestion: { shiftId: string; employeeId: string }[] }> {
-  const { data, error } = await supabase.functions.invoke('suggest-schedule', {
+  try {
+    const response = await fetch('/api/suggest-schedule', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(context),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get schedule suggestion');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error getting schedule suggestion:', error);
+    throw error;
+  }
+}
+
+// Standalone function for Cost Calculation (alternative to service method)
+export async function calculateScheduleCost(context: { shifts: ShiftForCostCalculation[], employees: EmployeeForCostCalculation[] }): Promise<CostCalculationResult> {
+  const { data, error } = await supabase.functions.invoke('calculate-schedule-cost', {
     body: context,
   });
+  if (error) throw error;
+  return data;
+}
 
-  if (error) {
-    throw new Error(`Erro na sugestão de IA: ${error.message}`);
+// Standalone function for WhatsApp Schedule Notifications (alternative to service method)
+export async function sendScheduleNotification(payload: { 
+  employeeIds: string[], 
+  scheduleId: string, 
+  webhookUrl: string, 
+  tenantId: string 
+}): Promise<WhatsAppNotificationResponse> {
+  const { data, error } = await supabase.functions.invoke('send-schedule-notification', { 
+    body: payload 
+  });
+  if (error) throw error;
+  return data;
+}
+
+// Interfaces para notificações WhatsApp
+export interface WhatsAppNotificationRequest {
+  employeeIds: string[];
+  scheduleId: string;
+  webhookUrl: string;
+  tenantId: string;
+}
+
+export interface CommunicationLog {
+  id: string;
+  created_at: string;
+  employee_id: string;
+  tenant_id: string;
+  type: string;
+  status: 'SUCCESS' | 'FAILED';
+  details: Record<string, unknown>;
+}
+
+export interface WhatsAppNotificationResponse {
+  success: boolean;
+  message: string;
+}
+
+export class WhatsAppNotificationService extends BaseApiService {
+  async sendScheduleNotifications(notificationData: WhatsAppNotificationRequest): Promise<ApiResponse<WhatsAppNotificationResponse>> {
+    return this.handleRequest(async () => {
+      const { data, error } = await supabase.functions.invoke('send-schedule-notification', {
+        body: notificationData,
+      });
+      
+      if (error) throw error;
+      return { data, error: null };
+    });
   }
 
-  return data;
-} 
+  async getCommunicationLogs(tenantId: string): Promise<ApiResponse<CommunicationLog[]>> {
+    return this.handleRequest(async () => {
+      const { data, error } = await supabase
+        .from('communication_logs')
+        .select('*')
+        .eq('tenant_id', tenantId)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      return { data, error: null };
+    });
+  }
+}
+
+// Instância do serviço WhatsApp
+export const whatsAppNotificationService = new WhatsAppNotificationService();
+
+ 

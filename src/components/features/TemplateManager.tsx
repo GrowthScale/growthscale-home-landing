@@ -210,7 +210,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
       accessor: (item: Record<string, unknown>) => (
         <div className="flex items-center space-x-1">
           <Calendar className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm">{(item.template_data as any)?.shifts?.length || 0}</span>
+          <span className="text-sm">{(item.template_data as { shifts?: unknown[] })?.shifts?.length || 0}</span>
         </div>
       ),
     },
@@ -220,7 +220,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
       accessor: (item: Record<string, unknown>) => (
         <div className="flex items-center space-x-1">
           <Users className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm">{(item.template_data as any)?.employees?.length || 0}</span>
+          <span className="text-sm">{(item.template_data as { employees?: unknown[] })?.employees?.length || 0}</span>
         </div>
       ),
     },

@@ -1,0 +1,51 @@
+{
+  "shifts": [
+    {
+      "employeeId": "emp-001",
+      "startTime": "2024-12-23T08:00:00.000Z",
+      "endTime": "2024-12-23T17:00:00.000Z"
+    },
+    {
+      "employeeId": "emp-001",
+      "startTime": "2024-12-24T08:00:00.000Z",
+      "endTime": "2024-12-24T17:00:00.000Z"
+    },
+    {
+      "employeeId": "emp-001",
+      "startTime": "2024-12-25T08:00:00.000Z",
+      "endTime": "2024-12-25T17:00:00.000Z"
+    },
+    {
+      "employeeId": "emp-002",
+      "startTime": "2024-12-23T22:00:00.000Z",
+      "endTime": "2024-12-24T06:00:00.000Z"
+    },
+    {
+      "employeeId": "emp-002",
+      "startTime": "2024-12-24T22:00:00.000Z",
+      "endTime": "2024-12-25T06:00:00.000Z"
+    },
+    {
+      "employeeId": "emp-003",
+      "startTime": "2024-12-23T08:00:00.000Z",
+      "endTime": "2024-12-23T20:00:00.000Z"
+    }
+  ],
+  "employees": [
+    {
+      "id": "emp-001",
+      "workload": 40,
+      "hourlyRate": 25.00
+    },
+    {
+      "id": "emp-002",
+      "workload": 40,
+      "hourlyRate": 30.00
+    },
+    {
+      "id": "emp-003",
+      "workload": 40,
+      "hourlyRate": 28.00
+    }
+  ]
+}

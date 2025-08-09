@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useMutation } from '@tanstack/react-query';
+import { sendScheduleNotification } from '@/services/api';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Calendar,
   Clock,
@@ -14,7 +18,9 @@ import {
   MoreHorizontal,
   AlertTriangle,
   CheckCircle,
-  Clock3
+  Clock3,
+  MessageCircle,
+  Bell
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -103,6 +109,59 @@ const mockSchedules: ScheduleItem[] = [
 
 export function ScheduleList() {
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+  const [notificationDialog, setNotificationDialog] = useState<{
+    isOpen: boolean;
+    schedule: ScheduleItem | null;
+  }>({ isOpen: false, schedule: null });
+  const { toast } = useToast();
+
+  // Mutation para enviar notificações
+  const notifyMutation = useMutation({
+    mutationFn: sendScheduleNotification,
+    onSuccess: () => {
+      toast({
+        title: "Notificações enviadas!",
+        description: "A equipe foi notificada sobre a escala via WhatsApp.",
+        variant: "default",
+      });
+      setNotificationDialog({ isOpen: false, schedule: null });
+    },
+    onError: (error) => {
+      toast({
+        title: "Erro ao enviar notificações",
+        description: error.message || "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleNotify = (schedule: ScheduleItem) => {
+    const webhookUrl = localStorage.getItem('whatsapp-webhook-url');
+    
+    if (!webhookUrl) {
+      toast({
+        title: "Webhook não configurado",
+        description: "Configure o webhook WhatsApp nas Integrações antes de enviar notificações.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setNotificationDialog({ isOpen: true, schedule });
+  };
+
+  const confirmNotification = () => {
+    if (!notificationDialog.schedule) return;
+
+    const payload = {
+      employeeIds: notificationDialog.schedule.employees.map(emp => emp.id),
+      scheduleId: notificationDialog.schedule.id,
+      webhookUrl: localStorage.getItem('whatsapp-webhook-url') || '',
+      tenantId: 'tenant-001' // Será obtido do contexto
+    };
+
+    notifyMutation.mutate(payload);
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -218,6 +277,10 @@ export function ScheduleList() {
                         <Edit className="h-4 w-4 mr-2" />
                         Editar
                       </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleNotify(schedule)}>
+                        <Bell className="h-4 w-4 mr-2" />
+                        Notificar Equipe
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem className="text-destructive">
                         <Trash2 className="h-4 w-4 mr-2" />
@@ -285,6 +348,14 @@ export function ScheduleList() {
                   <Button variant="ghost" size="sm">
                     <Edit className="h-3 w-3" />
                   </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => handleNotify(schedule)}
+                    title="Notificar equipe via WhatsApp"
+                  >
+                    <Bell className="h-3 w-3" />
+                  </Button>
                 </div>
               </div>
             </div>
@@ -317,6 +388,68 @@ export function ScheduleList() {
       </div>
 
       {viewMode === 'table' ? renderTableView() : renderCardsView()}
+
+      {/* Dialog de Confirmação de Notificação */}
+      <Dialog open={notificationDialog.isOpen} onOpenChange={(open) => setNotificationDialog({ isOpen: open, schedule: null })}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Bell className="h-5 w-5 text-primary" />
+              Notificar Equipe
+            </DialogTitle>
+            <DialogDescription>
+              Tem certeza que deseja enviar notificações WhatsApp para todos os funcionários desta escala?
+            </DialogDescription>
+          </DialogHeader>
+          
+          {notificationDialog.schedule && (
+            <div className="space-y-4">
+              <div className="p-4 bg-muted/50 rounded-lg">
+                <h4 className="font-medium mb-2">Detalhes da Escala:</h4>
+                <div className="space-y-2 text-sm">
+                  <p><strong>Data:</strong> {notificationDialog.schedule.date}</p>
+                  <p><strong>Turno:</strong> {notificationDialog.schedule.shift.time}</p>
+                  <p><strong>Funcionários:</strong> {notificationDialog.schedule.employees.length}</p>
+                  <p><strong>Departamento:</strong> {notificationDialog.schedule.department}</p>
+                </div>
+              </div>
+              
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                <p className="text-sm text-amber-800">
+                  <strong>⚠️ Atenção:</strong> As notificações serão enviadas para todos os funcionários listados nesta escala.
+                </p>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setNotificationDialog({ isOpen: false, schedule: null })}
+              disabled={notifyMutation.isPending}
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={confirmNotification}
+              disabled={notifyMutation.isPending}
+              className="bg-primary hover:bg-primary/90"
+            >
+              {notifyMutation.isPending ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <Bell className="h-4 w-4 mr-2" />
+                  Confirmar e Enviar
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

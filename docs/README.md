@@ -78,7 +78,14 @@ src/
 - Relatórios detalhados
 - Auditoria integrada
 
-### 5. **PWA Features**
+### 5. **Simulador de Custo em Tempo Real**
+- Cálculo automático de custos trabalhistas
+- Análise de horas extras e adicional noturno
+- Painel integrado ao Editor de Escalas
+- Atualização em tempo real com cada alteração
+- Tomada de decisão baseada em impacto financeiro
+
+### 6. **PWA Features**
 - Instalação no dispositivo
 - Funcionalidade offline
 - Notificações push

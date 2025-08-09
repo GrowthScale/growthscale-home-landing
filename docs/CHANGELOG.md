@@ -5,7 +5,48 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.2.0] - 2024-12-19
+
+### 🚀 **Novas Funcionalidades**
+- **Simulador de Custo em Tempo Real**: Sistema completo de cálculo automático de custos trabalhistas
+  - **Backend**: Supabase Edge Function `calculate-schedule-cost` com lógica de cálculo de horas extras (1.5x) e adicional noturno (1.2x)
+  - **Frontend**: Componente `CostSimulator` com dashboard visual e breakdown de custos
+  - **API Service**: `CostCalculationService` e função standalone `calculateScheduleCost`
+  - **Integração UI**: Nova aba "Custos" na página de Escalas com dados mock para testes
+  - **Cálculos**: Base, horas extras e adicional noturno baseados na carga horária contratada
+  - **Dados Mock**: 5 funcionários com diferentes salários/hora e 15+ turnos simulando semana completa
+  - **Multiplicadores Configuráveis**: Horas extras (1.5x), Adicional noturno (1.2x)
+  - **Cálculo Inteligente**: Baseado na carga horária contratada vs. horas trabalhadas
+  - **Performance**: Cálculos em tempo real com Edge Functions
+  - **Documentação**: Guia completo de uso e configuração técnica
+
+### 🔧 **Melhorias Técnicas**
+- **API Service**: Adicionado método `calculateScheduleCost` ao arquivo `src/services/api.ts`
+- **TypeScript**: Interfaces completas para cálculo de custos (`EmployeeForCostCalculation`, `ShiftForCostCalculation`)
+- **Integração**: Serviço `CostCalculationService` exportado e disponível para uso
+- **Build**: Aplicação compilando sem erros após implementação
+
+### 📚 **Documentação**
+- **Documentação Técnica**: Criado `docs/COST_SIMULATOR.md` com especificações completas
+- **CHANGELOG**: Atualizado com detalhes da nova funcionalidade
+- **Comentários**: Código documentado com explicações detalhadas
+
+---
+
 ## [Unreleased]
+
+### 🚀 **Novas Funcionalidades**
+- **Sistema de Notificações WhatsApp para Escalas**: Implementado sistema completo de notificações automáticas via WhatsApp, incluindo:
+  - **Backend**: Supabase Edge Function `send-schedule-notification` para envio de notificações
+  - **Frontend**: Componente `WhatsAppNotificationManager` com interface de configuração e monitoramento
+  - **API Service**: `WhatsAppNotificationService` para gerenciar notificações e logs
+  - **Integração UI**: Nova aba "Notificações" na página de Escalas com configuração de webhook
+  - **Logs de Comunicação**: Sistema completo de rastreamento de envios (sucesso/falha)
+  - **Webhook Configurável**: Suporte a qualquer serviço de WhatsApp Business via webhooks
+  - **Formatação Inteligente**: Mensagens personalizadas com horários e datas em português
+  - **Multi-tenant**: Isolamento completo por tenant com Row Level Security
+  - **Interface Intuitiva**: Configuração simples de webhook e monitoramento em tempo real
+  - **Documentação**: Guia completo de configuração e troubleshooting
 
 ### 🔧 **Correções e Melhorias**
 - **Auditoria Completa do Sistema**: Realizada auditoria completa do sistema, corrigindo todos os erros de TypeScript, problemas de linting e vulnerabilidades de segurança
@@ -18,6 +59,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Implementado rate limiting
   - Otimizados hooks com useMemo e useCallback
 
+### 🚀 **Novas Funcionalidades**
+- **Aplicação de Modelos no Editor de Escalas**: Implementada funcionalidade completa para aplicar templates de escala diretamente no editor, incluindo:
+  - **Modal de Aplicação**: Interface dedicada para seleção de modelo e funcionários
+  - **Seleção Inteligente**: Dropdown com todos os templates disponíveis e preview da estrutura
+  - **Seleção de Funcionários**: Checkboxes para escolher quais funcionários aplicar o template
+  - **Geração Automática de Turnos**: Sistema que gera turnos baseados na estrutura do template (`template_data.shifts`)
+  - **Cálculo de Datas**: Lógica inteligente para calcular datas da semana usando `startOfWeek` e `addDays`
+  - **Integração com Formulário**: Atualização automática do estado do formulário com funcionários e observações
+  - **Validação de Entrada**: Controles que previnem aplicação sem seleção completa
+  - **Feedback Visual**: Toast notifications e atualização automática da interface
+  - **Botão "Aplicar Modelo"**: Adicionado ao card de templates para acesso rápido
+  - **Visualização da Estrutura**: Card detalhado mostrando turnos, horários e funcionários padrão do template
+
 ### 🐛 **Correções de Bugs**
 - Corrigido regex de validação de telefone em `src/lib/utils.ts`
 - Corrigidos tipos inseguros em todos os componentes
@@ -26,6 +80,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ### 📚 **Documentação**
 - Atualizada documentação com resultados da auditoria completa
 - Adicionado registro detalhado de todas as correções realizadas
+- Documentada nova funcionalidade de aplicação de modelos no Editor de Escalas
 
 ### Adicionado
 - **Integração do Motor de Regras da CLT ao Frontend:** Implementada integração completa do Motor de Regras da CLT ao frontend, incluindo:
@@ -77,6 +132,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - **Multi-tenancy**: Suporte a templates por empresa (tenant_id)
   - **Validação**: Tratamento de erros e feedback visual
   - **UX Otimizada**: Loading states, confirmações e toasts informativos
+  - **Aplicação Direta no Editor**: Nova funcionalidade para aplicar modelos diretamente no `ScheduleEditor` com seleção de funcionários e geração automática de turnos
+  - **Modal de Aplicação**: Interface dedicada para seleção de template e funcionários específicos
+  - **Geração Automática de Turnos**: Sistema que gera automaticamente todos os turnos baseados na estrutura do template (`template_data.shifts`)
+  - **Cálculo Inteligente de Datas**: Lógica para calcular datas da semana usando `startOfWeek` e `addDays`
+  - **Seleção de Funcionários**: Checkboxes para escolher quais funcionários aplicar o template
+  - **Preview da Estrutura**: Card detalhado mostrando turnos, horários e funcionários padrão antes da aplicação
+  - **Integração com Formulário**: Atualização automática do estado do formulário com funcionários e observações
+  - **Botão "Aplicar Modelo"**: Adicionado ao card de templates para acesso rápido à funcionalidade
 
 - **Motor de Regras da CLT (`/functions/validate-schedule`):** Implementada a primeira versão da Supabase Edge Function para validação de escalas. A função atualmente verifica violações de intervalo interjornada (11h), descanso semanal remunerado (DSR) e excesso de carga horária semanal. Ela recebe os dados da escala e retorna um score de risco e uma lista detalhada de violações.
 
@@ -148,10 +211,28 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Constantes Centralizadas**: Sistema de constantes
   - Arquivo `src/constants/index.ts`
 
-### Feature - **Sistema de Templates de Escala (Completo):**
+## 🚀 Feature - Funcionalidades Principais
+
+### **Sistema de Modelos de Escala (Templates):**
+- **Implementado Sistema de Modelos de Escala (Templates):** Adicionada a capacidade de criar, gerenciar e aplicar modelos de escala pré-definidos (ex: 6x1, 12x36). Foi criada uma nova seção de gerenciamento de modelos e, no editor de escalas, agora é possível aplicar um modelo a um grupo de funcionários, gerando automaticamente todos os turnos e simplificando drasticamente o processo de criação de escala.
+
+### **Funcionalidades Implementadas:**
 - **Página de Gerenciamento**: Nova página `/templates` com interface completa para gerenciar templates
 - **Componente TemplateManager**: Interface robusta com DataTable, modais de criação/edição/visualização
 - **Funcionalidades CRUD**: Criar, editar, visualizar, deletar e aplicar templates
 - **Integração com Rotas**: Página protegida e integrada ao sistema de navegação
 - **Visualização Detalhada**: Modal para visualizar detalhes completos dos templates
 - **Aplicação de Templates**: Botão para aplicar template diretamente na página de escalas
+- **Aplicação Direta no Editor**: Nova funcionalidade para aplicar modelos diretamente no `ScheduleEditor` com seleção de funcionários e geração automática de turnos
+- **Modal de Aplicação**: Interface dedicada para seleção de template e funcionários específicos
+- **Geração Automática de Turnos**: Sistema que gera automaticamente todos os turnos baseados na estrutura do template
+- **Cálculo Inteligente de Datas**: Lógica para calcular datas da semana usando funções de data
+- **Seleção de Funcionários**: Checkboxes para escolher quais funcionários aplicar o template
+- **Preview da Estrutura**: Card detalhado mostrando turnos, horários e funcionários padrão antes da aplicação
+- **Integração com Formulário**: Atualização automática do estado do formulário com funcionários e observações
+
+### **Simulador de Custo em Tempo Real:**
+- **Implementado o Simulador de Custo em Tempo Real:** Criada a função de backend `calculate-schedule-cost` para analisar os custos de uma escala, incluindo horas extras e adicional noturno. No Editor de Escalas, um novo painel exibe o custo total estimado da escala, atualizado em tempo real a cada alteração, permitindo que gestores tomem decisões com base em impacto financeiro imediato.
+
+### **Sistema de Notificações WhatsApp para Escalas:**
+- **Implementado Envio de Escalas por WhatsApp:** Criada a função de backend `send-schedule-notification` que formata a escala de cada funcionário e a envia para um webhook configurável (compatível com Make/Zapier). Uma nova tabela `communication_logs` foi adicionada para rastrear o status de cada envio. No frontend, a página de Integrações agora permite configurar a URL do webhook, e a página de Escalas possui uma nova ação para "Notificar Equipe".
