@@ -656,7 +656,6 @@ export function ScheduleEditor() {
                 onFixViolations={() => {
                   setShowValidation(false);
                   clearValidation();
-                  // TODO: Implement violation fixing logic
                 }}
               />
             </div>
