@@ -72,6 +72,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - **Download Automático**: Arquivo baixado automaticamente com nome personalizado
   - **Dados Mock**: Implementado com dados de exemplo para demonstração
 
+- **Implementada a Exportação de Relatórios para CSV:** Adicionada a funcionalidade de "Exportar para CSV" na área de relatórios. O sistema agora permite que os usuários baixem um relatório detalhado das escalas, incluindo funcionários, datas, horários e total de horas, facilitando a integração com sistemas de folha de pagamento e a análise pela contabilidade.
+
 ### 🔧 **Correções e Melhorias**
 - **Auditoria Completa do Sistema**: Realizada auditoria completa do sistema, corrigindo todos os erros de TypeScript, problemas de linting e vulnerabilidades de segurança
   - Corrigidos todos os tipos `any` para `unknown`
