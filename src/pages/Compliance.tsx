@@ -16,7 +16,8 @@ import {
   Activity,
   Users,
   Calendar,
-  BarChart3
+  BarChart3,
+  FileDown
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
@@ -29,6 +30,19 @@ interface ComplianceAlert {
   department: string;
   impact: 'high' | 'medium' | 'low';
   status: 'open' | 'resolved';
+}
+
+// Dados mock para exportação
+interface MockShift {
+  id: string;
+  employee_id: string;
+  startTime: string;
+  endTime: string;
+}
+
+interface MockEmployee {
+  id: string;
+  name: string;
 }
 
 const mockAlerts: ComplianceAlert[] = [
@@ -52,6 +66,39 @@ const mockAlerts: ComplianceAlert[] = [
     impact: 'medium',
     status: 'open'
   }
+];
+
+const mockShifts: MockShift[] = [
+  {
+    id: '1',
+    employee_id: '1',
+    startTime: '2024-12-19T08:00:00Z',
+    endTime: '2024-12-19T17:00:00Z'
+  },
+  {
+    id: '2',
+    employee_id: '2',
+    startTime: '2024-12-19T09:00:00Z',
+    endTime: '2024-12-19T18:00:00Z'
+  },
+  {
+    id: '3',
+    employee_id: '1',
+    startTime: '2024-12-20T08:00:00Z',
+    endTime: '2024-12-20T17:00:00Z'
+  },
+  {
+    id: '4',
+    employee_id: '3',
+    startTime: '2024-12-20T10:00:00Z',
+    endTime: '2024-12-20T19:00:00Z'
+  }
+];
+
+const mockEmployees: MockEmployee[] = [
+  { id: '1', name: 'João Silva' },
+  { id: '2', name: 'Maria Santos' },
+  { id: '3', name: 'Pedro Oliveira' }
 ];
 
 export default function CompliancePage() {
@@ -78,6 +125,43 @@ export default function CompliancePage() {
       case 'medium': return 'bg-accent text-accent-foreground';
       default: return 'bg-success text-success-foreground';
     }
+  };
+
+  const handleExportToCSV = () => {
+    // Assumindo que você tem os dados de 'shifts' e 'employees' disponíveis nesta página
+    if (!mockShifts || !mockEmployees) {
+      alert("Não há dados para exportar.");
+      return;
+    }
+
+    // 1. Cabeçalho do CSV
+    let csvContent = "data:text/csv;charset=utf-8,Funcionário,Data,Entrada,Saída,Horas Totais\n";
+
+    // 2. Processar cada turno
+    mockShifts.forEach(shift => {
+      const employee = mockEmployees.find(e => e.id === shift.employee_id);
+      if (!employee) return;
+
+      const startDate = new Date(shift.startTime);
+      const endDate = new Date(shift.endTime);
+      
+      const date = startDate.toLocaleDateString('pt-BR');
+      const startTime = startDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const endTime = endDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const totalHours = ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60)).toFixed(2);
+
+      const row = [employee.name, date, startTime, endTime, totalHours].join(",");
+      csvContent += row + "\n";
+    });
+
+    // 3. Criar e disparar o download
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `relatorio_de_escala_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -258,6 +342,22 @@ export default function CompliancePage() {
                   Garantir intervalos mínimos obrigatórios
                 </p>
                 <Button size="sm">Executar Ação</Button>
+              </div>
+            </div>
+            
+            {/* Botão de Exportação */}
+            <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium mb-1">Exportar Relatório para Contabilidade</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Gere um relatório CSV com todos os turnos e horas trabalhadas para envio ao contador
+                  </p>
+                </div>
+                <Button onClick={handleExportToCSV} className="bg-primary hover:bg-primary/90">
+                  <FileDown className="mr-2 h-4 w-4" />
+                  Exportar para CSV
+                </Button>
               </div>
             </div>
           </CardContent>

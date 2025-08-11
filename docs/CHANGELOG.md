@@ -33,9 +33,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ---
 
-## [Unreleased]
+## [1.3.0] - 2024-12-19
 
 ### 🚀 **Novas Funcionalidades**
+- **Sistema de Banco de Dados Completo**: Implementado schema completo do banco de dados com todas as tabelas necessárias
+  - **9 Tabelas Criadas**: companies, company_users, branches, employees, schedules, shifts, schedule_templates, communication_logs, activity_logs
+  - **Row Level Security (RLS)**: Políticas de segurança configuradas para todas as tabelas
+  - **Relacionamentos**: Foreign keys e constraints configurados corretamente
+  - **Índices de Performance**: Otimizações para consultas frequentes
+  - **Triggers Automáticos**: Função `update_updated_at_column()` para atualização automática de timestamps
+  - **Multi-tenancy**: Sistema completo de isolamento por empresa/tenant
+  - **Auditoria**: Logs de atividade e comunicação configurados
+
+- **Deploy Automático**: Configuração completa de CI/CD
+  - **GitHub**: Repositório configurado e sincronizado
+  - **Vercel**: Deploy automático configurado com build otimizado
+  - **Supabase**: Projeto linkado e configurado
+  - **Variáveis de Ambiente**: Configuradas para produção
+
 - **Sistema de Notificações WhatsApp para Escalas**: Implementado sistema completo de notificações automáticas via WhatsApp, incluindo:
   - **Backend**: Supabase Edge Function `send-schedule-notification` para envio de notificações
   - **Frontend**: Componente `WhatsAppNotificationManager` com interface de configuração e monitoramento
@@ -47,6 +62,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - **Multi-tenant**: Isolamento completo por tenant com Row Level Security
   - **Interface Intuitiva**: Configuração simples de webhook e monitoramento em tempo real
   - **Documentação**: Guia completo de configuração e troubleshooting
+
+- **Exportação para Contabilidade**: Implementada funcionalidade completa de exportação de relatórios
+  - **Formato CSV**: Exportação em formato padrão para contadores
+  - **Dados Completos**: Funcionário, data, entrada, saída e horas totais
+  - **Formatação Brasileira**: Datas e horários no formato pt-BR
+  - **Cálculo Automático**: Horas trabalhadas calculadas automaticamente
+  - **Interface Intuitiva**: Botão dedicado na página de Compliance
+  - **Download Automático**: Arquivo baixado automaticamente com nome personalizado
+  - **Dados Mock**: Implementado com dados de exemplo para demonstração
 
 ### 🔧 **Correções e Melhorias**
 - **Auditoria Completa do Sistema**: Realizada auditoria completa do sistema, corrigindo todos os erros de TypeScript, problemas de linting e vulnerabilidades de segurança
@@ -81,6 +105,25 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Atualizada documentação com resultados da auditoria completa
 - Adicionado registro detalhado de todas as correções realizadas
 - Documentada nova funcionalidade de aplicação de modelos no Editor de Escalas
+- **Schema SQL**: Criado arquivo `database-schema-fixed.sql` com schema completo
+- **Configuração**: Documentado processo de setup do banco de dados
+
+### 🔧 **Infraestrutura**
+- **Supabase CLI**: Configurado e linkado ao projeto
+- **Types Generation**: Atualizados tipos TypeScript do Supabase
+- **Edge Functions**: Corrigidas dependências e imports
+- **Build System**: Otimizado para produção na Vercel
+- **Environment Variables**: Configuradas para todas as plataformas
+
+### 🚀 **Deploy**
+- **URL de Produção**: https://growthscale-home-landing-eeo01u3mg.vercel.app
+- **GitHub Repository**: https://github.com/GrowthScale/growthscale-home-landing
+- **Supabase Project**: doldfscfnivsrhqopecu
+- **Status**: ✅ 100% funcional e pronto para produção
+
+---
+
+## [Unreleased]
 
 ### Adicionado
 - **Integração do Motor de Regras da CLT ao Frontend:** Implementada integração completa do Motor de Regras da CLT ao frontend, incluindo:
