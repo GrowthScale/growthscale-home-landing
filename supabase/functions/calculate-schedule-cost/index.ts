@@ -1,7 +1,7 @@
 // supabase/functions/calculate-schedule-cost/index.ts
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { differenceInHours, getDay } from "https://deno.land/x/date_fns@v2.29.3/index.js";
+import { differenceInHours, getDay } from "https://deno.land/x/date_fns@v2.30.0/index.js";
 
 // --- Tipos de Dados ---
 interface Shift {

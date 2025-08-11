@@ -14,7 +14,481 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_logs: {
+        Row: {
+          action: string
+          company_id: string | null
+          created_at: string | null
+          details: Json | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          ip_address: unknown | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          company_id?: string | null
+          created_at?: string | null
+          details?: Json | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          company_id?: string | null
+          created_at?: string | null
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_logs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      branches: {
+        Row: {
+          address: Json
+          company_id: string
+          contact: Json | null
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: Json
+          company_id: string
+          contact?: Json | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: Json
+          company_id?: string
+          contact?: Json | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "branches_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      communication_logs: {
+        Row: {
+          company_id: string
+          created_at: string | null
+          details: Json | null
+          employee_id: string | null
+          error_message: string | null
+          id: string
+          message: string | null
+          recipient: string | null
+          schedule_id: string | null
+          status: string
+          type: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string | null
+          details?: Json | null
+          employee_id?: string | null
+          error_message?: string | null
+          id?: string
+          message?: string | null
+          recipient?: string | null
+          schedule_id?: string | null
+          status: string
+          type: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string | null
+          details?: Json | null
+          employee_id?: string | null
+          error_message?: string | null
+          id?: string
+          message?: string | null
+          recipient?: string | null
+          schedule_id?: string | null
+          status?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communication_logs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communication_logs_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communication_logs_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companies: {
+        Row: {
+          address: Json
+          cnpj: string
+          contact: Json
+          created_at: string | null
+          description: string | null
+          id: string
+          logo: string | null
+          name: string
+          settings: Json
+          status: string | null
+          trade_name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: Json
+          cnpj: string
+          contact?: Json
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          logo?: string | null
+          name: string
+          settings?: Json
+          status?: string | null
+          trade_name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: Json
+          cnpj?: string
+          contact?: Json
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          logo?: string | null
+          name?: string
+          settings?: Json
+          status?: string | null
+          trade_name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      company_users: {
+        Row: {
+          company_id: string | null
+          created_at: string | null
+          id: string
+          role: string | null
+          user_id: string | null
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string | null
+          id?: string
+          role?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string | null
+          id?: string
+          role?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_users_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employees: {
+        Row: {
+          address: Json | null
+          avatar: string | null
+          branch_id: string | null
+          company_id: string
+          created_at: string | null
+          department: string | null
+          email: string
+          end_date: string | null
+          id: string
+          name: string
+          phone_number: string | null
+          position: string
+          salary: number | null
+          skills: string[] | null
+          start_date: string
+          status: string | null
+          updated_at: string | null
+          workload_hours: number | null
+        }
+        Insert: {
+          address?: Json | null
+          avatar?: string | null
+          branch_id?: string | null
+          company_id: string
+          created_at?: string | null
+          department?: string | null
+          email: string
+          end_date?: string | null
+          id?: string
+          name: string
+          phone_number?: string | null
+          position: string
+          salary?: number | null
+          skills?: string[] | null
+          start_date: string
+          status?: string | null
+          updated_at?: string | null
+          workload_hours?: number | null
+        }
+        Update: {
+          address?: Json | null
+          avatar?: string | null
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string | null
+          department?: string | null
+          email?: string
+          end_date?: string | null
+          id?: string
+          name?: string
+          phone_number?: string | null
+          position?: string
+          salary?: number | null
+          skills?: string[] | null
+          start_date?: string
+          status?: string | null
+          updated_at?: string | null
+          workload_hours?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employees_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schedule_templates: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          template_data: Json
+          updated_at: string | null
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          template_data?: Json
+          updated_at?: string | null
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          template_data?: Json
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedule_templates_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedule_templates_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schedules: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          created_at: string | null
+          date: string
+          description: string | null
+          id: string
+          name: string
+          notes: string | null
+          status: string | null
+          total_cost: number | null
+          total_hours: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          created_at?: string | null
+          date: string
+          description?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          status?: string | null
+          total_cost?: number | null
+          total_hours?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string | null
+          date?: string
+          description?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          status?: string | null
+          total_cost?: number | null
+          total_hours?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schedules_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "schedules_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shifts: {
+        Row: {
+          cost: number | null
+          created_at: string | null
+          employee_id: string
+          end_time: string
+          hours_worked: number | null
+          id: string
+          notes: string | null
+          schedule_id: string
+          start_time: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          cost?: number | null
+          created_at?: string | null
+          employee_id: string
+          end_time: string
+          hours_worked?: number | null
+          id?: string
+          notes?: string | null
+          schedule_id: string
+          start_time: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          cost?: number | null
+          created_at?: string | null
+          employee_id?: string
+          end_time?: string
+          hours_worked?: number | null
+          id?: string
+          notes?: string | null
+          schedule_id?: string
+          start_time?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shifts_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shifts_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
