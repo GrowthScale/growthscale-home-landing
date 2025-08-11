@@ -172,7 +172,9 @@ export default function Schedules() {
                   <CostSimulator 
                     shifts={mockShiftsForCost} 
                     employees={mockEmployeesForCost}
-                    onCostUpdate={(cost) => console.log('Custos atualizados:', cost)}
+                    onCostUpdate={(cost) => {
+                      // Custos atualizados
+                    }}
                   />
                   <Card>
                     <CardContent className="p-6">
@@ -194,7 +196,7 @@ export default function Schedules() {
                   scheduleId="" // Será preenchido dinamicamente
                   tenantId="tenant-001" // Será obtido do contexto
                   onNotificationSent={() => {
-                    console.log('Notificações enviadas com sucesso!');
+                    // Notificações enviadas com sucesso!
                   }}
                 />
               </TabsContent>

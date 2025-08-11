@@ -811,8 +811,7 @@ export function ScheduleEditor() {
                       previewShifts={suggestion.suggestion}
                       employees={mockEmployees}
                       onPreviewClick={(event) => {
-                        console.log('Sugestão clicada:', event);
-                        // Aqui você pode adicionar lógica adicional se necessário
+                        // Sugestão clicada - aqui você pode adicionar lógica adicional se necessário
                       }}
                     />
                   </div>
