@@ -1,13 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Progress } from '@/components/ui/progress';
@@ -430,6 +430,12 @@ export function ScheduleEditor() {
       return;
     }
     setApplyTemplateModalOpen(true);
+  };
+
+  const handleSelectTemplate = (templateId: string) => {
+    const template = templates?.find(t => t.id === templateId);
+    setSelectedTemplateForApply(template || null);
+    setSelectedEmployeeIds([]); // Reset employee selection when template changes
   };
 
   return (
@@ -905,96 +911,53 @@ export function ScheduleEditor() {
 
       {/* Modal de Aplicação de Modelo */}
       <Dialog open={isApplyTemplateModalOpen} onOpenChange={setApplyTemplateModalOpen}>
-        <DialogContent className="max-w-modal-md max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-secondary" />
-              Aplicar um Modelo de Escala
-            </DialogTitle>
+            <DialogTitle>Aplicar um Modelo de Escala</DialogTitle>
+            <DialogDescription>
+              Escolha um modelo pré-definido para criar rapidamente a estrutura da sua escala. Cada modelo possui características únicas.
+            </DialogDescription>
           </DialogHeader>
-          
-          <div className="space-y-6">
-            {/* Seleção do Modelo */}
-            <div className="space-y-3">
-              <Label>Selecione o Modelo</Label>
-              <Select 
-                value={selectedTemplateForApply?.id || ''} 
-                onValueChange={(templateId) => {
-                  const template = templates?.find(t => t.id === templateId);
-                  setSelectedTemplateForApply(template || null);
-                  setSelectedEmployeeIds([]); // Reset employee selection when modelo changes
-                }}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 max-h-[60vh] overflow-y-auto p-1">
+            {/* Faça um map sobre os 'templates' buscados com o useQuery */}
+            {templates?.map(template => (
+              <Card 
+                key={template.id} 
+                className={`cursor-pointer hover:border-primary transition-all flex flex-col justify-between ${
+                  selectedTemplateForApply?.id === template.id ? 'border-primary bg-primary/5' : ''
+                }`}
+                onClick={() => handleSelectTemplate(template.id)} // Sua função para guardar o ID do modelo selecionado
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Escolha um modelo de escala" />
-                </SelectTrigger>
-                <SelectContent>
-                  {templates?.map((template) => (
-                    <SelectItem key={template.id} value={template.id}>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{template.name}</span>
-                        {template.description && (
-                          <span className="text-sm text-muted-foreground">{template.description}</span>
-                        )}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Informações do Modelo Selecionado */}
-            {selectedTemplateForApply && (
-              <Card className="border-l-4 border-l-secondary">
-                <CardContent className="pt-4">
-                  <div className="space-y-3">
-                    <div>
-                      <h4 className="font-medium text-secondary">{selectedTemplateForApply.name}</h4>
-                      {selectedTemplateForApply.description && (
-                        <p className="text-sm text-muted-foreground">{selectedTemplateForApply.description}</p>
-                      )}
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-muted-foreground">Turnos definidos:</span>
-                        <span className="ml-2 font-medium">{selectedTemplateForApply.template_data.shifts.length}</span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Funcionários padrão:</span>
-                        <span className="ml-2 font-medium">
-                          {selectedTemplateForApply.template_data.employees?.length || 0}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Visualização dos turnos do modelo */}
-                    <div>
-                      <h5 className="font-medium mb-2">Estrutura do Modelo:</h5>
-                      <div className="space-y-2">
-                        {selectedTemplateForApply.template_data.shifts.map((shift, index) => {
-                          const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-                          return (
-                            <div key={index} className="flex items-center justify-between p-2 bg-muted/20 rounded">
-                              <span className="text-sm font-medium">{dayNames[shift.dayOfWeek]}</span>
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm">{shift.startTime} - {shift.endTime}</span>
-                                <Badge variant="outline" className="text-xs">
-                                  {shift.requiredEmployees} funcionário{shift.requiredEmployees > 1 ? 's' : ''}
-                                </Badge>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
+                <CardHeader>
+                  <CardTitle className="text-base">{template.name}</CardTitle>
+                  <CardDescription className="text-xs">{template.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div>
+                    <h4 className="text-xs font-semibold mb-1 text-foreground">Vantagens</h4>
+                    <p className="text-xs text-muted-foreground">{template.template_data.advantages}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-semibold mb-1 text-foreground">Ideal para</h4>
+                    <p className="text-xs text-muted-foreground">{template.template_data.common_in}</p>
                   </div>
                 </CardContent>
+                <CardFooter>
+                  <Badge variant={
+                    template.template_data.cost_profile === 'Baixo' ? 'default' :
+                    template.template_data.cost_profile === 'Médio' ? 'secondary' :
+                    'destructive'
+                  }>
+                    Custo: {template.template_data.cost_profile}
+                  </Badge>
+                </CardFooter>
               </Card>
-            )}
-
-            {/* Seleção de Funcionários */}
-            <div className="space-y-3">
+            ))}
+          </div>
+          
+          {/* Seleção de Funcionários - Mostrar apenas quando um template estiver selecionado */}
+          {selectedTemplateForApply && (
+            <div className="space-y-3 border-t pt-4">
               <Label>Selecione os Funcionários</Label>
               <div className="max-h-48 overflow-y-auto border rounded-lg p-3 space-y-2">
                 {mockEmployees.map((employee) => (
@@ -1035,18 +998,14 @@ export function ScheduleEditor() {
                 {selectedEmployeeIds.length} funcionário{selectedEmployeeIds.length !== 1 ? 's' : ''} selecionado{selectedEmployeeIds.length !== 1 ? 's' : ''}
               </p>
             </div>
-          </div>
-
+          )}
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setApplyTemplateModalOpen(false)}>
-              Cancelar
-            </Button>
+            {/* Mantenha aqui a sua lógica e botões para selecionar funcionários e aplicar o modelo */}
+            <Button variant="ghost" onClick={() => setApplyTemplateModalOpen(false)}>Cancelar</Button>
             <Button 
               onClick={handleApplyTemplate}
               disabled={!selectedTemplateForApply || selectedEmployeeIds.length === 0}
-              className="bg-secondary hover:bg-secondary/90"
             >
-              <Zap className="h-4 w-4 mr-2" />
               Aplicar Modelo
             </Button>
           </DialogFooter>

@@ -186,6 +186,18 @@ export interface ScheduleTemplate {
     }>;
     employees?: string[]; // IDs dos funcionários padrão
     notes?: string;
+    // Campos adicionais do seed
+    advantages?: string;
+    disadvantages?: string;
+    cost_profile?: string;
+    common_in?: string;
+    work_days?: number;
+    rest_days?: number;
+    total_cycle?: number;
+    weekly_hours?: number;
+    compliance_risk?: string;
+    cost_efficiency?: string;
+    employee_satisfaction?: string;
   };
 }
 
