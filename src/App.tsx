@@ -32,6 +32,7 @@ const CLTAssistant = React.lazy(() => import("./pages/CLTAssistant"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 const Templates = React.lazy(() => import("./pages/Templates"));
+const CompanySettings = React.lazy(() => import("./pages/CompanySettings"));
 
 const queryClient = new QueryClient();
 
@@ -126,6 +127,13 @@ const App = () => (
                     <ProtectedRoute requiredPermission="manage:schedules">
                       <MainLayout>
                         <Templates />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/configuracoes-empresa" element={
+                    <ProtectedRoute requiredPermission="manage:company_settings">
+                      <MainLayout>
+                        <CompanySettings />
                       </MainLayout>
                     </ProtectedRoute>
                   } />

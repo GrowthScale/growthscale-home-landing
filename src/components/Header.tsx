@@ -100,6 +100,12 @@ const Header = () => {
                     Faturamento
                   </button>
                 )}
+                {can('manage:company_settings') && (
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/configuracoes-empresa')}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    Configurações da Empresa
+                  </Button>
+                )}
               </>
             ) : (
               <>
@@ -254,6 +260,18 @@ const Header = () => {
                           className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
                         >
                           Faturamento
+                        </button>
+                      )}
+                      {can('manage:company_settings') && (
+                        <button 
+                          onClick={() => {
+                            navigate('/configuracoes-empresa');
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted flex items-center"
+                        >
+                          <Settings className="mr-2 h-4 w-4" />
+                          Configurações da Empresa
                         </button>
                       )}
                     </>
