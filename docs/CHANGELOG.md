@@ -329,6 +329,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Políticas RLS atualizadas**: Baseadas em relacionamentos corretos
 - **Fallback seguro**: Uso de email para relacionamento employee-user
 
+#### **Melhoria na UX de Seleção de Modelos**
+- **Interface Redesenhada**: Substituído seletor simples por galeria de cards visuais
+- **Dados Enriquecidos**: Exibição de descrição, vantagens, casos de uso e perfil de custo
+- **Seleção Visual**: Cards destacados quando selecionados com feedback visual
+- **Fluxo Otimizado**: Seleção em duas etapas (modelo → funcionários)
+- **Layout Responsivo**: Grid adaptável para diferentes tamanhos de tela
+- **Validação Inteligente**: Botão desabilitado até seleção completa
+- **Informações Contextuais**: Badges coloridos para perfil de custo (Baixo/Médio/Alto)
+- **Experiência Superior**: Melhoria drástica na tomada de decisão do gestor
+
 ### 🚀 **Deploy e Infraestrutura**
 
 #### **URLs Atualizadas**
