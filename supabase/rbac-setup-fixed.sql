@@ -32,30 +32,36 @@ DROP POLICY IF EXISTS "Users can update own profile" ON public.user_profiles;
 CREATE POLICY "Users can update own profile" ON public.user_profiles
   FOR UPDATE USING (auth.uid() = id);
 
--- 5. Políticas RLS para employees
+-- 5. Políticas RLS para employees (CORRIGIDO - sem user_id)
 DROP POLICY IF EXISTS "Employees can view own data" ON public.employees;
 CREATE POLICY "Employees can view own data" ON public.employees
   FOR SELECT USING (
-    auth.uid() = user_id OR 
     (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'owner' OR
-    (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'manager'
+    (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'manager' OR
+    -- Employees podem ver seus próprios dados se o email corresponder
+    email = (SELECT email FROM auth.users WHERE id = auth.uid())
   );
 
 DROP POLICY IF EXISTS "Employees can update own data" ON public.employees;
 CREATE POLICY "Employees can update own data" ON public.employees
   FOR UPDATE USING (
-    auth.uid() = user_id OR 
     (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'owner' OR
-    (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'manager'
+    (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'manager' OR
+    -- Employees podem atualizar seus próprios dados se o email corresponder
+    email = (SELECT email FROM auth.users WHERE id = auth.uid())
   );
 
--- 6. Políticas RLS para schedules
+-- 6. Políticas RLS para schedules (CORRIGIDO - usando company_id)
 DROP POLICY IF EXISTS "Users can view schedules based on role" ON public.schedules;
 CREATE POLICY "Users can view schedules based on role" ON public.schedules
   FOR SELECT USING (
     (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'owner' OR
     (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'manager' OR
-    employee_id = auth.uid()
+    -- Employees podem ver escalas da sua empresa
+    company_id IN (
+      SELECT company_id FROM public.employees 
+      WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
+    )
   );
 
 DROP POLICY IF EXISTS "Users can manage schedules based on role" ON public.schedules;
@@ -65,12 +71,15 @@ CREATE POLICY "Users can manage schedules based on role" ON public.schedules
     (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'manager'
   );
 
--- 7. Políticas RLS para companies
+-- 7. Políticas RLS para companies (CORRIGIDO)
 DROP POLICY IF EXISTS "Users can view companies based on role" ON public.companies;
 CREATE POLICY "Users can view companies based on role" ON public.companies
   FOR SELECT USING (
     (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'owner' OR
-    tenant_id = (SELECT tenant_id FROM public.user_profiles WHERE id = auth.uid())
+    id IN (
+      SELECT company_id FROM public.employees 
+      WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
+    )
   );
 
 DROP POLICY IF EXISTS "Only owners can manage companies" ON public.companies;
@@ -79,15 +88,15 @@ CREATE POLICY "Only owners can manage companies" ON public.companies
     (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'owner'
   );
 
--- 8. Políticas RLS para branches
+-- 8. Políticas RLS para branches (CORRIGIDO)
 DROP POLICY IF EXISTS "Users can view branches based on role" ON public.branches;
 CREATE POLICY "Users can view branches based on role" ON public.branches
   FOR SELECT USING (
     (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'owner' OR
     (SELECT role FROM public.user_profiles WHERE id = auth.uid()) = 'manager' OR
     company_id IN (
-      SELECT id FROM public.companies 
-      WHERE tenant_id = (SELECT tenant_id FROM public.user_profiles WHERE id = auth.uid())
+      SELECT company_id FROM public.employees 
+      WHERE email = (SELECT email FROM auth.users WHERE id = auth.uid())
     )
   );
 
