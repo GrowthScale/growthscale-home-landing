@@ -368,6 +368,12 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
       {templates?.length === 0 && (
         <Card>
           <CardContent className="p-8 text-center">
+            {/* TODO: Substituir por EmptyStateIllustration com:
+              - Imagem: Calendário vazio com ícones de turnos
+              - Título: "Nenhum modelo criado"
+              - Descrição: "Crie seu primeiro modelo para agilizar a criação de escalas"
+              - Botão: "Criar Primeiro Modelo" com ícone Plus
+              - Ação: Abrir modal de criação */}
             <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">Nenhum modelo criado</h3>
             <p className="text-muted-foreground mb-4">

@@ -314,6 +314,12 @@ const Companies = () => {
 
         {filteredCompanies.length === 0 && (
           <div className="text-center py-12">
+            {/* TODO: Substituir por EmptyStateIllustration com:
+              - Imagem: Prédios/empresas vazios
+              - Título: "Nenhuma empresa encontrada"
+              - Descrição: Dinâmica baseada na busca (pesquisa vs. primeira empresa)
+              - Botão: "Cadastrar Primeira Empresa" (quando não há busca)
+              - Ação: Abrir modal de criação */}
             <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-medium text-foreground mb-2">
               Nenhuma empresa encontrada

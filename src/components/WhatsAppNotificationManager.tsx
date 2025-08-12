@@ -176,6 +176,12 @@ export function WhatsAppNotificationManager({
             </div>
           ) : communicationLogs.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
+              {/* TODO: Substituir por EmptyStateIllustration com:
+                - Imagem: WhatsApp vazio com balões de mensagem
+                - Título: "Nenhuma comunicação registrada"
+                - Descrição: "Os logs de notificações aparecerão aqui quando você enviar mensagens"
+                - Botão: "Enviar Primeira Notificação"
+                - Ação: Focar no botão de envio */}
               Nenhum log de comunicação encontrado
             </div>
           ) : (

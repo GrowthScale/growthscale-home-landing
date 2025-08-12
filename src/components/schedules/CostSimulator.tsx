@@ -207,6 +207,12 @@ export const CostSimulator: React.FC<CostSimulatorProps> = ({
         {/* Estado sem dados */}
         {!costResult && !isCalculating && (shifts.length === 0 || employees.length === 0) && (
           <div className="text-center py-8 text-gray-500">
+            {/* TODO: Substituir por EmptyStateIllustration com:
+              - Imagem: Calculadora com gráficos de custos vazios
+              - Título: "Configure para calcular custos"
+              - Descrição: "Adicione turnos e funcionários para calcular os custos da escala"
+              - Botão: "Adicionar Turnos" ou "Adicionar Funcionários"
+              - Ação: Navegar para configurações */}
             <Calculator className="h-12 w-12 mx-auto mb-2 opacity-50" />
             <p>Adicione turnos e funcionários para calcular os custos</p>
           </div>
