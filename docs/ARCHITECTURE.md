@@ -291,4 +291,81 @@ Source Code → TypeScript Compilation → Bundle → Optimization → Static Fi
 - ✅ **PWA Ready**: Service worker e manifest
 - ✅ **Mobile First**: Responsive design
 - ✅ **Type Safety**: TypeScript strict mode
-- ✅ **Error Handling**: Boundaries e fallbacks 
+- ✅ **Error Handling**: Boundaries e fallbacks
+- ✅ **RBAC System**: Role-based access control
+
+---
+
+## 🔐 Arquitetura de Acesso e Permissões (RBAC)
+
+A plataforma utiliza um sistema de Controle de Acesso Baseado em Papéis (RBAC) para garantir segurança e uma experiência de usuário focada. Cada usuário possui um papel que define sua jornada e as funcionalidades às quais ele tem acesso.
+
+### Papéis Definidos
+
+1. **`owner` (Dono da Empresa):** Controle total sobre a conta, incluindo faturamento, configurações da empresa, todas as unidades e gerenciamento de todos os usuários.
+
+2. **`manager` (Gerente de Unidade):** Acesso operacional para uma unidade específica. Pode criar escalas e gerenciar funcionários apenas da sua filial. Não possui acesso a faturamento ou configurações globais.
+
+3. **`employee` (Colaborador):** Acesso de leitura apenas à sua própria escala de trabalho.
+
+### Implementação Técnica
+
+#### Backend (Supabase)
+- **Tabela `user_profiles`**: Armazena o papel de cada usuário com relacionamento via UUID para `auth.users`
+- **Row Level Security (RLS)**: Políticas aplicadas para restringir acesso aos dados no nível do banco
+- **Funções auxiliares**: `update_user_role()`, `get_current_user_role()`, `list_users_with_roles()`
+- **Trigger automático**: Criação de perfil com role padrão 'employee' quando usuário se registra
+
+#### Frontend (React)
+- **Hook `useAccessControl`**: Verifica permissões do usuário logado
+- **Componente `AccessControl`**: Renderização condicional baseada em permissões
+- **`ProtectedRoute`**: Proteção de rotas com verificação de permissões
+- **UI condicional**: Botões, menus e funcionalidades baseadas no role do usuário
+
+### Permissões por Papel
+
+#### Owner (`owner`)
+- `view:billing` - Acesso ao faturamento
+- `manage:company_settings` - Configurações da empresa
+- `manage:all_schedules` - Todas as escalas
+- `view:full_dashboard` - Dashboard completo
+- `manage:all_employees` - Todos os funcionários
+
+#### Manager (`manager`)
+- `manage:unit_schedules` - Escalas da unidade
+- `view:unit_dashboard` - Dashboard da unidade
+- `manage:unit_employees` - Funcionários da unidade
+
+#### Employee (`employee`)
+- `view:own_schedule` - Própria escala
+
+### Estrutura de Dados
+
+```sql
+-- Tabela de perfis de usuário
+CREATE TABLE public.user_profiles (
+  id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  role TEXT DEFAULT 'employee' CHECK (role IN ('owner', 'manager', 'employee')),
+  tenant_id UUID,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+### Fluxo de Autenticação com RBAC
+
+```
+1. Usuário faz login → Supabase Auth
+2. Hook useAccessControl busca role da tabela user_profiles
+3. Fallback para user_metadata se perfil não existir
+4. Criação automática de perfil com role padrão
+5. Verificação de permissões via função can()
+6. Renderização condicional da UI baseada no role
+```
+
+### Segurança e Validação
+
+- **Dupla verificação**: Backend (RLS) + Frontend (hooks)
+- **Fallback seguro**: Role padrão 'employee' para novos usuários
+- **Auditoria**: Logs de mudanças de role
+- **Isolamento**: Dados restritos por tenant/empresa
