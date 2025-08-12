@@ -48,7 +48,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Fetch templates
+  // Fetch modelos
   const { data: templates, isLoading, error } = useQuery({
     queryKey: ['scheduleTemplates'],
     queryFn: async () => {
@@ -58,7 +58,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
     }
   });
 
-  // Create template mutation
+  // Create modelo mutation
   const createMutation = useMutation({
     mutationFn: async (template: CreateScheduleTemplateDto) => {
       const response = await scheduleTemplateService.createTemplate(template);
@@ -79,20 +79,20 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
         }
       });
       toast({
-        title: "✅ Template criado!",
-        description: "O template foi salvo com sucesso.",
+        title: "✅ Modelo criado!",
+        description: "O modelo foi salvo com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: "❌ Erro ao criar template",
+        title: "❌ Erro ao criar modelo",
         description: error.message,
         variant: "destructive",
       });
     }
   });
 
-  // Update template mutation
+  // Update modelo mutation
   const updateMutation = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<CreateScheduleTemplateDto> }) => {
       const response = await scheduleTemplateService.updateTemplate(id, { ...updates, id });
@@ -104,20 +104,20 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
       setIsEditModalOpen(false);
       setSelectedTemplate(null);
       toast({
-        title: "✅ Template atualizado!",
-        description: "O template foi atualizado com sucesso.",
+        title: "✅ Modelo atualizado!",
+        description: "O modelo foi atualizado com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: "❌ Erro ao atualizar template",
+        title: "❌ Erro ao atualizar modelo",
         description: error.message,
         variant: "destructive",
       });
     }
   });
 
-  // Delete template mutation
+  // Delete modelo mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await scheduleTemplateService.deleteTemplate(id);
@@ -126,13 +126,13 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['scheduleTemplates'] });
       toast({
-        title: "✅ Template deletado!",
-        description: "O template foi removido com sucesso.",
+        title: "✅ Modelo deletado!",
+        description: "O modelo foi removido com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: "❌ Erro ao deletar template",
+        title: "❌ Erro ao deletar modelo",
         description: error.message,
         variant: "destructive",
       });
@@ -152,7 +152,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
   };
 
   const handleDeleteTemplate = (template: ScheduleTemplate) => {
-    if (confirm(`Tem certeza que deseja deletar o template "${template.name}"?`)) {
+    if (confirm(`Tem certeza que deseja deletar o modelo "${template.name}"?`)) {
       deleteMutation.mutate(template.id);
     }
   };
@@ -171,8 +171,8 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
   const handleUseTemplate = (template: ScheduleTemplate) => {
     onTemplateSelect?.(template);
     toast({
-      title: "✅ Template aplicado!",
-      description: `O template "${template.name}" foi selecionado.`,
+      title: "✅ Modelo aplicado!",
+      description: `O modelo "${template.name}" foi selecionado.`,
     });
   };
 
@@ -199,7 +199,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
       <Card>
         <CardContent className="p-6">
           <div className="text-center">
-            <p className="text-destructive">Erro ao carregar templates: {error.message}</p>
+            <p className="text-destructive">Erro ao carregar modelos: {error.message}</p>
             <Button onClick={() => window.location.reload()} className="mt-4">
               Tentar novamente
             </Button>
@@ -216,23 +216,23 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
         <div>
           <h2 className="text-2xl font-bold">Modelos de Escala</h2>
           <p className="text-muted-foreground">
-            Gerencie templates para criar escalas rapidamente
+            Gerencie modelos para criar escalas rapidamente
           </p>
         </div>
         <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Novo Template
+              Novo Modelo
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-modal-md">
             <DialogHeader>
-              <DialogTitle>Criar Novo Template</DialogTitle>
+              <DialogTitle>Criar Novo Modelo</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name">Nome do Template *</Label>
+                <Label htmlFor="name">Nome do Modelo *</Label>
                 <Input
                   id="name"
                   value={formData.name}
@@ -246,7 +246,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Descreva o template..."
+                  placeholder="Descreva o modelo..."
                 />
               </div>
               <div className="flex justify-end space-x-2">
@@ -258,7 +258,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
                   disabled={!formData.name || createMutation.isPending}
                 >
                   {createMutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                  Criar Template
+                  Criar Modelo
                 </Button>
               </div>
             </div>
@@ -266,7 +266,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
         </Dialog>
       </div>
 
-      {/* Templates Grid */}
+      {/* Modelos Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {templates?.map((template) => (
           <Card key={template.id} className="hover:shadow-md transition-shadow">
@@ -301,7 +301,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {/* Template Stats */}
+                {/* Modelo Stats */}
                 <div className="flex items-center space-x-4 text-sm">
                   <div className="flex items-center space-x-1">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -355,7 +355,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
                     onClick={() => handleUseTemplate(template)}
                   >
                     <Copy className="h-4 w-4 mr-2" />
-                    Usar Template
+                    Usar Modelo
                   </Button>
                 </div>
               </div>
@@ -369,13 +369,13 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
         <Card>
           <CardContent className="p-8 text-center">
             <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">Nenhum template criado</h3>
+            <h3 className="text-lg font-medium mb-2">Nenhum modelo criado</h3>
             <p className="text-muted-foreground mb-4">
-              Crie seu primeiro template para agilizar a criação de escalas
+              Crie seu primeiro modelo para agilizar a criação de escalas
             </p>
             <Button onClick={() => setIsCreateModalOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Criar Primeiro Template
+              Criar Primeiro Modelo
             </Button>
           </CardContent>
         </Card>
@@ -383,13 +383,13 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
 
       {/* Edit Modal */}
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-modal-md">
           <DialogHeader>
-            <DialogTitle>Editar Template</DialogTitle>
+            <DialogTitle>Editar Modelo</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="edit-name">Nome do Template *</Label>
+              <Label htmlFor="edit-name">Nome do Modelo *</Label>
               <Input
                 id="edit-name"
                 value={formData.name}
@@ -403,7 +403,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
                 id="edit-description"
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Descreva o template..."
+                placeholder="Descreva o modelo..."
               />
             </div>
             <div className="flex justify-end space-x-2">
@@ -415,7 +415,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
                 disabled={!formData.name || updateMutation.isPending}
               >
                 {updateMutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                Atualizar Template
+                Atualizar Modelo
               </Button>
             </div>
           </div>

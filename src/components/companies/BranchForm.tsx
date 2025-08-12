@@ -206,7 +206,7 @@ export const BranchForm: React.FC<BranchFormProps> = ({
                   <FormControl>
                     <Textarea 
                       placeholder="Breve descrição da filial"
-                      className="min-h-[80px]"
+                      className="min-h-textarea"
                       {...field}
                     />
                   </FormControl>

@@ -108,7 +108,17 @@ export default {
 				lg: 'var(--spacing-lg)',
 				xl: 'var(--spacing-xl)',
 				'2xl': 'var(--spacing-2xl)',
-				'3xl': 'var(--spacing-3xl)'
+				'3xl': 'var(--spacing-3xl)',
+				'18': '4.5rem', // 72px
+				'22': '5.5rem', // 88px
+			},
+			minHeight: {
+				'textarea': '80px',
+				'textarea-lg': '120px',
+			},
+			maxWidth: {
+				'toast': '420px',
+				'modal-md': '625px',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

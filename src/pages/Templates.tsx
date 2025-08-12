@@ -9,11 +9,11 @@ export default function Templates() {
   const { toast } = useToast();
 
   const handleTemplateSelect = (template: ScheduleTemplate) => {
-    // Redirecionar para a página de escalas com o template selecionado
+    // Redirecionar para a página de escalas com o modelo selecionado
     navigate('/schedules', { 
       state: { 
         selectedTemplate: template,
-        message: `Template "${template.name}" aplicado com sucesso!`
+        message: `Modelo "${template.name}" aplicado com sucesso!`
       }
     });
   };

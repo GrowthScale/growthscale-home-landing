@@ -171,7 +171,7 @@ export const BranchList: React.FC<BranchListProps> = ({ companyId }) => {
               Nova Filial
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-modal-md">
             <DialogHeader>
               <DialogTitle>Cadastrar Nova Filial</DialogTitle>
             </DialogHeader>
@@ -300,7 +300,7 @@ export const BranchList: React.FC<BranchListProps> = ({ companyId }) => {
 
       {/* Edit Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-modal-md">
           <DialogHeader>
             <DialogTitle>Editar Filial</DialogTitle>
           </DialogHeader>

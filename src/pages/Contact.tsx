@@ -273,7 +273,7 @@ const Contact = () => {
                         value={formData.message}
                         onChange={handleInputChange}
                         placeholder="Descreva sua dúvida ou problema em detalhes..."
-                        className="min-h-[120px]"
+                        className="min-h-textarea-lg"
                         required
                       />
                     </div>

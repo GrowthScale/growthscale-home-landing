@@ -165,7 +165,7 @@ const Companies = () => {
                     Nova Empresa
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl">
+                <DialogContent className="max-w-modal-md">
                   <DialogHeader>
                     <DialogTitle>Cadastrar Nova Empresa</DialogTitle>
                   </DialogHeader>

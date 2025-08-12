@@ -48,7 +48,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Fetch templates
+  // Fetch modelos
   const { data: templates, isLoading, error } = useQuery({
     queryKey: ['scheduleTemplates'],
     queryFn: async () => {
@@ -58,7 +58,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
     }
   });
 
-  // Create template mutation
+  // Create modelo mutation
   const createMutation = useMutation({
     mutationFn: async (template: CreateScheduleTemplateDto) => {
       const response = await scheduleTemplateService.createTemplate(template);
@@ -79,20 +79,20 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
         }
       });
       toast({
-        title: "✅ Template criado!",
-        description: "O template foi salvo com sucesso.",
+        title: "✅ Modelo criado!",
+        description: "O modelo foi salvo com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: "❌ Erro ao criar template",
+        title: "❌ Erro ao criar modelo",
         description: error.message,
         variant: "destructive",
       });
     }
   });
 
-  // Update template mutation
+  // Update modelo mutation
   const updateMutation = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<CreateScheduleTemplateDto> }) => {
       const response = await scheduleTemplateService.updateTemplate(id, { ...updates, id });
@@ -104,20 +104,20 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
       setIsEditModalOpen(false);
       setSelectedTemplate(null);
       toast({
-        title: "✅ Template atualizado!",
-        description: "O template foi atualizado com sucesso.",
+        title: "✅ Modelo atualizado!",
+        description: "O modelo foi atualizado com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: "❌ Erro ao atualizar template",
+        title: "❌ Erro ao atualizar modelo",
         description: error.message,
         variant: "destructive",
       });
     }
   });
 
-  // Delete template mutation
+  // Delete modelo mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await scheduleTemplateService.deleteTemplate(id);
@@ -126,13 +126,13 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['scheduleTemplates'] });
       toast({
-        title: "✅ Template deletado!",
-        description: "O template foi removido com sucesso.",
+        title: "✅ Modelo deletado!",
+        description: "O modelo foi removido com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: "❌ Erro ao deletar template",
+        title: "❌ Erro ao deletar modelo",
         description: error.message,
         variant: "destructive",
       });
@@ -152,7 +152,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
   };
 
   const handleDeleteTemplate = (template: ScheduleTemplate) => {
-    if (confirm(`Tem certeza que deseja deletar o template "${template.name}"?`)) {
+    if (confirm(`Tem certeza que deseja deletar o modelo "${template.name}"?`)) {
       deleteMutation.mutate(template.id);
     }
   };
@@ -176,8 +176,8 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
   const handleUseTemplate = (template: ScheduleTemplate) => {
     onTemplateSelect?.(template);
     toast({
-      title: "✅ Template aplicado!",
-      description: `O template "${template.name}" foi selecionado.`,
+      title: "✅ Modelo aplicado!",
+      description: `O modelo "${template.name}" foi selecionado.`,
     });
   };
 
@@ -284,7 +284,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
   if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-destructive mb-4">Erro ao carregar templates: {error.message}</p>
+        <p className="text-destructive mb-4">Erro ao carregar modelos: {error.message}</p>
         <Button onClick={() => window.location.reload()}>
           Tentar novamente
         </Button>
@@ -299,7 +299,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
         <div>
           <h1 className="text-2xl font-bold">Modelos de Escala</h1>
           <p className="text-muted-foreground">
-            Gerencie templates para criar escalas rapidamente
+            Gerencie modelos para criar escalas rapidamente
           </p>
         </div>
         <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
@@ -309,13 +309,13 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
               Criar Novo Modelo
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-modal-md">
             <DialogHeader>
-              <DialogTitle>Criar Novo Template</DialogTitle>
+              <DialogTitle>Criar Novo Modelo</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name">Nome do Template *</Label>
+                <Label htmlFor="name">Nome do Modelo *</Label>
                 <Input
                   id="name"
                   value={formData.name}
@@ -329,7 +329,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Descreva o template..."
+                  placeholder="Descreva o modelo..."
                 />
               </div>
               <div className="flex justify-end space-x-2">
@@ -341,7 +341,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
                   disabled={!formData.name || createMutation.isPending}
                 >
                   {createMutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                  Criar Template
+                  Criar Modelo
                 </Button>
               </div>
             </div>
@@ -353,19 +353,19 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
       <DataTable<Record<string, unknown>>
         columns={columns} 
         data={(templates || []) as unknown as Record<string, unknown>[]}
-        searchPlaceholder="Buscar templates..."
-        emptyMessage="Nenhum template encontrado"
+        searchPlaceholder="Buscar modelos..."
+        emptyMessage="Nenhum modelo encontrado"
       />
 
       {/* Edit Modal */}
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-modal-md">
           <DialogHeader>
-            <DialogTitle>Editar Template</DialogTitle>
+            <DialogTitle>Editar Modelo</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="edit-name">Nome do Template *</Label>
+              <Label htmlFor="edit-name">Nome do Modelo *</Label>
               <Input
                 id="edit-name"
                 value={formData.name}
@@ -379,7 +379,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
                 id="edit-description"
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Descreva o template..."
+                placeholder="Descreva o modelo..."
               />
             </div>
             <div className="flex justify-end space-x-2">
@@ -391,7 +391,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
                 disabled={!formData.name || updateMutation.isPending}
               >
                 {updateMutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                Atualizar Template
+                Atualizar Modelo
               </Button>
             </div>
           </div>
@@ -400,9 +400,9 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
 
       {/* View Modal */}
       <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-modal-md">
           <DialogHeader>
-            <DialogTitle>Detalhes do Template</DialogTitle>
+            <DialogTitle>Detalhes do Modelo</DialogTitle>
           </DialogHeader>
           {selectedTemplate && (
             <div className="space-y-4">
@@ -448,7 +448,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
                   setIsViewModalOpen(false);
                 }}>
                   <Copy className="h-4 w-4 mr-2" />
-                  Usar Template
+                  Usar Modelo
                 </Button>
               </div>
             </div>

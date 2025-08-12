@@ -186,7 +186,7 @@ export const CLTAssistant: React.FC<CLTAssistantProps> = ({
               onChange={(e) => setQuestion(e.target.value)}
               placeholder={placeholder}
               disabled={isLoading}
-              className="flex-1 min-h-[80px] resize-none"
+              className="flex-1 min-h-textarea resize-none"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();

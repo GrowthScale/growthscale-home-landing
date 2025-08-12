@@ -88,7 +88,7 @@ export function ScheduleEditor() {
     notes: ''
   });
 
-  // Query para buscar templates
+  // Query para buscar modelos
   const { data: templates, isLoading: isLoadingTemplates } = useQuery({
     queryKey: ['scheduleTemplates'],
     queryFn: async () => {
@@ -159,21 +159,51 @@ export function ScheduleEditor() {
   }, [form.employees]);
 
   // Real-time validation query
-  const { data: realTimeValidation, isLoading: isRealTimeValidating } = useQuery({
+  const { data: realTimeValidation, isLoading: isRealTimeValidating, error: validationError } = useQuery({
     queryKey: ['scheduleValidation', shifts, employees],
-    queryFn: () => scheduleService.validateSchedule({ shifts, employees }),
+    queryFn: async () => {
+      try {
+        const response = await scheduleService.validateSchedule({ shifts, employees });
+        if (response.error) {
+          throw new Error(response.error);
+        }
+        return response;
+      } catch (error) {
+        toast({
+          title: "Erro na Validação",
+          description: "Não foi possível validar a escala em tempo real. Verifique sua conexão ou tente novamente.",
+          variant: "destructive",
+        });
+        console.error("Validation Query Error:", error);
+        throw error;
+      }
+    },
     enabled: shifts.length > 0 && employees.length > 0,
     staleTime: 30000, // 30 seconds
     gcTime: 60000, // 1 minute (cacheTime was renamed to gcTime in v4)
   });
 
   // Query para cálculo de custo em tempo real
-  const { data: costResult, isLoading: isCalculatingCost } = useQuery({
+  const { data: costResult, isLoading: isCalculatingCost, error: costError } = useQuery({
     queryKey: ['scheduleCost', shifts, employees],
-    queryFn: () => {
-      // Mock de hourlyRate se não existir no seu modelo de funcionário ainda
-      const employeesWithRate = employees.map(e => ({ ...e, hourlyRate: 20 }));
-      return costCalculationService.calculateScheduleCost({ shifts, employees: employeesWithRate });
+    queryFn: async () => {
+      try {
+        // Mock de hourlyRate se não existir no seu modelo de funcionário ainda
+        const employeesWithRate = employees.map(e => ({ ...e, hourlyRate: 20 }));
+        const response = await costCalculationService.calculateScheduleCost({ shifts, employees: employeesWithRate });
+        if (response.error) {
+          throw new Error(response.error);
+        }
+        return response;
+      } catch (error) {
+        toast({
+          title: "Erro no Cálculo de Custo",
+          description: "Não foi possível calcular o custo da escala em tempo real. Verifique sua conexão ou tente novamente.",
+          variant: "destructive",
+        });
+        console.error("Cost Calculation Query Error:", error);
+        throw error;
+      }
     },
     enabled: shifts && shifts.length > 0,
   });
@@ -327,10 +357,10 @@ export function ScheduleEditor() {
       return;
     }
 
-    // 1. Encontre os dados do template selecionado
+    // 1. Encontre os dados do modelo selecionado
     const template = selectedTemplateForApply;
     
-    // 2. Lógica para gerar os turnos com base no template.template_data
+    // 2. Lógica para gerar os turnos com base no modelo.template_data
     const newShifts: Shift[] = [];
     const weekDays = [0, 1, 2, 3, 4, 5, 6]; // Array de dias da semana (Domingo-Sábado)
     
@@ -339,7 +369,7 @@ export function ScheduleEditor() {
     
     selectedEmployeeIds.forEach(employeeId => {
       weekDays.forEach((dayOfWeek, index) => {
-        // Verifica se o template define um turno para este dia
+        // Verifica se o modelo define um turno para este dia
         const templateShift = template.template_data.shifts.find(shift => shift.dayOfWeek === dayOfWeek);
         
         if (templateShift) {
@@ -362,7 +392,7 @@ export function ScheduleEditor() {
     // e mostrar uma mensagem de sucesso
     setForm(prev => ({
       ...prev,
-      notes: `Escala aplicada com base no template: ${template.name}. ${newShifts.length} turnos gerados.`
+      notes: `Escala aplicada com base no modelo: ${template.name}. ${newShifts.length} turnos gerados.`
     }));
 
     // 4. Atualizar a data para a data de início da semana se não houver data selecionada
@@ -385,16 +415,16 @@ export function ScheduleEditor() {
     setSelectedEmployeeIds([]);
 
     toast({
-      title: "✅ Template Aplicado!",
-      description: `${newShifts.length} turnos foram gerados com base no template "${template.name}".`,
+      title: "✅ Modelo Aplicado!",
+      description: `${newShifts.length} turnos foram gerados com base no modelo "${template.name}".`,
     });
   };
 
   const handleOpenApplyTemplateModal = () => {
     if (!templates || templates.length === 0) {
       toast({
-        title: "Nenhum template disponível",
-        description: "Crie alguns templates primeiro para poder aplicá-los.",
+        title: "Nenhum modelo disponível",
+        description: "Crie alguns modelos primeiro para poder aplicá-los.",
         variant: "destructive",
       });
       return;
@@ -410,7 +440,7 @@ export function ScheduleEditor() {
           Nova Escala
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-modal-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <Calendar className="h-5 w-5 text-primary" />
@@ -520,7 +550,7 @@ export function ScheduleEditor() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Use templates salvos para criar escalas rapidamente.
+                Use modelos salvos para criar escalas rapidamente.
               </p>
               <div className="flex gap-2">
                 <Button 
@@ -529,7 +559,7 @@ export function ScheduleEditor() {
                   className="flex-1"
                 >
                   <Copy className="h-4 w-4 mr-2" />
-                  Gerenciar Templates
+                  Gerenciar Modelos
                 </Button>
                 <Button 
                   onClick={handleOpenApplyTemplateModal}
@@ -778,7 +808,7 @@ export function ScheduleEditor() {
 
       {/* Modal de Sugestão de IA */}
       <Dialog open={isSuggestionModalOpen} onOpenChange={setSuggestionModalOpen}>
-        <DialogContent className="sm:max-w-[625px]">
+        <DialogContent className="sm:max-w-modal-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <BrainCircuit className="h-5 w-5 text-primary" />
@@ -857,9 +887,9 @@ export function ScheduleEditor() {
         </DialogContent>
       </Dialog>
 
-      {/* Modal de Gerenciador de Templates */}
+      {/* Modal de Gerenciador de Modelos */}
       <Dialog open={showTemplates} onOpenChange={setShowTemplates}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-modal-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5 text-secondary" />
@@ -873,9 +903,9 @@ export function ScheduleEditor() {
         </DialogContent>
       </Dialog>
 
-      {/* Modal de Aplicação de Template */}
+      {/* Modal de Aplicação de Modelo */}
       <Dialog open={isApplyTemplateModalOpen} onOpenChange={setApplyTemplateModalOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-modal-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Zap className="h-5 w-5 text-secondary" />
@@ -884,7 +914,7 @@ export function ScheduleEditor() {
           </DialogHeader>
           
           <div className="space-y-6">
-            {/* Seleção do Template */}
+            {/* Seleção do Modelo */}
             <div className="space-y-3">
               <Label>Selecione o Modelo</Label>
               <Select 
@@ -892,7 +922,7 @@ export function ScheduleEditor() {
                 onValueChange={(templateId) => {
                   const template = templates?.find(t => t.id === templateId);
                   setSelectedTemplateForApply(template || null);
-                  setSelectedEmployeeIds([]); // Reset employee selection when template changes
+                  setSelectedEmployeeIds([]); // Reset employee selection when modelo changes
                 }}
               >
                 <SelectTrigger>
@@ -913,7 +943,7 @@ export function ScheduleEditor() {
               </Select>
             </div>
 
-            {/* Informações do Template Selecionado */}
+            {/* Informações do Modelo Selecionado */}
             {selectedTemplateForApply && (
               <Card className="border-l-4 border-l-secondary">
                 <CardContent className="pt-4">
@@ -938,9 +968,9 @@ export function ScheduleEditor() {
                       </div>
                     </div>
 
-                    {/* Visualização dos turnos do template */}
+                    {/* Visualização dos turnos do modelo */}
                     <div>
-                      <h5 className="font-medium mb-2">Estrutura do Template:</h5>
+                      <h5 className="font-medium mb-2">Estrutura do Modelo:</h5>
                       <div className="space-y-2">
                         {selectedTemplateForApply.template_data.shifts.map((shift, index) => {
                           const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];

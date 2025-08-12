@@ -255,7 +255,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
                   <FormControl>
                     <Textarea 
                       placeholder="Breve descrição da empresa e suas atividades"
-                      className="min-h-[80px]"
+                      className="min-h-textarea"
                       {...field}
                     />
                   </FormControl>

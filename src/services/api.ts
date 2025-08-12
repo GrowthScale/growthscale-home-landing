@@ -169,7 +169,7 @@ export interface ScheduleSuggestionResponse {
   suggestion: ScheduleSuggestion[];
 }
 
-// --- Interfaces para Schedule Templates ---
+// --- Interfaces para Schedule Modelos ---
 export interface ScheduleTemplate {
   id: string;
   created_at: string;
@@ -471,7 +471,7 @@ export class CLTAssistantService extends BaseApiService {
   }
 }
 
-// --- Schedule Template Service ---
+// --- Schedule Modelo Service ---
 export class ScheduleTemplateService extends BaseApiService {
   async getTemplates(): Promise<ApiResponse<ScheduleTemplate[]>> {
     return this.handleRequest(async () => {
@@ -481,7 +481,7 @@ export class ScheduleTemplateService extends BaseApiService {
         .order('created_at', { ascending: false });
 
       if (error) {
-        return { data: null, error: `Erro ao buscar templates: ${error.message}` };
+        return { data: null, error: `Erro ao buscar modelos: ${error.message}` };
       }
 
       return { data, error: null };
@@ -497,7 +497,7 @@ export class ScheduleTemplateService extends BaseApiService {
         .single();
 
       if (error) {
-        return { data: null, error: `Erro ao buscar template: ${error.message}` };
+        return { data: null, error: `Erro ao buscar modelo: ${error.message}` };
       }
 
       return { data, error: null };
@@ -513,7 +513,7 @@ export class ScheduleTemplateService extends BaseApiService {
         .single();
 
       if (error) {
-        return { data: null, error: `Erro ao criar template: ${error.message}` };
+        return { data: null, error: `Erro ao criar modelo: ${error.message}` };
       }
 
       return { data, error: null };
@@ -530,7 +530,7 @@ export class ScheduleTemplateService extends BaseApiService {
         .single();
 
       if (error) {
-        return { data: null, error: `Erro ao atualizar template: ${error.message}` };
+        return { data: null, error: `Erro ao atualizar modelo: ${error.message}` };
       }
 
       return { data, error: null };
@@ -545,7 +545,7 @@ export class ScheduleTemplateService extends BaseApiService {
         .eq('id', id);
 
       if (error) {
-        return { data: null, error: `Erro ao deletar template: ${error.message}` };
+        return { data: null, error: `Erro ao deletar modelo: ${error.message}` };
       }
 
       return { data: null, error: null };
