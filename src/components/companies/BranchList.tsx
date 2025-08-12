@@ -111,11 +111,11 @@ export const BranchList: React.FC<BranchListProps> = ({ companyId }) => {
       case 'active':
         return 'bg-success text-success-foreground';
       case 'inactive':
-        return 'bg-muted text-muted-foreground';
+        return 'bg-muted text-foreground/80';
       case 'maintenance':
         return 'bg-warning text-warning-foreground';
       default:
-        return 'bg-muted text-muted-foreground';
+        return 'bg-muted text-foreground/80';
     }
   };
 

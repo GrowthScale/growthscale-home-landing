@@ -514,7 +514,7 @@ const Gamification = () => {
                           index === 0 ? 'bg-yellow-500 text-white' :
                           index === 1 ? 'bg-gray-400 text-white' :
                           index === 2 ? 'bg-amber-600 text-white' :
-                          'bg-muted text-muted-foreground'
+                          'bg-muted text-foreground/80'
                         }`}>
                           {index < 3 ? <Crown className="h-4 w-4" /> : user.position}
                         </div>

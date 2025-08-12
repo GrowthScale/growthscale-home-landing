@@ -3,6 +3,8 @@ import KPICard from "./KPICard";
 import ChartSection from "./ChartSection";
 import NotificationsPanel from "./NotificationsPanel";
 import ActivityFeed from "./ActivityFeed";
+import { useAccessControl } from "@/hooks/useAccessControl";
+import { Button } from "@/components/ui/button";
 import { 
   Users, 
   Clock, 
@@ -11,10 +13,13 @@ import {
   DollarSign,
   Calendar,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  BarChart3,
+  FileText
 } from "lucide-react";
 
 const Dashboard = () => {
+  const { can } = useAccessControl();
   const kpiData = [
     {
       title: "Taxa de Rotatividade",
@@ -82,6 +87,31 @@ const Dashboard = () => {
               <p className="text-white/90 text-lg leading-relaxed">
                 Aqui está um resumo das principais métricas da sua operação.
               </p>
+              
+              {/* Botões de Ação com Controle de Permissão */}
+              <div className="flex flex-wrap gap-3 mt-4">
+                {can('view:billing') && (
+                  <Button 
+                    variant="secondary" 
+                    size="sm"
+                    className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+                  >
+                    <BarChart3 className="mr-2 h-4 w-4" />
+                    Relatórios Avançados
+                  </Button>
+                )}
+                
+                {can('manage:users') && (
+                  <Button 
+                    variant="secondary" 
+                    size="sm"
+                    className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    Gerenciar Usuários
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </section>

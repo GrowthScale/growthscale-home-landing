@@ -3,19 +3,19 @@ import { Calendar, BarChart3, Shield, Trophy, TrendingDown, Clock } from "lucide
 const features = [
   {
     icon: Calendar,
-    title: "Escalas Inteligentes",
+    title: "Seu Co-Piloto CLT que não dorme.",
     description: "IA avançada que cria escalas otimizadas considerando disponibilidade, habilidades e preferências dos funcionários.",
     image: "🗓️"
   },
   {
     icon: BarChart3,
-    title: "Previsão de Ausências",
+    title: "Escalas Perfeitas, sem Esforço.",
     description: "Algoritmos preditivos que antecipam ausências e sugerem substituições automaticamente.",
     image: "📊"
   },
   {
     icon: Shield,
-    title: "Compliance Automático",
+    title: "Comunicação Clara e sem Desculpas.",
     description: "Verificação automática de conformidade com leis trabalhistas e alertas em tempo real.",
     image: "🛡️"
   }
@@ -28,7 +28,7 @@ const FeaturesSection = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 font-roboto">
-            Funcionalidades que <span className="text-primary">Impulsionam</span> o Seu Sucesso
+            A tranquilidade que você nunca teve, em 3 cliques.
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto">
             Conheça as ferramentas poderosas que tornarão a gestão da sua equipe mais eficiente e estratégica
@@ -66,13 +66,38 @@ const FeaturesSection = () => {
                   </p>
                 </div>
                 <div className="flex-shrink-0">
-                  <div 
-                    className="w-24 h-24 bg-gradient-primary rounded-2xl flex items-center justify-center text-4xl" 
-                    role="img" 
-                    aria-label={`Ilustração da funcionalidade ${feature.title}`}
-                  >
-                    <span aria-hidden="true">{feature.image}</span>
-                  </div>
+                  {/* TODO: Inserir aqui um GIF mostrando o alerta de risco aparecendo no calendário. */}
+                  {index === 0 && (
+                    <div 
+                      className="w-24 h-24 bg-gradient-primary rounded-2xl flex items-center justify-center text-4xl" 
+                      role="img" 
+                      aria-label={`Ilustração da funcionalidade ${feature.title}`}
+                    >
+                      <span aria-hidden="true">{feature.image}</span>
+                    </div>
+                  )}
+                  
+                  {/* TODO: Inserir aqui um GIF da IA preenchendo uma escala vazia após o clique no botão 'Sugerir'. */}
+                  {index === 1 && (
+                    <div 
+                      className="w-24 h-24 bg-gradient-primary rounded-2xl flex items-center justify-center text-4xl" 
+                      role="img" 
+                      aria-label={`Ilustração da funcionalidade ${feature.title}`}
+                    >
+                      <span aria-hidden="true">{feature.image}</span>
+                    </div>
+                  )}
+                  
+                  {/* TODO: Inserir aqui um GIF ou imagem de uma notificação da escala chegando em um celular via WhatsApp. */}
+                  {index === 2 && (
+                    <div 
+                      className="w-24 h-24 bg-gradient-primary rounded-2xl flex items-center justify-center text-4xl" 
+                      role="img" 
+                      aria-label={`Ilustração da funcionalidade ${feature.title}`}
+                    >
+                      <span aria-hidden="true">{feature.image}</span>
+                    </div>
+                  )}
                 </div>
               </article>
             );

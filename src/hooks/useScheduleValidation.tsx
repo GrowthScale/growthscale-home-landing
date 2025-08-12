@@ -57,19 +57,19 @@ export const useScheduleValidation = (options: UseScheduleValidationOptions = {}
         // Show toast based on risk score
         if (response.data.riskScore > 75) {
           toast({
-            title: '⚠️ Alto risco de violações',
+            title: 'Alto risco de violações',
             description: `${response.data.violations.length} violações encontradas. Revise a escala.`,
             variant: 'destructive',
           });
         } else if (response.data.riskScore > 50) {
           toast({
-            title: '⚠️ Risco moderado',
+            title: 'Risco moderado',
             description: `${response.data.violations.length} violações encontradas.`,
             variant: 'default',
           });
         } else {
           toast({
-            title: '✅ Baixo risco',
+            title: 'Baixo risco',
             description: 'Escala em conformidade com a legislação.',
             variant: 'default',
           });

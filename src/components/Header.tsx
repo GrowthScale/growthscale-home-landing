@@ -2,15 +2,17 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Menu, X, LogOut, User, Settings } from "lucide-react";
+import { Menu, X, LogOut, User, Settings, CreditCard } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAccessControl } from "@/hooks/useAccessControl";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, signOut } = useAuth();
+  const { can } = useAccessControl();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isHomePage = location.pathname === '/';
@@ -90,6 +92,14 @@ const Header = () => {
                 >
                   Compliance
                 </button>
+                {can('view:billing') && (
+                  <button 
+                    onClick={() => navigate('/faturamento')}
+                    className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                  >
+                    Faturamento
+                  </button>
+                )}
               </>
             ) : (
               <>
@@ -142,6 +152,12 @@ const Header = () => {
                     <User className="mr-2 h-4 w-4" />
                     <span>Perfil</span>
                   </DropdownMenuItem>
+                  {can('view:billing') && (
+                    <DropdownMenuItem onClick={() => navigate("/faturamento")}>
+                      <CreditCard className="mr-2 h-4 w-4" />
+                      <span>Faturamento</span>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem onClick={() => navigate("/configuracoes")}>
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Configurações</span>
@@ -229,6 +245,17 @@ const Header = () => {
                       >
                         Compliance
                       </button>
+                      {can('view:billing') && (
+                        <button 
+                          onClick={() => {
+                            navigate('/faturamento');
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
+                        >
+                          Faturamento
+                        </button>
+                      )}
                     </>
                   ) : (
                     <>

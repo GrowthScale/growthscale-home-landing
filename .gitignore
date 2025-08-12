@@ -37,3 +37,6 @@ dist-ssr
 build
 dist
 dist-ssr
+
+*storybook.log
+storybook-static

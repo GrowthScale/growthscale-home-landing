@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Check, Crown, Users, Brain, AlertTriangle, Calendar, Smartphone, Shield, Clock, Star } from "lucide-react";
+import { Check, Crown, Users, Brain, AlertTriangle, Calendar, Smartphone, Shield, Clock, Star, Building } from "lucide-react";
 
 const plans = [
   {
@@ -40,10 +40,10 @@ const plans = [
     recommended: true
   },
   {
-    name: "Starter",
+    name: "Business",
     price: "R$ 99",
     period: "/mês",
-    description: "Perfeito para estabelecimentos pequenos",
+    description: "Perfeito para estabelecimentos em crescimento",
     icon: Star,
     color: "bg-primary/10 border-primary",
     features: [
@@ -53,19 +53,40 @@ const plans = [
       { text: "Compliance automático", icon: Shield },
       { text: "App mobile", icon: Smartphone }
     ],
-    buttonText: "Assinar Starter",
+    buttonText: "Assinar Business",
     popular: true,
     recommended: false
+  },
+  {
+    name: "Enterprise",
+    price: "Sob Consulta",
+    period: "",
+    description: "Soluções personalizadas para grandes operações",
+    icon: Building,
+    color: "bg-accent/10 border-primary",
+    features: [
+      { text: "Múltiplas Filiais", icon: Building },
+      { text: "Regras Sindicais Customizadas", icon: Shield },
+      { text: "Suporte Dedicado", icon: Clock },
+      { text: "Integrações Personalizadas", icon: Smartphone },
+      { text: "Relatórios Avançados", icon: Calendar }
+    ],
+    buttonText: "Fale com um Especialista",
+    popular: false,
+    recommended: false,
+    enterprise: true
   }
 ];
 
 const comparisonFeatures = [
-  { feature: "Número de funcionários", freemium: "Até 5", essencial: "Até 10", starter: "Até 15" },
-  { feature: "Escalas inteligentes", freemium: "Básicas", essencial: "IA básica", starter: "IA completa" },
-  { feature: "Previsão de ausências", freemium: "❌", essencial: "5 por mês", starter: "Ilimitadas" },
-  { feature: "Compliance automático", freemium: "❌", essencial: "❌", starter: "✅" },
-  { feature: "App mobile", freemium: "❌", essencial: "❌", starter: "✅" },
-  { feature: "Suporte", freemium: "Comunidade", essencial: "Email (24h)", starter: "Prioritário" }
+  { feature: "Número de funcionários", freemium: "Até 5", essencial: "Até 10", business: "Até 15", enterprise: "Ilimitado" },
+  { feature: "Escalas inteligentes", freemium: "Básicas", essencial: "IA básica", business: "IA completa", enterprise: "IA personalizada" },
+  { feature: "Previsão de ausências", freemium: "Não", essencial: "5 por mês", business: "Ilimitadas", enterprise: "Ilimitadas" },
+  { feature: "Compliance automático", freemium: "Não", essencial: "Não", business: "Sim", enterprise: "Sim" },
+  { feature: "App mobile", freemium: "Não", essencial: "Não", business: "Sim", enterprise: "Sim" },
+  { feature: "Suporte", freemium: "Comunidade", essencial: "Email (24h)", business: "Prioritário", enterprise: "Dedicado" },
+  { feature: "Múltiplas filiais", freemium: "Não", essencial: "Não", business: "Não", enterprise: "Sim" },
+  { feature: "Regras customizadas", freemium: "Não", essencial: "Não", business: "Não", enterprise: "Sim" }
 ];
 
 const faqs = [
@@ -82,12 +103,12 @@ const faqs = [
     answer: "Você receberá uma notificação e poderá fazer upgrade para um plano superior ou gerenciar seus funcionários ativos."
   },
   {
-    question: "Existe período de teste gratuito?",
-    answer: "Sim! Todos os planos pagos têm 14 dias de teste gratuito. Você pode cancelar a qualquer momento sem cobrança."
+    question: "Como funciona o suporte técnico?",
+    answer: "Oferecemos suporte por email para todos os planos. Planos Business têm suporte prioritário com resposta em até 4 horas. Enterprise tem suporte dedicado."
   },
   {
-    question: "Como funciona o suporte técnico?",
-    answer: "Oferecemos suporte por email para todos os planos. Planos Starter têm suporte prioritário com resposta em até 4 horas."
+    question: "O plano Enterprise é personalizado?",
+    answer: "Sim! O plano Enterprise é totalmente personalizado para atender às necessidades específicas da sua operação, incluindo múltiplas filiais e regras sindicais customizadas."
   }
 ];
 
@@ -107,7 +128,7 @@ const PricingSection = () => {
         </header>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {plans.map((plan, index) => {
             const IconComponent = plan.icon;
             return (
@@ -115,7 +136,8 @@ const PricingSection = () => {
                 key={index} 
                 className={`relative p-8 transition-smooth hover:shadow-card focus-within:ring-2 focus-within:ring-primary ${
                   plan.popular ? 'border-primary shadow-elegant transform scale-105' : 
-                  plan.recommended ? 'border-secondary shadow-soft' : 'border-border'
+                  plan.recommended ? 'border-secondary shadow-soft' : 
+                  plan.enterprise ? 'border-primary shadow-elegant' : 'border-border'
                 } ${plan.color}`}
                 role="article"
                 aria-labelledby={`plan-title-${index}`}
@@ -135,6 +157,15 @@ const PricingSection = () => {
                     <Badge className="bg-secondary text-secondary-foreground px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
                       <Star className="w-4 h-4" />
                       Recomendado
+                    </Badge>
+                  </div>
+                )}
+
+                {plan.enterprise && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <Badge className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
+                      <Building className="w-4 h-4" />
+                      Enterprise
                     </Badge>
                   </div>
                 )}
@@ -171,6 +202,8 @@ const PricingSection = () => {
                       ? 'bg-accent hover:bg-accent/90 text-accent-foreground shadow-elegant' 
                       : plan.recommended
                       ? 'bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-soft'
+                      : plan.enterprise
+                      ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-elegant'
                       : 'bg-primary hover:bg-primary/90 text-primary-foreground'
                   }`}
                   size="lg"
@@ -195,7 +228,8 @@ const PricingSection = () => {
                     <th scope="col" className="text-left p-4 font-semibold text-foreground min-w-[200px]">Recursos</th>
                     <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Freemium</th>
                     <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Essencial</th>
-                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Starter</th>
+                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Business</th>
+                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Enterprise</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -204,7 +238,8 @@ const PricingSection = () => {
                       <th scope="row" className="p-4 font-medium text-card-foreground text-left">{item.feature}</th>
                       <td className="p-4 text-center text-muted-foreground">{item.freemium}</td>
                       <td className="p-4 text-center text-muted-foreground">{item.essencial}</td>
-                      <td className="p-4 text-center text-muted-foreground">{item.starter}</td>
+                      <td className="p-4 text-center text-muted-foreground">{item.business}</td>
+                      <td className="p-4 text-center text-muted-foreground">{item.enterprise}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -262,11 +297,11 @@ const PricingSection = () => {
             </span>
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-success" />
-              14 dias grátis
+              Garantia de satisfação
             </span>
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-success" />
-              Garantia de satisfação
+              Suporte técnico incluído
             </span>
           </div>
         </div>

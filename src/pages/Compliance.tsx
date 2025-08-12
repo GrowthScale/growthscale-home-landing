@@ -17,7 +17,9 @@ import {
   Users,
   Calendar,
   BarChart3,
-  FileDown
+  FileDown,
+  Check,
+  Play
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
@@ -175,7 +177,7 @@ export default function CompliancePage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-foreground font-roboto text-balance">Compliance Trabalhista</h1>
-              <p className="text-muted-foreground mt-1 leading-relaxed">
+              <p className="text-foreground/80 mt-1 leading-relaxed">
                 Mantenha-se alinhado com as normas trabalhistas e evite riscos em tempo real
               </p>
             </div>
@@ -287,8 +289,14 @@ export default function CompliancePage() {
                             </div>
                           </div>
                           <div className="flex space-x-2">
-                            <Button size="sm">Marcar como Resolvido</Button>
-                            <Button variant="outline" size="sm">Executar Ação</Button>
+                            <Button size="sm">
+                              <Check className="mr-2 h-4 w-4" />
+                              Marcar como Resolvido
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Play className="mr-2 h-4 w-4" />
+                              Executar Ação
+                            </Button>
                           </div>
                         </div>
                       </DialogContent>
@@ -334,14 +342,20 @@ export default function CompliancePage() {
                 <p className="text-sm text-muted-foreground mb-3">
                   Ajustar turnos para evitar excesso de horas extras
                 </p>
-                <Button size="sm">Executar Ação</Button>
+                <Button size="sm">
+                  <Play className="mr-2 h-4 w-4" />
+                  Executar Ação
+                </Button>
               </div>
               <div className="p-4 bg-muted/30 rounded-lg">
                 <h4 className="font-medium mb-2">Configurar Intervalos Automáticos</h4>
                 <p className="text-sm text-muted-foreground mb-3">
                   Garantir intervalos mínimos obrigatórios
                 </p>
-                <Button size="sm">Executar Ação</Button>
+                <Button size="sm">
+                  <Play className="mr-2 h-4 w-4" />
+                  Executar Ação
+                </Button>
               </div>
             </div>
             

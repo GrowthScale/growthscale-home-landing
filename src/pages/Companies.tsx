@@ -108,11 +108,11 @@ const Companies = () => {
       case 'active':
         return 'bg-success text-success-foreground';
       case 'inactive':
-        return 'bg-muted text-muted-foreground';
+        return 'bg-muted text-foreground/80';
       case 'pending':
         return 'bg-warning text-warning-foreground';
       default:
-        return 'bg-muted text-muted-foreground';
+        return 'bg-muted text-foreground/80';
     }
   };
 
@@ -142,7 +142,7 @@ const Companies = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-foreground">Minhas Empresas</h1>
-              <p className="text-muted-foreground mt-1">
+              <p className="text-foreground/80 mt-1">
                 Gerencie suas empresas e filiais de forma centralizada
               </p>
             </div>

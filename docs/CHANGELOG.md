@@ -5,6 +5,124 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.4.0] - 2024-12-19
+
+### 🎨 **Design System & UX**
+
+#### **Auditoria Completa do Design System**
+- **Análise de Tokens**: Auditados todos os tokens de design no `tailwind.config.ts`
+  - Cores primárias, secundárias, accent, destructive e success mapeadas
+  - Famílias de fontes (Roboto, SF Pro, System) documentadas
+  - Tamanhos de fonte (xs até 6xl) catalogados
+- **Verificação de Inconsistências**: Busca global por valores hardcoded
+  - Identificados valores hardcoded em 15+ arquivos
+  - Categorizados por tipo: cores, fontes, espaçamentos, dimensões
+  - Mapeados para migração para tokens do design system
+
+#### **Centralização de Tamanhos Hardcoded em Tokens**
+- **Novos Tokens Criados**:
+  ```typescript
+  spacing: {
+    '18': '4.5rem', // 72px
+    '22': '5.5rem', // 88px
+  },
+  minHeight: {
+    'textarea': '80px',
+    'textarea-lg': '120px',
+  },
+  maxWidth: {
+    'toast': '420px',
+    'modal-md': '625px',
+  }
+  ```
+- **Substituições Realizadas**:
+  - `min-h-[80px]` → `min-h-textarea` (6 arquivos)
+  - `min-h-[120px]` → `min-h-textarea-lg` (1 arquivo)
+  - `max-w-[420px]` → `max-w-toast` (1 arquivo)
+  - `max-w-2xl` → `max-w-modal-md` (13 arquivos em DialogContent)
+  - `#fff` → `stroke-background` (1 arquivo)
+- **Arquivos Atualizados**: 18 arquivos com 50+ substituições
+- **Benefícios**: Consistência visual, facilidade de manutenção, melhor DX
+
+#### **Reestruturação Completa da Hero Section**
+- **Título Principal**: Alterado para foco na dor
+  - **Antes**: "GrowthScale: A Revolução na Gestão de Escalas para o Food Service"
+  - **Depois**: "Deixe de perder tempo e dinheiro com escalas manuais."
+- **Subtítulo**: Foco na solução e benefícios
+  - **Antes**: "Simplifique a gestão da sua equipe, reduza custos e impulsione o crescimento do seu negócio com a nossa plataforma inovadora."
+  - **Depois**: "A plataforma com Inteligência Artificial que blinda seu restaurante contra riscos trabalhistas, otimiza sua equipe e prevê seus custos. Em minutos, não em horas."
+- **Call to Action (CTAs)**:
+  - Botão Principal: "Cadastre-se" → "Começar Grátis"
+  - Botão Secundário: "Solicite Mais Informações" → "Agendar Demonstração"
+- **Elemento Visual**: Adicionado TODO para substituição por GIF/vídeo demonstrativo
+- **Impacto**: Maior conversão, melhor qualificação de leads, redução de objeções
+
+### 🔄 **Localização e Terminologia**
+
+#### **Substituição Completa: "Template" → "Modelo"**
+- **Escopo**: Todos os textos visíveis ao usuário em português
+- **Arquivos Atualizados**: 5 arquivos principais
+- **Substituições Realizadas**: 50+ ocorrências
+- **Preservado**: Nomes técnicos (componentes, interfaces, métodos, variáveis)
+- **Mudanças Principais**:
+  - Comentários e mensagens de erro na API
+  - Textos da interface do usuário
+  - Mensagens de toast e feedback
+  - Títulos de seções e botões
+  - Descrições de funcionalidades
+- **Benefícios**: Terminologia consistente em português brasileiro, melhor experiência do usuário
+
+### 🔧 **Melhorias Técnicas**
+
+#### **Auditoria de Layout e Hierarquia Visual**
+- **Páginas Analisadas**: Dashboard, ScheduleEditor, Employees
+- **Análise Realizada**:
+  - Estrutura principal do layout (grid/flexbox)
+  - Títulos principais (H1) e estilos
+  - Títulos de cards e seções
+  - Consistência visual entre páginas
+- **Recomendações**: Padronização de hierarquia e espaçamentos
+
+#### **Auditoria do Fluxo de Registro de Usuário**
+- **Análise Completa**: Página Auth.tsx até primeira experiência pós-cadastro
+- **Identificado**: Gap crítico na onboarding (falta de redirecionamento automático)
+- **Implementado**: Redirecionamento automático para setup de empresa
+
+#### **Auditoria de Estados de Loading, Erro e Sucesso**
+- **Análise**: Todos os `useQuery` e `useMutation` do projeto
+- **Identificado**: Falta de tratamento de erro em `useQuery` específicos
+- **Implementado**: `onError` callbacks com toast notifications
+
+### 🚀 **Novas Funcionalidades**
+
+#### **Redirecionamento Automático para Setup**
+- **Implementado**: Lógica em `ProtectedRoute.tsx`
+- **Funcionalidade**: Verifica se usuário tem empresa configurada
+- **Comportamento**: Redireciona automaticamente para `/setup` se necessário
+- **Prevenção**: Evita redirecionamento infinito com verificação de rota atual
+- **Benefício**: Onboarding guiado para novos usuários
+
+#### **Tratamento de Erro em Queries Críticas**
+- **Implementado**: `onError` callbacks em `ScheduleEditor.tsx`
+- **Escopo**: Queries de validação e cálculo de custo em tempo real
+- **Funcionalidade**: Toast notifications para erros de conexão/validação
+- **Benefício**: Feedback robusto para funcionalidades críticas
+
+### 📚 **Documentação**
+- **CHANGELOG**: Atualizado com todas as mudanças recentes
+- **Auditorias**: Documentadas análises de design system, layout e fluxos
+- **Implementações**: Registradas todas as melhorias técnicas
+- **Benefícios**: Mapeados impactos de cada mudança
+
+### 🎯 **Impacto Geral**
+- **UX**: Melhorada significativamente com foco na dor e solução clara
+- **Consistência**: Design system unificado e terminologia padronizada
+- **Conversão**: Hero Section otimizada para maior conversão
+- **Manutenibilidade**: Código mais limpo e tokens centralizados
+- **Onboarding**: Fluxo guiado para novos usuários
+
+---
+
 ## [1.2.0] - 2024-12-19
 
 ### 🚀 **Novas Funcionalidades**
@@ -152,132 +270,4 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 - **Implementada Sugestão de Escala com IA:** Criada a função de backend `suggest-schedule`, que utiliza um prompt avançado para instruir a IA (GPT) a gerar uma alocação de escala otimizada em formato JSON. No frontend, um novo fluxo foi adicionado ao Editor de Escalas: um botão "Sugerir com IA" abre um modal que exibe o status do processamento e apresenta a escala sugerida para aprovação e aplicação pelo gestor. O sistema inclui:
   - Supabase Edge Function (`suggest-schedule`) com prompt especializado em logística e alocação de pessoal
-  - Hook `useScheduleSuggestion` para gerenciar sugestões
-  - Componente `ScheduleSuggestion` para exibir sugestões com estatísticas e interface moderna
-  - Integração completa no `ScheduleEditor` com botão "Sugerir com IA"
-  - **Modal de Sugestão**: Novo modal com preview das sugestões e aplicação automática
-  - **Pré-visualização Visual**: Calendário com preview das sugestões de IA usando `ScheduleCalendar`
-  - **Fluxo de Aplicação Melhorado**: Sistema otimizado para aplicar sugestões diretamente no estado do formulário
-  - **Melhoria na UX da Sugestão de IA**: A escala sugerida pela IA agora é exibida diretamente no componente do calendário principal com um estilo visual de "pré-visualização" (borda tracejada e destaque), em vez de ser mostrada como dados brutos. Isso permite que o gestor analise o impacto da sugestão visualmente antes de confirmar sua aplicação na escala definitiva
-  - Aplicação automática de sugestões com confirmação
-  - Analytics tracking de sugestões geradas e aplicadas
-  - Validação de dados de entrada e tratamento de erros
-  - Interface responsiva com loading states e feedback visual
-  - **Método standalone `suggestSchedule`** para uso direto sem service layer
-
-- **Implementado Sistema de Modelos de Escala (Templates):** Criado sistema completo para gerenciar templates de escala, permitindo criar, editar, deletar e aplicar modelos pré-definidos. O sistema inclui:
-  - **Service Layer**: `ScheduleTemplateService` com métodos CRUD completos
-  - **Interfaces TypeScript**: `ScheduleTemplate`, `CreateScheduleTemplateDto`, `UpdateScheduleTemplateDto`
-  - **Componente Principal**: `ScheduleTemplateManager` com interface moderna e responsiva
-  - **Integração no Editor**: Botão "Gerenciar Templates" no `ScheduleEditor`
-  - **Funcionalidades**: Criar, editar, deletar e aplicar templates
-  - **Preview de Turnos**: Visualização dos turnos configurados em cada template
-  - **Estatísticas**: Contagem de turnos e funcionários por template
-  - **Aplicação Automática**: Templates podem ser aplicados diretamente no editor de escalas
-  - **Multi-tenancy**: Suporte a templates por empresa (tenant_id)
-  - **Validação**: Tratamento de erros e feedback visual
-  - **UX Otimizada**: Loading states, confirmações e toasts informativos
-  - **Aplicação Direta no Editor**: Nova funcionalidade para aplicar modelos diretamente no `ScheduleEditor` com seleção de funcionários e geração automática de turnos
-  - **Modal de Aplicação**: Interface dedicada para seleção de template e funcionários específicos
-  - **Geração Automática de Turnos**: Sistema que gera automaticamente todos os turnos baseados na estrutura do template (`template_data.shifts`)
-  - **Cálculo Inteligente de Datas**: Lógica para calcular datas da semana usando `startOfWeek` e `addDays`
-  - **Seleção de Funcionários**: Checkboxes para escolher quais funcionários aplicar o template
-  - **Preview da Estrutura**: Card detalhado mostrando turnos, horários e funcionários padrão antes da aplicação
-  - **Integração com Formulário**: Atualização automática do estado do formulário com funcionários e observações
-  - **Botão "Aplicar Modelo"**: Adicionado ao card de templates para acesso rápido à funcionalidade
-
-- **Motor de Regras da CLT (`/functions/validate-schedule`):** Implementada a primeira versão da Supabase Edge Function para validação de escalas. A função atualmente verifica violações de intervalo interjornada (11h), descanso semanal remunerado (DSR) e excesso de carga horária semanal. Ela recebe os dados da escala e retorna um score de risco e uma lista detalhada de violações.
-
-- Sistema de documentação completo
-- Estrutura de pastas docs/
-- Histórico de auditoria técnica
-- Guias de configuração e deploy
-
-## [1.1.1] - 2024-12-19
-
-### Corrigido
-- **i18n**: Removidas chaves duplicadas `installDescription` nas traduções em português, inglês e espanhol
-- **useNotifications**: Corrigido método duplicado `isSupported()` na classe `NotificationService`
-- **TypeScript**: Resolvidos erros de linter relacionados a módulos não encontrados (`react-router-dom`, `react-i18next`)
-- **Dependências**: Realizada reinstalação limpa de `node_modules` para resolver problemas de tipos
-
-### Melhorado
-- **Build**: Otimizado processo de build com correção de warnings
-- **Performance**: Melhorada detecção de suporte a notificações push
-
-### Técnico
-- **Linting**: Configuração TypeScript balanceada para contexto no-code
-- **Dependências**: Verificação e reinstalação de todas as dependências do projeto
-
-## [1.1.0] - 2024-12-19
-
-### Adicionado
-- **PWA**: Implementação completa de Progressive Web App
-  - Service Worker (`public/sw.js`)
-  - Manifest (`public/manifest.json`)
-  - Hook `usePWA` para gerenciamento de instalação
-  - Componente `PWAInstallPrompt` para prompt de instalação
-  - Meta tags PWA no `index.html`
-  - Registro automático do Service Worker em `main.tsx`
-
-- **Internacionalização (i18n)**: Sistema completo de traduções
-  - Configuração `i18next` com `react-i18next`
-  - Suporte a português (pt-BR), inglês (en-US) e espanhol (es-ES)
-  - Traduções completas para todas as interfaces
-  - Integração em `Auth.tsx` e outros componentes
-
-- **Analytics**: Sistema de rastreamento de eventos
-  - Hook `useAnalytics` com `AnalyticsService`
-  - Rastreamento de eventos de usuário, performance e erros
-  - Integração com Google Analytics e endpoint customizado
-  - Persistência local de eventos
-
-- **Notificações Push**: Sistema nativo de notificações
-  - Hook `useNotifications` com `NotificationService`
-  - Gerenciamento de permissões e assinaturas VAPID
-  - Notificações in-app e push nativas
-  - Integração com analytics e multi-tenancy
-
-- **Multi-tenancy**: Suporte a múltiplas empresas
-  - Context `TenantProvider` e hook `useTenant`
-  - Gerenciamento de tenant ativo e configurações
-  - Integração com autenticação e analytics
-
-- **Virtualização**: Otimização para grandes listas
-  - Componentes `VirtualList`, `VirtualTable`, `VirtualGrid`
-  - Renderização eficiente de grandes datasets
-  - Configurável via feature flags
-
-- **Service Layer**: Arquitetura de serviços
-  - `BaseApiService` para operações comuns
-  - Serviços específicos: `EmployeeService`, `CompanyService`, `ScheduleService`
-  - Tipos TypeScript para modelos e DTOs
-
-- **Constantes Centralizadas**: Sistema de constantes
-  - Arquivo `src/constants/index.ts`
-
-## 🚀 Feature - Funcionalidades Principais
-
-### **Sistema de Modelos de Escala (Templates):**
-- **Implementado Sistema de Modelos de Escala (Templates):** Adicionada a capacidade de criar, gerenciar e aplicar modelos de escala pré-definidos (ex: 6x1, 12x36). Foi criada uma nova seção de gerenciamento de modelos e, no editor de escalas, agora é possível aplicar um modelo a um grupo de funcionários, gerando automaticamente todos os turnos e simplificando drasticamente o processo de criação de escala.
-
-### **Funcionalidades Implementadas:**
-- **Página de Gerenciamento**: Nova página `/templates` com interface completa para gerenciar templates
-- **Componente TemplateManager**: Interface robusta com DataTable, modais de criação/edição/visualização
-- **Funcionalidades CRUD**: Criar, editar, visualizar, deletar e aplicar templates
-- **Integração com Rotas**: Página protegida e integrada ao sistema de navegação
-- **Visualização Detalhada**: Modal para visualizar detalhes completos dos templates
-- **Aplicação de Templates**: Botão para aplicar template diretamente na página de escalas
-- **Aplicação Direta no Editor**: Nova funcionalidade para aplicar modelos diretamente no `ScheduleEditor` com seleção de funcionários e geração automática de turnos
-- **Modal de Aplicação**: Interface dedicada para seleção de template e funcionários específicos
-- **Geração Automática de Turnos**: Sistema que gera automaticamente todos os turnos baseados na estrutura do template
-- **Cálculo Inteligente de Datas**: Lógica para calcular datas da semana usando funções de data
-- **Seleção de Funcionários**: Checkboxes para escolher quais funcionários aplicar o template
-- **Preview da Estrutura**: Card detalhado mostrando turnos, horários e funcionários padrão antes da aplicação
-- **Integração com Formulário**: Atualização automática do estado do formulário com funcionários e observações
-
-### **Simulador de Custo em Tempo Real:**
-- **Implementado o Simulador de Custo em Tempo Real:** Criada a função de backend `calculate-schedule-cost` para analisar os custos de uma escala, incluindo horas extras e adicional noturno. No Editor de Escalas, um novo painel exibe o custo total estimado da escala, atualizado em tempo real a cada alteração, permitindo que gestores tomem decisões com base em impacto financeiro imediato.
-
-### **Sistema de Notificações WhatsApp para Escalas:**
-- **Implementado Envio de Escalas por WhatsApp:** Criada a função de backend `send-schedule-notification` que formata a escala de cada funcionário e a envia para um webhook configurável (compatível com Make/Zapier). Uma nova tabela `communication_logs` foi adicionada para rastrear o status de cada envio. No frontend, a página de Integrações agora permite configurar a URL do webhook, e a página de Escalas possui uma nova ação para "Notificar Equipe".
+  - Hook `useScheduleSuggestion`

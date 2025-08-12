@@ -14,13 +14,11 @@ const HeroSection = () => {
           {/* Text Content */}
           <div className="text-center lg:text-left space-y-8">
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white font-roboto leading-tight">
-                GrowthScale: A Revolução na{" "}
-                <span className="text-secondary">Gestão de Escalas</span> para o Food Service
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white font-roboto leading-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.2)]">
+                Deixe de perder tempo e dinheiro com escalas manuais.
               </h1>
               <p className="text-xl text-white/90 max-w-2xl font-roboto leading-relaxed">
-                Simplifique a gestão da sua equipe, reduza custos e impulsione o crescimento 
-                do seu negócio com a nossa plataforma inovadora.
+                A plataforma com Inteligência Artificial que blinda seu restaurante contra riscos trabalhistas, otimiza sua equipe e prevê seus custos. Em minutos, não em horas.
               </p>
             </div>
 
@@ -29,18 +27,18 @@ const HeroSection = () => {
               <Button 
                 size="lg" 
                 className="bg-accent hover:bg-accent-hover text-accent-foreground font-semibold px-8 py-4 text-lg shadow-elegant group transition-smooth focus:ring-accent"
-                aria-label="Cadastre-se gratuitamente no GrowthScale"
+                aria-label="Começar gratuitamente no GrowthScale"
               >
-                Cadastre-se
+                Começar Grátis
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
                 className="border-2 border-white/80 text-white bg-white/10 hover:bg-white hover:text-primary px-8 py-4 text-lg backdrop-blur-sm transition-smooth focus:ring-white"
-                aria-label="Solicite mais informações sobre o GrowthScale"
+                aria-label="Agendar demonstração do GrowthScale"
               >
-                Solicite Mais Informações
+                Agendar Demonstração
               </Button>
             </div>
 
@@ -70,6 +68,7 @@ const HeroSection = () => {
 
           {/* Visual Element */}
           <div className="relative">
+            {/* TODO: Substituir esta imagem estática por um GIF ou vídeo curto (5-10s) mostrando a interface da plataforma em ação, especificamente o alerta de risco aparecendo em tempo real no calendário. Isso é crucial para a prova visual. */}
             <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-elegant">
               <div className="aspect-video bg-white/20 rounded-lg flex items-center justify-center">
                 <div className="text-center text-white">

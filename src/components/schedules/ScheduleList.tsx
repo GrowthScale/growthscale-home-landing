@@ -20,7 +20,10 @@ import {
   CheckCircle,
   Clock3,
   MessageCircle,
-  Bell
+  Bell,
+  Sun,
+  Cloud,
+  Moon
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -30,13 +33,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import { LucideIcon } from 'lucide-react';
+
 interface ScheduleItem {
   id: string;
   date: string;
   shift: {
     type: 'morning' | 'afternoon' | 'night';
     time: string;
-    icon: string;
+    icon: LucideIcon;
   };
   employees: {
     id: string;
@@ -54,7 +59,7 @@ const mockSchedules: ScheduleItem[] = [
   {
     id: '1',
     date: '15/08/2024',
-    shift: { type: 'morning', time: '06:00 - 14:00', icon: '☀️' },
+    shift: { type: 'morning', time: '06:00 - 14:00', icon: Sun },
     employees: [
       { id: '1', name: 'João Silva', initials: 'JS' },
       { id: '2', name: 'Maria Santos', initials: 'MS' }
@@ -68,7 +73,7 @@ const mockSchedules: ScheduleItem[] = [
   {
     id: '2',
     date: '15/08/2024',
-    shift: { type: 'afternoon', time: '14:00 - 22:00', icon: '🌤️' },
+    shift: { type: 'afternoon', time: '14:00 - 22:00', icon: Cloud },
     employees: [
       { id: '3', name: 'Pedro Costa', initials: 'PC' },
       { id: '4', name: 'Ana Lima', initials: 'AL' }
@@ -81,7 +86,7 @@ const mockSchedules: ScheduleItem[] = [
   {
     id: '3',
     date: '16/08/2024',
-    shift: { type: 'night', time: '22:00 - 06:00', icon: '🌙' },
+    shift: { type: 'night', time: '22:00 - 06:00', icon: Moon },
     employees: [
       { id: '5', name: 'Carlos Oliveira', initials: 'CO' }
     ],
@@ -94,7 +99,7 @@ const mockSchedules: ScheduleItem[] = [
   {
     id: '4',
     date: '17/08/2024',
-    shift: { type: 'morning', time: '06:00 - 14:00', icon: '☀️' },
+    shift: { type: 'morning', time: '06:00 - 14:00', icon: Sun },
     employees: [
       { id: '1', name: 'João Silva', initials: 'JS' },
       { id: '3', name: 'Pedro Costa', initials: 'PC' },
@@ -217,7 +222,7 @@ export function ScheduleList() {
                 <TableCell className="font-medium">{schedule.date}</TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-2">
-                    <span className="text-lg">{schedule.shift.icon}</span>
+                    <schedule.shift.icon className="h-5 w-5 text-primary" />
                     <div>
                       <p className="font-medium">{schedule.shift.time}</p>
                       <p className="text-xs text-muted-foreground capitalize">
@@ -303,13 +308,13 @@ export function ScheduleList() {
         <Card key={schedule.id} className="hover:shadow-soft transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-start justify-between mb-3">
-              <div className="flex items-center space-x-2">
-                <span className="text-2xl">{schedule.shift.icon}</span>
-                <div>
-                  <p className="font-semibold">{schedule.date}</p>
-                  <p className="text-sm text-muted-foreground">{schedule.shift.time}</p>
-                </div>
+                          <div className="flex items-center space-x-2">
+              <schedule.shift.icon className="h-6 w-6 text-primary" />
+              <div>
+                <p className="font-semibold">{schedule.date}</p>
+                <p className="text-sm text-muted-foreground">{schedule.shift.time}</p>
               </div>
+            </div>
               <Badge variant={getStatusVariant(schedule.status) as "default" | "secondary" | "destructive" | "outline"}>
                 {getStatusLabel(schedule.status)}
               </Badge>

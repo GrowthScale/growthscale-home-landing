@@ -170,7 +170,7 @@ export const EmployeeFilters = memo(() => {
           {/* Active Filters Display */}
           {activeFilters.length > 0 && (
             <div className="flex items-center space-x-2 mt-3 pt-3 border-t">
-              <span className="text-sm text-muted-foreground">Filtros ativos:</span>
+                              <span className="text-sm text-foreground/80">Filtros ativos:</span>
               <div className="flex flex-wrap gap-2">
                 {activeFilters.map((filter) => (
                   <ActiveFilter 

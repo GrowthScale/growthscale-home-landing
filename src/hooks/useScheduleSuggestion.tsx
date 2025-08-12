@@ -64,7 +64,7 @@ export const useScheduleSuggestion = (options: UseScheduleSuggestionOptions = {}
 
         // Show success toast
         toast({
-          title: '✅ Sugestão Gerada!',
+          title: 'Sugestão Gerada!',
           description: `${response.data.suggestion.length} alocações sugeridas para ${suggestionData.shiftsToFill.length} turnos.`,
           variant: 'default',
         });

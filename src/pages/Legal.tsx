@@ -23,7 +23,7 @@ export default function LegalPage() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-foreground font-roboto">Documentos Legais</h1>
-                <p className="text-muted-foreground mt-1">
+                <p className="text-foreground/80 mt-1">
                   Políticas, termos e condições do GrowthScale
                 </p>
               </div>

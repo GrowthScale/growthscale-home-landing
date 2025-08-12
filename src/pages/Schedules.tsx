@@ -43,7 +43,7 @@ export default function Schedules() {
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold text-foreground font-roboto">Escalas</h1>
-                  <p className="text-muted-foreground mt-1">
+                  <p className="text-foreground/80 mt-1">
                     Crie, edite e otimize as escalas da sua equipe com IA
                   </p>
                 </div>

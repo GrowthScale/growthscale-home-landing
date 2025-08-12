@@ -88,7 +88,7 @@ export function EmployeeForm() {
     }
 
     toast({
-      title: "Funcionário cadastrado com sucesso! ✅",
+              title: "Funcionário cadastrado com sucesso!",
       description: `${form.name} foi adicionado à equipe.`,
     });
     
@@ -262,7 +262,7 @@ export function EmployeeForm() {
                         variant="outline"
                         className={cn(
                           "w-full justify-start text-left font-normal",
-                          !form.startDate && "text-muted-foreground"
+                          !form.startDate && "text-foreground/80"
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />

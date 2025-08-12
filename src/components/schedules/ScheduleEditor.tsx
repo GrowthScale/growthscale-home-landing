@@ -298,7 +298,7 @@ export function ScheduleEditor() {
     }
 
     toast({
-      title: "Escala salva com sucesso! ✅",
+              title: "Escala salva com sucesso!",
       description: `Escala criada para ${format(form.date, 'dd/MM/yyyy', { locale: ptBR })}`,
     });
     
@@ -342,7 +342,7 @@ export function ScheduleEditor() {
     setSuggestionModalOpen(false); // Fecha o modal
 
     toast({
-      title: "✅ Sugestão Aplicada!",
+              title: "Sugestão Aplicada!",
       description: `${suggestion.suggestion.length} alocações foram aplicadas automaticamente.`,
     });
   };
@@ -415,7 +415,7 @@ export function ScheduleEditor() {
     setSelectedEmployeeIds([]);
 
     toast({
-      title: "✅ Modelo Aplicado!",
+              title: "Modelo Aplicado!",
       description: `${newShifts.length} turnos foram gerados com base no modelo "${template.name}".`,
     });
   };

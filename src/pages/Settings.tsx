@@ -36,7 +36,7 @@ export default function SettingsPage() {
 
   const handleSave = () => {
     toast({
-      title: "Configurações salvas! ✅",
+              title: "Configurações salvas!",
       description: "Suas preferências foram atualizadas com sucesso.",
     });
   };

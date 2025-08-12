@@ -79,13 +79,13 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
         }
       });
       toast({
-        title: "✅ Modelo criado!",
+        title: "Modelo criado!",
         description: "O modelo foi salvo com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: "❌ Erro ao criar modelo",
+        title: "Erro ao criar modelo",
         description: error.message,
         variant: "destructive",
       });
@@ -104,13 +104,13 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
       setIsEditModalOpen(false);
       setSelectedTemplate(null);
       toast({
-        title: "✅ Modelo atualizado!",
+        title: "Modelo atualizado!",
         description: "O modelo foi atualizado com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: "❌ Erro ao atualizar modelo",
+        title: "Erro ao atualizar modelo",
         description: error.message,
         variant: "destructive",
       });
@@ -126,13 +126,13 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['scheduleTemplates'] });
       toast({
-        title: "✅ Modelo deletado!",
+        title: "Modelo deletado!",
         description: "O modelo foi removido com sucesso.",
       });
     },
     onError: (error) => {
       toast({
-        title: "❌ Erro ao deletar modelo",
+        title: "Erro ao deletar modelo",
         description: error.message,
         variant: "destructive",
       });
@@ -171,7 +171,7 @@ export function ScheduleTemplateManager({ onTemplateSelect }: ScheduleTemplateMa
   const handleUseTemplate = (template: ScheduleTemplate) => {
     onTemplateSelect?.(template);
     toast({
-      title: "✅ Modelo aplicado!",
+              title: "Modelo aplicado!",
       description: `O modelo "${template.name}" foi selecionado.`,
     });
   };

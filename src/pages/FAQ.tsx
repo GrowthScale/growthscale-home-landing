@@ -185,7 +185,7 @@ const FAQ = () => {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-roboto text-balance">
               Perguntas <span className="text-primary">Frequentes</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto leading-relaxed">
+            <p className="text-xl text-foreground/80 max-w-3xl mx-auto font-roboto leading-relaxed">
               Encontre respostas para as dúvidas mais comuns sobre o uso do GrowthScale
             </p>
           </header>

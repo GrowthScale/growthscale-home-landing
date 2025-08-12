@@ -185,7 +185,7 @@ const Contact = () => {
           <h1 className="text-4xl font-bold text-foreground mb-4 font-roboto text-balance">
             Contato e Suporte
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-roboto leading-relaxed">
+          <p className="text-xl text-foreground/80 max-w-2xl mx-auto font-roboto leading-relaxed">
             Estamos aqui para ajudar! Envie sua mensagem ou encontre respostas rápidas em nossos recursos.
           </p>
         </header>

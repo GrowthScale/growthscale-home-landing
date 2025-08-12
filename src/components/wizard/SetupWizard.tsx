@@ -216,7 +216,7 @@ const SetupWizard: React.FC = () => {
                       ? 'bg-primary text-primary-foreground shadow-soft' 
                       : completedSteps.includes(step.id)
                       ? 'bg-green-500 text-white'
-                      : 'bg-muted text-muted-foreground'
+                      : 'bg-muted text-foreground/80'
                     }
                   `}>
                     {completedSteps.includes(step.id) ? (

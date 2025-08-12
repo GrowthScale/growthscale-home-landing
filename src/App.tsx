@@ -53,35 +53,35 @@ const App = () => (
                   <Route path={ROUTES.HOME} element={<Index />} />
                   <Route path={ROUTES.LOGIN} element={<Auth />} />
                   <Route path={ROUTES.DASHBOARD} element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredPermission="view:full_dashboard">
                       <MainLayout>
                         <Dashboard />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
                   <Route path={ROUTES.SCHEDULES} element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredPermission="manage:schedules">
                       <MainLayout>
                         <Schedules />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
                   <Route path={ROUTES.EMPLOYEES} element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredPermission="manage:users">
                       <MainLayout>
                         <Employees />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
                   <Route path={ROUTES.COMPLIANCE} element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredPermission="view:compliance">
                       <MainLayout>
                         <Compliance />
                     </MainLayout>
                     </ProtectedRoute>
                   } />
                   <Route path={ROUTES.SETTINGS} element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredPermission="manage:settings">
                       <MainLayout>
                         <Settings />
                       </MainLayout>
@@ -94,7 +94,13 @@ const App = () => (
                   <Route path={ROUTES.CONTACT} element={<Contact />} />
                   <Route path={ROUTES.FAQ} element={<FAQ />} />
                   <Route path="/gamificacao" element={<Gamification />} />
-                  <Route path="/integracoes" element={<Integrations />} />
+                  <Route path="/integracoes" element={
+                    <ProtectedRoute requiredPermission="manage:integrations">
+                      <MainLayout>
+                        <Integrations />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
                   <Route path="/assistente-clt" element={
                     <ProtectedRoute>
                       <MainLayout>
@@ -103,7 +109,7 @@ const App = () => (
                     </ProtectedRoute>
                   } />
                   <Route path={ROUTES.COMPANIES} element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredPermission="manage:companies">
                       <MainLayout>
                         <Companies />
                       </MainLayout>
@@ -117,7 +123,7 @@ const App = () => (
                     </ProtectedRoute>
                   } />
                   <Route path="/templates" element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredPermission="manage:schedules">
                       <MainLayout>
                         <Templates />
                       </MainLayout>

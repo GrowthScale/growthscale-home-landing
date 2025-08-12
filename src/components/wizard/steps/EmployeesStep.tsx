@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar } from '@/components/ui/calendar';
-import { Users, Plus, Clock, Calendar as CalendarIcon, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Users, Plus, Clock, Calendar as CalendarIcon, ArrowLeft, CheckCircle, Save } from 'lucide-react';
 import { BranchData, EmployeeData, ShiftData } from '../SetupWizard';
 
 const employeeSchema = z.object({
@@ -404,7 +404,10 @@ export const EmployeesStep: React.FC<EmployeesStepProps> = ({
                 >
                   Cancelar
                 </Button>
-                <Button type="submit">Adicionar</Button>
+                <Button type="submit">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Adicionar
+                </Button>
               </div>
             </form>
           </Form>
@@ -518,7 +521,10 @@ export const EmployeesStep: React.FC<EmployeesStepProps> = ({
                 >
                   Cancelar
                 </Button>
-                <Button type="submit">Criar Turno</Button>
+                <Button type="submit">
+                  <Save className="mr-2 h-4 w-4" />
+                  Criar Turno
+                </Button>
               </div>
             </form>
           </Form>

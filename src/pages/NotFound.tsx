@@ -27,7 +27,7 @@ const NotFound = () => {
           <div className="space-y-2">
             <h1 className="text-6xl font-bold text-primary font-roboto">404</h1>
             <h2 className="text-2xl font-semibold text-foreground">Página não encontrada</h2>
-            <p className="text-muted-foreground">
+            <p className="text-foreground/80">
               A página que você está procurando não existe ou foi movida.
             </p>
           </div>

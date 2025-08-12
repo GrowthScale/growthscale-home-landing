@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useAccessControl } from '@/hooks/useAccessControl';
 import { 
   Users,
   Edit,
@@ -204,10 +205,10 @@ const EmployeeRow = memo(({
           <span className="capitalize truncate">{getStatusLabel(employee.status)}</span>
         </div>
       </TableCell>
-      <TableCell className="text-muted-foreground hidden md:table-cell">
+                      <TableCell className="text-foreground/80 hidden md:table-cell">
         {employee.startDate}
       </TableCell>
-      <TableCell className="text-muted-foreground text-sm hidden lg:table-cell">
+                      <TableCell className="text-foreground/80 text-sm hidden lg:table-cell">
         {employee.lastUpdate}
       </TableCell>
       <TableCell>
@@ -227,15 +228,21 @@ const EmployeeRow = memo(({
               <Eye className="h-4 w-4 mr-2" aria-hidden="true" />
               Visualizar
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Edit className="h-4 w-4 mr-2" aria-hidden="true" />
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">
-              <Trash2 className="h-4 w-4 mr-2" aria-hidden="true" />
-              Excluir
-            </DropdownMenuItem>
+            {can('manage:users') && (
+              <DropdownMenuItem>
+                <Edit className="h-4 w-4 mr-2" aria-hidden="true" />
+                Editar
+              </DropdownMenuItem>
+            )}
+            {can('manage:users') && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-destructive">
+                  <Trash2 className="h-4 w-4 mr-2" aria-hidden="true" />
+                  Excluir
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </TableCell>
@@ -349,15 +356,17 @@ const EmployeeCard = memo(({
               >
                 <Eye className="h-3 w-3" aria-hidden="true" />
               </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleEditClick}
-                aria-label={`Editar ${employee.name}`}
-                className="hover-scale"
-              >
-                <Edit className="h-3 w-3" aria-hidden="true" />
-              </Button>
+              {can('manage:users') && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleEditClick}
+                  aria-label={`Editar ${employee.name}`}
+                  className="hover-scale"
+                >
+                  <Edit className="h-3 w-3" aria-hidden="true" />
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -370,6 +379,7 @@ EmployeeCard.displayName = 'EmployeeCard';
 
 export const EmployeeTable = memo(({ onEmployeeSelect, selectedEmployee }: EmployeeTableProps) => {
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+  const { can } = useAccessControl();
 
   // Memoize employees to prevent unnecessary re-renders
   const employees = useMemo(() => mockEmployees, []);

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { LucideIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ChevronLeft, ChevronRight, Calendar, Clock, Users, AlertTriangle, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, Clock, Users, AlertTriangle, Sparkles, Sun, Cloud, Moon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ScheduleEvent {
@@ -81,17 +82,22 @@ export function ScheduleCalendar({
       case 'approved': return 'bg-success text-success-foreground';
       case 'pending': return 'bg-accent text-accent-foreground';
       case 'warning': return 'bg-destructive text-destructive-foreground';
-      default: return 'bg-muted text-muted-foreground';
+              default: return 'bg-muted text-foreground/80';
     }
   };
 
-  const getTypeIcon = (type: string) => {
+  const getTypeIcon = (type: string): LucideIcon => {
     switch (type) {
-      case 'morning': return '☀️';
-      case 'afternoon': return '🌤️';
-      case 'night': return '🌙';
-      default: return '⏰';
+      case 'morning': return Sun;
+      case 'afternoon': return Cloud;
+      case 'night': return Moon;
+      default: return Clock;
     }
+  };
+
+  const TypeIcon = ({ type, className }: { type: string; className?: string }) => {
+    const IconComponent = getTypeIcon(type);
+    return <IconComponent className={className} />;
   };
 
   const getEventsForDay = (day: number) => {
@@ -163,7 +169,7 @@ export function ScheduleCalendar({
           {/* Days of week header */}
           <div className="grid grid-cols-7 border-b border-border">
             {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((day) => (
-              <div key={day} className="p-3 text-center text-sm font-medium text-muted-foreground bg-muted">
+                              <div key={day} className="p-3 text-center text-sm font-medium text-foreground/80 bg-muted">
                 {day}
               </div>
             ))}
@@ -210,7 +216,7 @@ export function ScheduleCalendar({
                         onClick={() => setSelectedEvent(event)}
                         title={`${event.title} - ${event.employees.join(', ')}`}
                       >
-                        <span className="mr-1">{getTypeIcon(event.type)}</span>
+                        <TypeIcon type={event.type} className="h-3 w-3 mr-1 inline" />
                         {event.title}
                       </div>
                     ))}
@@ -264,7 +270,7 @@ export function ScheduleCalendar({
                 {selectedEvent.id.startsWith('preview-') ? (
                   <Sparkles className="h-5 w-5 text-primary" />
                 ) : (
-                  <span className="text-xl">{getTypeIcon(selectedEvent.type)}</span>
+                  <TypeIcon type={selectedEvent.type} className="h-5 w-5" />
                 )}
                 <h3 className="font-semibold text-lg">{selectedEvent.title}</h3>
               </div>

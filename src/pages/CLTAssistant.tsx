@@ -28,7 +28,7 @@ const CLTAssistantPage: React.FC = () => {
             <Bot className="h-8 w-8 text-primary" />
             <h1 className="text-3xl font-bold">Assistente de IA - CLT</h1>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
             Tire suas dúvidas sobre legislação trabalhista brasileira com foco em food service. 
             Nosso assistente de IA está aqui para ajudar você a entender a CLT de forma simples e objetiva.
           </p>

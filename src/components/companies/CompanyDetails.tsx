@@ -36,11 +36,11 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({ company }) => {
       case 'active':
         return 'bg-success text-success-foreground';
       case 'inactive':
-        return 'bg-muted text-muted-foreground';
+        return 'bg-muted text-foreground/80';
       case 'pending':
         return 'bg-warning text-warning-foreground';
       default:
-        return 'bg-muted text-muted-foreground';
+        return 'bg-muted text-foreground/80';
     }
   };
 

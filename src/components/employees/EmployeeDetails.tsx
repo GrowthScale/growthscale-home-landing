@@ -79,7 +79,7 @@ export function EmployeeDetails({ employee, onClose }: EmployeeDetailsProps) {
       case 'active': return 'bg-success text-success-foreground';
       case 'vacation': return 'bg-accent text-accent-foreground';
       case 'inactive': return 'bg-destructive text-destructive-foreground';
-      default: return 'bg-muted text-muted-foreground';
+              default: return 'bg-muted text-foreground/80';
     }
   };
 
@@ -112,7 +112,7 @@ export function EmployeeDetails({ employee, onClose }: EmployeeDetailsProps) {
               </Avatar>
               <div>
                 <h2 className="text-2xl font-bold text-foreground">{employee.name}</h2>
-                <p className="text-lg text-muted-foreground">{employee.position}</p>
+                <p className="text-lg text-foreground/80">{employee.position}</p>
                 <div className="flex items-center space-x-2 mt-1">
                   {getStatusIcon(employee.status)}
                   <Badge className={getStatusColor(employee.status)}>
