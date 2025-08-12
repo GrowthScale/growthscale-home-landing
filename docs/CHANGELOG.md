@@ -243,6 +243,115 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [1.5.0] - 2024-12-19
+
+### 🔐 **Sistema RBAC (Role-Based Access Control)**
+
+#### **Implementação Completa do RBAC**
+- **Backend (Supabase)**: Sistema completo de controle de acesso baseado em papéis
+  - **Tabela `user_profiles`**: Armazena roles dos usuários com relacionamento para `auth.users`
+  - **Row Level Security (RLS)**: Políticas de segurança configuradas para todas as tabelas
+  - **Funções auxiliares**: `update_user_role()`, `get_current_user_role()`, `list_users_with_roles()`
+  - **Trigger automático**: Criação de perfil com role padrão 'employee' quando usuário se registra
+  - **Script SQL corrigido**: `supabase/rbac-setup-fixed.sql` compatível com limitações do Supabase
+
+#### **Frontend (React)**
+- **Hook `useAccessControl`**: Verificação de permissões em tempo real
+- **Componente `AccessControl`**: Renderização condicional baseada em permissões
+- **`ProtectedRoute`**: Proteção de rotas com verificação de permissões
+- **UI condicional**: Botões, menus e funcionalidades baseadas no role do usuário
+
+#### **Papéis e Permissões Definidos**
+- **Owner (`owner`)**: Controle total (faturamento, configurações, todas as escalas)
+- **Manager (`manager`)**: Acesso operacional para unidade específica
+- **Employee (`employee`)**: Acesso apenas à própria escala
+
+#### **Demonstração RBAC Implementada**
+- **Botão "Configurações da Empresa"**: Visível apenas para owners no Header
+- **Página `CompanySettings`**: Interface completa com controle de acesso
+- **Rota protegida**: `/configuracoes-empresa` com verificação de permissão
+- **Badge de role**: Exibição do papel atual do usuário na interface
+
+### 🌱 **Script de Seed para Modelos de Escala**
+
+#### **Script de Seed Completo**
+- **`supabase/seed.js`**: Script para pré-popular tabela `schedule_templates`
+- **11 modelos de escala**: Cobertura completa do setor de food service
+- **Dados estruturados**: Métricas, metadados e informações detalhadas por modelo
+- **Validação robusta**: Verificação de credenciais, sintaxe e estrutura da tabela
+- **Tratamento de erros**: Logs detalhados e fallbacks seguros
+
+#### **Modelos de Escala Incluídos**
+1. **6x1 (Padrão Varejo)** - Restaurantes, fast-food, supermercados
+2. **5x2 (Equilíbrio)** - Administrativo, padarias, produção interna
+3. **12x36 (Plantão Contínuo)** - Hotéis, segurança, hospitais
+4. **Turno Parcial (Pico de Demanda)** - Fast-food, cafeterias, delivery
+5. **Intermitente (Sob Demanda)** - Eventos, buffets, reforço em picos
+6. **5x1 (Operação Intensa)** - Cozinhas industriais, redes de varejo
+7. **4x2 (Turnos Longos)** - Hotelaria, catering, food service contínuo
+8. **6x2 (Menor Desgaste)** - Padarias, restaurantes com folga dupla
+9. **24x48 (Plantão Extremo)** - Operações logísticas especiais
+10. **Horário Móvel (Eventos)** - Buffets, eventos, restaurantes sazonais
+11. **Alta Temporada (Sazonal)** - Turismo, restaurantes em áreas sazonais
+
+#### **Automação Completa**
+- **`scripts/run-seed.sh`**: Script automatizado para execução do seed
+- **Verificações automáticas**: Node.js, arquivos, sintaxe, credenciais
+- **Relatórios detalhados**: Status completo e troubleshooting
+- **Integração com health check**: Verificação de scripts de seed
+
+### 📚 **Documentação Atualizada**
+
+#### **Arquitetura RBAC**
+- **`docs/ARCHITECTURE.md`**: Seção completa sobre RBAC adicionada
+- **Implementação técnica**: Backend e frontend documentados
+- **Matriz de permissões**: Detalhamento por papel
+- **Fluxo de autenticação**: Processo completo com RBAC
+- **Segurança e validação**: Medidas implementadas
+
+#### **Documentação do Seed**
+- **`supabase/README_SEED.md`**: Guia completo de uso
+- **Instruções detalhadas**: Configuração e execução
+- **Troubleshooting**: Soluções para problemas comuns
+- **Estrutura de dados**: Explicação completa dos modelos
+
+### 🔧 **Melhorias Técnicas**
+
+#### **Scripts de Automação**
+- **Health check atualizado**: Inclui verificação de scripts de seed
+- **Validação de sintaxe**: Verificação automática de arquivos JavaScript
+- **Relatórios integrados**: Status completo do sistema
+- **Verificação de dependências**: Node.js e Supabase SDK
+
+#### **Correções de Compatibilidade**
+- **Script RBAC corrigido**: Compatível com estrutura real das tabelas
+- **Remoção de referências**: Coluna `user_id` inexistente em `employees`
+- **Políticas RLS atualizadas**: Baseadas em relacionamentos corretos
+- **Fallback seguro**: Uso de email para relacionamento employee-user
+
+### 🚀 **Deploy e Infraestrutura**
+
+#### **URLs Atualizadas**
+- **Produção**: https://growthscale-home-landing-nzqqb3c62.vercel.app
+- **RBAC Demo**: Disponível na aplicação após configuração
+- **Configurações da Empresa**: `/configuracoes-empresa` (apenas owners)
+
+#### **Status do Sistema**
+- ✅ **RBAC**: Implementado e funcionando
+- ✅ **Seed Scripts**: Prontos para uso
+- ✅ **Documentação**: Completa e atualizada
+- ✅ **Automação**: Scripts funcionais
+- ✅ **Deploy**: Atualizado em produção
+
+### 🎯 **Impacto Geral**
+- **Segurança**: Controle granular de acesso baseado em papéis
+- **Experiência**: Interface adaptada ao papel do usuário
+- **Produtividade**: 11 modelos de escala prontos para uso
+- **Manutenibilidade**: Scripts automatizados e documentação completa
+- **Escalabilidade**: Sistema preparado para múltiplos tenants e papéis
+
+---
+
 ## [Unreleased]
 
 ### Adicionado
