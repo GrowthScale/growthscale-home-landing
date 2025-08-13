@@ -300,6 +300,29 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Relatórios detalhados**: Status completo e troubleshooting
 - **Integração com health check**: Verificação de scripts de seed
 
+### 🚀 **Novas Funcionalidades**
+
+#### **Sistema de Rascunhos Semanais Automáticos**
+- **Infraestrutura Completa**: Tabela `schedule_drafts` com RLS e índices otimizados
+- **Função Edge `generate-weekly-drafts`**: Processamento automático de todos os tenants
+- **Integração com IA**: Utiliza função `suggest-schedule` existente para geração
+- **Prevenção de Duplicatas**: Verificação de rascunhos existentes por semana/tenant
+- **Scripts de Automação**: Setup completo com validações e testes
+
+#### **Card Proativo no Dashboard**
+- **Design Gradiente**: Card com animação fade-in-down e cores primárias
+- **Mensagem Motivacional**: "Sua Escala da Próxima Semana está Pronta!"
+- **Navegação Inteligente**: Redirecionamento para página de revisão
+- **Renderização Condicional**: Aparece apenas quando há rascunho pendente
+- **Atualização em Tempo Real**: Refetch automático a cada 30 segundos
+
+#### **Página de Revisão de Rascunhos**
+- **Rota Protegida**: `/schedules/draft/:draftId` com permissão `manage:schedules`
+- **Interface Completa**: Header, informações detalhadas e preview da escala
+- **Ações Integradas**: Aprovar, rejeitar e descartar rascunhos
+- **Navegação Inteligente**: Volta ao dashboard após ações
+- **Tratamento de Estados**: Loading, erro e sucesso com feedback visual
+
 ### 📚 **Documentação Atualizada**
 
 #### **Arquitetura RBAC**

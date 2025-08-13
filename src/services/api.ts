@@ -761,14 +761,26 @@ export class ScheduleDraftService extends BaseApiService {
     });
   }
 
-  async approveDraft(draftId: string): Promise<ApiResponse<void>> {
+  async approveDraft(draftId: string, scheduleData?: any): Promise<ApiResponse<{ success: boolean }>> {
     return this.handleRequest(async () => {
-      const { error } = await supabase
+      // Se scheduleData foi fornecido, criar a escala oficial primeiro
+      if (scheduleData) {
+        const { error: createError } = await supabase
+          .from('schedules')
+          .insert([scheduleData]);
+        
+        if (createError) throw createError;
+      }
+
+      // Atualizar o status do rascunho para 'approved'
+      const { error: updateError } = await supabase
         .from('schedule_drafts')
         .update({ status: 'approved' })
         .eq('id', draftId);
       
-      return { data: null, error };
+      if (updateError) throw updateError;
+
+      return { data: { success: true }, error: null };
     });
   }
 
@@ -792,6 +804,19 @@ export class ScheduleDraftService extends BaseApiService {
         .order('created_at', { ascending: false });
       
       return { data, error };
+    });
+  }
+
+  async getDraftById(draftId: string): Promise<ApiResponse<ScheduleDraft>> {
+    return this.handleRequest(async () => {
+      const { data, error } = await supabase
+        .from('schedule_drafts')
+        .select('*')
+        .eq('id', draftId)
+        .single();
+      
+      if (error) throw error;
+      return { data, error: null };
     });
   }
 }

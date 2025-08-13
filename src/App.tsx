@@ -34,6 +34,7 @@ const NotFound = React.lazy(() => import("./pages/NotFound"));
 const Templates = React.lazy(() => import("./pages/Templates"));
 const CompanySettings = React.lazy(() => import("./pages/CompanySettings"));
 const ScheduleDraft = React.lazy(() => import("./pages/ScheduleDraft"));
+const DraftReviewPage = React.lazy(() => import("./pages/DraftReviewPage"));
 
 const queryClient = new QueryClient();
 
@@ -141,7 +142,7 @@ const App = () => (
                   <Route path="/schedules/draft/:draftId" element={
                     <ProtectedRoute requiredPermission="manage:schedules">
                       <MainLayout>
-                        <ScheduleDraft />
+                        <DraftReviewPage />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
