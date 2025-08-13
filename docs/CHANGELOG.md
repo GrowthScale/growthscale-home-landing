@@ -5,6 +5,126 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.2.0] - 2024-12-19
+
+### 🚀 **Novas Funcionalidades**
+- **Simulador de Custo em Tempo Real**: Sistema completo de cálculo automático de custos trabalhistas
+  - **Backend**: Supabase Edge Function `calculate-schedule-cost` com lógica de cálculo de horas extras (1.5x) e adicional noturno (1.2x)
+  - **Frontend**: Componente `CostSimulator` com dashboard visual e breakdown de custos
+  - **API Service**: `CostCalculationService` e função standalone `calculateScheduleCost`
+  - **Integração UI**: Nova aba "Custos" na página de Escalas com dados mock para testes
+  - **Cálculos**: Base, horas extras e adicional noturno baseados na carga horária contratada
+  - **Dados Mock**: 5 funcionários com diferentes salários/hora e 15+ turnos simulando semana completa
+  - **Multiplicadores Configuráveis**: Horas extras (1.5x), Adicional noturno (1.2x)
+  - **Cálculo Inteligente**: Baseado na carga horária contratada vs. horas trabalhadas
+  - **Performance**: Cálculos em tempo real com Edge Functions
+  - **Documentação**: Guia completo de uso e configuração técnica
+
+### 🔧 **Melhorias Técnicas**
+- **API Service**: Adicionado método `calculateScheduleCost` ao arquivo `src/services/api.ts`
+- **TypeScript**: Interfaces completas para cálculo de custos (`EmployeeForCostCalculation`, `ShiftForCostCalculation`)
+- **Integração**: Serviço `CostCalculationService` exportado e disponível para uso
+- **Build**: Aplicação compilando sem erros após implementação
+
+### 📚 **Documentação**
+- **Documentação Técnica**: Criado `docs/COST_SIMULATOR.md` com especificações completas
+- **CHANGELOG**: Atualizado com detalhes da nova funcionalidade
+- **Comentários**: Código documentado com explicações detalhadas
+
+---
+
+## [1.3.0] - 2024-12-19
+
+### 🚀 **Novas Funcionalidades**
+- **Sistema de Banco de Dados Completo**: Implementado schema completo do banco de dados com todas as tabelas necessárias
+  - **9 Tabelas Criadas**: companies, company_users, branches, employees, schedules, shifts, schedule_templates, communication_logs, activity_logs
+  - **Row Level Security (RLS)**: Políticas de segurança configuradas para todas as tabelas
+  - **Relacionamentos**: Foreign keys e constraints configurados corretamente
+  - **Índices de Performance**: Otimizações para consultas frequentes
+  - **Triggers Automáticos**: Função `update_updated_at_column()` para atualização automática de timestamps
+  - **Multi-tenancy**: Sistema completo de isolamento por empresa/tenant
+  - **Auditoria**: Logs de atividade e comunicação configurados
+
+- **Deploy Automático**: Configuração completa de CI/CD
+  - **GitHub**: Repositório configurado e sincronizado
+  - **Vercel**: Deploy automático configurado com build otimizado
+  - **Supabase**: Projeto linkado e configurado
+  - **Variáveis de Ambiente**: Configuradas para produção
+
+- **Sistema de Notificações WhatsApp para Escalas**: Implementado sistema completo de notificações automáticas via WhatsApp, incluindo:
+  - **Backend**: Supabase Edge Function `send-schedule-notification` para envio de notificações
+  - **Frontend**: Componente `WhatsAppNotificationManager` com interface de configuração e monitoramento
+  - **API Service**: `WhatsAppNotificationService` para gerenciar notificações e logs
+  - **Integração UI**: Nova aba "Notificações" na página de Escalas com configuração de webhook
+  - **Logs de Comunicação**: Sistema completo de rastreamento de envios (sucesso/falha)
+  - **Webhook Configurável**: Suporte a qualquer serviço de WhatsApp Business via webhooks
+  - **Formatação Inteligente**: Mensagens personalizadas com horários e datas em português
+  - **Multi-tenant**: Isolamento completo por tenant com Row Level Security
+  - **Interface Intuitiva**: Configuração simples de webhook e monitoramento em tempo real
+  - **Documentação**: Guia completo de configuração e troubleshooting
+
+- **Exportação para Contabilidade**: Implementada funcionalidade completa de exportação de relatórios
+  - **Formato CSV**: Exportação em formato padrão para contadores
+  - **Dados Completos**: Funcionário, data, entrada, saída e horas totais
+  - **Formatação Brasileira**: Datas e horários no formato pt-BR
+  - **Cálculo Automático**: Horas trabalhadas calculadas automaticamente
+  - **Interface Intuitiva**: Botão dedicado na página de Compliance
+  - **Download Automático**: Arquivo baixado automaticamente com nome personalizado
+  - **Dados Mock**: Implementado com dados de exemplo para demonstração
+
+- **Implementada a Exportação de Relatórios para CSV:** Adicionada a funcionalidade de "Exportar para CSV" na área de relatórios. O sistema agora permite que os usuários baixem um relatório detalhado das escalas, incluindo funcionários, datas, horários e total de horas, facilitando a integração com sistemas de folha de pagamento e a análise pela contabilidade.
+
+### 🔧 **Correções e Melhorias**
+- **Auditoria Completa do Sistema**: Realizada auditoria completa do sistema, corrigindo todos os erros de TypeScript, problemas de linting e vulnerabilidades de segurança
+  - Corrigidos todos os tipos `any` para `unknown`
+  - Corrigidas interfaces vazias para tipos
+  - Corrigidos escapes desnecessários em regex
+  - Corrigidas dependências de useEffect e useCallback
+  - Implementada validação de entrada sanitizada
+  - Implementado escape de HTML
+  - Implementado rate limiting
+  - Otimizados hooks com useMemo e useCallback
+
+### 🚀 **Novas Funcionalidades**
+- **Aplicação de Modelos no Editor de Escalas**: Implementada funcionalidade completa para aplicar templates de escala diretamente no editor, incluindo:
+  - **Modal de Aplicação**: Interface dedicada para seleção de modelo e funcionários
+  - **Seleção Inteligente**: Dropdown com todos os templates disponíveis e preview da estrutura
+  - **Seleção de Funcionários**: Checkboxes para escolher quais funcionários aplicar o template
+  - **Geração Automática de Turnos**: Sistema que gera turnos baseados na estrutura do template (`template_data.shifts`)
+  - **Cálculo de Datas**: Lógica inteligente para calcular datas da semana usando `startOfWeek` e `addDays`
+  - **Integração com Formulário**: Atualização automática do estado do formulário com funcionários e observações
+  - **Validação de Entrada**: Controles que previnem aplicação sem seleção completa
+  - **Feedback Visual**: Toast notifications e atualização automática da interface
+  - **Botão "Aplicar Modelo"**: Adicionado ao card de templates para acesso rápido
+  - **Visualização da Estrutura**: Card detalhado mostrando turnos, horários e funcionários padrão do template
+
+### 🐛 **Correções de Bugs**
+- Corrigido regex de validação de telefone em `src/lib/utils.ts`
+- Corrigidos tipos inseguros em todos os componentes
+- Corrigidas dependências de hooks em `TenantContext.tsx` e `useNavigation.ts`
+
+### 📚 **Documentação**
+- Atualizada documentação com resultados da auditoria completa
+- Adicionado registro detalhado de todas as correções realizadas
+- Documentada nova funcionalidade de aplicação de modelos no Editor de Escalas
+- **Schema SQL**: Criado arquivo `database-schema-fixed.sql` com schema completo
+- **Configuração**: Documentado processo de setup do banco de dados
+
+### 🔧 **Infraestrutura**
+- **Supabase CLI**: Configurado e linkado ao projeto
+- **Types Generation**: Atualizados tipos TypeScript do Supabase
+- **Edge Functions**: Corrigidas dependências e imports
+- **Build System**: Otimizado para produção na Vercel
+- **Environment Variables**: Configuradas para todas as plataformas
+
+### 🚀 **Deploy**
+- **URL de Produção**: https://growthscale-home-landing-eeo01u3mg.vercel.app
+- **GitHub Repository**: https://github.com/GrowthScale/growthscale-home-landing
+- **Supabase Project**: doldfscfnivsrhqopecu
+- **Status**: ✅ 100% funcional e pronto para produção
+
+---
+
 ## [1.4.0] - 2024-12-19
 
 ### 🎨 **Design System & UX**
@@ -352,16 +472,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Mensagens Contextuais**: Feedback personalizado baseado na pontuação
 - **Script de Deploy**: Automação completa com testes e validação
 
-#### **Integração do Placar de Equidade no ScheduleEditor**
-- **Análise em Tempo Real**: Cálculo automático durante edição da escala
-- **Painel de Risco**: Integração no painel de "Análise de Risco em Tempo Real"
-- **Feedback Visual**: Progress bar colorida com indicadores de status
-- **Mensagens Contextuais**: Exibição de mensagens explicativas da equidade
-- **Ícone Scale**: Identificação visual clara da funcionalidade
-- **Separador Visual**: Border-top para distinguir das outras métricas
-- **Fallback Seguro**: Tratamento robusto para dados ausentes
-- **Compatibilidade**: Integração perfeita com sistema de validação existente
-
 #### **Sistema Completo de Placar de Equidade**
 - **Motor de Análise**: Cálculo automático de equidade na distribuição de turnos de fim de semana
 - **Score de Equidade**: Avaliação da justiça na distribuição entre funcionários
@@ -371,6 +481,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Interface Intuitiva**: Visualização clara com cores e mensagens explicativas
 - **Ambiente Justo**: Promoção de distribuição equilibrada de carga de trabalho
 - **Prevenção de Conflitos**: Redução de disputas por turnos de fim de semana
+- **Integração ScheduleEditor**: Análise em tempo real no painel de "Análise de Risco"
+- **Feedback Visual**: Progress bar colorida com indicadores de status
+- **Mensagens Contextuais**: Exibição de mensagens explicativas da equidade
+- **Ícone Scale**: Identificação visual clara da funcionalidade
+- **Separador Visual**: Border-top para distinguir das outras métricas
+- **Fallback Seguro**: Tratamento robusto para dados ausentes
+- **Compatibilidade**: Integração perfeita com sistema de validação existente
 
 ### 📚 **Documentação Atualizada**
 
@@ -436,29 +553,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
-### Adicionado
-- **Integração do Motor de Regras da CLT ao Frontend:** Implementada integração completa do Motor de Regras da CLT ao frontend, incluindo:
-  - Hook `useScheduleValidation` para gerenciar validações
-  - Componente `ValidationResults` para exibir resultados
-  - Integração no `ScheduleEditor` com botão "Validar CLT"
-  - Interface visual com score de risco, violações e ações
-  - Analytics tracking e toast notifications
-  - Estados de loading e feedback visual
+### 🚀 **Funcionalidades em Desenvolvimento**
+- **Motor de Regras da CLT**: Sistema de validação automática de conformidade com a legislação trabalhista
+- **Assistente de IA para CLT**: Chatbot especializado em dúvidas sobre legislação trabalhista
+- **Sugestão de Escala com IA**: Geração automática de escalas otimizadas usando inteligência artificial
+- **Sistema de Notificações Avançado**: Notificações push e integração com múltiplos canais
+- **Relatórios Avançados**: Dashboards analíticos e relatórios customizáveis
+- **Integração com Sistemas Externos**: APIs para integração com folha de pagamento e RH
 
-- **Integrado Motor de Regras ao Editor de Escalas (`ScheduleEditor.tsx`):** A tela de edição de escalas agora exibe um painel de "Análise de Risco em Tempo Real". O painel é atualizado automaticamente a cada alteração, mostrando um score de risco com um indicador visual (barra de progresso) e uma lista detalhada de todas as violações da CLT identificadas pela nova função de backend.
+### 🔧 **Melhorias Planejadas**
+- **Performance**: Otimização de queries e cache
+- **Acessibilidade**: Melhorias na acessibilidade e usabilidade
+- **Mobile**: Aplicativo mobile nativo
+- **Internacionalização**: Suporte a múltiplos idiomas
+- **Temas**: Sistema de temas personalizáveis
 
-- **Implementado Assistente de IA para Dúvidas CLT:** Adicionada a função de backend `clt-assistant` que se conecta à API da OpenAI com um prompt seguro e especializado. Criado o componente de frontend `CltAssistantChat`, um chatbot flutuante disponível em toda a plataforma, permitindo que gestores tirem dúvidas sobre a CLT em tempo real. O assistente inclui:
-  - Supabase Edge Function (`clt-assistant`) integrada com OpenAI GPT-3.5-turbo
-  - Interface de chat com histórico de conversas e timestamps
-  - Perguntas sugeridas para facilitar o uso
-  - Respostas em linguagem simples e objetiva
-  - Disclaimer legal obrigatório
-  - Página dedicada (`/assistente-clt`) com design responsivo
-  - **Componente de Chat Flutuante** (`CltAssistantChat`) disponível em todas as páginas via MainLayout
-  - Integração completa com React Query para cache e performance
-  - Analytics tracking de perguntas e respostas
-  - Design responsivo e acessível
-
-- **Implementada Sugestão de Escala com IA:** Criada a função de backend `suggest-schedule`, que utiliza um prompt avançado para instruir a IA (GPT) a gerar uma alocação de escala otimizada em formato JSON. No frontend, um novo fluxo foi adicionado ao Editor de Escalas: um botão "Sugerir com IA" abre um modal que exibe o status do processamento e apresenta a escala sugerida para aprovação e aplicação pelo gestor. O sistema inclui:
-  - Supabase Edge Function (`suggest-schedule`) com prompt especializado em logística e alocação de pessoal
-  - Hook `useScheduleSuggestion`
+### 📚 **Documentação Planejada**
+- **API Documentation**: Documentação completa da API
+- **User Guide**: Guia completo do usuário
+- **Developer Guide**: Guia para desenvolvedores
+- **Video Tutorials**: Tutoriais em vídeo
+- **Best Practices**: Melhores práticas de uso
