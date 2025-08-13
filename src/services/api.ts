@@ -136,6 +136,10 @@ export interface ValidationViolation {
 
 export interface ValidationResult {
   riskScore: number;    // 0-100
+  equityScore: {
+    value: number;      // 0-100
+    message: string;
+  };
   violations: ValidationViolation[];
 }
 

@@ -4,6 +4,7 @@ import ChartSection from "./ChartSection";
 import NotificationsPanel from "./NotificationsPanel";
 import ActivityFeed from "./ActivityFeed";
 import PendingDraftCard from "./PendingDraftCard";
+import EquityScore from "./EquityScore";
 import { useAccessControl } from "@/hooks/useAccessControl";
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -178,6 +179,16 @@ const Dashboard = () => {
               status={kpi.status}
             />
           ))}
+        </section>
+
+        {/* Placar de Equidade */}
+        <section className="mb-8" aria-labelledby="equity-title">
+          <h2 id="equity-title" className="sr-only">Placar de Equidade</h2>
+          <EquityScore 
+            value={85} 
+            message="Distribuição de turnos de fim de semana parece justa. Todos os funcionários têm uma carga equilibrada de finais de semana."
+            className="max-w-2xl"
+          />
         </section>
 
         {/* Main Content Grid */}
