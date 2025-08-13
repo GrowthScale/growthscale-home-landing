@@ -342,6 +342,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Template Profissional**: Design responsivo com métricas detalhadas e CTA para dashboard
 - **Valor Contínuo**: Insights semanais que demonstram o valor da plataforma
 
+#### **Placar de Equidade para Distribuição de Turnos**
+- **Análise Estatística**: Cálculo de equidade baseado em desvio padrão da distribuição
+- **Foco em Fins de Semana**: Análise específica de turnos de sábado e domingo
+- **Pontuação 0-100**: Sistema de scoring com categorias (Excelente/Regular/Crítico)
+- **Componente Visual**: EquityScore com progress bar, badges e indicadores coloridos
+- **Integração Dashboard**: Exibição proativa no dashboard principal
+- **Algoritmo Inteligente**: Normalização estatística para avaliação justa
+- **Mensagens Contextuais**: Feedback personalizado baseado na pontuação
+- **Script de Deploy**: Automação completa com testes e validação
+
 ### 📚 **Documentação Atualizada**
 
 #### **Arquitetura RBAC**
