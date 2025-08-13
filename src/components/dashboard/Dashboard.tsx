@@ -5,7 +5,10 @@ import NotificationsPanel from "./NotificationsPanel";
 import ActivityFeed from "./ActivityFeed";
 import PendingDraftCard from "./PendingDraftCard";
 import { useAccessControl } from "@/hooks/useAccessControl";
-import { Button } from "@/components/ui/button";
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { 
   Users, 
   Clock, 
@@ -16,11 +19,30 @@ import {
   AlertTriangle,
   CheckCircle,
   BarChart3,
-  FileText
-} from "lucide-react";
+  FileText,
+  ArrowRight,
+  Sparkles
+} from 'lucide-react';
+import { scheduleDraftService } from '@/services/api';
+import { useTenant } from '@/contexts/TenantContext';
 
 const Dashboard = () => {
   const { can } = useAccessControl();
+  const navigate = useNavigate();
+  const { tenant } = useTenant();
+
+  // Buscar rascunho pendente para o card proativo
+  const { data: pendingDraft, isLoading: isLoadingDraft } = useQuery({
+    queryKey: ['pendingDraft', tenant?.id],
+    queryFn: async () => {
+      if (!tenant?.id) return null;
+      const response = await scheduleDraftService.getPendingDraft(tenant.id);
+      if (response.error) throw new Error(response.error);
+      return response.data;
+    },
+    enabled: !!tenant?.id,
+    refetchInterval: 30000, // Refetch a cada 30 segundos
+  });
   const kpiData = [
     {
       title: "Taxa de Rotatividade",
@@ -117,8 +139,30 @@ const Dashboard = () => {
           </div>
         </section>
 
-        {/* Pending Draft Card - Aparece apenas quando há rascunho pendente */}
-        <PendingDraftCard className="mb-6" />
+        {/* Card Proativo Condicional */}
+        {pendingDraft && (
+          <Card className="mb-6 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground border-none animate-fade-in-down">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Sparkles className="h-6 w-6" />
+                Sua Escala da Próxima Semana está Pronta!
+              </CardTitle>
+              <CardDescription className="text-primary-foreground/80">
+                Nossa IA analisou sua equipe e preparou um rascunho otimizado. Revise e aprove para economizar horas de trabalho.
+              </CardDescription>
+            </CardHeader>
+            <CardFooter>
+              <Button 
+                variant="secondary" 
+                onClick={() => navigate(`/schedules/draft/${pendingDraft.id}`)}
+                className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+              >
+                Revisar e Aprovar Agora
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </CardFooter>
+          </Card>
+        )}
 
         {/* KPI Cards Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" aria-labelledby="kpi-title">
