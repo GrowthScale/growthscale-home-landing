@@ -34,7 +34,8 @@ import {
   FileText,
   Copy,
   Zap,
-  DollarSign
+  DollarSign,
+  Scale
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
@@ -758,6 +759,26 @@ export function ScheduleEditor() {
                         }
                       />
                     </div>
+
+                    {/* NOVO PLACAR DE EQUIDADE */}
+                    <div className="mt-4 pt-4 border-t">
+                      <label className="text-sm font-medium flex items-center gap-2">
+                        <Scale className="h-4 w-4" />
+                        Placar de Equidade: {realTimeValidation.data.equityScore?.value || 0}%
+                      </label>
+                      <Progress 
+                        value={realTimeValidation.data.equityScore?.value || 0}
+                        className={
+                          (realTimeValidation.data.equityScore?.value || 0) > 75 ? '[&>div]:bg-green-500' :
+                          (realTimeValidation.data.equityScore?.value || 0) > 50 ? '[&>div]:bg-yellow-500' :
+                          '[&>div]:bg-red-500'
+                        }
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {realTimeValidation.data.equityScore?.message || 'Análise de equidade não disponível.'}
+                      </p>
+                    </div>
+
                     <div>
                       <h4 className="font-medium mb-2">Pontos de Atenção:</h4>
                       {realTimeValidation.data.violations.length === 0 ? (
