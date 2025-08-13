@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Check, Crown, Users, Brain, AlertTriangle, Calendar, Smartphone, Shield, Clock, Star, Building, Zap, ArrowRight } from "lucide-react";
+import { Check, Crown, Users, Brain, AlertTriangle, Calendar, Smartphone, Shield, Clock, Star, Building, ArrowRight } from "lucide-react";
 
 const plans = [
   {
@@ -38,7 +37,7 @@ const plans = [
       { text: "App mobile completo", icon: Smartphone },
       { text: "Suporte prioritário", icon: Clock }
     ],
-    buttonText: "Começar Agora",
+    buttonText: "Escolher Plano Professional",
     popular: true,
     recommended: false,
     savings: "Economia de R$ 2.000/mês"
@@ -47,7 +46,7 @@ const plans = [
     name: "Business",
     price: "R$ 99",
     period: "/mês",
-    description: "Para operações que querem dominar o mercado",
+    description: "Para operações em crescimento que precisam de poder total",
     icon: Star,
     color: "bg-primary/10 border-primary",
     features: [
@@ -58,7 +57,7 @@ const plans = [
       { text: "Suporte dedicado 24/7", icon: Clock },
       { text: "Consultoria especializada", icon: Shield }
     ],
-    buttonText: "Escalar Agora",
+    buttonText: "Escolher Plano Business",
     popular: false,
     recommended: true,
     savings: "Economia de R$ 5.000/mês"
@@ -67,7 +66,7 @@ const plans = [
     name: "Enterprise",
     price: "Sob Consulta",
     period: "",
-    description: "Soluções personalizadas para grandes operações",
+    description: "Para redes e grandes operações com necessidades únicas",
     icon: Building,
     color: "bg-accent/10 border-primary",
     features: [
@@ -77,7 +76,7 @@ const plans = [
       { text: "Suporte executivo", icon: Clock },
       { text: "SLA garantido", icon: Shield }
     ],
-    buttonText: "Falar com Especialista",
+    buttonText: "Agendar Demonstração",
     popular: false,
     recommended: false,
     enterprise: true,
@@ -85,56 +84,17 @@ const plans = [
   }
 ];
 
-const comparisonFeatures = [
-  { feature: "Funcionários", starter: "Até 5", professional: "Até 15", business: "Até 30", enterprise: "Ilimitado" },
-  { feature: "IA para Escalas", starter: "Básica", professional: "Completa", business: "Avançada", enterprise: "Customizada" },
-  { feature: "Compliance CLT", starter: "Básico", professional: "Automático", business: "Total", enterprise: "Personalizado" },
-  { feature: "Previsão de Ausências", starter: "Não", professional: "Sim", business: "Avançada", enterprise: "Customizada" },
-  { feature: "App Mobile", starter: "Não", professional: "Sim", business: "Completo", enterprise: "Exclusivo" },
-  { feature: "Suporte", starter: "Email", professional: "Prioritário", business: "Dedicado", enterprise: "Executivo" },
-  { feature: "Integrações", starter: "Não", professional: "Básicas", business: "Avançadas", enterprise: "Exclusivas" },
-  { feature: "Relatórios", starter: "Básicos", professional: "Completos", business: "Avançados", enterprise: "Customizados" }
-];
-
-const faqs = [
-  {
-    question: "Posso mudar de plano a qualquer momento?",
-    answer: "Sim! Você pode fazer upgrade ou downgrade instantaneamente. As mudanças são aplicadas imediatamente, sem taxas extras."
-  },
-  {
-    question: "Existe desconto para pagamento anual?",
-    answer: "Sim! Economize 20% com pagamento anual em todos os planos pagos. É como ganhar 2 meses de graça."
-  },
-  {
-    question: "O que acontece se eu exceder o limite de funcionários?",
-    answer: "Você receberá um alerta amigável e poderá fazer upgrade para um plano superior. Sem interrupções na operação."
-  },
-  {
-    question: "Como funciona o suporte técnico?",
-    answer: "Starter: Email (24h). Professional: Chat + Email (4h). Business: WhatsApp + Telefone (1h). Enterprise: Gerente dedicado."
-  },
-  {
-    question: "O plano Enterprise é realmente personalizado?",
-    answer: "Absolutamente! Nossa equipe de especialistas analisa sua operação e cria uma solução sob medida para suas necessidades específicas."
-  }
-];
-
 const PricingSection = () => {
   return (
     <section id="precos" className="py-xl bg-muted/30" aria-labelledby="pricing-title">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Impactante */}
         <header className="text-center mb-16">
-          <h2 id="pricing-title" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 font-roboto text-balance">
-            Escolha seu <span className="text-primary">Caminho para o Sucesso</span>
+          <h2 id="pricing-title" className="text-3xl sm:text-4xl font-bold text-foreground text-balance">
+            Um plano para cada tamanho de ambição.
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto leading-relaxed">
-            Planos que crescem junto com seu negócio. Comece grátis e escale conforme sua operação evolui.
-          </p>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-4">Comece de graça. Cresça sem medo. Sem taxas escondidas, sem surpresas.</p>
         </header>
-
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {plans.map((plan, index) => {
             const IconComponent = plan.icon;
             return (
@@ -225,123 +185,6 @@ const PricingSection = () => {
               </Card>
             );
           })}
-        </div>
-
-        {/* ROI Calculator */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8 lg:p-12 mb-16">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold text-foreground mb-4 font-roboto">
-              Calcule seu ROI
-            </h3>
-            <p className="text-lg text-muted-foreground">
-              Veja quanto você pode economizar com o GrowthScale
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">R$ 2.000</div>
-              <div className="text-muted-foreground">Economia média mensal</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">20h</div>
-              <div className="text-muted-foreground">Tempo economizado por mês</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">300%</div>
-              <div className="text-muted-foreground">ROI médio em 6 meses</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Feature Comparison Table */}
-        <section className="mb-16" aria-labelledby="comparison-title">
-          <h3 id="comparison-title" className="text-2xl font-bold text-center text-foreground mb-8 font-roboto">
-            Compare os Recursos
-          </h3>
-          <div className="overflow-x-auto">
-            <div className="min-w-full bg-card rounded-lg border shadow-card">
-              <table className="w-full" role="table" aria-label="Comparação de recursos entre planos">
-                <thead>
-                  <tr className="border-b bg-muted/50">
-                    <th scope="col" className="text-left p-4 font-semibold text-foreground min-w-[200px]">Recursos</th>
-                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Starter</th>
-                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Professional</th>
-                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Business</th>
-                    <th scope="col" className="text-center p-4 font-semibold text-foreground min-w-[120px]">Enterprise</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {comparisonFeatures.map((item, index) => (
-                    <tr key={index} className="border-b last:border-b-0 hover:bg-muted/30 transition-smooth">
-                      <th scope="row" className="p-4 font-medium text-card-foreground text-left">{item.feature}</th>
-                      <td className="p-4 text-center text-muted-foreground">{item.starter}</td>
-                      <td className="p-4 text-center text-muted-foreground">{item.professional}</td>
-                      <td className="p-4 text-center text-muted-foreground">{item.business}</td>
-                      <td className="p-4 text-center text-muted-foreground">{item.enterprise}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <div className="mb-16">
-          <h3 className="text-2xl font-bold text-center text-foreground mb-8 font-roboto">
-            Perguntas Frequentes
-          </h3>
-          <div className="max-w-3xl mx-auto">
-            <Accordion type="single" collapsible>
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-left text-foreground font-medium">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </div>
-
-        {/* Benefits Info */}
-        <div className="text-center space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="flex items-center justify-center gap-3 p-4 rounded-lg bg-card border">
-              <Shield className="w-6 h-6 text-primary" />
-              <span className="text-muted-foreground font-medium">Dados seguros e protegidos</span>
-            </div>
-            <div className="flex items-center justify-center gap-3 p-4 rounded-lg bg-card border">
-              <Clock className="w-6 h-6 text-primary" />
-              <span className="text-muted-foreground font-medium">Suporte em português</span>
-            </div>
-            <div className="flex items-center justify-center gap-3 p-4 rounded-lg bg-card border">
-              <Check className="w-6 h-6 text-primary" />
-              <span className="text-muted-foreground font-medium">Planos flexíveis</span>
-            </div>
-          </div>
-          
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-success" />
-              Sem taxa de setup
-            </span>
-            <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-success" />
-              Cancele a qualquer momento
-            </span>
-            <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-success" />
-              Garantia de satisfação
-            </span>
-            <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-success" />
-              Suporte técnico incluído
-            </span>
-          </div>
         </div>
       </div>
     </section>
