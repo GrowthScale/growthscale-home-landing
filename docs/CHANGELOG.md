@@ -352,6 +352,26 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Mensagens Contextuais**: Feedback personalizado baseado na pontuação
 - **Script de Deploy**: Automação completa com testes e validação
 
+#### **Integração do Placar de Equidade no ScheduleEditor**
+- **Análise em Tempo Real**: Cálculo automático durante edição da escala
+- **Painel de Risco**: Integração no painel de "Análise de Risco em Tempo Real"
+- **Feedback Visual**: Progress bar colorida com indicadores de status
+- **Mensagens Contextuais**: Exibição de mensagens explicativas da equidade
+- **Ícone Scale**: Identificação visual clara da funcionalidade
+- **Separador Visual**: Border-top para distinguir das outras métricas
+- **Fallback Seguro**: Tratamento robusto para dados ausentes
+- **Compatibilidade**: Integração perfeita com sistema de validação existente
+
+#### **Sistema Completo de Placar de Equidade**
+- **Motor de Análise**: Cálculo automático de equidade na distribuição de turnos de fim de semana
+- **Score de Equidade**: Avaliação da justiça na distribuição entre funcionários
+- **Prevenção de Esgotamento**: Ajuda gestores a criar ambiente de trabalho mais justo
+- **Análise Estatística**: Baseada em desvio padrão para avaliação objetiva
+- **Feedback em Tempo Real**: Atualização automática durante edição da escala
+- **Interface Intuitiva**: Visualização clara com cores e mensagens explicativas
+- **Ambiente Justo**: Promoção de distribuição equilibrada de carga de trabalho
+- **Prevenção de Conflitos**: Redução de disputas por turnos de fim de semana
+
 ### 📚 **Documentação Atualizada**
 
 #### **Arquitetura RBAC**
