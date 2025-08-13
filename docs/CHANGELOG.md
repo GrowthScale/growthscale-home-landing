@@ -323,6 +323,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Navegação Inteligente**: Volta ao dashboard após ações
 - **Tratamento de Estados**: Loading, erro e sucesso com feedback visual
 
+#### **Sistema de Relatórios Semanais Automáticos**
+- **Edge Function `send-weekly-report`**: Processamento automático de todos os tenants
+- **Cálculo de Métricas Reais**: Custo total, horas extras, violações CLT, funcionários ativos
+- **Integração com IA (OpenAI)**: Resumo executivo personalizado com insights acionáveis
+- **Template de E-mail Profissional**: HTML responsivo com design moderno e métricas detalhadas
+- **Sistema de E-mail (Resend)**: Envio em lote com fallback para logs
+- **Agendamento Flexível**: GitHub Actions, Vercel Cron Jobs ou serviços externos
+- **Script de Automação**: `scripts/setup-weekly-reports.sh` para configuração completa
+- **Documentação Completa**: `docs/WEEKLY_REPORTS.md` com guias de configuração e troubleshooting
+
 ### 📚 **Documentação Atualizada**
 
 #### **Arquitetura RBAC**
