@@ -10,7 +10,7 @@ const plans = [
     period: "",
     description: "Experimente o poder da IA sem compromisso",
     icon: Users,
-    color: "bg-muted border-muted",
+    color: "bg-white border-slate-200",
     features: [
       { text: "Até 5 funcionários", icon: Users },
       { text: "Escalas básicas com IA", icon: Brain },
@@ -28,7 +28,7 @@ const plans = [
     period: "/mês",
     description: "Para restaurantes que querem crescer sem riscos",
     icon: Brain,
-    color: "bg-secondary/10 border-secondary",
+    color: "bg-white border-green-200 shadow-lg",
     features: [
       { text: "Até 15 funcionários", icon: Users },
       { text: "IA completa para escalas", icon: Brain },
@@ -48,7 +48,7 @@ const plans = [
     period: "/mês",
     description: "Para operações em crescimento que precisam de poder total",
     icon: Star,
-    color: "bg-primary/10 border-primary",
+    color: "bg-white border-blue-200 shadow-lg",
     features: [
       { text: "Até 30 funcionários", icon: Users },
       { text: "IA avançada + personalização", icon: Brain },
@@ -68,7 +68,7 @@ const plans = [
     period: "",
     description: "Para redes e grandes operações com necessidades únicas",
     icon: Building,
-    color: "bg-accent/10 border-primary",
+    color: "bg-white border-slate-300 shadow-lg",
     features: [
       { text: "Múltiplas filiais", icon: Building },
       { text: "IA customizada para seu negócio", icon: Brain },
@@ -86,24 +86,27 @@ const plans = [
 
 const PricingSection = () => {
   return (
-    <section id="precos" className="py-xl bg-muted/30" aria-labelledby="pricing-title">
+    <section id="precos" className="py-16 sm:py-20 lg:py-24 bg-slate-50" aria-labelledby="pricing-title">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="text-center mb-16">
-          <h2 id="pricing-title" className="text-3xl sm:text-4xl font-bold text-foreground text-balance">
+        <header className="text-center mb-16 sm:mb-20">
+          <h2 id="pricing-title" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
             Um plano para cada tamanho de ambição.
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-4">Comece de graça. Cresça sem medo. Sem taxas escondidas, sem surpresas.</p>
+          <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            Comece de graça. Cresça sem medo. Sem taxas escondidas, sem surpresas.
+          </p>
         </header>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {plans.map((plan, index) => {
             const IconComponent = plan.icon;
             return (
               <Card 
                 key={index} 
-                className={`relative p-8 transition-all duration-300 hover:shadow-card focus-within:ring-2 focus-within:ring-primary ${
-                  plan.popular ? 'border-primary shadow-elegant transform scale-105' : 
-                  plan.recommended ? 'border-secondary shadow-soft' : 
-                  plan.enterprise ? 'border-primary shadow-elegant' : 'border-border'
+                className={`relative p-8 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2 ${
+                  plan.popular ? 'ring-2 ring-green-500 scale-105' : 
+                  plan.recommended ? 'ring-2 ring-blue-500' : 
+                  plan.enterprise ? 'ring-2 ring-slate-500' : ''
                 } ${plan.color}`}
                 role="article"
                 aria-labelledby={`plan-title-${index}`}
@@ -111,7 +114,7 @@ const PricingSection = () => {
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
+                    <Badge className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
                       <Crown className="w-4 h-4" />
                       Mais Popular
                     </Badge>
@@ -120,7 +123,7 @@ const PricingSection = () => {
                 
                 {plan.recommended && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-secondary text-secondary-foreground px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
+                    <Badge className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
                       <Star className="w-4 h-4" />
                       Recomendado
                     </Badge>
@@ -129,7 +132,7 @@ const PricingSection = () => {
 
                 {plan.enterprise && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
+                    <Badge className="bg-slate-600 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
                       <Building className="w-4 h-4" />
                       Enterprise
                     </Badge>
@@ -138,16 +141,16 @@ const PricingSection = () => {
                 
                 <div className="text-center mb-8">
                   <div className="mb-4" role="img" aria-label={`Ícone do plano ${plan.name}`}>
-                    <IconComponent className="w-12 h-12 mx-auto text-primary mb-3" aria-hidden="true" />
+                    <IconComponent className="w-12 h-12 mx-auto text-blue-600 mb-3" aria-hidden="true" />
                   </div>
-                  <h3 id={`plan-title-${index}`} className="text-2xl font-bold text-card-foreground mb-2 font-roboto">
+                  <h3 id={`plan-title-${index}`} className="text-2xl font-bold text-slate-900 mb-2">
                     {plan.name}
                   </h3>
                   <div className="flex items-baseline justify-center gap-1 mb-2">
-                    <span className="text-4xl font-bold text-primary">{plan.price}</span>
-                    <span className="text-muted-foreground">{plan.period}</span>
+                    <span className="text-4xl font-bold text-blue-600">{plan.price}</span>
+                    <span className="text-slate-600">{plan.period}</span>
                   </div>
-                  <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
+                  <p className="text-slate-600 text-sm mb-4">{plan.description}</p>
                   {plan.savings && (
                     <div className="bg-green-50 text-green-700 px-3 py-2 rounded-lg text-sm font-medium">
                       {plan.savings}
@@ -160,8 +163,8 @@ const PricingSection = () => {
                     const FeatureIcon = feature.icon;
                     return (
                       <li key={featureIndex} className="flex items-center gap-3">
-                        <FeatureIcon className="w-5 h-5 text-primary flex-shrink-0" />
-                        <span className="text-card-foreground text-sm">{feature.text}</span>
+                        <FeatureIcon className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                        <span className="text-slate-700 text-sm">{feature.text}</span>
                       </li>
                     );
                   })}
@@ -170,12 +173,12 @@ const PricingSection = () => {
                 <Button 
                   className={`w-full transition-all duration-300 ${
                     plan.popular 
-                      ? 'bg-accent hover:bg-accent/90 text-accent-foreground shadow-elegant' 
+                      ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg' 
                       : plan.recommended
-                      ? 'bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-soft'
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg'
                       : plan.enterprise
-                      ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-elegant'
-                      : 'bg-primary hover:bg-primary/90 text-primary-foreground'
+                      ? 'bg-slate-600 hover:bg-slate-700 text-white shadow-lg'
+                      : 'bg-blue-600 hover:bg-blue-700 text-white'
                   }`}
                   size="lg"
                 >

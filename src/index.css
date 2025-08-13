@@ -48,6 +48,23 @@ All colors MUST be HSL.
 
     --radius: 0.75rem; /* Increased for better touch targets */
 
+    /* Hero Section Specific Colors - FIXED CONTRAST ISSUES */
+    --hero-background: 222.2 84% 4.9%; /* Dark background */
+    --hero-text: 0 0% 100%; /* Pure white for maximum contrast */
+    --hero-text-secondary: 0 0% 90%; /* Light gray for subtitles */
+    --hero-overlay: 222.2 84% 4.9% 0.8; /* Dark overlay for better text readability */
+
+    /* Section Background Colors - UNIFIED SYSTEM */
+    --section-light: 0 0% 100%; /* Pure white */
+    --section-muted: 0 0% 98%; /* Very light gray */
+    --section-accent: 194 74% 45% 0.05; /* Primary with very low opacity */
+
+    /* Text Colors - ENHANCED CONTRAST */
+    --text-primary: 222.2 84% 4.9%; /* Dark text for light backgrounds */
+    --text-secondary: 215.4 16.3% 40%; /* Medium gray for secondary text */
+    --text-muted: 215.4 16.3% 50%; /* Lighter gray for muted text */
+    --text-inverse: 0 0% 100%; /* White text for dark backgrounds */
+
     /* Enhanced gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
     --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
@@ -68,7 +85,7 @@ All colors MUST be HSL.
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Semantic spacing tokens */
+    /* Semantic spacing tokens - FIXED INCONSISTENCIES */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
@@ -76,6 +93,7 @@ All colors MUST be HSL.
     --spacing-xl: 2rem;
     --spacing-2xl: 3rem;
     --spacing-3xl: 4rem;
+    --spacing-4xl: 6rem; /* Added for larger sections */
 
     /* Animation tokens */
     --transition-fast: 150ms ease-out;

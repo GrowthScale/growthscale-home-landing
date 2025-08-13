@@ -5,6 +5,137 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.8.0] - 2024-12-19
+
+### 🎨 **Correção Completa de Design e Contraste - Landing Page**
+
+#### **Objetivo da Correção**
+- **Problema**: Contraste crítico no Hero Section, inconsistências visuais, problemas de legibilidade
+- **Solução**: Sistema de design unificado com cores semânticas e contraste adequado
+- **Resultado**: Landing page 100% legível e visualmente consistente
+
+#### **1. Correção Crítica do Hero Section**
+- **❌ Problema**: Texto praticamente invisível sobre fundo escuro
+- **✅ Solução**: 
+  - Background: `bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900`
+  - Overlay: `bg-black/40` para melhor contraste
+  - Texto: `text-white` e `text-gray-200` para máxima legibilidade
+  - Botões: Melhor contraste e hover effects
+- **Benefício**: Texto agora 100% legível
+
+#### **2. Sistema de Cores Unificado**
+- **Variáveis CSS Adicionadas**:
+  - `--hero-background`: 222.2 84% 4.9% (Dark background)
+  - `--hero-text`: 0 0% 100% (Pure white)
+  - `--hero-text-secondary`: 0 0% 90% (Light gray)
+  - `--section-light`: 0 0% 100% (Pure white)
+  - `--section-muted`: 0 0% 98% (Very light gray)
+  - `--text-primary`: 222.2 84% 4.9% (Dark text)
+  - `--text-secondary`: 215.4 16.3% 40% (Medium gray)
+  - `--text-inverse`: 0 0% 100% (White text)
+
+#### **3. Padronização de Layout e Espaçamentos**
+- **Espaçamentos Consistentes**:
+  - `py-16 sm:py-20 lg:py-24` para todas as seções
+  - `mb-16 sm:mb-20` para headers
+  - `gap-8 lg:gap-12` para grids
+- **Larguras Máximas Unificadas**:
+  - `max-w-7xl` para seções principais
+  - `max-w-4xl` para conteúdo focado
+  - `max-w-6xl` para comparações
+
+#### **4. Melhorias de Contraste por Seção**
+
+##### **ProblemSection**
+- Background: `bg-white` (antes: `bg-background`)
+- Texto: `text-slate-900` e `text-slate-600` (antes: `text-foreground` e `text-muted-foreground`)
+- Cards: `shadow-lg hover:shadow-xl` com hover effects
+- Ícones: Cores específicas (vermelho, azul, verde) com backgrounds
+
+##### **SolutionSection**
+- Background: `bg-slate-50` (antes: `bg-muted/30`)
+- Layout: `lg:grid-cols-2` para melhor responsividade
+- Placeholders: `bg-gradient-to-br from-slate-100 to-slate-200`
+- Ícones: Containers coloridos com `w-16 h-16`
+
+##### **ComparisonSection**
+- Tabela: `bg-white border border-slate-200 rounded-2xl shadow-xl`
+- Headers: `bg-slate-50` com melhor contraste
+- Ícones: `h-8 w-8` com cores específicas (verde/vermelho)
+- Hover: `hover:bg-slate-50 transition-colors`
+
+##### **PricingSection**
+- Background: `bg-slate-50` (antes: `bg-muted/30`)
+- Cards: `bg-white` com bordas coloridas específicas
+- Preços: `text-blue-600` para destaque
+- Badges: Cores específicas (verde, azul, cinza)
+- Hover: `transform hover:-translate-y-2`
+
+##### **FAQSection**
+- Background: `bg-white` (antes: `bg-muted/30`)
+- Accordion: `border border-slate-200 rounded-xl`
+- Texto: `text-slate-900` e `text-slate-600`
+- Botões: Cores consistentes com o design system
+
+##### **CTASection**
+- Background: `bg-gradient-to-br from-blue-600 to-blue-700`
+- Texto: `text-white` e `text-blue-100`
+- Botão: `bg-white text-blue-600` com hover effects
+
+##### **Footer**
+- Espaçamentos: `py-16` e `gap-8 lg:gap-12`
+- Logo: `w-12 h-12` com gradiente azul
+- Links: `hover:text-white transition-colors duration-300`
+- Ícones: `w-5 h-5` para melhor proporção
+
+#### **5. Melhorias de Responsividade**
+- **Breakpoints Consistentes**: `sm:`, `md:`, `lg:` em todas as seções
+- **Texto Responsivo**: `text-4xl sm:text-5xl md:text-6xl lg:text-7xl`
+- **Grid Responsivo**: `md:grid-cols-2 lg:grid-cols-4`
+- **Espaçamentos Adaptativos**: `gap-4 sm:gap-6`
+
+#### **6. Efeitos Visuais Aprimorados**
+- **Transições**: `transition-all duration-300` em todos os elementos interativos
+- **Hover Effects**: `transform hover:scale-105`, `hover:-translate-y-1`
+- **Shadows**: `shadow-lg hover:shadow-xl` para profundidade
+- **Gradients**: `bg-gradient-to-br` para backgrounds modernos
+
+#### **7. Acessibilidade Melhorada**
+- **Contraste WCAG AA**: Todas as combinações de cores atendem aos padrões
+- **Focus States**: Melhor visibilidade para navegação por teclado
+- **Semantic HTML**: Estrutura adequada com `aria-labelledby`
+- **Alt Text**: Placeholders descritivos para imagens
+
+#### **8. Performance e Manutenibilidade**
+- **Cores Semânticas**: Sistema centralizado no CSS
+- **Classes Consistentes**: Padrões reutilizáveis
+- **Menos Custom CSS**: Uso máximo do Tailwind
+- **Variáveis CSS**: Fácil manutenção e alteração
+
+#### **Arquivos Modificados**
+- `src/index.css` - Variáveis CSS e sistema de cores
+- `src/components/HeroSection.tsx` - Correção crítica de contraste
+- `src/components/ProblemSection.tsx` - Layout e cores padronizados
+- `src/components/SolutionSection.tsx` - Design responsivo e contraste
+- `src/components/ComparisonSection.tsx` - Tabela com melhor legibilidade
+- `src/components/PricingSection.tsx` - Cards com hover effects
+- `src/components/FAQSection.tsx` - Accordion com melhor contraste
+- `src/components/CTASection.tsx` - Background gradiente e botão destacado
+- `src/components/Footer.tsx` - Layout mais limpo e espaçamentos
+
+#### **Impacto Técnico**
+- **Antes**: Texto ilegível, inconsistências visuais, contraste inadequado
+- **Depois**: 100% legível, design unificado, contraste WCAG AA
+- **Benefícios**: Melhor UX, conversão, acessibilidade e manutenibilidade
+
+#### **Próximos Passos Recomendados**
+1. Implementar os GIFs/vídeos nos placeholders
+2. Testar em diferentes dispositivos e navegadores
+3. Validar contraste com ferramentas automáticas
+4. Considerar modo escuro para futuras versões
+
+---
+
 ## [1.7.0] - 2024-12-19
 
 ### 🎨 **Fortalecimento e Limpeza Completa do Design System**

@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 
 const faqs = [
   {
@@ -34,14 +35,14 @@ const faqs = [
 
 const FAQSection = () => {
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-16 sm:py-20 lg:py-24 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Impactante */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 font-roboto">
-            Tire suas <span className="text-primary">Dúvidas</span>
+        <div className="text-center mb-16 sm:mb-20">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+            Tire suas <span className="text-blue-600">Dúvidas</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto">
+          <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
             Respostas diretas para as perguntas que mais importam. Sem enrolação, só o que você precisa saber.
           </p>
         </div>
@@ -52,12 +53,12 @@ const FAQSection = () => {
             <AccordionItem 
               key={index} 
               value={`item-${index}`}
-              className="bg-card border border-border rounded-lg px-6 hover:shadow-md transition-smooth"
+              className="bg-white border border-slate-200 rounded-xl px-6 hover:shadow-lg transition-all duration-300"
             >
-              <AccordionTrigger className="text-left font-semibold text-card-foreground hover:text-primary transition-colors">
+              <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-blue-600 transition-colors text-lg">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed">
+              <AccordionContent className="text-slate-600 leading-relaxed text-base">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
@@ -65,17 +66,24 @@ const FAQSection = () => {
         </Accordion>
 
         {/* CTA após FAQ */}
-        <div className="text-center mt-12">
-          <p className="text-lg text-muted-foreground mb-6">
+        <div className="text-center mt-16 sm:mt-20">
+          <p className="text-lg sm:text-xl text-slate-600 mb-8">
             Ainda tem dúvidas? Nossa equipe está pronta para ajudar.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-lg font-semibold transition-colors">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+            <Button 
+              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
               Falar com Especialista
-            </button>
-            <button className="border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 rounded-lg font-semibold transition-colors">
+            </Button>
+            <Button 
+              size="lg"
+              variant="outline"
+              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg font-semibold transition-all duration-300"
+            >
               Agendar Demonstração
-            </button>
+            </Button>
           </div>
         </div>
       </div>
