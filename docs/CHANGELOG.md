@@ -333,6 +333,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Script de Automação**: `scripts/setup-weekly-reports.sh` para configuração completa
 - **Documentação Completa**: `docs/WEEKLY_REPORTS.md` com guias de configuração e troubleshooting
 
+#### **Relatório Semanal Automático por E-mail**
+- **Agendamento Automático**: Função `send-weekly-report` configurada para execução semanal
+- **Cron Schedule**: `0 8 * * 1` (toda segunda-feira às 08:00)
+- **Métricas Principais**: Custo total, horas extras, violações CLT, funcionários ativos
+- **Resumo Executivo IA**: Análise inteligente com pontos positivos e de atenção
+- **Entrega Proativa**: E-mails enviados automaticamente para todos os gestores
+- **Template Profissional**: Design responsivo com métricas detalhadas e CTA para dashboard
+- **Valor Contínuo**: Insights semanais que demonstram o valor da plataforma
+
 ### 📚 **Documentação Atualizada**
 
 #### **Arquitetura RBAC**

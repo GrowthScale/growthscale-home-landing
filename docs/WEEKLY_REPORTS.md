@@ -145,9 +145,36 @@ COMMENT ON COLUMN companies.owner_email IS 'E-mail do proprietário para envio d
 supabase functions deploy send-weekly-report
 ```
 
+### 4. Agendamento da Função
+
+**No Supabase Dashboard:**
+1. Acesse **Edge Functions**
+2. Selecione **`send-weekly-report`**
+3. Configure o **Cron Schedule**: `0 8 * * 1`
+4. Salve a configuração
+
+**Cron Schedule Explicado:**
+- `0` = Minuto (0-59)
+- `8` = Hora (0-23) - 8h da manhã
+- `*` = Dia do mês (1-31) - qualquer dia
+- `*` = Mês (1-12) - qualquer mês
+- `1` = Dia da semana (0-7) - segunda-feira
+
 ## 📅 Agendamento
 
-### Opção 1: GitHub Actions (Recomendado)
+### Opção 1: Supabase Dashboard (Recomendado)
+
+No painel do Supabase, agende a função `send-weekly-report` para rodar toda segunda-feira às 08:00 da manhã:
+
+1. **Acesse o Supabase Dashboard**
+2. **Vá para Edge Functions**
+3. **Selecione `send-weekly-report`**
+4. **Configure o agendamento:**
+   - **Cron Schedule**: `0 8 * * 1`
+   - **Frequência**: Semanal (segunda-feira)
+   - **Horário**: 08:00 (manhã)
+
+### Opção 2: GitHub Actions
 
 Crie `.github/workflows/weekly-reports.yml`:
 
