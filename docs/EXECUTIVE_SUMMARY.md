@@ -1,276 +1,364 @@
-# 📊 Resumo Executivo - GrowthScale
-
-## 🎯 Visão Geral
-
-O **GrowthScale** é uma aplicação PWA (Progressive Web App) para gestão inteligente de escalas no setor de food service, desenvolvida com tecnologias modernas e foco em experiência mobile-first.
-
-## 🚀 Status Atual do Projeto
-
-### ✅ **Funcionalidades Implementadas**
-- **PWA Completo**: Service Worker, Manifest, instalação nativa
-- **Sistema de i18n**: Suporte a português, inglês e espanhol
-- **Analytics**: Tracking de eventos e performance
-- **Notificações Push**: Sistema nativo completo
-- **Multi-tenancy**: Suporte a múltiplas empresas
-- **Virtualização**: Performance para grandes datasets
-- **Service Layer**: Arquitetura de serviços
-- **Motor de Regras da CLT**: Validação automática de compliance
-- **Assistente de IA para CLT**: Chatbot especializado em legislação trabalhista
-- **Sistema de Sugestões de IA**: Otimização automática de escalas
-- **Sistema de Templates**: Gerenciamento completo de modelos de escala
-- **Aplicação de Modelos**: Sistema para aplicar templates diretamente no editor
-- **Simulador de Custo em Tempo Real**: Cálculo automático de custos trabalhistas integrado ao Editor de Escalas
-- **Documentação Completa**: 12 arquivos de documentação
-
-### 📊 **Métricas do Projeto**
-- **Arquivos**: 50+ arquivos criados/modificados
-- **Linhas de código**: 10,000+ linhas
-- **Componentes**: 30+ componentes reutilizáveis
-- **Hooks**: 6 hooks personalizados
-- **Contexts**: 2 contexts para estado global
-- **Functions**: 4 Supabase Edge Functions (validate-schedule, clt-assistant, suggest-schedule, calculate-schedule-cost)
-
-### 🔧 **Qualidade Técnica**
-- ✅ TypeScript configurado e sem erros
-- ✅ ESLint funcionando
-- ✅ Build sem erros
-- ✅ Testes de tipo passando
-- ✅ Documentação completa
-
-## 🏗️ Arquitetura
-
-### **Stack Tecnológico**
-- **Frontend**: React 18 + TypeScript
-- **UI Framework**: shadcn/ui + Tailwind CSS
-- **Backend**: Supabase (Auth + Database)
-- **PWA**: Service Worker + Manifest
-- **Build**: Vite
-- **Deploy**: Lovable
-
-### **Estrutura Principal**
-```
-src/
-├── components/          # Componentes reutilizáveis
-├── pages/              # Páginas da aplicação
-├── hooks/              # Custom hooks
-├── contexts/           # React contexts
-├── services/           # Service layer
-├── constants/          # Constantes centralizadas
-└── integrations/       # Integrações externas
-
-supabase/
-└── functions/
-    ├── validate-schedule/      # Motor de Regras da CLT
-    ├── clt-assistant/          # Assistente de IA para dúvidas CLT
-    ├── suggest-schedule/       # Sistema de sugestões de escala com IA
-    └── calculate-schedule-cost/ # Simulador de custo em tempo real
-```
-
-## 🎯 Funcionalidades Principais
-
-### 1. **Dashboard Inteligente**
-- KPIs em tempo real
-- Gráficos de performance
-- Alertas automáticos
-- Feed de atividades
-
-### 2. **Gestão de Funcionários**
-- Cadastro completo
-- Histórico de performance
-- Gestão de habilidades
-- Status de disponibilidade
-
-### 3. **Sistema de Escalas**
-- Criação inteligente
-- Otimização por IA
-- Conformidade automática
-- Gestão de turnos
-- **Aplicação de Modelos**: Sistema para aplicar templates pré-definidos diretamente no editor
-- **Geração Automática**: Criação de turnos baseados na estrutura de templates
-- **Preview Inteligente**: Visualização da estrutura antes da aplicação
-
-### 4. **Compliance Trabalhista**
-- Verificação automática via Motor de Regras da CLT
-- Alertas de conformidade
-- Relatórios detalhados
-- Auditoria integrada
-- **Assistente de IA**: Chatbot especializado para dúvidas sobre CLT
-- **Validação em Tempo Real**: Análise contínua durante edição de escalas
-
-### 5. **Simulador de Custo em Tempo Real**
-- **Cálculo Automático**: Análise de custos trabalhistas incluindo horas extras e adicional noturno
-- **Painel Integrado**: Exibição de custos diretamente no Editor de Escalas
-- **Atualização em Tempo Real**: Recálculo automático com cada alteração na escala
-- **Tomada de Decisão Estratégica**: Visão unificada de conformidade legal vs. impacto financeiro
-
-### 6. **Sistema de Templates**
-- **Gerenciamento Completo**: Criar, editar, visualizar e deletar templates
-- **Estrutura Flexível**: Configuração de turnos, horários e funcionários padrão
-- **Aplicação Inteligente**: Sistema que gera automaticamente escalas baseadas em modelos
-- **Multi-tenancy**: Suporte a templates por empresa
-- **Preview Detalhado**: Visualização completa da estrutura antes da aplicação
-
-### 6. **PWA Features**
-- Instalação no dispositivo
-- Funcionalidade offline
-- Notificações push
-- Sincronização automática
-
-## 🏛️ Motor de Regras da CLT
-
-### **Funcionalidades Implementadas**
-- ✅ Validação de intervalo interjornada (11h)
-- ✅ Validação de descanso semanal remunerado (DSR)
-- ✅ Validação de carga horária semanal
-- ✅ Cálculo de risk score (0-100)
-- ✅ **Validação em Tempo Real**: Análise contínua durante edição
-- ✅ **Interface Visual**: Score de risco com indicadores visuais
-- ✅ **Relatórios Detalhados**: Lista completa de violações identificadas
-
-## 🤖 Sistema de IA Integrado
-
-### **Assistente de IA para CLT**
-- ✅ **Chatbot Especializado**: Interface de chat para dúvidas sobre legislação
-- ✅ **Integração OpenAI**: GPT-3.5-turbo com prompt especializado
-- ✅ **Histórico de Conversas**: Persistência de perguntas e respostas
-- ✅ **Interface Flutuante**: Disponível em todas as páginas da aplicação
-- ✅ **Perguntas Sugeridas**: Facilita o uso com exemplos pré-definidos
-
-### **Sistema de Sugestões de IA**
-- ✅ **Otimização Automática**: Geração de escalas otimizadas por IA
-- ✅ **Prompt Especializado**: Instruções específicas para logística e alocação
-- ✅ **Preview Visual**: Calendário com preview das sugestões
-- ✅ **Aplicação Automática**: Sistema para aplicar sugestões com confirmação
-- ✅ **Estatísticas Detalhadas**: Métricas de otimização e conformidade
-
-### **Sistema de Templates com IA**
-- ✅ **Gerenciamento Completo**: CRUD completo de templates
-- ✅ **Estrutura Flexível**: Configuração de turnos e funcionários padrão
-- ✅ **Aplicação Inteligente**: Sistema que gera automaticamente escalas
-- ✅ **Preview Detalhado**: Visualização completa antes da aplicação
-- ✅ **Geração Automática**: Criação de turnos baseados na estrutura do template
-
-## 📱 PWA (Progressive Web App)
-
-### **Características**
-- ✅ **Instalável**: Pode ser adicionado à tela inicial
-- ✅ **Offline**: Funciona sem conexão
-- ✅ **Responsivo**: Adapta-se a qualquer tela
-- ✅ **Nativo**: Experiência similar a app nativo
-
-### **Arquivos PWA**
-- `public/manifest.json`: Configuração de instalação
-- `public/sw.js`: Service Worker
-- `src/hooks/use-pwa.tsx`: Hook de gerenciamento
-- `src/components/PWAInstallPrompt.tsx`: Prompt de instalação
-
-## 🔒 Segurança
-
-### **Implementações**
-- ✅ Validação de entrada robusta
-- ✅ Rate limiting
-- ✅ Sanitização de dados
-- ✅ Variáveis de ambiente seguras
-- ✅ HTTPS obrigatório
-
-### **Autenticação**
-- Supabase Auth
-- Sessões seguras
-- Refresh tokens automáticos
-
-## 📊 Performance
-
-### **Otimizações Implementadas**
-- ✅ Code splitting automático
-- ✅ Lazy loading de componentes
-- ✅ Memoização com useMemo e useCallback
-- ✅ Virtualização para grandes listas
-- ✅ Cache inteligente via Service Worker
-
-### **Métricas**
-- **Build Time**: ~4.2s
-- **Bundle Size**: 596KB (com code splitting)
-- **PWA Score**: 100% (Lighthouse)
-- **Performance**: Otimizado para mobile
-
-## 🎯 Próximos Passos
-
-### **Fase 1 - Integração Frontend**
-- [ ] Hook `useScheduleValidation`
-- [ ] Componente `ValidationResults`
-- [ ] Integração no `ScheduleEditor`
-- [ ] Dashboard de compliance
-
-### **Fase 2 - Validações Avançadas**
-- [ ] Validação de horas extras
-- [ ] Validação de trabalho noturno
-- [ ] Validação de feriados
-- [ ] Validação de férias
-
-### **Fase 3 - Relatórios e Analytics**
-- [ ] Relatório mensal de compliance
-- [ ] Histórico de violações
-- [ ] Tendências e métricas
-- [ ] Alertas automáticos
-
-## 📚 Documentação
-
-### **Arquivos de Documentação**
-- `README.md`: Visão geral e índice
-- `CHANGELOG.md`: Histórico de mudanças
-- `ACTIVITY_LOG.md`: Log detalhado de atividades
-- `ARCHITECTURE.md`: Arquitetura técnica
-- `SETUP.md`: Guia de configuração
-- `DEPLOYMENT.md`: Instruções de deploy
-- `SECURITY.md`: Políticas de segurança
-- `PWA.md`: Documentação PWA
-- `AUDIT.md`: Relatórios de auditoria
-- `ROADMAP.md`: Roadmap do projeto
-- `CLT_ENGINE.md`: Motor de Regras da CLT
-
-## 🚀 Deploy e Configuração
-
-### **Ambiente de Desenvolvimento**
-```bash
-npm install
-npm run dev
-```
-
-### **Build de Produção**
-```bash
-npm run build
-```
-
-### **Deploy**
-- **Plataforma**: Lovable
-- **URL**: [GrowthScale](https://growthscale.vercel.app)
-- **Status**: ✅ Funcionando
-
-## 📈 Métricas de Sucesso
-
-### **Técnicas**
-- ✅ Build sem erros
-- ✅ TypeScript sem erros de tipo
-- ✅ Linter com warnings mínimos
-- ✅ Documentação completa
-- ✅ PWA score 100%
-
-### **Funcionais**
-- ✅ PWA completo
-- ✅ Sistema de i18n
-- ✅ Analytics tracking
-- ✅ Notificações push
-- ✅ Multi-tenancy
-- ✅ Motor de Regras da CLT
-
-## 🔗 Links Úteis
-
-- **Repositório**: [GrowthScale Home Landing](https://github.com/growthscale/home-landing)
-- **Documentação**: `/docs`
-- **Supabase**: [Dashboard](https://supabase.com/dashboard)
-- **Vercel**: [Deploy](https://vercel.com)
+# Resumo Executivo - Design System GrowthScale
+## Plataforma de Gestão de Escalas com IA + CLT para Food Service
 
 ---
 
-*Última atualização: 2024-12-19*
-*Versão do documento: 1.0*
+## 📋 ENTREGÁVEIS COMPLETOS
+
+### ✅ Documentação Criada
+1. **`docs/DESIGN_SYSTEM.md`** - Design System completo (15.000+ palavras)
+2. **`src/constants/designTokens.ts`** - Tokens de design implementáveis
+3. **`src/constants/copyTemplates.ts`** - Templates de copy e WhatsApp
+4. **`docs/ACCESSIBILITY_PERFORMANCE.md`** - Diretrizes de acessibilidade e performance
+5. **`docs/CRO_AB_TESTING.md`** - Estratégias de CRO e testes A/B
+6. **`docs/EXECUTIVE_SUMMARY.md`** - Este resumo executivo
+
+---
+
+## 🎨 BRANDING & IDENTIDADE VISUAL
+
+### Essência de Marca
+- **Confiável**: Segurança jurídica e compliance CLT
+- **Inteligente**: IA que otimiza escalas automaticamente  
+- **Prático**: Solução simples para problemas complexos
+- **Econômico**: Redução de custos e riscos trabalhistas
+- **Humano**: Foco no bem-estar dos funcionários
+
+### Paleta de Cores Oficial
+| Categoria | Cor | Uso |
+|-----------|-----|-----|
+| **Primária** | `#004AAD` | Links, navegação, elementos principais |
+| **CTA** | `#FF6B00` | Botões de ação, destaque |
+| **Sucesso** | `#00B37E` | Confirmações, economia |
+| **Alerta** | `#E63946` | Erros, violações CLT |
+| **Neutro** | `#6B7280` | Texto secundário, ícones |
+
+### Tom & Voz
+| **Dizer** | **Evitar Dizer** |
+|-----------|------------------|
+| "Crie escalas perfeitas em minutos" | "Sistema avançado de gestão de recursos humanos" |
+| "Fique 100% dentro da lei" | "Compliance total com a legislação trabalhista" |
+| "Economize até 30% em mão de obra" | "Otimização de custos operacionais" |
+
+---
+
+## 📝 TIPOGRAFIA & TYPE SCALE
+
+### Famílias
+- **Títulos**: Montserrat (Bold, SemiBold)
+- **Corpo**: Inter (Regular, Medium, SemiBold)
+
+### Escala Tipográfica
+| Elemento | Tamanho | Uso |
+|----------|---------|-----|
+| **H1** | 32px | Títulos principais |
+| **H2** | 28px | Seções |
+| **H3** | 24px | Subseções |
+| **Body** | 16px | Texto principal |
+| **Small** | 14px | Texto secundário |
+
+---
+
+## 🧩 COMPONENTES PRINCIPAIS
+
+### Botões
+- **Primário**: Azul `#004AAD`, altura 44px
+- **CTA**: Laranja `#FF6B00`, altura 48px
+- **Secundário**: Contorno azul, fundo transparente
+
+### Inputs
+- **Altura**: 44px (mobile-friendly)
+- **Borda**: `#E5E7EB`, foco `#004AAD`
+- **Validação**: Em tempo real
+
+### Tabelas
+- **Colunas**: Funcionário, Turno, Horário, Status, Ações
+- **Estados**: Publicada, Pendente, Em revisão
+- **Paginação**: 10 itens por página
+
+### Cards
+- **Métricas**: Valor grande + label + ícone
+- **Alertas CLT**: Fundo amarelo suave + ícone
+- **Economia**: Fundo verde suave + valor
+
+---
+
+## 🏗️ ARQUITETURA DE PÁGINAS
+
+### Mapa do Site
+```
+Home (Marketing)
+├── Preços
+├── Login
+├── Cadastro
+└── App Dashboard
+    ├── Escalas
+    ├── Funcionários
+    ├── Relatórios
+    ├── Configurações
+    └── Ajuda/FAQ
+```
+
+### Fluxos Críticos
+1. **Onboarding**: 5 passos em 5 minutos
+2. **Geração de Escala**: 1-clique com IA
+3. **Confirmação**: WhatsApp automático
+4. **Relatórios**: Economia e compliance
+
+---
+
+## 📱 UI/UX HEURÍSTICAS & DOPAMINA
+
+### Gatilhos Dopaminérgicos
+- **Micro-vitórias**: Confete ao publicar escala sem infração
+- **Progress bar**: Onboarding com etapas visuais
+- **Badges**: "Semana 100% dentro da lei", "Economia >R$500"
+- **Comparativos**: Gráficos mês a mês de economia
+
+### Diretrizes Mobile
+- **Alvos de toque**: Mínimo 44px
+- **Fonte mínima**: 16px
+- **CTA sticky**: Sempre visível
+- **Navegação**: Bottom tabs para principais seções
+
+---
+
+## ✍️ COPYWRITING PRINCIPAL
+
+### Home (Marketing)
+- **H1**: "Crie escalas perfeitas em minutos e fique 100% dentro da lei"
+- **CTA**: "Gerar minha escala agora"
+- **Prova**: "Reduza até 30% o custo de mão de obra"
+
+### App (Dashboard)
+- **Empty States**: Mensagens motivacionais + CTA
+- **Toasts**: Feedback positivo com emojis
+- **Tooltips**: Explicações claras e úteis
+
+### WhatsApp Templates
+- **Confirmação**: "Olá {nome}! Você está escalado para {dia}..."
+- **Lembrete**: "Lembrete: Seu turno começa em 2 horas"
+- **Troca**: "Proposta de troca: {funcionário} quer trocar turno..."
+
+---
+
+## ♿ ACESSIBILIDADE & PERFORMANCE
+
+### WCAG AA
+- **Contraste**: Mínimo 4.5:1 para texto normal
+- **Foco visível**: Outline azul em todos elementos interativos
+- **Labels**: Todos inputs com labels associados
+- **ARIA**: Atributos para tabelas, modais, dropdowns
+
+### Performance
+- **FCP**: < 1.5s
+- **LCP**: < 2.5s
+- **FID**: < 100ms
+- **CLS**: < 0.1
+
+---
+
+## 🧪 TESTES A/B ESTRUTURADOS
+
+### Teste 1: Hero H1 (Prioridade: ALTA)
+- **Hipótese**: Foco em ROI vs. segurança jurídica
+- **Variação A**: "Crie escalas perfeitas em minutos e fique 100% dentro da lei"
+- **Variação B**: "Reduza 30% do custo de mão de obra com escalas inteligentes"
+- **Métrica**: Conversão Home → Demo
+- **Critério**: 15% mais conversões
+
+### Teste 2: CTA Principal (Prioridade: ALTA)
+- **Hipótese**: CTA específico vs. genérico
+- **Variação A**: "Gerar minha escala agora"
+- **Variação B**: "Começar grátis por 14 dias"
+- **Métrica**: Cliques no CTA
+- **Critério**: 20% mais cliques
+
+### Teste 3: Prova Social (Prioridade: MÉDIA)
+- **Hipótese**: Logos vs. números específicos
+- **Variação A**: Logos de restaurantes
+- **Variação B**: "500+ restaurantes economizam R$2.500/mês"
+- **Métrica**: Conversão para cadastro
+- **Critério**: 10% mais conversões
+
+---
+
+## 📊 MÓDULOS "PÉ NO CHÃO"
+
+### Escala 1-Click (M0)
+- **Objetivo**: Gerar escala otimizada em um clique
+- **Métrica**: Tempo <30s para gerar escala
+- **Componentes**: Botão grande, progress bar, cards de resultado
+
+### Simulador de Cenários (M1)
+- **Objetivo**: Mostrar 3 opções de escala
+- **Métrica**: 80% escolhem cenário equilibrado
+- **Componentes**: Cards comparativos, toggle de cenários
+
+### Confirmação via WhatsApp (M0)
+- **Objetivo**: Automatizar confirmação de presença
+- **Métrica**: 90% de confirmação em 2h
+- **Componentes**: Lista de funcionários, status badges
+
+### Relatório de Economia (M1)
+- **Objetivo**: Mostrar ROI da plataforma
+- **Métrica**: Economia visível >R$500/mês
+- **Componentes**: Cards de métricas, gráficos, comparativos
+
+### Relatório de Risco CLT (M1)
+- **Objetivo**: Alertar sobre violações CLT
+- **Métrica**: 0 violações CLT por mês
+- **Componentes**: Alertas coloridos, botões de correção
+
+---
+
+## 🎯 MOCKUPS ASCII
+
+### Hero Section
+```
+┌─────────────────────────────────────┐
+│  Crie escalas perfeitas em minutos  │
+│     e fique 100% dentro da lei     │
+│                                     │
+│  Reduza até 30% o custo de mão     │
+│        de obra automaticamente      │
+│                                     │
+│  [Gerar minha escala agora] [Demo]  │
+└─────────────────────────────────────┘
+```
+
+### Tabela de Escalas
+```
+┌─────────────────────────────────────┐
+│ Funcionário │ Turno │ Horário │Status│
+├─────────────────────────────────────┤
+│ João Silva  │ Manhã │ 08-16h  │ ✅   │
+│ Maria Costa │ Tarde │ 16-24h  │ ⏳   │
+│ Pedro Lima  │ Noite │ 00-08h  │ ❌   │
+└─────────────────────────────────────┘
+```
+
+### Modal Publicar
+```
+┌─────────────────────────────────────┐
+│        Publicar Escala              │
+│                                     │
+│  ✅ 12 funcionários escalados       │
+│  ✅ Sem violações CLT               │
+│  ✅ Economia de R$450/mês           │
+│                                     │
+│  [Publicar e Enviar WhatsApp]       │
+└─────────────────────────────────────┘
+```
+
+### Relatório Economia
+```
+┌─────────────────────────────────────┐
+│        Economia Gerada              │
+│                                     │
+│  💰 R$2.450 este mês               │
+│  📈 +15% vs. mês anterior          │
+│  ⏰ 32h economizadas                │
+│                                     │
+│  [Ver relatório completo]           │
+└─────────────────────────────────────┘
+```
+
+---
+
+## 📈 FUNNEL DE CONVERSÃO
+
+### Métricas por Estágio
+- **Home → Demo**: 15% (meta: 25%)
+- **Demo → Cadastro**: 40% (meta: 60%)
+- **Cadastro → Onboarding**: 80% (meta: 90%)
+- **Onboarding → Primeira Escala**: 70% (meta: 85%)
+- **Ativação (7 dias)**: 50% (meta: 70%)
+
+---
+
+## 🎨 TIPOS DE ESCALA (Baseado no CSV)
+
+### Escalas Implementadas
+| Tipo | Descrição | Custo | Ideal para |
+|------|-----------|-------|------------|
+| **5x2** | 5 dias trabalho / 2 folga | Baixo | Padarias, produção |
+| **6x1** | 6 dias trabalho / 1 folga | Médio | Restaurantes, fast-food |
+| **4x2** | 4 dias trabalho / 2 folga | Médio | Hotelaria, catering |
+| **12x36** | 12h trabalho / 36h descanso | Alto | Hotéis, hospitais |
+| **Parcial** | Jornada parcial | Baixo | Fast-food, delivery |
+
+---
+
+## 🚀 ROADMAP DE IMPLEMENTAÇÃO
+
+### Fase 1 (Mês 1-2)
+- [ ] Implementar design tokens
+- [ ] Criar componentes base
+- [ ] Implementar testes A/B 1-3
+- [ ] Configurar tracking
+
+### Fase 2 (Mês 3-4)
+- [ ] Implementar testes A/B 4-5
+- [ ] Otimizar onboarding
+- [ ] Implementar gamificação
+- [ ] A/B test de preços
+
+### Fase 3 (Mês 5-6)
+- [ ] Otimizar retenção
+- [ ] Implementar upselling
+- [ ] A/B test de features
+- [ ] Otimizar mobile
+
+---
+
+## 📋 PREMISSAS ASSUMIDAS
+
+1. **Público-alvo**: Donos/gestores de bares e restaurantes com 5-50 funcionários
+2. **Conhecimento técnico**: Básico a intermediário
+3. **Dispositivo principal**: Mobile (60%), Desktop (40%)
+4. **Conectividade**: 4G/5G estável na maioria dos casos
+5. **Tempo disponível**: 5-10 minutos por sessão
+6. **Objetivo principal**: Reduzir custos e riscos trabalhistas
+7. **Barreiras**: Medo de tecnologia, falta de tempo, resistência à mudança
+8. **Gatilhos**: Economia, segurança jurídica, simplicidade
+9. **Prova social**: Fundamental para conversão
+10. **Suporte**: WhatsApp como canal principal
+
+---
+
+## 🎯 RESULTADOS ESPERADOS
+
+### Conversão
+- **Aumento de 15-25%** na conversão home → demo
+- **Aumento de 20-30%** na conversão demo → cadastro
+- **Aumento de 25-35%** na taxa de ativação
+
+### Performance
+- **FCP < 1.5s** em todas as páginas
+- **LCP < 2.5s** para elementos críticos
+- **FID < 100ms** para interações
+
+### Acessibilidade
+- **WCAG AA** compliance em todos os componentes
+- **100%** de navegação por teclado
+- **4.5:1** contraste mínimo em todos os textos
+
+### Usabilidade
+- **< 3 cliques** para criar escala
+- **< 5 minutos** para completar onboarding
+- **> 90%** de satisfação do usuário
+
+---
+
+## 📞 PRÓXIMOS PASSOS
+
+1. **Revisão e Aprovação**: Validar design system com stakeholders
+2. **Implementação Técnica**: Desenvolver componentes base
+3. **Testes de Usuário**: Validar com público-alvo real
+4. **Lançamento Gradual**: Implementar em fases
+5. **Monitoramento**: Acompanhar métricas e otimizar continuamente
+
+---
+
+**Este design system está otimizado para conversão, usabilidade e crescimento da plataforma GrowthScale no mercado brasileiro de food service, garantindo uma experiência excepcional para donos e gestores de restaurantes e bares.**
