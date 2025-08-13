@@ -194,7 +194,7 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({ company }) => {
             </div>
             
             <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-muted-foreground rounded-full mt-2"></div>
+              <div className="w-2 h-2 bg-foreground/20 rounded-full mt-2"></div>
               <div>
                 <p className="text-sm font-medium">Informações de contato atualizadas</p>
                 <p className="text-xs text-muted-foreground">Há 1 semana</p>
@@ -202,7 +202,7 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({ company }) => {
             </div>
             
             <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-muted-foreground rounded-full mt-2"></div>
+              <div className="w-2 h-2 bg-foreground/20 rounded-full mt-2"></div>
               <div>
                 <p className="text-sm font-medium">Empresa criada</p>
                 <p className="text-xs text-muted-foreground">

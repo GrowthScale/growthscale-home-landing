@@ -89,7 +89,20 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Cores semânticas adicionais para evitar conflitos
+				'subtle-background': 'hsl(var(--muted))',
+				'subtle-foreground': 'hsl(var(--muted-foreground))',
+				'strong-border': 'hsl(var(--border))',
+				'button-primary-hover': 'hsl(var(--primary-hover))',
+				'text-emphasis': 'hsl(var(--foreground))',
+				'text-subtle': 'hsl(var(--muted-foreground))',
+				'text-muted': 'hsl(var(--muted-foreground))',
+				'bg-emphasis': 'hsl(var(--background))',
+				'bg-subtle': 'hsl(var(--muted))',
+				'bg-muted': 'hsl(var(--muted))',
+				'border-emphasis': 'hsl(var(--border))',
+				'border-subtle': 'hsl(var(--muted))'
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',

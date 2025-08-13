@@ -939,7 +939,7 @@ export function ScheduleEditor() {
               Escolha um modelo pré-definido para criar rapidamente a estrutura da sua escala. Cada modelo possui características únicas.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 max-h-[60vh] overflow-y-auto p-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 max-h-[70vh] overflow-y-auto p-1">
             {/* Faça um map sobre os 'templates' buscados com o useQuery */}
             {templates?.map(template => (
               <Card 

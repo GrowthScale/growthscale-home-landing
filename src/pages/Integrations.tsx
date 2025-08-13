@@ -567,7 +567,7 @@ const Integrations = () => {
           {/* Integration Details Modal */}
           {selectedIntegration && (
             <Dialog open={!!selectedIntegration} onOpenChange={() => setSelectedIntegration(null)}>
-              <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <div className="flex items-start gap-4">
                     <div className="bg-primary/10 p-3 rounded-lg">

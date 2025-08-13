@@ -12,10 +12,10 @@ const HeroSection = () => {
       </div>
       
       <div className="relative z-10 max-w-4xl mx-auto px-4 text-white">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 [text-shadow:0_2px_4px_rgba(0,0,0,0.4)]">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 [text-shadow:0_2px_4px_hsl(var(--foreground)/0.4)]">
           Sua paz de espírito custa menos que um processo trabalhista.
         </h1>
-        <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-8 [text-shadow:0_1px_2px_rgba(0,0,0,0.4)]">
+        <p className="text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto mb-8 [text-shadow:0_1px_2px_hsl(var(--foreground)/0.4)]">
           A plataforma com Inteligência Artificial que blinda seu restaurante, otimiza suas escalas em minutos e te dá o controle total dos custos. Sem planilhas, sem medo.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

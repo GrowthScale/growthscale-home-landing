@@ -171,7 +171,7 @@ export default function Employees() {
 
         {/* Employee Details Side Panel */}
         <Sheet open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-          <SheetContent className="w-full sm:w-[500px] lg:w-[600px] overflow-y-auto">
+          <SheetContent className="w-full sm:max-w-modal-md lg:max-w-2xl overflow-y-auto">
             <SheetHeader className="space-y-4">
               <div className="flex items-center justify-between">
                 <SheetTitle className="flex items-center space-x-2">
