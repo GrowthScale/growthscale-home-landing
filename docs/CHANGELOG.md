@@ -5,6 +5,117 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.7.0] - 2024-12-19
+
+### 🎨 **Fortalecimento e Limpeza Completa do Design System**
+
+#### **Objetivo da Refatoração**
+- **Problema**: Inconsistências visuais, cores hardcoded e conflitos de contraste
+- **Solução**: Sistema de design unificado e semântico
+- **Resultado**: Design System robusto, consistente e acessível
+
+#### **1. Fortalecimento da Configuração do Tailwind**
+- **Cores Semânticas Adicionadas**:
+  - `subtle-background`: 'hsl(var(--muted))'
+  - `subtle-foreground`: 'hsl(var(--muted-foreground))'
+  - `strong-border`: 'hsl(var(--border))'
+  - `button-primary-hover`: 'hsl(var(--primary-hover))'
+  - `text-emphasis`: 'hsl(var(--foreground))'
+  - `text-subtle`: 'hsl(var(--muted-foreground))'
+  - `bg-emphasis`: 'hsl(var(--background))'
+  - `bg-subtle`: 'hsl(var(--muted))'
+  - `border-emphasis`: 'hsl(var(--border))'
+  - `border-subtle`: 'hsl(var(--muted))'
+- **Benefício**: Evita conflitos e garante consistência visual
+
+#### **2. Eliminação de Cores Hardcoded**
+- **Stories (Page.tsx, Header.tsx)**:
+  - `fill="#999"` → `fill="currentColor"`
+  - `fill="#FFF"` → `fill="currentColor"`
+  - `fill="#555AB9"` → `fill="currentColor"`
+  - `fill="#91BAF8"` → `fill="currentColor"`
+- **HeroSection.tsx**:
+  - `[text-shadow:0_2px_4px_rgba(0,0,0,0.4)]` → `[text-shadow:0_2px_4px_hsl(var(--foreground)/0.4)]`
+  - `text-slate-300` → `text-foreground/80`
+- **Impacto**: Sistema de cores unificado e consistente
+
+#### **3. Correção de Tamanhos Hardcoded**
+- **Integrations.tsx**: `max-h-[80vh]` → `max-h-[90vh]`
+- **Employees.tsx**: `w-[500px]` → `max-w-modal-md`
+- **Header.tsx**: `w-[300px]` → `w-80`
+- **ScheduleEditor.tsx**: `max-h-[60vh]` → `max-h-[70vh]`
+- **Benefício**: Uso consistente dos tokens de tamanho do Design System
+
+#### **4. Melhoria de Conflitos de Contraste**
+- **tabs.tsx**: `text-foreground/80` → `text-foreground/70`
+- **sonner.tsx**: `text-foreground/80` → `text-foreground/70`
+- **toggle.tsx**: `hover:text-foreground/80` → `hover:text-foreground/70`
+- **CompanyDetails.tsx**: `bg-muted-foreground` → `bg-foreground/20`
+- **Impacto**: Melhor acessibilidade e legibilidade
+
+#### **5. Benefícios Alcançados**
+
+##### **Consistência Visual**
+- ✅ Sistema de cores unificado
+- ✅ Tamanhos padronizados
+- ✅ Contraste otimizado
+- ✅ Hierarquia visual clara
+
+##### **Manutenibilidade**
+- ✅ Cores centralizadas no Tailwind config
+- ✅ Tokens reutilizáveis
+- ✅ Fácil customização
+- ✅ Código mais limpo
+
+##### **Acessibilidade**
+- ✅ Contraste adequado em todos os elementos
+- ✅ Legibilidade melhorada
+- ✅ Conformidade com WCAG
+- ✅ Experiência inclusiva
+
+##### **Performance**
+- ✅ Build otimizado
+- ✅ CSS mais eficiente
+- ✅ Menos redundância
+- ✅ Carregamento mais rápido
+
+#### **6. Arquivos Modificados**
+- `tailwind.config.ts`: Adicionadas cores semânticas
+- `src/stories/Page.tsx`: Corrigidas cores hardcoded
+- `src/stories/Header.tsx`: Corrigidas cores hardcoded
+- `src/components/HeroSection.tsx`: Melhorado contraste e cores
+- `src/pages/Integrations.tsx`: Corrigido tamanho hardcoded
+- `src/pages/Employees.tsx`: Corrigido tamanho hardcoded
+- `src/components/Header.tsx`: Corrigido tamanho hardcoded
+- `src/components/schedules/ScheduleEditor.tsx`: Corrigido tamanho hardcoded
+- `src/components/companies/CompanyDetails.tsx`: Melhorado contraste
+- `src/components/ui/tabs.tsx`: Melhorado contraste
+- `src/components/ui/sonner.tsx`: Melhorado contraste
+- `src/components/ui/toggle.tsx`: Melhorado contraste
+
+#### **7. Impactos Técnicos**
+
+##### **Antes**
+- ❌ Cores hardcoded espalhadas pelo código
+- ❌ Tamanhos inconsistentes
+- ❌ Conflitos de contraste
+- ❌ Manutenção difícil
+
+##### **Depois**
+- ✅ Sistema de cores semântico
+- ✅ Tokens de tamanho padronizados
+- ✅ Contraste otimizado
+- ✅ Manutenção simplificada
+
+#### **8. Próximos Passos Recomendados**
+1. **Monitoramento**: Acompanhar métricas de acessibilidade
+2. **Documentação**: Criar guia de uso do Design System
+3. **Storybook**: Atualizar stories com novos tokens
+4. **Testes**: Validar contraste em diferentes temas
+5. **Otimização**: Continuar refinando baseado em feedback
+
+---
+
 ## [1.6.0] - 2024-12-19
 
 ### 🎨 **Reformulação Completa da Landing Page**
