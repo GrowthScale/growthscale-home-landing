@@ -3,6 +3,7 @@ import KPICard from "./KPICard";
 import ChartSection from "./ChartSection";
 import NotificationsPanel from "./NotificationsPanel";
 import ActivityFeed from "./ActivityFeed";
+import PendingDraftCard from "./PendingDraftCard";
 import { useAccessControl } from "@/hooks/useAccessControl";
 import { Button } from "@/components/ui/button";
 import { 
@@ -115,6 +116,9 @@ const Dashboard = () => {
             </div>
           </div>
         </section>
+
+        {/* Pending Draft Card - Aparece apenas quando há rascunho pendente */}
+        <PendingDraftCard className="mb-6" />
 
         {/* KPI Cards Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" aria-labelledby="kpi-title">

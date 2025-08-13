@@ -201,6 +201,16 @@ export interface ScheduleTemplate {
   };
 }
 
+export interface ScheduleDraft {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  tenant_id: string;
+  target_week_start: string;
+  draft_data: any; // JSONB data from AI suggestion
+  status: 'pending_review' | 'approved' | 'dismissed';
+}
+
 export interface CreateScheduleTemplateDto {
   name: string;
   description?: string;
@@ -725,5 +735,68 @@ export class WhatsAppNotificationService extends BaseApiService {
 
 // Instância do serviço WhatsApp
 export const whatsAppNotificationService = new WhatsAppNotificationService();
+
+export class ScheduleDraftService extends BaseApiService {
+  async getPendingDraft(tenantId: string): Promise<ApiResponse<ScheduleDraft | null>> {
+    return this.handleRequest(async () => {
+      if (!tenantId) {
+        return { data: null, error: null };
+      }
+
+      const { data, error } = await supabase
+        .from('schedule_drafts')
+        .select('*')
+        .eq('tenant_id', tenantId)
+        .eq('status', 'pending_review')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error && error.code !== 'PGRST116') { // Ignora o erro "nenhuma linha encontrada"
+        console.error('Erro ao buscar rascunho pendente:', error);
+        return { data: null, error };
+      }
+
+      return { data, error: null };
+    });
+  }
+
+  async approveDraft(draftId: string): Promise<ApiResponse<void>> {
+    return this.handleRequest(async () => {
+      const { error } = await supabase
+        .from('schedule_drafts')
+        .update({ status: 'approved' })
+        .eq('id', draftId);
+      
+      return { data: null, error };
+    });
+  }
+
+  async dismissDraft(draftId: string): Promise<ApiResponse<void>> {
+    return this.handleRequest(async () => {
+      const { error } = await supabase
+        .from('schedule_drafts')
+        .update({ status: 'dismissed' })
+        .eq('id', draftId);
+      
+      return { data: null, error };
+    });
+  }
+
+  async getDrafts(tenantId: string): Promise<ApiResponse<ScheduleDraft[]>> {
+    return this.handleRequest(async () => {
+      const { data, error } = await supabase
+        .from('schedule_drafts')
+        .select('*')
+        .eq('tenant_id', tenantId)
+        .order('created_at', { ascending: false });
+      
+      return { data, error };
+    });
+  }
+}
+
+// Instância do serviço de rascunhos
+export const scheduleDraftService = new ScheduleDraftService();
 
  
