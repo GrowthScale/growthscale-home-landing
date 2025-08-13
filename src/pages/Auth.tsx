@@ -24,7 +24,9 @@ import {
   Shield,
   CheckCircle,
   AlertTriangle,
-  RefreshCw
+  RefreshCw,
+  Building,
+  Users
 } from 'lucide-react';
 
 // Helper function to safely extract error message
@@ -54,6 +56,9 @@ const Auth = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [fullName, setFullName] = useState('')
+  const [companyName, setCompanyName] = useState('')
+  const [companyEmail, setCompanyEmail] = useState('')
+  const [employeeCount, setEmployeeCount] = useState<number>(0)
   const [rememberMe, setRememberMe] = useState(false)
   const [acceptTerms, setAcceptTerms] = useState(false)
 
@@ -76,6 +81,8 @@ const Auth = () => {
     // Sanitize inputs
     const sanitizedEmail = sanitizeInput(email);
     const sanitizedFullName = sanitizeInput(fullName);
+    const sanitizedCompanyName = sanitizeInput(companyName);
+    const sanitizedCompanyEmail = sanitizeInput(companyEmail);
 
     if (!sanitizedEmail) {
       newErrors.email = t('errors.required')
@@ -85,6 +92,25 @@ const Auth = () => {
 
     if (!isLogin && !sanitizedFullName.trim()) {
       newErrors.fullName = t('auth.fullNameRequired')
+    }
+
+    // Validações específicas para cadastro B2B
+    if (!isLogin) {
+      if (!sanitizedCompanyName.trim()) {
+        newErrors.companyName = 'Nome da empresa é obrigatório'
+      }
+
+      if (!sanitizedCompanyEmail.trim()) {
+        newErrors.companyEmail = 'Email corporativo é obrigatório'
+      } else if (!validateEmail(sanitizedCompanyEmail)) {
+        newErrors.companyEmail = 'Email corporativo inválido'
+      }
+
+      if (!employeeCount || employeeCount <= 0) {
+        newErrors.employeeCount = 'Número de funcionários é obrigatório'
+      } else if (employeeCount > 1000) {
+        newErrors.employeeCount = 'Número de funcionários deve ser menor que 1000'
+      }
     }
 
     if (!password) {
@@ -145,8 +171,8 @@ const Auth = () => {
           navigate(from, { replace: true })
         }
       } else {
-        trackUserAction('register_attempt', { email });
-        const { error } = await signUp(email, password, fullName)
+        trackUserAction('register_attempt', { email, companyName, employeeCount });
+        const { error } = await signUp(email, password, fullName, companyName, companyEmail, employeeCount)
         if (error) {
           const errorMessage = getErrorMessage(error);
           showError(
@@ -156,10 +182,10 @@ const Auth = () => {
           trackEvent('auth_register_failed', { email, error: errorMessage });
         } else {
           showSuccess(
-            t('auth.registerSuccess'),
-            t('auth.checkEmail')
+            'Conta criada com sucesso!',
+            'Verifique seu email para confirmar o cadastro e começar a usar o GrowthScale.'
           );
-          trackEvent('auth_register_success', { email });
+          trackEvent('auth_register_success', { email, companyName, employeeCount });
           setIsLogin(true)
         }
       }
@@ -225,6 +251,9 @@ const Auth = () => {
     setPassword('')
     setConfirmPassword('')
     setFullName('')
+    setCompanyName('')
+    setCompanyEmail('')
+    setEmployeeCount(0)
     setRememberMe(false)
     setAcceptTerms(false)
     setErrors({})
@@ -326,12 +355,12 @@ const Auth = () => {
         <Card className="shadow-elegant border-0">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-foreground">
-              {isLogin ? t('auth.loginTitle') : t('auth.registerTitle')}
+              {isLogin ? t('auth.loginTitle') : "Crie o Ambiente da Sua Empresa"}
             </CardTitle>
             <CardDescription>
               {isLogin 
                 ? t('auth.loginDescription') 
-                : t('auth.registerDescription')
+                : "Comece a transformar sua gestão. Seu primeiro passo para a tranquilidade."
               }
             </CardDescription>
           </CardHeader>
@@ -359,6 +388,78 @@ const Auth = () => {
                     </Alert>
                   )}
                 </div>
+              )}
+
+              {/* Campos da Empresa - Apenas no cadastro */}
+              {!isLogin && (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="companyName">Nome da Empresa *</Label>
+                    <div className="relative">
+                      <Building className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="companyName"
+                        name="companyName"
+                        type="text"
+                        placeholder="Nome do seu restaurante ou bar"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        className="pl-10"
+                        autoComplete="organization"
+                      />
+                    </div>
+                    {errors.companyName && (
+                      <Alert variant="destructive" className="py-2">
+                        <AlertDescription className="text-sm">{errors.companyName}</AlertDescription>
+                      </Alert>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="companyEmail">Email Corporativo *</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="companyEmail"
+                        name="companyEmail"
+                        type="email"
+                        placeholder="Email de contato da empresa"
+                        value={companyEmail}
+                        onChange={(e) => setCompanyEmail(e.target.value)}
+                        className="pl-10"
+                        autoComplete="email"
+                      />
+                    </div>
+                    {errors.companyEmail && (
+                      <Alert variant="destructive" className="py-2">
+                        <AlertDescription className="text-sm">{errors.companyEmail}</AlertDescription>
+                      </Alert>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="employeeCount">Número de Funcionários *</Label>
+                    <div className="relative">
+                      <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="employeeCount"
+                        name="employeeCount"
+                        type="number"
+                        placeholder="Ex: 12"
+                        value={employeeCount || ''}
+                        onChange={(e) => setEmployeeCount(parseInt(e.target.value) || 0)}
+                        className="pl-10"
+                        min="1"
+                        max="1000"
+                      />
+                    </div>
+                    {errors.employeeCount && (
+                      <Alert variant="destructive" className="py-2">
+                        <AlertDescription className="text-sm">{errors.employeeCount}</AlertDescription>
+                      </Alert>
+                    )}
+                  </div>
+                </>
               )}
 
               <div className="space-y-2">
@@ -528,7 +629,7 @@ const Auth = () => {
                     ) : (
                       <>
                         <CheckCircle className="w-4 h-4 mr-2" />
-                        {t('auth.register')}
+                        Criar Conta Empresarial
                       </>
                     )}
                   </>
@@ -547,7 +648,7 @@ const Auth = () => {
               className="w-full"
               disabled={loading}
             >
-              {isLogin ? t('auth.register') : t('auth.login')}
+              {isLogin ? 'Criar Conta Empresarial' : t('auth.login')}
             </Button>
           </CardFooter>
         </Card>
