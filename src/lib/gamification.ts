@@ -264,7 +264,7 @@ export class GamificationManager {
   }
   
   // Verificar e desbloquear achievements
-  checkAchievements(action: string, data?: any): Achievement[] {
+  checkAchievements(action: string, data?: Record<string, unknown>): Achievement[] {
     const newlyUnlocked: Achievement[] = [];
     
     this.userStats.achievements.forEach(achievement => {
@@ -292,7 +292,7 @@ export class GamificationManager {
   }
   
   // Verificar se achievement deve ser desbloqueado
-  private shouldUnlockAchievement(achievement: Achievement, action: string, data?: any): boolean {
+  private shouldUnlockAchievement(achievement: Achievement, action: string, data?: Record<string, unknown>): boolean {
     switch (achievement.id) {
       case 'first_login':
         return action === 'login';
@@ -307,35 +307,42 @@ export class GamificationManager {
         return action === 'schedule_created';
         
       case 'schedule_master':
-        if (action === 'schedule_created' && data?.totalSchedules) {
-          achievement.progress = data.totalSchedules;
-          return data.totalSchedules >= 10;
+        if (action === 'schedule_created' && data && typeof data === 'object' && 'totalSchedules' in data) {
+          const totalSchedules = data.totalSchedules as number;
+          achievement.progress = totalSchedules;
+          return totalSchedules >= 10;
         }
         return false;
         
-      case 'efficiency_expert':
-        if (action === 'hours_saved' && data?.hoursSaved) {
-          achievement.progress = data.hoursSaved;
-          return data.hoursSaved >= 50;
+              case 'efficiency_expert': {
+          if (action === 'hours_saved' && data && typeof data === 'object' && 'hoursSaved' in data) {
+            const hoursSaved = data.hoursSaved as number;
+            achievement.progress = hoursSaved;
+            return hoursSaved >= 50;
+          }
+          return false;
         }
-        return false;
         
       case 'clt_compliant':
         return action === 'compliance_check' && data?.compliant === true;
         
-      case 'overtime_reducer':
-        if (action === 'overtime_reduction' && data?.reductionPercentage) {
-          achievement.progress = data.reductionPercentage;
-          return data.reductionPercentage >= 80;
+              case 'overtime_reducer': {
+          if (action === 'overtime_reduction' && data && typeof data === 'object' && 'reductionPercentage' in data) {
+            const reductionPercentage = data.reductionPercentage as number;
+            achievement.progress = reductionPercentage;
+            return reductionPercentage >= 80;
+          }
+          return false;
         }
-        return false;
         
-      case 'team_player':
-        if (action === 'whatsapp_sent' && data?.totalMessages) {
-          achievement.progress = data.totalMessages;
-          return data.totalMessages >= 50;
+              case 'team_player': {
+          if (action === 'whatsapp_sent' && data && typeof data === 'object' && 'totalMessages' in data) {
+            const totalMessages = data.totalMessages as number;
+            achievement.progress = totalMessages;
+            return totalMessages >= 50;
+          }
+          return false;
         }
-        return false;
         
       case 'communication_master':
         return action === 'confirmation_rate' && data?.rate === 100;
@@ -456,7 +463,7 @@ export function useGamification() {
   // Isso seria integrado com o contexto da aplicação
   
   return {
-    checkAchievements: (action: string, data?: any) => {
+    checkAchievements: (action: string, data?: Record<string, unknown>) => {
       // Implementar verificação de achievements
     },
     getUserStats: () => {

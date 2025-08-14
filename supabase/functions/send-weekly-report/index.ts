@@ -4,16 +4,20 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { OpenAI } from "https://deno.land/x/openai/mod.ts";
 
 // Função para gerar o resumo com a IA
-async function getAISummary(metrics: any) {
+async function getAISummary(metrics: Record<string, unknown>) {
   const openAIKey = Deno.env.get("OPENAI_API_KEY");
   if (!openAIKey) return "Resumo da IA indisponível.";
 
   const openai = new OpenAI(openAIKey);
+  const totalCost = (metrics.totalCost as number) || 0;
+  const overtimeCost = (metrics.overtimeCost as number) || 0;
+  const criticalViolations = (metrics.criticalViolations as number) || 0;
+  
   const prompt = `
     Analise as seguintes métricas semanais da escala de um restaurante:
-    - Custo Total: R$ ${metrics.totalCost.toFixed(2)}
-    - Custo com Horas Extras: R$ ${metrics.overtimeCost.toFixed(2)}
-    - Violações Críticas da CLT: ${metrics.criticalViolations}
+    - Custo Total: R$ ${totalCost.toFixed(2)}
+    - Custo com Horas Extras: R$ ${overtimeCost.toFixed(2)}
+    - Violações Críticas da CLT: ${criticalViolations}
     
     Escreva um resumo executivo curto (2-3 frases) para o gestor, em tom profissional e informativo. Destaque um ponto positivo e um ponto de atenção.
   `;

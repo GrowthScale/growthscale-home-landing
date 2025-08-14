@@ -211,7 +211,7 @@ export interface ScheduleDraft {
   updated_at: string;
   tenant_id: string;
   target_week_start: string;
-  draft_data: any; // JSONB data from AI suggestion
+  draft_data: Record<string, unknown>; // JSONB data from AI suggestion
   status: 'pending_review' | 'approved' | 'dismissed';
 }
 
@@ -765,7 +765,7 @@ export class ScheduleDraftService extends BaseApiService {
     });
   }
 
-  async approveDraft(draftId: string, scheduleData?: any): Promise<ApiResponse<{ success: boolean }>> {
+  async approveDraft(draftId: string, scheduleData?: Record<string, unknown>): Promise<ApiResponse<{ success: boolean }>> {
     return this.handleRequest(async () => {
       // Se scheduleData foi fornecido, criar a escala oficial primeiro
       if (scheduleData) {

@@ -120,7 +120,7 @@ function validateEquity(shifts: Shift[], employees: Employee[]): { value: number
   shifts.forEach(shift => {
     const dayOfWeek = getDay(parseISO(shift.startTime)); // Domingo = 0, Sábado = 6
     if (dayOfWeek === 0 || dayOfWeek === 6) {
-      if (weekendShiftsPerEmployee.hasOwnProperty(shift.employeeId)) {
+      if (Object.prototype.hasOwnProperty.call(weekendShiftsPerEmployee, shift.employeeId)) {
         weekendShiftsPerEmployee[shift.employeeId]++;
       }
     }
@@ -154,7 +154,7 @@ serve(async (req) => {
 
   try {
     const { shifts, employees }: InputData = await req.json();
-    let allViolations: Violation[] = [];
+    const allViolations: Violation[] = [];
 
     for (const employee of employees) {
       const violationsInterjornada = validateInterjornada(shifts, employee.id);

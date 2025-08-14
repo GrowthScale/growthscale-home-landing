@@ -207,13 +207,13 @@ export default function ScheduleDraft() {
               
               {/* Aqui você pode implementar uma visualização mais detalhada */}
               <div className="space-y-2">
-                {draft.draft_data?.map((allocation: any, index: number) => (
+                {draft.draft_data?.map((allocation: Record<string, unknown>, index: number) => (
                   <div key={index} className="flex items-center justify-between p-2 bg-background rounded border">
                     <span className="text-sm">
-                      Funcionário {allocation.employeeId || `#${index + 1}`}
+                      Funcionário {(allocation.employeeId as string) || `#${index + 1}`}
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      Turno {allocation.shiftId || `#${index + 1}`}
+                      Turno {(allocation.shiftId as string) || `#${index + 1}`}
                     </span>
                   </div>
                 ))}

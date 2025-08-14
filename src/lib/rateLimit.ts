@@ -7,7 +7,7 @@ interface RateLimitConfig {
   windowMs: number;
   max: number;
   message: string;
-  keyGenerator?: (req: any) => string;
+  keyGenerator?: (req: Record<string, unknown>) => string;
 }
 
 interface RateLimitStore {
@@ -54,7 +54,7 @@ export const rateLimitConfigs: Record<string, RateLimitConfig> = {
 
 // Função principal de rate limiting
 export function createRateLimiter(config: RateLimitConfig) {
-  return function rateLimit(req: any, res?: any): { success: boolean; remaining: number; resetTime: number; message?: string } {
+  return function rateLimit(req: Record<string, unknown>, res?: Record<string, unknown>): { success: boolean; remaining: number; resetTime: number; message?: string } {
     const key = config.keyGenerator ? config.keyGenerator(req) : 'default';
     const now = Date.now();
     
@@ -112,7 +112,7 @@ export function getRateLimitStats(): Record<string, { count: number; resetTime: 
 
 // Middleware para uso em APIs
 export function rateLimitMiddleware(type: keyof typeof rateLimitConfigs) {
-  return function(req: any, res: any, next: any) {
+  return function(req: Record<string, unknown>, res: Record<string, unknown>, next: () => void) {
     const limiter = createRateLimiter(rateLimitConfigs[type]);
     const result = limiter(req);
     

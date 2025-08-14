@@ -150,7 +150,7 @@ export function startPerformanceMonitoring() {
     const clsObserver = new PerformanceObserver((list) => {
       let clsValue = 0;
       const entries = list.getEntries();
-      entries.forEach((entry: any) => {
+      entries.forEach((entry: PerformanceEntry) => {
         if (!entry.hadRecentInput) {
           clsValue += entry.value;
         }
@@ -240,7 +240,7 @@ export const analytics = {
 // EXTERNAL SERVICE INTEGRATION
 // =====================================================
 
-async function sendToExternalService(type: string, data: any) {
+async function sendToExternalService(type: string, data: Record<string, unknown>) {
   try {
     // Em produção, implementar integração com:
     // - Sentry (erros)

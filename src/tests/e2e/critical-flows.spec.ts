@@ -200,7 +200,7 @@ test.describe('Acessibilidade', () => {
     const contrastIssues = await page.evaluate(() => {
       // Verificar se há elementos com baixo contraste
       const elements = document.querySelectorAll('*');
-      let issues = 0;
+      const issues = 0;
       
       elements.forEach(el => {
         const style = window.getComputedStyle(el);
@@ -305,13 +305,13 @@ test.describe('Segurança', () => {
 // =====================================================
 
 // Função para limpar dados de teste
-export async function cleanupTestData(page: any) {
+export async function cleanupTestData(page: Record<string, unknown>) {
   // Implementar limpeza de dados de teste
   // Isso pode incluir deletar empresas, usuários, etc.
 }
 
 // Função para criar dados de teste
-export async function createTestData(page: any) {
+export async function createTestData(page: Record<string, unknown>) {
   // Implementar criação de dados de teste
   // Isso pode incluir criar empresas, usuários, escalas, etc.
 }

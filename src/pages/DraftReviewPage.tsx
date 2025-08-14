@@ -40,7 +40,7 @@ export default function DraftReviewPage() {
   });
 
   const approveMutation = useMutation({
-    mutationFn: async (scheduleData: any) => {
+    mutationFn: async (scheduleData: Record<string, unknown>) => {
       if (!draftId) throw new Error('ID do rascunho não fornecido');
       const response = await scheduleDraftService.approveDraft(draftId, scheduleData);
       if (response.error) throw new Error(response.error);
@@ -54,7 +54,7 @@ export default function DraftReviewPage() {
       queryClient.invalidateQueries({ queryKey: ['pendingDraft'] });
       navigate('/schedules'); // Navega para a lista de escalas oficiais
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({ 
         title: "Erro ao Aprovar", 
         description: error.message, 
@@ -77,7 +77,7 @@ export default function DraftReviewPage() {
       queryClient.invalidateQueries({ queryKey: ['pendingDraft'] });
       navigate('/dashboard');
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({ 
         title: "Erro ao Descartar", 
         description: error.message, 
@@ -129,7 +129,7 @@ export default function DraftReviewPage() {
   const employeeCount = draft.draft_data?.length || 0;
 
   // Função para ser chamada pelo editor quando a escala for salva/aprovada
-  const handleApprove = (finalScheduleState: any) => {
+  const handleApprove = (finalScheduleState: Record<string, unknown>) => {
     // Formate os dados aqui para o formato da sua tabela 'schedules' oficial
     const officialScheduleData = {
       tenant_id: draft.tenant_id,
@@ -214,13 +214,13 @@ export default function DraftReviewPage() {
               </p>
               
               <div className="space-y-2">
-                {draft.draft_data?.map((allocation: any, index: number) => (
+                {draft.draft_data?.map((allocation: Record<string, unknown>, index: number) => (
                   <div key={index} className="flex items-center justify-between p-2 bg-background rounded border">
                     <span className="text-sm">
-                      Funcionário {allocation.employeeId || `#${index + 1}`}
+                      Funcionário {(allocation.employeeId as string) || `#${index + 1}`}
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      Turno {allocation.shiftId || `#${index + 1}`}
+                      Turno {(allocation.shiftId as string) || `#${index + 1}`}
                     </span>
                   </div>
                 ))}
@@ -254,7 +254,7 @@ export default function DraftReviewPage() {
           
           <Button 
             size="lg"
-            onClick={() => handleApprove(draft.draft_data)}
+            onClick={() => handleApprove(draft.draft_data as Record<string, unknown>)}
             disabled={approveMutation.isPending || dismissMutation.isPending}
             className="bg-green-600 hover:bg-green-700"
           >
