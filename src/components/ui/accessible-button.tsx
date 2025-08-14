@@ -74,7 +74,7 @@ export const AccessibleButton = React.forwardRef<HTMLButtonElement, AccessibleBu
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         if (!disabled && !loading && onClick) {
-          onClick(e as any);
+          onClick(e as React.MouseEvent<HTMLButtonElement>);
         }
       }
       

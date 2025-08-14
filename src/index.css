@@ -439,3 +439,103 @@
     }
   }
 }
+
+/* =====================================================
+   ACESSIBILIDADE - QUICK FIXES
+   ===================================================== */
+
+/* Focus visível para navegação por teclado */
+:focus-visible {
+  outline: 3px solid #2563EB !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+
+/* Alvos de toque mínimos para WCAG AA */
+[role="button"], 
+button, 
+a, 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"] {
+  min-height: 44px !important;
+  min-width: 44px !important;
+}
+
+/* Melhorar contraste para elementos interativos */
+button:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+/* Estados de hover mais visíveis */
+button:hover,
+a:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+/* Melhorar legibilidade de texto */
+p, span, div {
+  line-height: 1.6;
+}
+
+/* Contraste melhorado para textos pequenos */
+.text-sm, .text-xs {
+  font-weight: 500;
+}
+
+/* Indicadores visuais para elementos interativos */
+[aria-expanded="true"]::after {
+  content: " ▼";
+  font-size: 0.8em;
+}
+
+[aria-expanded="false"]::after {
+  content: " ▶";
+  font-size: 0.8em;
+}
+
+/* Melhorar navegação por teclado */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #2563EB;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Estados de loading mais acessíveis */
+[aria-busy="true"] {
+  position: relative;
+}
+
+[aria-busy="true"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #2563EB;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

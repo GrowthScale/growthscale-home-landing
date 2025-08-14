@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { ErrorBoundary } from "@/components/core/ErrorBoundary";
 import { HelmetProvider } from 'react-helmet-async';
 import LoadingScreen from "@/components/LoadingScreen";
 import { AuthProvider } from "@/contexts/AuthContext";
