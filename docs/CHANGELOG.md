@@ -1,5 +1,44 @@
 # Changelog - GrowthScale
 
+## [2.3.0] - 2024-12-19
+
+### ✨ **INTEGRAÇÃO CHATGPT ADAPTADA - LANDING PAGE MELHORADA**
+
+#### 🎯 **Nova Seção "Como Funciona"**
+- **3 Passos Claro**: Importe → Defina → Gere e Publique
+- **Design Consistente**: Cards com badges numerados
+- **Copy Centralizado**: Usando sistema de neuromarketing
+- **Ícones Visuais**: Emojis para melhor compreensão
+- **Hover Effects**: Animações suaves e interativas
+
+#### 📊 **Analytics de Funnel Avançado**
+- **Funnel Tracking**: Eventos específicos para cada etapa
+- **Scroll Depth**: Tracking de 50% e 75% de scroll
+- **CTA Tracking**: Cliques em botões primários e secundários
+- **Page Views**: Rastreamento de visualizações
+- **Custom Events**: Eventos personalizados para conversão
+
+#### 🎬 **Suporte a Vídeo Hero**
+- **Configuração Flexível**: Toggle para ativar/desativar vídeo
+- **Fallback Graceful**: Gradiente quando vídeo não disponível
+- **Performance Otimizada**: Lazy loading e preload configurável
+- **Poster Image**: Imagem de capa para carregamento
+- **Responsivo**: Adaptação para diferentes dispositivos
+
+#### 🔧 **Melhorias Técnicas**
+- **Copy Centralizado**: Neuromarketing em constants
+- **Componentes Modulares**: Arquitetura consistente
+- **Design System**: Uso correto de tokens e cores
+- **TypeScript**: Tipagem robusta implementada
+- **Build Otimizado**: Sem erros de compilação
+
+#### 🚀 **URL de Produção Atualizada**
+- **Nova URL**: https://growthscale-home-landing-r96e4m8ij.vercel.app
+- **Performance**: Build otimizado e funcional
+- **Funcionalidade**: 100% operacional com novas features
+
+---
+
 ## [2.2.0] - 2024-12-19
 
 ### 🔧 **CORREÇÕES FINAIS E QUALIDADE SUPERIOR**
