@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/core/ErrorBoundary";
 import { HelmetProvider } from 'react-helmet-async';
 import LoadingScreen from "@/components/LoadingScreen";
+import { analytics } from "@/lib/monitoring";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { TenantProvider } from "@/contexts/TenantContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -15,7 +16,7 @@ import MainLayout from "@/components/layouts/MainLayout";
 import { ROUTES } from "@/constants";
 import "@/i18n"; // Initialize i18n
 
-// Lazy load pages for better performance
+// Lazy load pages for better performance with preloading
 const Index = React.lazy(() => import("./pages/Index"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Schedules = React.lazy(() => import("./pages/Schedules"));
@@ -36,6 +37,20 @@ const Templates = React.lazy(() => import("./pages/Templates"));
 const CompanySettings = React.lazy(() => import("./pages/CompanySettings"));
 const ScheduleDraft = React.lazy(() => import("./pages/ScheduleDraft"));
 const DraftReviewPage = React.lazy(() => import("./pages/DraftReviewPage"));
+
+// Preload critical pages
+const preloadCriticalPages = () => {
+  // Preload Dashboard (página mais acessada)
+  const dashboardPromise = import("./pages/Dashboard");
+  
+  // Preload Schedules (funcionalidade principal)
+  const schedulesPromise = import("./pages/Schedules");
+  
+  // Preload Employees (funcionalidade secundária)
+  const employeesPromise = import("./pages/Employees");
+  
+  return Promise.all([dashboardPromise, schedulesPromise, employeesPromise]);
+};
 
 const queryClient = new QueryClient();
 

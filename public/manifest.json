@@ -1,11 +1,12 @@
 {
-  "name": "GrowthScale - Gestão Inteligente de Escalas para Food Service",
+  "name": "GrowthScale - Gestão de Escalas Inteligente",
   "short_name": "GrowthScale",
-  "description": "Plataforma com IA para gestão de escalas, otimização de custos e compliance CLT para restaurantes e bares",
+  "description": "Plataforma completa para gestão de escalas com IA e compliance CLT para restaurantes e bares",
+  "version": "2.0.0",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#001025",
-  "theme_color": "#FF6B00",
+  "background_color": "#004AAD",
+  "theme_color": "#004AAD",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "pt-BR",
@@ -62,14 +63,15 @@
   ],
   "shortcuts": [
     {
-      "name": "Criar Escala",
+      "name": "Nova Escala",
       "short_name": "Nova Escala",
       "description": "Criar uma nova escala de trabalho",
-      "url": "/escalas/nova",
+      "url": "/schedules/new",
       "icons": [
         {
           "src": "/icons/shortcut-schedule.png",
-          "sizes": "96x96"
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
@@ -81,7 +83,8 @@
       "icons": [
         {
           "src": "/icons/shortcut-dashboard.png",
-          "sizes": "96x96"
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
@@ -89,43 +92,65 @@
       "name": "Funcionários",
       "short_name": "Funcionários",
       "description": "Gerenciar funcionários",
-      "url": "/funcionarios",
+      "url": "/employees",
       "icons": [
         {
           "src": "/icons/shortcut-employees.png",
-          "sizes": "96x96"
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Relatórios",
+      "short_name": "Relatórios",
+      "description": "Ver relatórios de economia",
+      "url": "/reports",
+      "icons": [
+        {
+          "src": "/icons/shortcut-reports.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     }
   ],
   "screenshots": [
     {
-      "src": "/screenshots/dashboard-mobile.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Dashboard do GrowthScale no mobile"
-    },
-    {
-      "src": "/screenshots/schedules-mobile.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Gestão de escalas no mobile"
-    },
-    {
-      "src": "/screenshots/dashboard-desktop.png",
+      "src": "/screenshots/desktop-dashboard.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Dashboard do GrowthScale no desktop"
+      "label": "Dashboard principal da GrowthScale"
+    },
+    {
+      "src": "/screenshots/desktop-schedules.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Gestão de escalas"
+    },
+    {
+      "src": "/screenshots/mobile-dashboard.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dashboard mobile"
+    },
+    {
+      "src": "/screenshots/mobile-schedules.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Escalas mobile"
     }
   ],
-  "related_applications": [],
-  "prefer_related_applications": false,
-  "edge_side_panel": {
-    "preferred_width": 400
-  },
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://growthscale.com.br"
+    }
+  ],
   "launch_handler": {
     "client_mode": "navigate-existing"
   },
@@ -138,7 +163,7 @@
   ],
   "file_handlers": [
     {
-      "action": "/upload",
+      "action": "/import",
       "accept": {
         "text/csv": [".csv"],
         "application/vnd.ms-excel": [".xls"],
@@ -157,9 +182,14 @@
       "files": [
         {
           "name": "files",
-          "accept": ["text/csv", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+          "accept": ["image/*", "text/csv", "application/pdf"]
         }
       ]
     }
-  }
+  },
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "prefer_related_applications": false
 } 
