@@ -181,6 +181,13 @@ const PricingSection = () => {
                       : 'bg-blue-600 hover:bg-blue-700 text-white'
                   }`}
                   size="lg"
+                  onClick={() => {
+                    if (plan.enterprise) {
+                      window.location.href = '/contato';
+                    } else {
+                      window.location.href = '/login';
+                    }
+                  }}
                 >
                   {plan.buttonText}
                   <ArrowRight className="ml-2 h-4 w-4" />

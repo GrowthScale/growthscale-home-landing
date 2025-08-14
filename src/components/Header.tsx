@@ -75,13 +75,13 @@ const Header = () => {
                   Dashboard
                 </button>
                 <button 
-                  onClick={() => navigate('/funcionarios')}
+                  onClick={() => navigate('/employees')}
                   className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
                 >
                   Funcionários
                 </button>
                 <button 
-                  onClick={() => navigate('/escalas')}
+                  onClick={() => navigate('/schedules')}
                   className="text-foreground hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
                 >
                   Escalas
@@ -226,7 +226,7 @@ const Header = () => {
                       </button>
                       <button 
                         onClick={() => {
-                          navigate('/funcionarios');
+                          navigate('/employees');
                           setIsMobileMenuOpen(false);
                         }}
                         className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"
@@ -235,7 +235,7 @@ const Header = () => {
                       </button>
                       <button 
                         onClick={() => {
-                          navigate('/escalas');
+                          navigate('/schedules');
                           setIsMobileMenuOpen(false);
                         }}
                         className="text-left text-foreground hover:text-primary transition-colors font-medium p-2 rounded hover:bg-muted"

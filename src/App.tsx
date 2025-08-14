@@ -37,6 +37,8 @@ const Templates = React.lazy(() => import("./pages/Templates"));
 const CompanySettings = React.lazy(() => import("./pages/CompanySettings"));
 const ScheduleDraft = React.lazy(() => import("./pages/ScheduleDraft"));
 const DraftReviewPage = React.lazy(() => import("./pages/DraftReviewPage"));
+const Demo = React.lazy(() => import("./pages/Demo"));
+const Api = React.lazy(() => import("./pages/Api"));
 
 // Preload critical pages
 const preloadCriticalPages = () => {
@@ -163,6 +165,8 @@ const App = () => (
                       </MainLayout>
                     </ProtectedRoute>
                   } />
+                  <Route path="/demo" element={<Demo />} />
+                  <Route path="/api" element={<Api />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

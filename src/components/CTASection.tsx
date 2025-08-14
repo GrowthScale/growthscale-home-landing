@@ -34,6 +34,7 @@ const CTASection = () => {
             size="xl"
             className="shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             ariaLabel="Começar a usar GrowthScale gratuitamente"
+            onClick={() => window.location.href = '/login'}
           >
             {landingPageCopy.cta.cta}
           </SecondaryButton>

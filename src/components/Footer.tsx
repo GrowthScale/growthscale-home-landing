@@ -42,8 +42,8 @@ const Footer = () => {
             <ul className="space-y-3">
               <li><button onClick={() => document.getElementById('recursos')?.scrollIntoView({ behavior: 'smooth' })} className="text-slate-300 hover:text-white transition-colors duration-300">Recursos</button></li>
               <li><button onClick={() => document.getElementById('precos')?.scrollIntoView({ behavior: 'smooth' })} className="text-slate-300 hover:text-white transition-colors duration-300">Preços</button></li>
-              <li><Link to="/demo" className="text-slate-300 hover:text-white transition-colors duration-300">Demonstração</Link></li>
-              <li><Link to="/api" className="text-slate-300 hover:text-white transition-colors duration-300">API</Link></li>
+              <li><button onClick={() => window.location.href = '/demo'} className="text-slate-300 hover:text-white transition-colors duration-300">Demonstração</button></li>
+              <li><button onClick={() => window.location.href = '/api'} className="text-slate-300 hover:text-white transition-colors duration-300">API</button></li>
             </ul>
           </div>
 
@@ -51,10 +51,10 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-white mb-6 text-lg">Empresa</h4>
             <ul className="space-y-3">
-              <li><Link to="/sobre" className="text-slate-300 hover:text-white transition-colors duration-300">Sobre Nós</Link></li>
-              <li><Link to="/carreiras" className="text-slate-300 hover:text-white transition-colors duration-300">Carreiras</Link></li>
-              <li><Link to="/blog" className="text-slate-300 hover:text-white transition-colors duration-300">Blog</Link></li>
-              <li><Link to="/imprensa" className="text-slate-300 hover:text-white transition-colors duration-300">Imprensa</Link></li>
+              <li><button onClick={() => window.location.href = '/sobre'} className="text-slate-300 hover:text-white transition-colors duration-300">Sobre Nós</button></li>
+              <li><button onClick={() => window.location.href = '/carreiras'} className="text-slate-300 hover:text-white transition-colors duration-300">Carreiras</button></li>
+              <li><button onClick={() => window.location.href = '/blog'} className="text-slate-300 hover:text-white transition-colors duration-300">Blog</button></li>
+              <li><button onClick={() => window.location.href = '/imprensa'} className="text-slate-300 hover:text-white transition-colors duration-300">Imprensa</button></li>
             </ul>
           </div>
 
@@ -82,10 +82,10 @@ const Footer = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-wrap gap-6 text-sm text-slate-400">
-            <Link to="/politica-de-privacidade" className="hover:text-white transition-colors duration-300">Política de Privacidade</Link>
-            <Link to="/termos-de-uso" className="hover:text-white transition-colors duration-300">Termos de Uso</Link>
-            <Link to="/cookies" className="hover:text-white transition-colors duration-300">Cookies</Link>
-            <Link to="/seguranca" className="hover:text-white transition-colors duration-300">Segurança</Link>
+            <button onClick={() => window.location.href = '/politica-de-privacidade'} className="hover:text-white transition-colors duration-300">Política de Privacidade</button>
+            <button onClick={() => window.location.href = '/termos-de-uso'} className="hover:text-white transition-colors duration-300">Termos de Uso</button>
+            <button onClick={() => window.location.href = '/cookies'} className="hover:text-white transition-colors duration-300">Cookies</button>
+            <button onClick={() => window.location.href = '/seguranca'} className="hover:text-white transition-colors duration-300">Segurança</button>
           </div>
           <p className="text-sm text-slate-400">
             © 2024 GrowthScale. Todos os direitos reservados.

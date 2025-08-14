@@ -39,6 +39,7 @@ const HeroSection = () => {
             size="xl"
             className="shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             ariaLabel="Começar a usar GrowthScale gratuitamente"
+            onClick={() => window.location.href = '/login'}
           >
             {landingPageCopy.hero.ctaPrimary}
           </SecondaryButton>
@@ -48,6 +49,7 @@ const HeroSection = () => {
             icon={<PlayCircle className="h-6 w-6" />}
             className="border-white text-white hover:bg-white hover:text-primary-900 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
             ariaLabel="Ver demonstração do GrowthScale"
+            onClick={() => window.location.href = '/demo'}
           >
             {landingPageCopy.hero.ctaSecondary}
           </OutlineButton>
