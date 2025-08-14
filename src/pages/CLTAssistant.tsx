@@ -11,7 +11,7 @@ import {
   Clock,
   CheckCircle
 } from 'lucide-react';
-import SEOHead from '@/components/SEOHead';
+import { SEOHead } from '@/components/SEOHead';
 
 const CLTAssistantPage: React.FC = () => {
   return (
