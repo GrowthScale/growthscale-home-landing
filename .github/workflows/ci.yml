@@ -115,6 +115,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
+      - name: Check Vercel Configuration
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "⚠️ VERCEL_TOKEN not configured. Skipping deployment."
+            exit 0
+          fi
+          if [ -z "${{ secrets.VERCEL_ORG_ID }}" ]; then
+            echo "⚠️ VERCEL_ORG_ID not configured. Skipping deployment."
+            exit 0
+          fi
+          if [ -z "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
+            echo "⚠️ VERCEL_PROJECT_ID not configured. Skipping deployment."
+            exit 0
+          fi
+          echo "✅ Vercel configuration found. Proceeding with deployment."
+        
       - name: Deploy to Vercel (Staging)
         uses: amondnet/vercel-action@v25
         with:
@@ -132,6 +148,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        
+      - name: Check Vercel Configuration
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "⚠️ VERCEL_TOKEN not configured. Skipping deployment."
+            exit 0
+          fi
+          if [ -z "${{ secrets.VERCEL_ORG_ID }}" ]; then
+            echo "⚠️ VERCEL_ORG_ID not configured. Skipping deployment."
+            exit 0
+          fi
+          if [ -z "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
+            echo "⚠️ VERCEL_PROJECT_ID not configured. Skipping deployment."
+            exit 0
+          fi
+          echo "✅ Vercel configuration found. Proceeding with deployment."
         
       - name: Deploy to Vercel (Production)
         uses: amondnet/vercel-action@v25
