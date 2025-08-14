@@ -100,7 +100,27 @@ class AnalyticsService {
     }
 
     // Send to analytics service if configured
-    this.sendPageViewToAnalyticsService(pageView);
+    this.sendToAnalyticsService({ event: 'page_view', properties: pageView });
+  }
+
+  // Funnel tracking específico para landing page
+  trackFunnel(event: string, properties?: Record<string, unknown>) {
+    if (!this.isEnabled) return;
+
+    const funnelEvent: AnalyticsEvent = {
+      event: `funnel_${event}`,
+      properties: {
+        ...properties,
+        funnel_step: event,
+        timestamp: Date.now(),
+      },
+      timestamp: Date.now(),
+    };
+
+    this.events.push(funnelEvent);
+    
+    // Send to analytics service
+    this.sendToAnalyticsService(funnelEvent);
   }
 
   private sendToAnalyticsService(event: AnalyticsEvent) {

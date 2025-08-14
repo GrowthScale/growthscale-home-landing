@@ -7,9 +7,22 @@ const HeroSection = () => {
     <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden gradient-hero">
       {/* Background with overlay for better text readability */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
-        {/* ANOTAÇÃO PARA O VISUAL: */}
-        {/* TODO: Substituir este placeholder por um vídeo de fundo (com overlay escuro) ou GIF de alta qualidade mostrando a interface do GrowthScale em ação: o calendário sendo preenchido, os alertas aparecendo. Deve ser sutil e elegante. */}
-        <div className="w-full h-full gradient-hero"></div>
+        {/* Configuração de vídeo/visual */}
+        {false ? ( // HAS_HERO_VIDEO - alterar para true quando tiver o vídeo
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster="/hero-poster.jpg"
+            className="h-full w-full object-cover"
+          >
+            <source src="/hero-demo.mp4" type="video/mp4" />
+          </video>
+        ) : (
+          <div className="w-full h-full gradient-hero"></div>
+        )}
         {/* Overlay for better text contrast */}
         <div className="absolute inset-0 bg-primary-900/50"></div>
       </div>

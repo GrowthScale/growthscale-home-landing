@@ -210,6 +210,31 @@ export const landingPageCopy = {
     cta: "Comece de Graça e Veja a Diferença",
     urgency: "Oferta limitada - Apenas 50 vagas restantes",
   },
+
+  howItWorks: {
+    title: "Como funciona",
+    subtitle: "Em 3 passos, você sai do caos para a escala perfeita.",
+    steps: [
+      {
+        step: "1",
+        title: "Importe sua equipe",
+        desc: "Planilha .csv ou cadastro rápido — pronto em minutos.",
+        icon: "👥"
+      },
+      {
+        step: "2", 
+        title: "Defina regras",
+        desc: "CLT, folgas, horários, preferências e restrições.",
+        icon: "⚙️"
+      },
+      {
+        step: "3",
+        title: "Gere a escala e publique", 
+        desc: "IA monta tudo automaticamente. Ajuste se quiser e publique.",
+        icon: "🚀"
+      }
+    ]
+  },
 };
 
 // Copy para micro-interações e feedback
