@@ -14,6 +14,24 @@ import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import MainLayout from "@/components/layouts/MainLayout";
 import { ROUTES } from "@/constants";
 
+// Initialize i18n safely
+try {
+  import("@/i18n");
+} catch (error) {
+  console.warn("Failed to load i18n:", error);
+}
+
+// Initialize analytics safely
+try {
+  import("@/lib/monitoring").then(({ analytics }) => {
+    if (analytics) {
+      analytics.init();
+    }
+  });
+} catch (error) {
+  console.warn("Failed to load analytics:", error);
+}
+
 // Lazy load pages for better performance with preloading
 const Index = React.lazy(() => import("./pages/Index"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
