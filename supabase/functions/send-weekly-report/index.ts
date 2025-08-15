@@ -31,8 +31,17 @@ async function getAISummary(metrics: Record<string, unknown>) {
   return chatCompletion.choices[0].message.content;
 }
 
+// Interface para métricas semanais
+interface WeeklyMetrics {
+  totalCost: number;
+  overtimeCost: number;
+  criticalViolations: number;
+  totalHours: number;
+  employeeCount: number;
+}
+
 // Função para buscar métricas reais da semana passada
-async function getWeeklyMetrics(supabaseAdmin: any, tenantId: string) {
+async function getWeeklyMetrics(supabaseAdmin: any, tenantId: string): Promise<WeeklyMetrics> {
   const lastWeekStart = new Date();
   lastWeekStart.setDate(lastWeekStart.getDate() - 7);
   const lastWeekEnd = new Date();
@@ -76,8 +85,9 @@ async function getWeeklyMetrics(supabaseAdmin: any, tenantId: string) {
   const employeeIds = new Set();
 
   // Calcular métricas
-  schedules?.forEach((schedule: any) => {
-    schedule.shifts?.forEach((shift: any) => {
+  schedules?.forEach((schedule: Record<string, unknown>) => {
+    const shifts = schedule.shifts as Array<Record<string, unknown>>;
+    shifts?.forEach((shift: Record<string, unknown>) => {
       employeeIds.add(shift.employee_id);
       
       const startTime = new Date(`2024-01-01T${shift.start_time}`);

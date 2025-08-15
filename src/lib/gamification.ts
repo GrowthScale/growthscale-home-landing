@@ -354,9 +354,10 @@ export class GamificationManager {
         }
         return false;
         
-      case 'growth_scale_master':
+      case 'growth_scale_master': {
         const unlockedCount = this.userStats.achievements.filter(a => a.unlocked).length;
         return unlockedCount >= ACHIEVEMENTS.length - 1; // -1 para não contar ele mesmo
+      }
         
       default:
         return false;
@@ -384,13 +385,15 @@ export class GamificationManager {
       case 'newcomer':
         return this.userStats.totalPoints >= 50;
         
-      case 'scheduler':
+      case 'scheduler': {
         const scheduleAchievement = this.userStats.achievements.find(a => a.id === 'schedule_master');
         return scheduleAchievement?.progress ? scheduleAchievement.progress >= 5 : false;
+      }
         
-      case 'efficiency_leader':
+      case 'efficiency_leader': {
         const efficiencyAchievement = this.userStats.achievements.find(a => a.id === 'efficiency_expert');
         return efficiencyAchievement?.progress ? efficiencyAchievement.progress >= 100 : false;
+      }
         
       case 'compliance_champion':
         return this.userStats.achievements.find(a => a.id === 'clt_compliant')?.unlocked || false;

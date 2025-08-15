@@ -8,7 +8,7 @@ const HeroSection = () => {
       {/* Background with overlay for better text readability */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
         {/* Configuração de vídeo/visual */}
-        {false ? ( // HAS_HERO_VIDEO - alterar para true quando tiver o vídeo
+        {process.env.NODE_ENV === 'development' && process.env.VITE_HERO_VIDEO === 'true' ? ( // HAS_HERO_VIDEO - alterar para true quando tiver o vídeo
           <video
             autoPlay
             muted

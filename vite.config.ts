@@ -19,4 +19,20 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'ui-components': ['@radix-ui/react-dialog', '@radix-ui/react-accordion', '@radix-ui/react-select'],
+          'charts': ['recharts'],
+          'forms': ['react-hook-form', '@hookform/resolvers'],
+          'utils': ['clsx', 'class-variance-authority', 'tailwind-merge'],
+          'supabase': ['@supabase/supabase-js'],
+          'query': ['@tanstack/react-query']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
+  }
 }));
