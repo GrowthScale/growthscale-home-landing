@@ -7,14 +7,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/core/ErrorBoundary";
 import { HelmetProvider } from 'react-helmet-async';
 import LoadingScreen from "@/components/LoadingScreen";
-import { analytics } from "@/lib/monitoring";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { TenantProvider } from "@/contexts/TenantContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import MainLayout from "@/components/layouts/MainLayout";
 import { ROUTES } from "@/constants";
-import "@/i18n"; // Initialize i18n
 
 // Lazy load pages for better performance with preloading
 const Index = React.lazy(() => import("./pages/Index"));
@@ -39,20 +37,6 @@ const ScheduleDraft = React.lazy(() => import("./pages/ScheduleDraft"));
 const DraftReviewPage = React.lazy(() => import("./pages/DraftReviewPage"));
 const Demo = React.lazy(() => import("./pages/Demo"));
 const Api = React.lazy(() => import("./pages/Api"));
-
-// Preload critical pages
-const preloadCriticalPages = () => {
-  // Preload Dashboard (página mais acessada)
-  const dashboardPromise = import("./pages/Dashboard");
-  
-  // Preload Schedules (funcionalidade principal)
-  const schedulesPromise = import("./pages/Schedules");
-  
-  // Preload Employees (funcionalidade secundária)
-  const employeesPromise = import("./pages/Employees");
-  
-  return Promise.all([dashboardPromise, schedulesPromise, employeesPromise]);
-};
 
 const queryClient = new QueryClient();
 
@@ -99,34 +83,13 @@ const App = () => (
                     <ProtectedRoute requiredPermission="view:compliance">
                       <MainLayout>
                         <Compliance />
-                    </MainLayout>
+                      </MainLayout>
                     </ProtectedRoute>
                   } />
                   <Route path={ROUTES.SETTINGS} element={
                     <ProtectedRoute requiredPermission="manage:settings">
                       <MainLayout>
                         <Settings />
-                      </MainLayout>
-                    </ProtectedRoute>
-                  } />
-                  <Route path={ROUTES.LEGAL.PRIVACY} element={<Legal />} />
-                  <Route path={ROUTES.LEGAL.TERMS} element={<Legal />} />
-                  <Route path={ROUTES.LEGAL.COOKIES} element={<Legal />} />
-                  <Route path={ROUTES.LEGAL.HELP} element={<Legal />} />
-                  <Route path={ROUTES.CONTACT} element={<Contact />} />
-                  <Route path={ROUTES.FAQ} element={<FAQ />} />
-                  <Route path="/gamificacao" element={<Gamification />} />
-                  <Route path="/integracoes" element={
-                    <ProtectedRoute requiredPermission="manage:integrations">
-                      <MainLayout>
-                        <Integrations />
-                      </MainLayout>
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/assistente-clt" element={
-                    <ProtectedRoute>
-                      <MainLayout>
-                        <CLTAssistant />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
@@ -138,46 +101,63 @@ const App = () => (
                     </ProtectedRoute>
                   } />
                   <Route path={ROUTES.SETUP} element={
-                    <ProtectedRoute>
+                    <ProtectedRoute requiredPermission="manage:setup">
                       <MainLayout>
                         <Setup />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
-                  <Route path="/templates" element={
-                    <ProtectedRoute requiredPermission="manage:schedules">
+                  <Route path={ROUTES.CLT_ASSISTANT} element={
+                    <ProtectedRoute requiredPermission="use:clt_assistant">
+                      <MainLayout>
+                        <CLTAssistant />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path={ROUTES.TEMPLATES} element={
+                    <ProtectedRoute requiredPermission="manage:templates">
                       <MainLayout>
                         <Templates />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
-                  <Route path="/configuracoes-empresa" element={
+                  <Route path={ROUTES.COMPANY_SETTINGS} element={
                     <ProtectedRoute requiredPermission="manage:company_settings">
                       <MainLayout>
                         <CompanySettings />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
-                  <Route path="/schedules/draft/:draftId" element={
+                  <Route path={ROUTES.SCHEDULE_DRAFT} element={
                     <ProtectedRoute requiredPermission="manage:schedules">
+                      <MainLayout>
+                        <ScheduleDraft />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path={ROUTES.DRAFT_REVIEW} element={
+                    <ProtectedRoute requiredPermission="review:drafts">
                       <MainLayout>
                         <DraftReviewPage />
                       </MainLayout>
                     </ProtectedRoute>
                   } />
-                  <Route path="/demo" element={<Demo />} />
-                  <Route path="/api" element={<Api />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path={ROUTES.DEMO} element={<Demo />} />
+                  <Route path={ROUTES.API} element={<Api />} />
+                  <Route path={ROUTES.LEGAL} element={<Legal />} />
+                  <Route path={ROUTES.CONTACT} element={<Contact />} />
+                  <Route path={ROUTES.FAQ} element={<FAQ />} />
+                  <Route path={ROUTES.GAMIFICATION} element={<Gamification />} />
+                  <Route path={ROUTES.INTEGRATIONS} element={<Integrations />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
-              {/* PWA Install Prompt */}
               <PWAInstallPrompt />
-            </BrowserRouter>
-          </TooltipProvider>
-        </TenantProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+              </BrowserRouter>
+            </TooltipProvider>
+          </TenantProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </HelmetProvider>
   </ErrorBoundary>
 );
