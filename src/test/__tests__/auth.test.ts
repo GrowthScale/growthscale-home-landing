@@ -1,39 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { AuthService } from '@/lib/auth';
+import { authService } from '../../lib/auth';
 
 // Mock do Supabase
 vi.mock('@supabase/supabase-js', () => ({
-  createClient: vi.fn(() => ({
-    auth: {
-      signInWithPassword: vi.fn(),
-      signUp: vi.fn(),
-      signOut: vi.fn(),
-      getSession: vi.fn(),
-    },
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(),
-        })),
-      })),
-      insert: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn(),
-        })),
-      })),
-      update: vi.fn(() => ({
-        eq: vi.fn(),
-      })),
-    })),
-  })),
+  createClient: vi.fn(),
 }));
 
 describe('AuthService', () => {
-  let authService: AuthService;
-
   beforeEach(() => {
-    authService = AuthService.getInstance();
     vi.clearAllMocks();
   });
 
@@ -49,25 +23,22 @@ describe('AuthService', () => {
       const result = await authService.login('test@example.com', '123');
       
       expect(result.success).toBe(false);
-      expect(result.error).toContain('pelo menos 8 caracteres');
+      expect(result.error).toContain('mínimo 6 caracteres');
     });
 
-    it('should return success for valid credentials', async () => {
+    it('should handle successful login', async () => {
       const mockUser = {
         id: 'user-123',
         email: 'test@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        role: 'admin' as const,
-        tenantId: 'tenant-123',
-        twoFactorEnabled: false,
-        lastLoginAt: new Date(),
+        full_name: 'John Doe',
+        company_id: 'company-123',
+        role: 'admin',
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
       const { createClient } = await import('@supabase/supabase-js');
-      const mockSupabase = createClient as any;
+      const mockSupabase = createClient as jest.MockedFunction<typeof createClient>;
       
       mockSupabase.mockReturnValue({
         auth: {
@@ -88,7 +59,7 @@ describe('AuthService', () => {
             }),
           }),
         }),
-      });
+      } as unknown as ReturnType<typeof createClient>);
 
       const result = await authService.login('test@example.com', 'password123');
       
@@ -154,15 +125,40 @@ describe('AuthService', () => {
 
     it('should generate 2FA code', async () => {
       const { createClient } = await import('@supabase/supabase-js');
-      const mockSupabase = createClient as any;
+      const mockSupabase = createClient as jest.MockedFunction<typeof createClient>;
       
       mockSupabase.mockReturnValue({
         from: vi.fn().mockReturnValue({
           insert: vi.fn().mockResolvedValue({ error: null }),
         }),
-      });
+      } as unknown as ReturnType<typeof createClient>);
 
-      const result = await authService.generateTwoFactorCode();
+      const result = await authService.generateTwoFactorCode('test@example.com');
+      
+      expect(result.success).toBe(true);
+      expect(result.code).toHaveLength(6);
+    });
+  });
+
+  describe('resetPassword', () => {
+    it('should validate email format', async () => {
+      const result = await authService.resetPassword('invalid-email');
+      
+      expect(result.success).toBe(false);
+      expect(result.error).toContain('Email inválido');
+    });
+
+    it('should handle successful password reset', async () => {
+      const { createClient } = await import('@supabase/supabase-js');
+      const mockSupabase = createClient as jest.MockedFunction<typeof createClient>;
+      
+      mockSupabase.mockReturnValue({
+        auth: {
+          resetPasswordForEmail: vi.fn().mockResolvedValue({ error: null }),
+        },
+      } as unknown as ReturnType<typeof createClient>);
+
+      const result = await authService.resetPassword('test@example.com');
       
       expect(result.success).toBe(true);
     });

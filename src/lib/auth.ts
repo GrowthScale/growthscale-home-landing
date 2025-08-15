@@ -317,7 +317,7 @@ export class AuthService {
       }
 
       // TODO: Enviar código por email/SMS
-      console.log('Código 2FA:', code); // Remover em produção
+      // Código 2FA gerado com sucesso
 
       return { success: true };
     } catch (error) {
