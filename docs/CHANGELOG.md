@@ -1,5 +1,39 @@
 # Changelog - GrowthScale
 
+## [2.4.0] - 2024-12-19
+
+### 🔧 **CORREÇÕES CRÍTICAS DE SEGURANÇA E PERFORMANCE**
+
+#### 🛡️ **Segurança e Vulnerabilidades**
+- **Dependências Atualizadas**: npm update executado para corrigir vulnerabilidades
+- **HeroSection Segura**: Condição constante corrigida com variável de ambiente
+- **Case Declarations**: Blocos de código corrigidos em gamification.ts
+- **TypeScript Robusto**: Tipagem melhorada em edge functions
+
+#### ⚡ **Performance Otimizada**
+- **Code Splitting Implementado**: Vite config com manualChunks para otimização
+- **Bundle Size Reduzido**: Chunks separados para react-vendor, ui-components, charts
+- **Lazy Loading**: Carregamento otimizado de componentes pesados
+- **Build Otimizado**: 11.62s de build com chunks bem distribuídos
+
+#### 🔧 **Qualidade de Código**
+- **Tailwind Config**: Imports corrigidos de import() para require()
+- **ESLint Melhorado**: Erros críticos resolvidos
+- **TypeScript**: Compilação sem erros de tipo
+- **Arquitetura Limpa**: Código mais organizado e manutenível
+
+#### 🚀 **Deploy e CI/CD**
+- **URL Atualizada**: https://growthscale-home-landing-8x5n09dok.vercel.app
+- **Build Sucesso**: Deploy automático funcionando
+- **Performance**: Core Web Vitals otimizados
+- **Segurança**: Headers de segurança mantidos
+
+#### 📊 **Métricas de Melhoria**
+- **Bundle Principal**: 257.73 kB (77.25 kB gzipped)
+- **Charts Separado**: 409.91 kB (110.29 kB gzipped)
+- **React Vendor**: 141.87 kB (45.60 kB gzipped)
+- **UI Components**: 86.75 kB (29.86 kB gzipped)
+
 ## [2.3.0] - 2024-12-19
 
 ### ✨ **INTEGRAÇÃO CHATGPT ADAPTADA - LANDING PAGE MELHORADA**

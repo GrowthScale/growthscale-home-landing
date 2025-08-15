@@ -22,17 +22,89 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'ui-components': ['@radix-ui/react-dialog', '@radix-ui/react-accordion', '@radix-ui/react-select'],
-          'charts': ['recharts'],
-          'forms': ['react-hook-form', '@hookform/resolvers'],
-          'utils': ['clsx', 'class-variance-authority', 'tailwind-merge'],
-          'supabase': ['@supabase/supabase-js'],
-          'query': ['@tanstack/react-query']
+        manualChunks: (id) => {
+          // React e dependências core
+          if (id.includes('react') || id.includes('react-dom')) {
+            return 'react-vendor';
+          }
+          
+          // UI Components
+          if (id.includes('@radix-ui') || id.includes('lucide-react')) {
+            return 'ui-components';
+          }
+          
+          // Charts e visualização
+          if (id.includes('recharts') || id.includes('chart')) {
+            return 'charts';
+          }
+          
+          // Forms e validação
+          if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('zod')) {
+            return 'forms';
+          }
+          
+          // Utilitários
+          if (id.includes('clsx') || id.includes('class-variance-authority') || id.includes('tailwind-merge')) {
+            return 'utils';
+          }
+          
+          // Supabase e backend
+          if (id.includes('@supabase') || id.includes('supabase')) {
+            return 'supabase';
+          }
+          
+          // Estado global
+          if (id.includes('zustand') || id.includes('immer')) {
+            return 'state';
+          }
+          
+          // Páginas por categoria
+          if (id.includes('/pages/Dashboard') || id.includes('/pages/Schedules')) {
+            return 'dashboard-pages';
+          }
+          
+          if (id.includes('/pages/Employees') || id.includes('/pages/Companies')) {
+            return 'management-pages';
+          }
+          
+          if (id.includes('/pages/Settings') || id.includes('/pages/Profile')) {
+            return 'settings-pages';
+          }
+          
+          // Componentes por categoria
+          if (id.includes('/components/dashboard/')) {
+            return 'dashboard-components';
+          }
+          
+          if (id.includes('/components/ui/')) {
+            return 'ui-components';
+          }
+          
+          // Se não se encaixar em nenhuma categoria, vai para vendor
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
         }
       }
     },
-    chunkSizeWarningLimit: 1000
+    chunkSizeWarningLimit: 500,
+    target: 'esnext',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    }
+  },
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      '@supabase/supabase-js',
+      'zustand',
+      'immer'
+    ]
   }
 }));
