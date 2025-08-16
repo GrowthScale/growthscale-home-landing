@@ -20,12 +20,12 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          // React e ReactDOM DEVEM ficar juntos e ser carregados primeiro
+          // React e ReactDOM DEVEM ser carregados PRIMEIRO
           'react-vendor': ['react', 'react-dom'],
         }
       }
     },
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 2000,
     target: 'esnext',
     minify: 'terser',
     terserOptions: {
