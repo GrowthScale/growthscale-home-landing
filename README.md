@@ -202,3 +202,4 @@ Este projeto está sob a licença MIT.
 ---
 
 **Desenvolvido com ❤️ para otimizar a gestão de escalas no food service**
+# Force deploy Sat Aug 16 18:41:26 -03 2025
