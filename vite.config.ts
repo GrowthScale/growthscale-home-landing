@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // React e dependências core
+          // React e ReactDOM DEVEM ficar juntos
           if (id.includes('react') || id.includes('react-dom')) {
             return 'react-vendor';
           }
