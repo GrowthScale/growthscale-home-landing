@@ -1,7 +1,7 @@
 // supabase/functions/validate-schedule/index.ts
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { differenceInHours, addDays, parseISO, compareAsc, getDay } from "https://deno.land/x/date_fns@v2.29.3/index.js";
+import { differenceInHours, addDays, parseISO, compareAsc, getDay } from "https://deno.land/x/date_fns@v2.22.1/index.js";
 
 // --- Tipos de Dados (Input/Output) ---
 interface Shift { id: string; employeeId: string; startTime: string; endTime: string; }

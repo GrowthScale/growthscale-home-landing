@@ -1,7 +1,9 @@
 // =====================================================
 // RATE LIMITING - GROWTHSCALE
-// Proteção básica para APIs sensíveis
+// Proteção com Redis/Upstash para produção
 // =====================================================
+
+import { Redis } from '@upstash/redis';
 
 interface RateLimitConfig {
   windowMs: number;
@@ -10,16 +12,16 @@ interface RateLimitConfig {
   keyGenerator?: (req: Record<string, unknown>) => string;
 }
 
-interface RateLimitStore {
-  [key: string]: {
-    count: number;
-    resetTime: number;
-  };
-}
+// Configuração do Redis (fallback para memória em desenvolvimento)
+const redis = process.env.NODE_ENV === 'production' 
+  ? new Redis({
+      url: import.meta.env.VITE_UPSTASH_REDIS_URL,
+      token: import.meta.env.VITE_UPSTASH_REDIS_TOKEN,
+    })
+  : null;
 
 // Store em memória (para desenvolvimento)
-// Em produção, usar Redis/Upstash
-const store: RateLimitStore = {};
+const memoryStore: Record<string, { count: number; resetTime: number }> = {};
 
 // Configurações por rota
 export const rateLimitConfigs: Record<string, RateLimitConfig> = {
@@ -53,30 +55,65 @@ export const rateLimitConfigs: Record<string, RateLimitConfig> = {
 };
 
 // Função principal de rate limiting
-export function createRateLimiter(config: RateLimitConfig) {
-  return function rateLimit(req: Record<string, unknown>, res?: Record<string, unknown>): { success: boolean; remaining: number; resetTime: number; message?: string } {
+export async function createRateLimiter(config: RateLimitConfig) {
+  return async function rateLimit(req: Record<string, unknown>, res?: Record<string, unknown>): Promise<{ success: boolean; remaining: number; resetTime: number; message?: string }> {
     const key = config.keyGenerator ? config.keyGenerator(req) : 'default';
     const now = Date.now();
     
-    // Limpar registros expirados
-    if (store[key] && store[key].resetTime < now) {
-      delete store[key];
+    if (redis) {
+      // Usar Redis em produção
+      try {
+        const current = await redis.get<{ count: number; resetTime: number }>(`rate_limit:${key}`);
+        
+        if (current && current.resetTime < now) {
+          await redis.del(`rate_limit:${key}`);
+          await redis.set(`rate_limit:${key}`, { count: 1, resetTime: now + config.windowMs }, { ex: Math.floor(config.windowMs / 1000) });
+        } else if (current) {
+          await redis.set(`rate_limit:${key}`, { count: current.count + 1, resetTime: current.resetTime }, { ex: Math.floor(config.windowMs / 1000) });
+        } else {
+          await redis.set(`rate_limit:${key}`, { count: 1, resetTime: now + config.windowMs }, { ex: Math.floor(config.windowMs / 1000) });
+        }
+        
+        const updated = await redis.get<{ count: number; resetTime: number }>(`rate_limit:${key}`);
+        const remaining = Math.max(0, config.max - (updated?.count || 0));
+        
+        if ((updated?.count || 0) > config.max) {
+          return {
+            success: false,
+            remaining: 0,
+            resetTime: updated?.resetTime || now,
+            message: config.message
+          };
+        }
+        
+        return {
+          success: true,
+          remaining,
+          resetTime: updated?.resetTime || now
+        };
+      } catch (error) {
+        console.error('Redis rate limiting error:', error);
+        // Fallback para memória em caso de erro
+      }
     }
     
-    // Inicializar ou incrementar contador
-    if (!store[key]) {
-      store[key] = {
+    // Fallback para memória (desenvolvimento ou erro Redis)
+    if (memoryStore[key] && memoryStore[key].resetTime < now) {
+      delete memoryStore[key];
+    }
+    
+    if (!memoryStore[key]) {
+      memoryStore[key] = {
         count: 1,
         resetTime: now + config.windowMs
       };
     } else {
-      store[key].count++;
+      memoryStore[key].count++;
     }
     
-    const { count, resetTime } = store[key];
+    const { count, resetTime } = memoryStore[key];
     const remaining = Math.max(0, config.max - count);
     
-    // Verificar se excedeu o limite
     if (count > config.max) {
       return {
         success: false,
@@ -100,21 +137,59 @@ export const whatsappRateLimit = createRateLimiter(rateLimitConfigs.whatsapp);
 export const aiRateLimit = createRateLimiter(rateLimitConfigs.ai);
 export const apiRateLimit = createRateLimiter(rateLimitConfigs.api);
 
-// Função para limpar store (útil para testes)
-export function clearRateLimitStore(): void {
-  Object.keys(store).forEach(key => delete store[key]);
+// Função para limpar rate limits (útil para testes)
+export async function clearRateLimits(): Promise<void> {
+  if (redis) {
+    const keys = await redis.keys('rate_limit:*');
+    if (keys.length > 0) {
+      await redis.del(...keys);
+    }
+  } else {
+    Object.keys(memoryStore).forEach(key => delete memoryStore[key]);
+  }
 }
 
-// Função para obter estatísticas (útil para monitoramento)
-export function getRateLimitStats(): Record<string, { count: number; resetTime: number }> {
-  return { ...store };
+// Função para obter estatísticas de rate limiting
+export async function getRateLimitStats(): Promise<Record<string, { count: number; remaining: number; resetTime: number }>> {
+  const stats: Record<string, { count: number; remaining: number; resetTime: number }> = {};
+  
+  if (redis) {
+    const keys = await redis.keys('rate_limit:*');
+    for (const key of keys) {
+      const data = await redis.get<{ count: number; resetTime: number }>(key);
+      if (data) {
+        const configKey = key.replace('rate_limit:', '');
+        const config = rateLimitConfigs[configKey];
+        if (config) {
+          stats[configKey] = {
+            count: data.count,
+            remaining: Math.max(0, config.max - data.count),
+            resetTime: data.resetTime
+          };
+        }
+      }
+    }
+  } else {
+    Object.keys(memoryStore).forEach(key => {
+      const config = rateLimitConfigs[key];
+      if (config) {
+        stats[key] = {
+          count: memoryStore[key].count,
+          remaining: Math.max(0, config.max - memoryStore[key].count),
+          resetTime: memoryStore[key].resetTime
+        };
+      }
+    });
+  }
+  
+  return stats;
 }
 
 // Middleware para uso em APIs
 export function rateLimitMiddleware(type: keyof typeof rateLimitConfigs) {
-  return function(req: Record<string, unknown>, res: Record<string, unknown>, next: () => void) {
-    const limiter = createRateLimiter(rateLimitConfigs[type]);
-    const result = limiter(req);
+  return async function(req: Record<string, unknown>, res: Record<string, unknown>, next: () => void) {
+    const limiter = await createRateLimiter(rateLimitConfigs[type]);
+    const result = await limiter(req);
     
     if (!result.success) {
       return res.status(429).json({
