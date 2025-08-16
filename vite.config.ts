@@ -20,29 +20,23 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          // React e ReactDOM DEVEM ser carregados PRIMEIRO
           'react-vendor': ['react', 'react-dom'],
         }
       }
     },
     chunkSizeWarningLimit: 2000,
     target: 'esnext',
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    }
+    minify: 'esbuild',
+    sourcemap: false
   },
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
-      'react-router-dom',
-      '@supabase/supabase-js',
-      'zustand',
-      'immer'
+      'react-router-dom'
     ]
+  },
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(mode)
   }
 }));
