@@ -20,33 +20,12 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          // React e ReactDOM DEVEM ficar juntos
+          // React e ReactDOM DEVEM ficar juntos e ser carregados primeiro
           'react-vendor': ['react', 'react-dom'],
-          
-          // UI Components
-          'ui-components': ['@radix-ui/react-slot', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', 'lucide-react'],
-          
-          // Charts
-          'charts': ['chart.js', 'react-chartjs-2', 'recharts'],
-          
-          // Forms
-          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          
-          // Utilitários
-          'utils': ['clsx', 'class-variance-authority', 'tailwind-merge'],
-          
-          // Supabase
-          'supabase': ['@supabase/supabase-js'],
-          
-          // Estado
-          'state': ['zustand', 'immer'],
-          
-          // Router
-          'router': ['react-router-dom'],
         }
       }
     },
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 1000,
     target: 'esnext',
     minify: 'terser',
     terserOptions: {
