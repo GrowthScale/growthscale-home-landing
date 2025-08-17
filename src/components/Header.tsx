@@ -59,20 +59,20 @@ const Header = () => {
             {isHomePage ? (
               <>
                 <button 
-                  onClick={useCallback(() => scrollToSection('recursos'), [scrollToSection])}
-                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                  onClick={() => scrollToSection('recursos')}
+                  className="text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Recursos
                 </button>
                 <button 
-                  onClick={useCallback(() => scrollToSection('precos'), [scrollToSection])}
-                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                  onClick={() => scrollToSection('precos')}
+                  className="text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Preços
                 </button>
                 <button 
-                  onClick={useCallback(() => scrollToSection('contato'), [scrollToSection])}
-                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                  onClick={() => scrollToSection('contato')}
+                  className="text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Contato
                 </button>
@@ -81,19 +81,19 @@ const Header = () => {
               <>
                 <button 
                   onClick={() => navigate('/dashboard')}
-                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                  className="text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Dashboard
                 </button>
                 <button 
                   onClick={() => navigate('/employees')}
-                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                  className="text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Funcionários
                 </button>
                 <button 
                   onClick={() => navigate('/schedules')}
-                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                  className="text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Escalas
                 </button>
@@ -157,24 +157,24 @@ const Header = () => {
           </div>
 
           {/* Mobile menu button */}
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+            className="lg:hidden"
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </Button>
         </div>
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-background border-t border-border">
               {isHomePage ? (
                 <>
                   <button 
@@ -182,7 +182,7 @@ const Header = () => {
                       scrollToSection('recursos');
                       setIsMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                   >
                     Recursos
                   </button>
@@ -191,7 +191,7 @@ const Header = () => {
                       scrollToSection('precos');
                       setIsMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                   >
                     Preços
                   </button>
@@ -200,7 +200,7 @@ const Header = () => {
                       scrollToSection('contato');
                       setIsMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                   >
                     Contato
                   </button>
@@ -212,7 +212,7 @@ const Header = () => {
                       navigate('/dashboard');
                       setIsMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                   >
                     Dashboard
                   </button>
@@ -221,7 +221,7 @@ const Header = () => {
                       navigate('/employees');
                       setIsMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                   >
                     Funcionários
                   </button>
@@ -230,31 +230,31 @@ const Header = () => {
                       navigate('/schedules');
                       setIsMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                   >
                     Escalas
                   </button>
                 </>
               )}
-              <div className="pt-4 pb-3 border-t border-gray-200">
+              <div className="pt-4 pb-3 border-t border-border">
                 <button 
                   onClick={() => {
                     navigate('/auth');
                     setIsMobileMenuOpen(false);
                   }}
-                  className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                  className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                 >
                   Entrar
                 </button>
-                <button 
+                <Button 
                   onClick={() => {
                     navigate('/auth');
                     setIsMobileMenuOpen(false);
                   }}
-                  className="block w-full text-left px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md mt-2"
+                  className="w-full mt-2 bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   Começar Grátis
-                </button>
+                </Button>
               </div>
             </div>
           </div>
