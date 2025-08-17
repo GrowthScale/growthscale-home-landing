@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import { MainLayout } from "@/components/layouts/MainLayout";
 
 // Página principal (carregada imediatamente)
 import Index from "@/pages/Index";
@@ -34,7 +35,7 @@ const Setup = lazy(() => import("@/pages/Setup"));
 // Componente de loading
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center">
-    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
   </div>
 );
 
@@ -44,43 +45,99 @@ const App = () => {
   return (
     <div className="App">
       <Routes>
-        {/* Páginas principais */}
+        {/* Página inicial - Sem sidebar */}
         <Route path="/" element={<Index />} />
-        <Route path="/dashboard" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Dashboard />
-          </Suspense>
-        } />
-        <Route path="/companies" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Companies />
-          </Suspense>
-        } />
-        <Route path="/employees" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Employees />
-          </Suspense>
-        } />
-        <Route path="/schedules" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Schedules />
-          </Suspense>
-        } />
-        <Route path="/templates" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Templates />
-          </Suspense>
-        } />
-        <Route path="/clt-assistant" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <CLTAssistant />
-          </Suspense>
-        } />
-        <Route path="/settings" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Settings />
-          </Suspense>
-        } />
+        
+        {/* Páginas da aplicação - Com sidebar */}
+        <Route path="/" element={<MainLayout />}>
+          <Route path="/dashboard" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Dashboard />
+            </Suspense>
+          } />
+          <Route path="/companies" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Companies />
+            </Suspense>
+          } />
+          <Route path="/employees" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Employees />
+            </Suspense>
+          } />
+          <Route path="/schedules" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Schedules />
+            </Suspense>
+          } />
+          <Route path="/templates" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Templates />
+            </Suspense>
+          } />
+          <Route path="/clt-assistant" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <CLTAssistant />
+            </Suspense>
+          } />
+          <Route path="/settings" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Settings />
+            </Suspense>
+          } />
+          <Route path="/integrations" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Integrations />
+            </Suspense>
+          } />
+          <Route path="/gamification" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Gamification />
+            </Suspense>
+          } />
+          <Route path="/company-settings" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <CompanySettings />
+            </Suspense>
+          } />
+          <Route path="/compliance" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Compliance />
+            </Suspense>
+          } />
+          <Route path="/draft-review" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <DraftReviewPage />
+            </Suspense>
+          } />
+          <Route path="/rbac-demo" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <RBACDemo />
+            </Suspense>
+          } />
+          <Route path="/schedule-draft" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <ScheduleDraft />
+            </Suspense>
+          } />
+          <Route path="/demo" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Demo />
+            </Suspense>
+          } />
+          <Route path="/api" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Api />
+            </Suspense>
+          } />
+          <Route path="/setup" element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <Setup />
+            </Suspense>
+          } />
+        </Route>
+
+        {/* Páginas públicas - Sem sidebar */}
         <Route path="/contact" element={
           <Suspense fallback={<LoadingSpinner />}>
             <Contact />
@@ -96,61 +153,9 @@ const App = () => {
             <Legal />
           </Suspense>
         } />
-
-        {/* Páginas adicionais importantes */}
         <Route path="/auth" element={
           <Suspense fallback={<LoadingSpinner />}>
             <Auth />
-          </Suspense>
-        } />
-        <Route path="/integrations" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Integrations />
-          </Suspense>
-        } />
-        <Route path="/gamification" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Gamification />
-          </Suspense>
-        } />
-        <Route path="/company-settings" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <CompanySettings />
-          </Suspense>
-        } />
-        <Route path="/compliance" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Compliance />
-          </Suspense>
-        } />
-        <Route path="/draft-review" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <DraftReviewPage />
-          </Suspense>
-        } />
-        <Route path="/rbac-demo" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <RBACDemo />
-          </Suspense>
-        } />
-        <Route path="/schedule-draft" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <ScheduleDraft />
-          </Suspense>
-        } />
-        <Route path="/demo" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Demo />
-          </Suspense>
-        } />
-        <Route path="/api" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Api />
-          </Suspense>
-        } />
-        <Route path="/setup" element={
-          <Suspense fallback={<LoadingSpinner />}>
-            <Setup />
           </Suspense>
         } />
 
