@@ -54,6 +54,10 @@
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"
+    },
+    {
+      "source": "/:path((?!api/|sw.js|favicon.ico|assets/).*)",
+      "destination": "/"
     }
   ],
   "buildCommand": "npm run build",
