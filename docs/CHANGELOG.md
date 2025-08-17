@@ -1,5 +1,39 @@
 # Changelog - GrowthScale
 
+## [3.2.0] - 2024-12-19
+
+### 🔒 **CONFORMIDADE LGPD - CONSENTIMENTO OBRIGATÓRIO**
+
+#### 📋 **Checkbox de Consentimento Implementado**
+- **Conformidade Legal**: Checkbox obrigatório para Termos de Uso e Política de Privacidade
+- **Validação**: Botão "Criar Conta" desabilitado até aceitar os termos
+- **Links Funcionais**: Links para páginas legais em nova aba
+- **UX Melhorada**: Interface clara e intuitiva para o usuário
+
+#### ✅ **Funcionalidades Implementadas**
+- **Estado de Consentimento**: Controle do checkbox com `useState`
+- **Validação de Formulário**: Botão desabilitado quando termos não aceitos
+- **Componente Checkbox**: Integração com sistema de UI existente
+- **Links Externos**: Abertura em nova aba para documentos legais
+
+#### 🛡️ **Conformidade com LGPD**
+- **Consentimento Explícito**: Usuário deve marcar checkbox obrigatoriamente
+- **Transparência**: Links diretos para Termos de Uso e Política de Privacidade
+- **Validação**: Impossível criar conta sem aceitar os termos
+- **Rastreabilidade**: Ação documentada para auditoria legal
+
+#### 📁 **Arquivos Modificados**
+- `src/pages/Auth.tsx` - Implementação do checkbox de consentimento
+- `src/components/CLTAssistant.tsx` - Correção de sintaxe (useCallback)
+- `src/components/employees/EmployeeTable.tsx` - Remoção de exportação duplicada
+
+#### 🔧 **Correções Técnicas**
+- **Sintaxe TypeScript**: Correção de dependências no useCallback
+- **Exportações**: Remoção de exportação duplicada no EmployeeTable
+- **Build**: Projeto compila sem erros após correções
+
+---
+
 ## [3.1.9] - 2024-12-19
 
 ### 🔒 **CORREÇÃO CRÍTICA DE SEGURANÇA**
