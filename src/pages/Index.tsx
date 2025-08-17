@@ -1,38 +1,23 @@
 import React from 'react';
 import Header from "@/components/Header";
+import HeroSection from "@/components/HeroSection";
+import ProblemSection from "@/components/ProblemSection";
+import SolutionSection from "@/components/SolutionSection";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen">
       {/* Header Funcional */}
       <Header />
 
-      {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            🚀 GrowthScale
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Sistema de Gestão de Escalas Inteligente para Food Service. 
-            Otimize escalas, reduza custos em até 30% e garanta compliance trabalhista automaticamente.
-          </p>
-          <div className="flex justify-center space-x-4">
-            <button 
-              onClick={() => window.location.href = '/auth'}
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700"
-            >
-              Começar Agora
-            </button>
-            <button 
-              onClick={() => window.location.href = '/demo'}
-              className="border border-blue-600 text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50"
-            >
-              Ver Demo
-            </button>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section Otimizado */}
+      <HeroSection />
+
+      {/* Problem Section Otimizado */}
+      <ProblemSection />
+
+      {/* Solution Section Otimizado */}
+      <SolutionSection />
 
       {/* Features Section */}
       <section id="recursos" className="py-20 bg-white">
