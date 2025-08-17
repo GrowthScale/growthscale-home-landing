@@ -315,10 +315,10 @@ const Integrations = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <header className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-roboto text-balance">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-body text-balance">
               <span className="text-primary">Integrações</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto leading-relaxed">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-body leading-relaxed">
               Conecte o GrowthScale com as ferramentas que você já utiliza e potencialize sua gestão
             </p>
           </header>

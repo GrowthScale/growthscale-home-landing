@@ -42,10 +42,10 @@ const TestimonialsSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 font-roboto">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 font-body">
             O que Nossos <span className="text-primary">Clientes</span> Estão Dizendo
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-roboto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-body">
             Veja como o GrowthScale está transformando negócios como o seu todos os dias
           </p>
         </div>
@@ -59,7 +59,7 @@ const TestimonialsSection = () => {
                   {testimonial.image}
                 </div>
                 <div>
-                  <h4 className="font-semibold text-card-foreground text-lg font-roboto">
+                  <h4 className="font-semibold text-card-foreground text-lg font-body">
                     {testimonial.name}
                   </h4>
                   <p className="text-muted-foreground">{testimonial.role}</p>
@@ -73,7 +73,7 @@ const TestimonialsSection = () => {
                 ))}
               </div>
               
-              <blockquote className="text-card-foreground font-roboto leading-relaxed text-lg">
+              <blockquote className="text-card-foreground font-body leading-relaxed text-lg">
                 "{testimonial.content}"
               </blockquote>
             </Card>

@@ -22,7 +22,7 @@ export default function LegalPage() {
                 <FileText className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-foreground font-roboto">Documentos Legais</h1>
+                <h1 className="text-3xl font-bold text-foreground font-body">Documentos Legais</h1>
                 <p className="text-foreground/80 mt-1">
                   Políticas, termos e condições do GrowthScale
                 </p>

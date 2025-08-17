@@ -81,7 +81,7 @@ export default function SettingsPage() {
               <Settings className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-foreground font-roboto">Configurações</h1>
+              <h1 className="text-3xl font-bold text-foreground font-body">Configurações</h1>
               <p className="text-muted-foreground mt-1">
                 Personalize sua experiência no GrowthScale
               </p>

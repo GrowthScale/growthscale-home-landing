@@ -64,7 +64,7 @@ export default function Employees() {
                   <Users className="h-8 w-8 text-white" aria-hidden="true" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold text-foreground font-roboto text-balance">Funcionários</h1>
+                  <h1 className="text-3xl font-bold text-foreground font-body text-balance">Funcionários</h1>
                   <p className="text-muted-foreground mt-1 leading-relaxed">
                     Gerencie e acompanhe os dados da sua equipe em tempo real
                   </p>

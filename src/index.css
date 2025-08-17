@@ -446,7 +446,7 @@
 
 /* Focus visível para navegação por teclado */
 :focus-visible {
-  outline: 3px solid #2563EB !important;
+  outline: 3px solid hsl(var(--info)) !important;
   outline-offset: 2px !important;
   border-radius: 4px;
 }
@@ -468,7 +468,7 @@ a:focus,
 input:focus,
 select:focus,
 textarea:focus {
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0 0 3px hsl(var(--info) / 0.3);
 }
 
 /* Estados de hover mais visíveis */
@@ -504,8 +504,8 @@ p, span, div {
   position: absolute;
   top: -40px;
   left: 6px;
-  background: #2563EB;
-  color: white;
+  background: hsl(var(--info));
+  color: hsl(var(--info-foreground));
   padding: 8px;
   text-decoration: none;
   border-radius: 4px;
@@ -529,8 +529,8 @@ p, span, div {
   width: 20px;
   height: 20px;
   margin: -10px 0 0 -10px;
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #2563EB;
+  border: 2px solid hsl(var(--muted));
+  border-top: 2px solid hsl(var(--info));
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

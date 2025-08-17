@@ -51,7 +51,7 @@ const DashboardHeader = memo(() => {
                 <span className="text-white font-bold text-xl" aria-hidden="true">G</span>
               </div>
               <div>
-                <span className="text-2xl font-bold text-primary font-roboto">
+                <span className="text-2xl font-bold text-primary font-body">
                   GrowthScale
                 </span>
                 <div className="text-xs text-muted-foreground">Dashboard</div>

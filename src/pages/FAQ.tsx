@@ -182,10 +182,10 @@ const FAQ = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <header className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-roboto text-balance">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-body text-balance">
               Perguntas <span className="text-primary">Frequentes</span>
             </h1>
-            <p className="text-xl text-foreground/80 max-w-3xl mx-auto font-roboto leading-relaxed">
+            <p className="text-xl text-foreground/80 max-w-3xl mx-auto font-body leading-relaxed">
               Encontre respostas para as dúvidas mais comuns sobre o uso do GrowthScale
             </p>
           </header>
@@ -261,7 +261,7 @@ const FAQ = () => {
                       const Icon = categoryData?.icon || BookOpen;
                       return <Icon className="h-6 w-6 text-primary" />;
                     })()}
-                    <h2 className="text-2xl font-bold text-foreground font-roboto">
+                    <h2 className="text-2xl font-bold text-foreground font-body">
                       {categoryName}
                     </h2>
                     <Badge variant="secondary" className="ml-2">
@@ -297,7 +297,7 @@ const FAQ = () => {
           <div className="mt-16 text-center">
             <div className="bg-muted/30 rounded-lg p-8">
               <Phone className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-foreground mb-4 font-roboto">
+              <h3 className="text-2xl font-bold text-foreground mb-4 font-body">
                 Não encontrou sua resposta?
               </h3>
               <p className="text-muted-foreground mb-6">

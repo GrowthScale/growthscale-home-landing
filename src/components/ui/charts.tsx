@@ -38,9 +38,53 @@ ChartJS.register(
   RadialLinearScale
 );
 
-// Configuração global do Chart.js
-ChartJS.defaults.color = '#6b7280';
+// Configuração global do Chart.js usando variáveis CSS do Design System
+ChartJS.defaults.color = 'hsl(var(--muted-foreground))';
 ChartJS.defaults.font.family = 'Inter, system-ui, sans-serif';
+
+// Cores do Design System para uso nos gráficos
+const getThemeColors = (isDark: boolean) => ({
+  // Cores de texto
+  foreground: 'hsl(var(--foreground))',
+  mutedForeground: 'hsl(var(--muted-foreground))',
+  
+  // Cores de fundo
+  background: 'hsl(var(--background))',
+  card: 'hsl(var(--card))',
+  cardForeground: 'hsl(var(--card-foreground))',
+  
+  // Cores primárias
+  primary: 'hsl(var(--primary-600))',
+  primaryLight: 'hsl(var(--primary-400))',
+  primaryDark: 'hsl(var(--primary-800))',
+  
+  // Cores secundárias
+  secondary: 'hsl(var(--secondary-500))',
+  secondaryLight: 'hsl(var(--secondary-400))',
+  secondaryDark: 'hsl(var(--secondary-600))',
+  
+  // Cores de feedback
+  success: 'hsl(var(--success))',
+  warning: 'hsl(var(--warning))',
+  destructive: 'hsl(var(--destructive))',
+  info: 'hsl(var(--info))',
+  
+  // Cores neutras
+  border: 'hsl(var(--border))',
+  muted: 'hsl(var(--muted))',
+  
+  // Cores específicas para gráficos
+  chartColors: [
+    'hsl(var(--primary-600))',    // Azul principal
+    'hsl(var(--secondary-500))',  // Laranja
+    'hsl(var(--success))',        // Verde
+    'hsl(var(--warning))',        // Amarelo
+    'hsl(var(--destructive))',    // Vermelho
+    'hsl(var(--info))',           // Azul info
+    'hsl(var(--primary-400))',    // Azul claro
+    'hsl(var(--secondary-400))',  // Laranja claro
+  ]
+});
 
 interface ChartProps {
   data: ChartData<'line' | 'bar' | 'doughnut' | 'radar' | 'polarArea'>;
@@ -52,6 +96,7 @@ interface ChartProps {
 // Gráfico de linha
 export const LineChart: React.FC<ChartProps> = ({ data, options, className, height = 300 }) => {
   const { isDark } = useTheme();
+  const themeColors = getThemeColors(isDark);
   
   const defaultOptions: ChartOptions<'line'> = {
     responsive: true,
@@ -60,34 +105,34 @@ export const LineChart: React.FC<ChartProps> = ({ data, options, className, heig
       legend: {
         position: 'top' as const,
         labels: {
-          color: isDark ? '#e5e7eb' : '#374151',
+          color: themeColors.foreground,
           usePointStyle: true,
           padding: 20
         }
       },
       tooltip: {
-        backgroundColor: isDark ? '#1f2937' : '#ffffff',
-        titleColor: isDark ? '#e5e7eb' : '#111827',
-        bodyColor: isDark ? '#d1d5db' : '#374151',
-        borderColor: isDark ? '#374151' : '#e5e7eb',
+        backgroundColor: themeColors.card,
+        titleColor: themeColors.cardForeground,
+        bodyColor: themeColors.mutedForeground,
+        borderColor: themeColors.border,
         borderWidth: 1
       }
     },
     scales: {
       x: {
         grid: {
-          color: isDark ? '#374151' : '#e5e7eb'
+          color: themeColors.border
         },
         ticks: {
-          color: isDark ? '#9ca3af' : '#6b7280'
+          color: themeColors.mutedForeground
         }
       },
       y: {
         grid: {
-          color: isDark ? '#374151' : '#e5e7eb'
+          color: themeColors.border
         },
         ticks: {
-          color: isDark ? '#9ca3af' : '#6b7280'
+          color: themeColors.mutedForeground
         }
       }
     }
@@ -103,6 +148,7 @@ export const LineChart: React.FC<ChartProps> = ({ data, options, className, heig
 // Gráfico de barras
 export const BarChart: React.FC<ChartProps> = ({ data, options, className, height = 300 }) => {
   const { isDark } = useTheme();
+  const themeColors = getThemeColors(isDark);
   
   const defaultOptions: ChartOptions<'bar'> = {
     responsive: true,
@@ -111,34 +157,34 @@ export const BarChart: React.FC<ChartProps> = ({ data, options, className, heigh
       legend: {
         position: 'top' as const,
         labels: {
-          color: isDark ? '#e5e7eb' : '#374151',
+          color: themeColors.foreground,
           usePointStyle: true,
           padding: 20
         }
       },
       tooltip: {
-        backgroundColor: isDark ? '#1f2937' : '#ffffff',
-        titleColor: isDark ? '#e5e7eb' : '#111827',
-        bodyColor: isDark ? '#d1d5db' : '#374151',
-        borderColor: isDark ? '#374151' : '#e5e7eb',
+        backgroundColor: themeColors.card,
+        titleColor: themeColors.cardForeground,
+        bodyColor: themeColors.mutedForeground,
+        borderColor: themeColors.border,
         borderWidth: 1
       }
     },
     scales: {
       x: {
         grid: {
-          color: isDark ? '#374151' : '#e5e7eb'
+          color: themeColors.border
         },
         ticks: {
-          color: isDark ? '#9ca3af' : '#6b7280'
+          color: themeColors.mutedForeground
         }
       },
       y: {
         grid: {
-          color: isDark ? '#374151' : '#e5e7eb'
+          color: themeColors.border
         },
         ticks: {
-          color: isDark ? '#9ca3af' : '#6b7280'
+          color: themeColors.mutedForeground
         }
       }
     }
@@ -154,6 +200,7 @@ export const BarChart: React.FC<ChartProps> = ({ data, options, className, heigh
 // Gráfico de rosca
 export const DoughnutChart: React.FC<ChartProps> = ({ data, options, className, height = 300 }) => {
   const { isDark } = useTheme();
+  const themeColors = getThemeColors(isDark);
   
   const defaultOptions: ChartOptions<'doughnut'> = {
     responsive: true,
@@ -162,16 +209,16 @@ export const DoughnutChart: React.FC<ChartProps> = ({ data, options, className, 
       legend: {
         position: 'right' as const,
         labels: {
-          color: isDark ? '#e5e7eb' : '#374151',
+          color: themeColors.foreground,
           usePointStyle: true,
           padding: 20
         }
       },
       tooltip: {
-        backgroundColor: isDark ? '#1f2937' : '#ffffff',
-        titleColor: isDark ? '#e5e7eb' : '#111827',
-        bodyColor: isDark ? '#d1d5db' : '#374151',
-        borderColor: isDark ? '#374151' : '#e5e7eb',
+        backgroundColor: themeColors.card,
+        titleColor: themeColors.cardForeground,
+        bodyColor: themeColors.mutedForeground,
+        borderColor: themeColors.border,
         borderWidth: 1
       }
     }
@@ -187,6 +234,7 @@ export const DoughnutChart: React.FC<ChartProps> = ({ data, options, className, 
 // Gráfico de radar
 export const RadarChart: React.FC<ChartProps> = ({ data, options, className, height = 300 }) => {
   const { isDark } = useTheme();
+  const themeColors = getThemeColors(isDark);
   
   const defaultOptions: ChartOptions<'radar'> = {
     responsive: true,
@@ -195,30 +243,30 @@ export const RadarChart: React.FC<ChartProps> = ({ data, options, className, hei
       legend: {
         position: 'top' as const,
         labels: {
-          color: isDark ? '#e5e7eb' : '#374151',
+          color: themeColors.foreground,
           usePointStyle: true,
           padding: 20
         }
       },
       tooltip: {
-        backgroundColor: isDark ? '#1f2937' : '#ffffff',
-        titleColor: isDark ? '#e5e7eb' : '#111827',
-        bodyColor: isDark ? '#d1d5db' : '#374151',
-        borderColor: isDark ? '#374151' : '#e5e7eb',
+        backgroundColor: themeColors.card,
+        titleColor: themeColors.cardForeground,
+        bodyColor: themeColors.mutedForeground,
+        borderColor: themeColors.border,
         borderWidth: 1
       }
     },
     scales: {
       r: {
         grid: {
-          color: isDark ? '#374151' : '#e5e7eb'
+          color: themeColors.border
         },
         ticks: {
-          color: isDark ? '#9ca3af' : '#6b7280',
+          color: themeColors.mutedForeground,
           backdropColor: 'transparent'
         },
         pointLabels: {
-          color: isDark ? '#9ca3af' : '#6b7280'
+          color: themeColors.mutedForeground
         }
       }
     }
@@ -234,6 +282,7 @@ export const RadarChart: React.FC<ChartProps> = ({ data, options, className, hei
 // Gráfico de área polar
 export const PolarAreaChart: React.FC<ChartProps> = ({ data, options, className, height = 300 }) => {
   const { isDark } = useTheme();
+  const themeColors = getThemeColors(isDark);
   
   const defaultOptions: ChartOptions<'polarArea'> = {
     responsive: true,
@@ -242,16 +291,16 @@ export const PolarAreaChart: React.FC<ChartProps> = ({ data, options, className,
       legend: {
         position: 'right' as const,
         labels: {
-          color: isDark ? '#e5e7eb' : '#374151',
+          color: themeColors.foreground,
           usePointStyle: true,
           padding: 20
         }
       },
       tooltip: {
-        backgroundColor: isDark ? '#1f2937' : '#ffffff',
-        titleColor: isDark ? '#e5e7eb' : '#111827',
-        bodyColor: isDark ? '#d1d5db' : '#374151',
-        borderColor: isDark ? '#374151' : '#e5e7eb',
+        backgroundColor: themeColors.card,
+        titleColor: themeColors.cardForeground,
+        bodyColor: themeColors.mutedForeground,
+        borderColor: themeColors.border,
         borderWidth: 1
       }
     }
@@ -289,14 +338,17 @@ interface EmployeePerformanceData {
 
 // Gráfico de horas trabalhadas por semana
 export const WeeklyHoursChart: React.FC<{ data: WeeklyHoursData }> = ({ data }) => {
+  const { isDark } = useTheme();
+  const themeColors = getThemeColors(isDark);
+  
   const chartData: ChartData<'line'> = {
     labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
     datasets: [
       {
         label: 'Horas Trabalhadas',
         data: data.hours || [8, 8, 8, 8, 8, 4, 0],
-        borderColor: '#3b82f6',
-        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        borderColor: themeColors.primary,
+        backgroundColor: `${themeColors.primary}20`, // 20% de opacidade
         fill: true,
         tension: 0.4
       }
@@ -308,7 +360,8 @@ export const WeeklyHoursChart: React.FC<{ data: WeeklyHoursData }> = ({ data }) 
       title: {
         display: true,
         text: 'Horas Trabalhadas por Semana',
-        font: { size: 16, weight: 'bold' }
+        font: { size: 16, weight: 'bold' },
+        color: themeColors.foreground
       }
     }
   };
@@ -318,19 +371,22 @@ export const WeeklyHoursChart: React.FC<{ data: WeeklyHoursData }> = ({ data }) 
 
 // Gráfico de distribuição de funcionários por departamento
 export const DepartmentDistributionChart: React.FC<{ data: DepartmentData }> = ({ data }) => {
+  const { isDark } = useTheme();
+  const themeColors = getThemeColors(isDark);
+  
   const chartData: ChartData<'doughnut'> = {
     labels: data.labels || ['Cozinha', 'Atendimento', 'Limpeza', 'Administrativo'],
     datasets: [
       {
         data: data.values || [12, 8, 4, 3],
         backgroundColor: [
-          '#ef4444',
-          '#3b82f6',
-          '#10b981',
-          '#f59e0b'
+          themeColors.destructive,    // Vermelho para cozinha
+          themeColors.primary,        // Azul para atendimento
+          themeColors.success,        // Verde para limpeza
+          themeColors.warning         // Amarelo para administrativo
         ],
         borderWidth: 2,
-        borderColor: '#ffffff'
+        borderColor: themeColors.background
       }
     ]
   };
@@ -340,7 +396,8 @@ export const DepartmentDistributionChart: React.FC<{ data: DepartmentData }> = (
       title: {
         display: true,
         text: 'Distribuição por Departamento',
-        font: { size: 16, weight: 'bold' }
+        font: { size: 16, weight: 'bold' },
+        color: themeColors.foreground
       }
     }
   };
@@ -350,21 +407,24 @@ export const DepartmentDistributionChart: React.FC<{ data: DepartmentData }> = (
 
 // Gráfico de custos por mês
 export const MonthlyCostsChart: React.FC<{ data: MonthlyCostsData }> = ({ data }) => {
+  const { isDark } = useTheme();
+  const themeColors = getThemeColors(isDark);
+  
   const chartData: ChartData<'bar'> = {
     labels: data.labels || ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
     datasets: [
       {
         label: 'Custos com Pessoal',
         data: data.costs || [45000, 48000, 52000, 49000, 55000, 58000],
-        backgroundColor: '#ef4444',
-        borderColor: '#dc2626',
+        backgroundColor: themeColors.destructive,
+        borderColor: themeColors.destructive,
         borderWidth: 2
       },
       {
         label: 'Receita',
         data: data.revenue || [60000, 65000, 70000, 68000, 75000, 80000],
-        backgroundColor: '#10b981',
-        borderColor: '#059669',
+        backgroundColor: themeColors.success,
+        borderColor: themeColors.success,
         borderWidth: 2
       }
     ]
@@ -375,7 +435,8 @@ export const MonthlyCostsChart: React.FC<{ data: MonthlyCostsData }> = ({ data }
       title: {
         display: true,
         text: 'Custos vs Receita (Últimos 6 meses)',
-        font: { size: 16, weight: 'bold' }
+        font: { size: 16, weight: 'bold' },
+        color: themeColors.foreground
       }
     }
   };
@@ -385,14 +446,17 @@ export const MonthlyCostsChart: React.FC<{ data: MonthlyCostsData }> = ({ data }
 
 // Gráfico de performance por funcionário
 export const EmployeePerformanceChart: React.FC<{ data: EmployeePerformanceData }> = ({ data }) => {
+  const { isDark } = useTheme();
+  const themeColors = getThemeColors(isDark);
+  
   const chartData: ChartData<'line'> = {
     labels: data.labels || ['João', 'Maria', 'Pedro', 'Ana', 'Carlos'],
     datasets: [
       {
         label: 'Performance',
         data: data.performance || [85, 92, 78, 95, 88],
-        borderColor: '#8b5cf6',
-        backgroundColor: 'rgba(139, 92, 244, 0.1)',
+        borderColor: themeColors.info,
+        backgroundColor: `${themeColors.info}20`, // 20% de opacidade
         fill: true,
         tension: 0.4
       }
@@ -404,7 +468,8 @@ export const EmployeePerformanceChart: React.FC<{ data: EmployeePerformanceData 
       title: {
         display: true,
         text: 'Performance por Funcionário',
-        font: { size: 16, weight: 'bold' }
+        font: { size: 16, weight: 'bold' },
+        color: themeColors.foreground
       }
     },
     scales: {

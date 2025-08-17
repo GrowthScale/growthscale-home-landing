@@ -182,10 +182,10 @@ const Contact = () => {
       <main className="container mx-auto px-4 py-xl">
         {/* Header Section */}
         <header className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-foreground mb-4 font-roboto text-balance">
+          <h1 className="text-4xl font-bold text-foreground mb-4 font-body text-balance">
             Contato e Suporte
           </h1>
-          <p className="text-xl text-foreground/80 max-w-2xl mx-auto font-roboto leading-relaxed">
+          <p className="text-xl text-foreground/80 max-w-2xl mx-auto font-body leading-relaxed">
             Estamos aqui para ajudar! Envie sua mensagem ou encontre respostas rápidas em nossos recursos.
           </p>
         </header>

@@ -176,7 +176,7 @@ export default function CompliancePage() {
               <Shield className="h-8 w-8 text-white" aria-hidden="true" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-foreground font-roboto text-balance">Compliance Trabalhista</h1>
+              <h1 className="text-3xl font-bold text-foreground font-body text-balance">Compliance Trabalhista</h1>
               <p className="text-foreground/80 mt-1 leading-relaxed">
                 Mantenha-se alinhado com as normas trabalhistas e evite riscos em tempo real
               </p>

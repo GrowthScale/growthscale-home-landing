@@ -20,7 +20,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`min-h-screen bg-background font-roboto ${className}`}>
+    <div className={`min-h-screen bg-background font-body ${className}`}>
       {showHeader && <Header />}
       
       <main id="main-content" className="flex-1">
