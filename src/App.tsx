@@ -19,6 +19,19 @@ const FAQ = lazy(() => import("@/pages/FAQ"));
 const Legal = lazy(() => import("@/pages/Legal"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
+// Páginas adicionais importantes
+const Auth = lazy(() => import("@/pages/Auth"));
+const Integrations = lazy(() => import("@/pages/Integrations"));
+const Gamification = lazy(() => import("@/pages/Gamification"));
+const CompanySettings = lazy(() => import("@/pages/CompanySettings"));
+const Compliance = lazy(() => import("@/pages/Compliance"));
+const DraftReviewPage = lazy(() => import("@/pages/DraftReviewPage"));
+const RBACDemo = lazy(() => import("@/pages/RBACDemo"));
+const ScheduleDraft = lazy(() => import("@/pages/ScheduleDraft"));
+const Demo = lazy(() => import("@/pages/Demo"));
+const Api = lazy(() => import("@/pages/Api"));
+const Setup = lazy(() => import("@/pages/Setup"));
+
 // Componente de loading
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -27,7 +40,7 @@ const LoadingSpinner = () => (
 );
 
 const App = () => {
-  console.log('App.tsx: LAZY LOADING IMPLEMENTED - React loaded:', typeof React);
+  console.log('App.tsx: TODAS AS PÁGINAS INTEGRADAS - React loaded:', typeof React);
   
   return (
     <React.StrictMode>
@@ -35,6 +48,7 @@ const App = () => {
         <BrowserRouter>
           <div className="App">
             <Routes>
+              {/* Páginas principais */}
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={
                 <Suspense fallback={<LoadingSpinner />}>
@@ -86,6 +100,65 @@ const App = () => {
                   <Legal />
                 </Suspense>
               } />
+
+              {/* Páginas adicionais importantes */}
+              <Route path="/auth" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Auth />
+                </Suspense>
+              } />
+              <Route path="/integrations" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Integrations />
+                </Suspense>
+              } />
+              <Route path="/gamification" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Gamification />
+                </Suspense>
+              } />
+              <Route path="/company-settings" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <CompanySettings />
+                </Suspense>
+              } />
+              <Route path="/compliance" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Compliance />
+                </Suspense>
+              } />
+              <Route path="/draft-review" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <DraftReviewPage />
+                </Suspense>
+              } />
+              <Route path="/rbac-demo" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <RBACDemo />
+                </Suspense>
+              } />
+              <Route path="/schedule-draft" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ScheduleDraft />
+                </Suspense>
+              } />
+              <Route path="/demo" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Demo />
+                </Suspense>
+              } />
+              <Route path="/api" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Api />
+                </Suspense>
+              } />
+              <Route path="/setup" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Setup />
+                </Suspense>
+              } />
+
+              {/* Página 404 */}
               <Route path="*" element={
                 <Suspense fallback={<LoadingSpinner />}>
                   <NotFound />
