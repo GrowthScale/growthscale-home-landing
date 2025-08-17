@@ -1,5 +1,54 @@
 # Changelog - GrowthScale
 
+## [3.3.0] - 2024-12-19
+
+### 🔒 **GESTÃO COMPLETA DE DADOS E DIREITOS LGPD**
+
+#### 🗂️ **Funcionalidades de Gestão de Dados**
+- **Exportação de Dados**: Download completo dos dados em formato JSON
+- **Visualização de Dados**: Interface para verificar dados armazenados
+- **Anonimização**: Opção para anonimizar dados mantendo estrutura
+- **Exclusão Segura**: Exclusão completa e irreversível da conta
+
+#### 🛡️ **Conformidade com Direitos LGPD**
+- **Direito de Acesso**: Visualização completa dos dados pessoais
+- **Direito de Portabilidade**: Exportação de dados em formato estruturado
+- **Direito de Retificação**: Interface para gerenciar dados pessoais
+- **Direito de Exclusão**: Exclusão permanente com confirmação obrigatória
+
+#### 🔧 **Backend Seguro**
+- **Edge Function**: `delete-user-account` para exclusão segura
+- **Ordem de Exclusão**: Eliminação hierárquica de dados relacionados
+- **Logs de Auditoria**: Registro completo de ações de exclusão
+- **Service Role**: Uso de permissões administrativas para exclusão
+
+#### 📱 **Interface de Usuário**
+- **Componente DataManagement**: Interface completa para gestão de dados
+- **Diálogos de Confirmação**: Múltiplas confirmações para ações críticas
+- **Feedback Visual**: Indicadores de status e progresso
+- **Validação**: Motivo obrigatório para exclusão de conta
+
+#### 🔍 **Funcionalidades Implementadas**
+- **AccountService**: Serviço completo para gestão de conta
+- **Verificação de Dados**: Detecção automática de dados existentes
+- **Exportação JSON**: Download estruturado de todos os dados
+- **Anonimização Seletiva**: Substituição de dados pessoais por valores anônimos
+- **Exclusão Permanente**: Remoção completa de conta e dados
+
+#### 📊 **Segurança e Auditoria**
+- **Logs Detalhados**: Registro de todas as ações de gestão de dados
+- **Validação de Permissões**: Verificação de autenticação em todas as operações
+- **Tratamento de Erros**: Mensagens claras e tratamento robusto de falhas
+- **CORS Configurado**: Headers de segurança para Edge Functions
+
+#### 📁 **Arquivos Criados/Modificados**
+- `supabase/functions/delete-user-account/index.ts` - Edge Function para exclusão segura
+- `src/services/accountService.ts` - Serviço completo de gestão de conta
+- `src/components/settings/DataManagement.tsx` - Componente de interface
+- `src/pages/Settings.tsx` - Integração do componente de gestão de dados
+
+---
+
 ## [3.2.0] - 2024-12-19
 
 ### 🔒 **CONFORMIDADE LGPD - CONSENTIMENTO OBRIGATÓRIO**
