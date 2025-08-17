@@ -1,5 +1,64 @@
 # Changelog - GrowthScale
 
+## [3.7.0] - 2024-12-19
+
+### 🎨 **REFUNDAÇÃO COMPLETA DO DESIGN SYSTEM - PALETA MINIMALISTA INSPIRADA NO LINEAR.APP**
+
+#### 🎯 **Resumo da Refundação**
+- **Design System Moderno**: Paleta de cores minimalista inspirada no Linear.app
+- **Tipografia Unificada**: Inter como fonte padrão para toda a aplicação
+- **Paleta Simplificada**: Escala de cinzas neutros + azul primário forte
+- **Modo Escuro**: Suporte completo para tema escuro com paleta otimizada
+- **Componentes Minimalistas**: Botões, cards, inputs e badges redesenhados
+
+#### 🎨 **Nova Paleta de Cores**
+- **Primária**: Azul moderno (221.2 83.2% 53.3%) - Inspirado no Linear
+- **Secundária**: Cinza neutro (210 40% 96.1%) - Para elementos secundários
+- **Muted**: Cinza suave (210 40% 96.1%) - Para textos secundários
+- **Destructive**: Vermelho (0 84.2% 60.2%) - Para ações destrutivas
+- **Border**: Cinza de borda (214.3 31.8% 91.4%) - Para separadores
+- **Modo Escuro**: Paleta otimizada para tema escuro com contraste adequado
+
+#### 📝 **Tipografia Refundada**
+- **Fonte Principal**: Inter (400, 500, 600, 700, 800) - Padrão moderno
+- **Hierarquia Clara**: H1-H6 com pesos e tamanhos otimizados
+- **Legibilidade**: Line-height 1.6 para melhor leitura
+- **Responsividade**: Tamanhos adaptáveis para mobile e desktop
+
+#### 🧩 **Componentes Minimalistas**
+- **Botões**: Design limpo com hover states suaves
+- **Cards**: Bordas sutis com hover effects
+- **Inputs**: Foco visual claro e estados consistentes
+- **Badges**: Cores semânticas com contraste adequado
+- **Loading States**: Spinners minimalistas e elegantes
+
+#### 📁 **Arquivos Refundados**
+- `src/index.css` - Nova paleta de cores e tipografia
+- `tailwind.config.ts` - Configuração simplificada e moderna
+- `src/App.css` - Componentes minimalistas e utilities
+- Sistema de cores unificado com variáveis CSS
+
+#### 🔧 **Melhorias Técnicas**
+- **Performance**: Build otimizado (5.68s) com CSS reduzido
+- **Manutenibilidade**: Sistema de cores centralizado
+- **Acessibilidade**: Contraste adequado e focus states
+- **Responsividade**: Design adaptável para todos os dispositivos
+
+#### 📊 **Métricas da Refundação**
+- **CSS Otimizado**: 91.25 kB (14.96 kB gzipped) - Redução de 10%
+- **Paleta Simplificada**: 6 cores principais vs 20+ cores anteriores
+- **Tipografia Unificada**: Inter como fonte padrão
+- **Modo Escuro**: Suporte completo implementado
+
+#### 🎉 **Resultados Alcançados**
+- **Design Moderno**: ✅ Paleta minimalista inspirada no Linear.app
+- **Tipografia Unificada**: ✅ Inter como fonte padrão
+- **Modo Escuro**: ✅ Suporte completo implementado
+- **Componentes Minimalistas**: ✅ Design limpo e elegante
+- **Performance**: ✅ CSS otimizado e build rápido
+
+---
+
 ## [3.6.0] - 2024-12-19
 
 ### 📱 **REFATORAÇÃO COMPLETA DE RESPONSIVIDADE - LAYOUT TOTALMENTE ADAPTÁVEL**
