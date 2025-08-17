@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { supabase, type AuthUser } from '@/lib/supabase'
 import { Session } from '@supabase/supabase-js'
-import { companyService } from '@/services/api'
 
 interface AuthContextType {
   user: AuthUser | null
@@ -23,41 +22,76 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log('AuthProvider: Initializing...');
+    
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ? {
-        id: session.user.id,
-        email: session.user.email!,
-        user_metadata: session.user.user_metadata
-      } : null)
-      setLoading(false)
-    })
+    const initializeAuth = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('AuthProvider: Error getting session:', error);
+          setLoading(false);
+          return;
+        }
+
+        setSession(session);
+        setUser(session?.user ? {
+          id: session.user.id,
+          email: session.user.email!,
+          user_metadata: session.user.user_metadata
+        } : null);
+        
+        console.log('AuthProvider: Session initialized:', !!session);
+      } catch (error) {
+        console.error('AuthProvider: Error initializing auth:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
+      console.log('AuthProvider: Auth state changed:', _event);
+      setSession(session);
       setUser(session?.user ? {
         id: session.user.id,
         email: session.user.email!,
         user_metadata: session.user.user_metadata
-      } : null)
-      setLoading(false)
-    })
+      } : null);
+      setLoading(false);
+    });
 
     return () => subscription.unsubscribe()
   }, [])
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    return { error }
+    try {
+      console.log('AuthProvider: Attempting sign in for:', email);
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
+        console.error('AuthProvider: Sign in error:', error);
+      } else {
+        console.log('AuthProvider: Sign in successful');
+      }
+      
+      return { error };
+    } catch (error) {
+      console.error('AuthProvider: Sign in exception:', error);
+      return { error };
+    }
   }
 
   const signUp = async (email: string, password: string, fullName: string, companyName: string, companyEmail: string, employeeCount: number) => {
     try {
+      console.log('AuthProvider: Attempting sign up for:', email);
+      
       // 1. Criar usuário no Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
@@ -70,64 +104,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             employee_count: employeeCount,
           },
         },
-      })
+      });
 
       if (authError) {
-        return { error: authError }
+        console.error('AuthProvider: Sign up auth error:', authError);
+        return { error: authError };
       }
 
-      // 2. Se o usuário foi criado com sucesso, criar a empresa
-      if (authData.user) {
-        const companyData = {
-          name: companyName,
-          cnpj: '', // Será preenchido posteriormente no setup
-          tradeName: companyName,
-          description: `Restaurante com ${employeeCount} funcionários`,
-          status: 'active' as const,
-          address: {
-            street: '',
-            number: '',
-            complement: '',
-            district: '',
-            city: '',
-            state: '',
-            zipCode: '',
-          },
-          contact: {
-            email: companyEmail,
-            phone: '',
-            website: '',
-          },
-          settings: {
-            timeZone: 'America/Sao_Paulo',
-            currency: 'BRL',
-            language: 'pt-BR',
-          },
-        }
-
-        const { error: companyError } = await companyService.createCompany(companyData)
-        
-        if (companyError) {
-          console.error('Erro ao criar empresa:', companyError)
-          // Não retornamos erro aqui para não impedir o cadastro do usuário
-          // A empresa pode ser criada posteriormente no setup
-        }
-      }
-
-      return { error: null }
+      console.log('AuthProvider: Sign up successful');
+      return { error: null };
     } catch (error) {
-      console.error('Erro no signUp:', error)
-      return { error }
+      console.error('AuthProvider: Sign up exception:', error);
+      return { error };
     }
   }
 
   const signOut = async () => {
-    await supabase.auth.signOut()
+    try {
+      console.log('AuthProvider: Signing out...');
+      await supabase.auth.signOut();
+      console.log('AuthProvider: Sign out successful');
+    } catch (error) {
+      console.error('AuthProvider: Sign out error:', error);
+    }
   }
 
   const resetPassword = async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email)
-    return { error }
+    try {
+      console.log('AuthProvider: Resetting password for:', email);
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      
+      if (error) {
+        console.error('AuthProvider: Reset password error:', error);
+      } else {
+        console.log('AuthProvider: Reset password email sent');
+      }
+      
+      return { error };
+    } catch (error) {
+      console.error('AuthProvider: Reset password exception:', error);
+      return { error };
+    }
   }
 
   const value = {
@@ -139,6 +156,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signOut,
     resetPassword,
   }
+
+  console.log('AuthProvider: Rendering with user:', !!user, 'loading:', loading);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
