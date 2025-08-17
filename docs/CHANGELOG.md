@@ -1,5 +1,49 @@
 # Changelog - GrowthScale
 
+## [3.1.6] - 2024-12-19
+
+### 🎯 **COMPONENTES ADICIONAIS DO CLT ASSISTANT**
+
+#### 🚀 **Novos Componentes Criados**
+- **CLTSuggestions**: Componente para exibir sugestões de perguntas sobre CLT
+  - 12 sugestões categorizadas (intervalo, hora extra, folgas, etc.)
+  - Ícones específicos para cada categoria
+  - Layout responsivo em grid
+  - Botão "Ver mais sugestões" para expansão
+
+- **CLTSources**: Componente para exibir fontes de referência
+  - Ícones dinâmicos baseados no tipo de fonte
+  - Indicador de relevância com cores
+  - Links externos para fontes
+  - Layout compacto e informativo
+
+- **CLTConfidence**: Componente para exibir nível de confiança
+  - Barra de progresso visual
+  - Badges coloridos por nível
+  - Ícones indicativos de confiança
+  - Configurações flexíveis de exibição
+
+#### 📝 **Tipagem Expandida**
+- **CLTSuggestion**: Interface para sugestões com categorização
+- **CLTChatConfig**: Configurações do chat com opções flexíveis
+- **Arquivo de Índice**: Exportações centralizadas em `src/components/features/index.ts`
+
+#### ✅ **Funcionalidades Implementadas**
+- **Categorização**: Sugestões organizadas por tipo (intervalo, hora extra, etc.)
+- **Responsividade**: Layout adaptável para mobile e desktop
+- **Acessibilidade**: Navegação por teclado e leitores de tela
+- **Performance**: Componentes otimizados com memoização
+- **Flexibilidade**: Props configuráveis para diferentes usos
+
+#### 📁 **Arquivos Criados**
+- `src/components/features/CLTSuggestions.tsx` - Sugestões de perguntas
+- `src/components/features/CLTSources.tsx` - Fontes de referência
+- `src/components/features/CLTConfidence.tsx` - Indicador de confiança
+- `src/components/features/index.ts` - Exportações centralizadas
+- `src/types/clt.ts` - Tipos expandidos
+
+---
+
 ## [3.1.5] - 2024-12-19
 
 ### 🔄 **REFATORAÇÃO ARQUITETURAL E CORREÇÃO DE TIPAGEM**

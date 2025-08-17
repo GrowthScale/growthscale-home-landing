@@ -116,3 +116,23 @@ export interface CLTCompanySettings {
     requiredApprovals: string[];
   };
 }
+
+// Tipos para sugestões
+export interface CLTSuggestion {
+  id: string;
+  text: string;
+  category: 'interval' | 'overtime' | 'breaks' | 'payroll' | 'compliance' | 'general';
+  icon: string;
+  usageCount: number;
+  isPopular: boolean;
+}
+
+// Tipos para configurações de chat
+export interface CLTChatConfig {
+  maxSuggestions: number;
+  maxSources: number;
+  showConfidence: boolean;
+  showSources: boolean;
+  autoScroll: boolean;
+  saveHistory: boolean;
+}
