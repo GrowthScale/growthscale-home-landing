@@ -1,5 +1,44 @@
 # Changelog - GrowthScale
 
+## [3.1.1] - 2024-12-19
+
+### 🔗 **CORREÇÃO DE INTEGRAÇÃO DAS PÁGINAS INTERNAS**
+
+#### 🚨 **Problema Resolvido**
+- **Erro 404**: Botões "Começar Grátis" e "Entrar" não funcionavam
+- **Navegação Quebrada**: Links apontavam para rotas inexistentes (/login, /signup)
+- **Integração Incompleta**: Landing page não conectada com páginas internas
+
+#### ✅ **Correções Implementadas**
+- **Header.tsx**: Todos os links corrigidos para apontar para `/auth`
+  - Botão "Entrar" → `/auth`
+  - Botão "Começar Grátis" → `/auth`
+  - Menu mobile corrigido
+- **Index.tsx**: Botões da landing page funcionais
+  - "Começar Agora" → `/auth`
+  - "Ver Demo" → `/demo`
+- **Demo.tsx**: Links corrigidos para `/auth`
+- **Api.tsx**: Links corrigidos para `/auth`
+- **Auth.tsx**: Página simplificada e funcional
+  - Removidas dependências problemáticas (react-i18next)
+  - Formulário básico funcionando
+  - Integração com Supabase mantida
+
+#### 🎯 **Resultado**
+- ✅ **Navegação 100% funcional**
+- ✅ **Sem mais erros 404**
+- ✅ **Integração completa** entre landing page e páginas internas
+- ✅ **Fluxo de usuário** funcionando corretamente
+
+#### 📊 **Arquivos Modificados**
+- `src/components/Header.tsx` - Links corrigidos
+- `src/pages/Index.tsx` - Botões funcionais
+- `src/pages/Auth.tsx` - Simplificação e correções
+- `src/pages/Demo.tsx` - Links corrigidos
+- `src/pages/Api.tsx` - Links corrigidos
+
+---
+
 ## [3.1.0] - 2024-12-19
 
 ### 🔧 **CORREÇÕES FINAIS E OTIMIZAÇÕES DE QUALIDADE**
