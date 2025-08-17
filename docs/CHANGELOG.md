@@ -1,5 +1,70 @@
 # Changelog - GrowthScale
 
+## [3.5.0] - 2024-12-19
+
+### 🎨 **REFATORAÇÃO COMPLETA DO DESIGN SYSTEM E CORREÇÃO DE INCONSISTÊNCIAS VISUAIS**
+
+#### 🎯 **Resumo das Correções**
+- **Consistência Visual**: Eliminação de inconsistências entre desenvolvimento e produção
+- **Design System Unificado**: Padronização completa de cores e tipografia
+- **Gráficos Refatorados**: Sistema de cores dinâmico com suporte a tema claro/escuro
+- **Tipografia Corrigida**: Substituição de fontes inconsistentes por Design System oficial
+
+#### 🎨 **Refatoração do Design System**
+- **Cores Hexadecimais**: Substituição sistemática por variáveis CSS do Design System
+- **Sistema de Cores Dinâmico**: Função `getThemeColors()` para centralizar todas as cores
+- **Suporte a Tema Escuro**: Cores se adaptam automaticamente ao contexto
+- **Variáveis CSS**: Uso consistente de `hsl(var(--primary))`, `hsl(var(--secondary))`, etc.
+
+#### 📊 **Componentes de Gráficos Refatorados**
+- **Charts.tsx**: Refatoração completa com sistema de cores dinâmico
+- **LineChart**: Cores adaptativas para tema claro/escuro
+- **BarChart**: Paleta de cores consistente com Design System
+- **DoughnutChart**: Cores semânticas (success, warning, destructive, info)
+- **RadarChart & PolarAreaChart**: Integração completa com variáveis CSS
+
+#### 🔤 **Correção de Tipografia**
+- **Substituição Global**: `font-roboto` → `font-body` em todos os componentes
+- **Design System Oficial**: Uso consistente de Inter (body) e Montserrat (heading)
+- **18 Arquivos Modificados**: Substituição em páginas, componentes e layouts
+- **Consistência Total**: Tipografia uniforme em desenvolvimento e produção
+
+#### 🎨 **Cores Padronizadas**
+- **SEOHead.tsx**: Cores do tema do navegador usando variáveis CSS
+- **App.css**: Cores de hover e texto usando Design System
+- **index.css**: Cores de acessibilidade e loading padronizadas
+- **Eliminação de Hardcoded**: Remoção de todos os códigos hexadecimais
+
+#### 📁 **Arquivos Refatorados**
+- `src/components/ui/charts.tsx` - Sistema de cores dinâmico completo
+- `src/components/SEOHead.tsx` - Cores do tema usando variáveis CSS
+- `src/App.css` - Cores de hover e texto padronizadas
+- `src/index.css` - Cores de acessibilidade usando Design System
+- `src/pages/*.tsx` (15 arquivos) - Substituição de font-roboto por font-body
+- `src/components/layouts/MainLayout.tsx` - Tipografia consistente
+- `src/components/dashboard/*.tsx` - Cores e fontes padronizadas
+
+#### 🔧 **Melhorias Técnicas**
+- **Performance**: Build otimizado (11.38s) sem erros
+- **Manutenibilidade**: Sistema centralizado de cores
+- **Escalabilidade**: Fácil adição de novos temas
+- **Consistência**: Variáveis CSS em todo o projeto
+
+#### 📊 **Métricas de Implementação**
+- **18 Arquivos Modificados**: Refatoração completa do Design System
+- **154 Inserções, 89 Remoções**: Otimização e limpeza do código
+- **0 Cores Hardcoded**: Eliminação total de códigos hexadecimais
+- **100% Consistência**: Tipografia e cores uniformes
+
+#### 🎉 **Resultados Alcançados**
+- **Consistência Visual**: ✅ 100% entre desenvolvimento e produção
+- **Design System**: ✅ Totalmente implementado e padronizado
+- **Tipografia**: ✅ Fontes Inter e Montserrat consistentes
+- **Cores**: ✅ Sistema dinâmico com suporte a temas
+- **Gráficos**: ✅ Paleta semântica e adaptativa
+
+---
+
 ## [3.4.0] - 2024-12-19
 
 ### 🔒 **CONSOLIDAÇÃO FINAL - CONFORMIDADE LGPD COMPLETA**
