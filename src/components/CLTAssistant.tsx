@@ -1,49 +1,41 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
+import React, { useState, useCallback } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Skeleton } from '@/components/ui/skeleton';
-import { 
-  Bot, 
-  Send, 
-  MessageSquare, 
-  Trash2, 
-  Lightbulb,
-  AlertCircle,
-  CheckCircle
-} from 'lucide-react';
 import { useCLTAssistant } from '@/hooks/useCLTAssistant';
 import { cn } from '@/lib/utils';
+
+// Importar componentes modulares
+import { 
+  CLTChatHeader, 
+  CLTChatBubble, 
+  CLTChatInput, 
+  CLTSuggestions,
+  CLTSources,
+  CLTConfidence
+} from '@/components/features';
+import type { CLTMessage, CLTSource } from '@/types/clt';
 
 interface CLTAssistantProps {
   className?: string;
   title?: string;
   placeholder?: string;
+  showConfidence?: boolean;
+  showSources?: boolean;
 }
-
-const SUGGESTED_QUESTIONS = [
-  "O que é intervalo interjornada?",
-  "Como funciona o DSR?",
-  "Quantas horas extras posso pagar por mês?",
-  "O que acontece se não pagar horas extras?",
-  "Como calcular férias de funcionário?",
-  "Qual é o limite de horas de trabalho por dia?",
-  "Como funciona o trabalho noturno?",
-  "O que é adicional de periculosidade?"
-];
 
 export const CLTAssistant: React.FC<CLTAssistantProps> = ({
   className = '',
   title = 'Assistente de IA - CLT',
-  placeholder = 'Digite sua dúvida sobre legislação trabalhista...'
+  placeholder = 'Digite sua dúvida sobre legislação trabalhista...',
+  showConfidence = true,
+  showSources = true
 }) => {
-  const [question, setQuestion] = useState('');
+  const [messages, setMessages] = useState<CLTMessage[]>([]);
+  const [currentSources, setCurrentSources] = useState<CLTSource[]>([]);
+  const [currentConfidence, setCurrentConfidence] = useState(0.85);
+  
   const { 
     isLoading, 
-    currentAnswer, 
     conversationHistory, 
     askQuestion, 
     clearConversation 
@@ -59,172 +51,111 @@ export const CLTAssistant: React.FC<CLTAssistantProps> = ({
     }
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!question.trim() || isLoading) return;
+  const handleSendMessage = useCallback(async (message: string) => {
+    if (!message.trim() || isLoading) return;
     
-    await askQuestion(question);
-    setQuestion('');
+    // Adicionar mensagem do usuário
+    const userMessage: CLTMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: message,
+      timestamp: new Date().toISOString()
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    
+    // Simular resposta do bot (substituir pela chamada real da API)
+    const botMessage: CLTMessage = {
+      id: (Date.now() + 1).toString(),
+      role: 'bot',
+      content: 'Esta é uma resposta simulada. Implemente a integração real com a API do CLT Assistant.',
+      timestamp: new Date().toISOString()
+    };
+    
+    setTimeout(() => {
+      setMessages(prev => [...prev, botMessage]);
+      setCurrentConfidence(0.85);
+      setCurrentSources([
+        {
+          title: 'Art. 71 da CLT',
+          content: 'Intervalo para repouso e alimentação',
+          relevance: 0.9,
+          url: 'https://www.planalto.gov.br/ccivil_03/decreto-lei/del5452.htm'
+        }
+      ]);
+    }, 1000);
+    
+    await askQuestion(message);
   };
 
-  const handleSuggestedQuestion = async (suggestedQuestion: string) => {
-    setQuestion(suggestedQuestion);
-    await askQuestion(suggestedQuestion);
-  };
+  const handleReset = useCallback(() => {
+    setMessages([]);
+    setCurrentSources([]);
+    setCurrentConfidence(0.85);
+    clearConversation();
+  }, [clearConversation]);
 
   return (
     <Card className={cn("w-full max-w-4xl mx-auto", className)}>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Bot className="h-5 w-5 text-primary" />
-          {title}
-        </CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Tire suas dúvidas sobre legislação trabalhista brasileira com foco em food service
-        </p>
-      </CardHeader>
+      {/* Header */}
+      <CLTChatHeader
+        onReset={handleReset}
+        isOnline={true}
+        lastUpdated={new Date().toLocaleDateString('pt-BR')}
+      />
       
-      <CardContent className="space-y-4">
-        {/* Conversation History */}
-        {conversationHistory.length > 0 && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium">Histórico da Conversa</h3>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={clearConversation}
-                className="text-xs"
-              >
-                <Trash2 className="h-3 w-3 mr-1" />
-                Limpar
-              </Button>
-            </div>
-            
-            <ScrollArea className="h-96 border rounded-lg p-4">
-              <div className="space-y-4">
-                {conversationHistory.map((conversation, index) => (
-                  <div key={index} className="space-y-2">
-                    {/* Question */}
-                    <div className="flex items-start gap-2">
-                      <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
-                        <MessageSquare className="h-3 w-3 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-foreground">
-                          {conversation.question}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {conversation.timestamp.toLocaleString('pt-BR')}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Answer */}
-                    <div className="flex items-start gap-2 ml-8">
-                      <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-1">
-                        <Bot className="h-3 w-3 text-primary-foreground" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="prose prose-sm max-w-none">
-                          <p className="text-sm text-foreground whitespace-pre-wrap">
-                            {conversation.answer}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+      <CardContent className="p-0">
+        {/* Chat Messages */}
+        <ScrollArea className="h-96">
+          <div className="p-4 space-y-4">
+            {messages.length === 0 ? (
+              <CLTSuggestions onSuggestionClick={handleSendMessage} />
+            ) : (
+              <>
+                {/* Messages */}
+                {messages.map((message) => (
+                  <CLTChatBubble
+                    key={message.id}
+                    role={message.role}
+                    content={message.content}
+                    timestamp={new Date(message.timestamp).toLocaleTimeString('pt-BR')}
+                  />
                 ))}
                 
                 {/* Loading indicator */}
                 {isLoading && (
-                  <div className="flex items-start gap-2 ml-8">
-                    <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-1">
-                      <Bot className="h-3 w-3 text-primary-foreground" />
-                    </div>
-                    <div className="flex-1 space-y-2">
-                      <Skeleton className="h-4 w-3/4" />
-                      <Skeleton className="h-4 w-1/2" />
-                      <Skeleton className="h-4 w-2/3" />
-                    </div>
-                  </div>
+                  <CLTChatBubble
+                    role="bot"
+                    content=""
+                    isLoading={true}
+                  />
                 )}
-              </div>
-            </ScrollArea>
+                
+                {/* Confidence indicator for last bot message */}
+                {showConfidence && messages.length > 0 && 
+                 messages[messages.length - 1].role === 'bot' && 
+                 !isLoading && (
+                  <CLTConfidence confidence={currentConfidence} />
+                )}
+                
+                {/* Sources for last bot message */}
+                {showSources && currentSources.length > 0 && 
+                 messages.length > 0 && 
+                 messages[messages.length - 1].role === 'bot' && 
+                 !isLoading && (
+                  <CLTSources sources={currentSources} />
+                )}
+              </>
+            )}
           </div>
-        )}
-
-        {/* Suggested Questions */}
-        {conversationHistory.length === 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Lightbulb className="h-4 w-4 text-yellow-500" />
-              <h3 className="text-sm font-medium">Perguntas Sugeridas</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              {SUGGESTED_QUESTIONS.map((suggestedQuestion, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleSuggestedQuestion(suggestedQuestion)}
-                  disabled={isLoading}
-                  className="justify-start text-left h-auto p-3"
-                >
-                  <span className="text-xs">{suggestedQuestion}</span>
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Input Form */}
-        <form onSubmit={handleSubmit} className="space-y-2">
-          <div className="flex gap-2">
-            <Textarea
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder={placeholder}
-              disabled={isLoading}
-              className="flex-1 min-h-textarea resize-none"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSubmit(e);
-                }
-              }}
-            />
-            <Button 
-              type="submit" 
-              disabled={!question.trim() || isLoading}
-              className="self-end"
-            >
-              {isLoading ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-              ) : (
-                <Send className="h-4 w-4" />
-              )}
-            </Button>
-          </div>
-          
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>
-              {conversationHistory.length > 0 && (
-                `${conversationHistory.length} pergunta${conversationHistory.length > 1 ? 's' : ''} nesta sessão`
-              )}
-            </span>
-            <span>Pressione Enter para enviar, Shift+Enter para nova linha</span>
-          </div>
-        </form>
-
-        {/* Disclaimer */}
-        <div className="flex items-start gap-2 p-3 bg-muted/50 rounded-lg">
-          <AlertCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-          <p className="text-xs text-muted-foreground">
-            <strong>Importante:</strong> Este assistente fornece orientações informativas sobre a CLT. 
-            Para questões específicas ou conselhos jurídicos, consulte um profissional de direito ou contabilidade.
-          </p>
-        </div>
+        </ScrollArea>
+        
+        {/* Input */}
+        <CLTChatInput
+          onSendMessage={handleSendMessage}
+          disabled={isLoading}
+          placeholder={placeholder}
+        />
       </CardContent>
     </Card>
   );
