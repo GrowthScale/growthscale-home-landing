@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { 
   Settings,
   User,
@@ -20,8 +21,15 @@ import {
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { DataManagement } from '@/components/settings/DataManagement';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteUserAccount } from '@/services/api';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/lib/supabase';
 
 export default function SettingsPage() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  
   const [settings, setSettings] = useState({
     notifications: {
       email: true,
@@ -35,9 +43,30 @@ export default function SettingsPage() {
     dataRetention: 30
   });
 
+  const deleteAccountMutation = useMutation({
+    mutationFn: deleteUserAccount,
+    onSuccess: async () => {
+      // Limpa a sessão e redireciona para a página inicial após a exclusão
+      await supabase.auth.signOut();
+      queryClient.clear();
+      navigate('/');
+      toast({ 
+        title: "Conta Eliminada", 
+        description: "A sua conta e todos os seus dados foram eliminados permanentemente." 
+      });
+    },
+    onError: (error: any) => {
+      toast({ 
+        title: "Erro ao Eliminar a Conta", 
+        description: error.message, 
+        variant: 'destructive' 
+      });
+    }
+  });
+
   const handleSave = () => {
     toast({
-              title: "Configurações salvas!",
+      title: "Configurações salvas!",
       description: "Suas preferências foram atualizadas com sucesso.",
     });
   };
@@ -265,6 +294,45 @@ export default function SettingsPage() {
                 </p>
               </div>
             </CardContent>
+          </Card>
+
+          {/* Danger Zone */}
+          <Card className="border-destructive">
+            <CardHeader>
+              <CardTitle>Zona de Perigo</CardTitle>
+              <CardDescription>
+                Estas ações são permanentes e não podem ser desfeitas.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <h3 className="font-semibold">Eliminar a sua conta</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Ao eliminar a sua conta, todos os seus dados, incluindo empresas, funcionários e escalas, serão removidos permanentemente.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" disabled={deleteAccountMutation.isPending}>
+                    {deleteAccountMutation.isPending ? 'A eliminar...' : 'Eliminar a Minha Conta'}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Tem a certeza absoluta?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Esta ação não pode ser desfeita. Isto irá eliminar permanentemente a sua conta e remover os seus dados dos nossos servidores.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => deleteAccountMutation.mutate()}>
+                      Sim, eliminar a minha conta
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </CardFooter>
           </Card>
         </div>
 
