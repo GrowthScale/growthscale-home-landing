@@ -163,51 +163,55 @@ export function ScheduleEditor() {
   const { data: realTimeValidation, isLoading: isRealTimeValidating, error: validationError } = useQuery({
     queryKey: ['scheduleValidation', shifts, employees],
     queryFn: async () => {
-      try {
-        const response = await scheduleService.validateSchedule({ shifts, employees });
-        if (response.error) {
-          throw new Error(response.error);
-        }
-        return response;
-      } catch (error) {
-        toast({
-          title: "Erro na Validação",
-          description: "Não foi possível validar a escala em tempo real. Verifique sua conexão ou tente novamente.",
-          variant: "destructive",
-        });
-        console.error("Validation Query Error:", error);
-        throw error;
+      const response = await scheduleService.validateSchedule({ shifts, employees });
+      if (response.error) {
+        throw new Error(response.error);
       }
+      return response;
     },
     enabled: shifts.length > 0 && employees.length > 0,
     staleTime: 30000, // 30 seconds
     gcTime: 60000, // 1 minute (cacheTime was renamed to gcTime in v4)
   });
 
+  // Tratamento de erro para validação em tempo real
+  React.useEffect(() => {
+    if (validationError) {
+      toast({
+        title: "Erro na Análise em Tempo Real",
+        description: "Não foi possível validar a escala neste momento. Por favor, verifique sua conexão ou tente novamente.",
+        variant: "destructive",
+      });
+      console.error("Erro na Query de Validação:", validationError);
+    }
+  }, [validationError]);
+
   // Query para cálculo de custo em tempo real
   const { data: costResult, isLoading: isCalculatingCost, error: costError } = useQuery({
     queryKey: ['scheduleCost', shifts, employees],
     queryFn: async () => {
-      try {
-        // Mock de hourlyRate se não existir no seu modelo de funcionário ainda
-        const employeesWithRate = employees.map(e => ({ ...e, hourlyRate: 20 }));
-        const response = await costCalculationService.calculateScheduleCost({ shifts, employees: employeesWithRate });
-        if (response.error) {
-          throw new Error(response.error);
-        }
-        return response;
-      } catch (error) {
-        toast({
-          title: "Erro no Cálculo de Custo",
-          description: "Não foi possível calcular o custo da escala em tempo real. Verifique sua conexão ou tente novamente.",
-          variant: "destructive",
-        });
-        console.error("Cost Calculation Query Error:", error);
-        throw error;
+      // Mock de hourlyRate se não existir no seu modelo de funcionário ainda
+      const employeesWithRate = employees.map(e => ({ ...e, hourlyRate: 20 }));
+      const response = await costCalculationService.calculateScheduleCost({ shifts, employees: employeesWithRate });
+      if (response.error) {
+        throw new Error(response.error);
       }
+      return response;
     },
     enabled: shifts && shifts.length > 0,
   });
+
+  // Tratamento de erro para cálculo de custo em tempo real
+  React.useEffect(() => {
+    if (costError) {
+      toast({
+        title: "Erro no Cálculo de Custo",
+        description: "Não foi possível calcular o custo da escala em tempo real. Verifique sua conexão ou tente novamente.",
+        variant: "destructive",
+      });
+      console.error("Erro na Query de Cálculo de Custo:", costError);
+    }
+  }, [costError]);
 
   const handleEmployeeToggle = useCallback((employee: Employee) => {
     const isSelected = form.employees.some(emp => emp.id === employee.id);

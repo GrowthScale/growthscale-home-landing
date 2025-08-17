@@ -1,5 +1,39 @@
 # Changelog - GrowthScale
 
+## [3.1.8] - 2024-12-19
+
+### 🔧 **CORREÇÃO CRÍTICA NA JORNADA DO NOVO UTILIZADOR**
+
+#### 🎯 **Onboarding Automático**
+- **Verificação de Empresa**: Dashboard verifica se usuário já configurou empresa
+- **Redirecionamento Automático**: Usuários sem empresa são redirecionados para `/setup`
+- **Lógica Robusta**: Verificação aguarda carregamento completo dos dados
+- **Prevenção de Loops**: Uso de `replace: true` para evitar histórico duplicado
+
+#### 🛡️ **Tratamento de Erro nas Validações**
+- **Validação em Tempo Real**: Tratamento de erro para análise de risco
+- **Cálculo de Custo**: Tratamento de erro para estimativas de custo
+- **Notificações Claras**: Toast messages informativas para o usuário
+- **Logging Detalhado**: Console logs para debugging
+
+#### ✅ **Melhorias Implementadas**
+- **Dashboard.tsx**: Lógica de verificação de configuração da empresa
+- **ProtectedRoute.tsx**: Já possuía lógica similar implementada
+- **ScheduleEditor.tsx**: Tratamento de erro para queries de validação e custo
+- **UX Melhorada**: Feedback claro quando operações falham
+
+#### 📊 **Benefícios Alcançados**
+- **Onboarding Perfeito**: Usuários novos são guiados automaticamente
+- **Robustez**: Interface não quebra quando APIs falham
+- **Transparência**: Usuários são informados sobre problemas
+- **Manutenibilidade**: Logs detalhados para debugging
+
+#### 📁 **Arquivos Modificados**
+- `src/components/dashboard/Dashboard.tsx` - Lógica de verificação de empresa
+- `src/components/schedules/ScheduleEditor.tsx` - Tratamento de erro nas queries
+
+---
+
 ## [3.1.7] - 2024-12-19
 
 ### 🔄 **REFATORAÇÃO COMPLETA DO CLTASSISTANT.TSX**

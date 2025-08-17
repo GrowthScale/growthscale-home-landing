@@ -1,3 +1,4 @@
+import { useContext, useEffect } from 'react';
 import DashboardHeader from "./DashboardHeader";
 import KPICard from "./KPICard";
 import ChartSection from "./ChartSection";
@@ -26,11 +27,27 @@ import {
 } from 'lucide-react';
 import { scheduleDraftService } from '@/services/api';
 import { useTenant } from '@/contexts/TenantContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Dashboard = () => {
   const { can } = useAccessControl();
   const navigate = useNavigate();
-  const { tenant } = useTenant();
+  const { tenant, isLoading: isLoadingTenant } = useTenant();
+  const { user } = useAuth();
+
+  // LÓGICA CRÍTICA: Verificar se o utilizador já configurou a sua empresa
+  useEffect(() => {
+    // Aguarda o carregamento dos dados essenciais
+    if (isLoadingTenant || !user) {
+      return;
+    }
+
+    // Se o utilizador está logado, já não está a carregar os tenants, e não tem tenant configurado, força o redirecionamento
+    if (user && !isLoadingTenant && !tenant) {
+      console.log('🚨 Usuário sem empresa configurada - redirecionando para setup');
+      navigate('/setup', { replace: true });
+    }
+  }, [user, tenant, isLoadingTenant, navigate]);
 
   // Buscar rascunho pendente para o card proativo
   const { data: pendingDraft, isLoading: isLoadingDraft } = useQuery({
