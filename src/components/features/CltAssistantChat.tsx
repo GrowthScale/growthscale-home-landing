@@ -66,7 +66,7 @@ export function CltAssistantChat() {
           <MessageCircle className="h-7 w-7" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-96 sm:w-[540px]">
+      <SheetContent className="w-full sm:max-w-md md:max-w-lg lg:max-w-xl">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />

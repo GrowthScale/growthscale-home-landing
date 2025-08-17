@@ -86,7 +86,7 @@ export const CompanyFilters: React.FC<CompanyFiltersProps> = ({ onFiltersChange 
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80" align="end">
+              <PopoverContent className="w-full sm:max-w-sm md:max-w-md" align="end">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h4 className="font-medium">Filtros</h4>

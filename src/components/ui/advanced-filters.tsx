@@ -307,7 +307,7 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-80 p-0" align="start">
+        <PopoverContent className="w-full sm:max-w-sm md:max-w-md p-0" align="start">
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-lg">Filtros Avançados</CardTitle>

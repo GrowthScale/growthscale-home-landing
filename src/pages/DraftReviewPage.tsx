@@ -91,7 +91,7 @@ export default function DraftReviewPage() {
       <div className="min-h-screen bg-background p-6">
         <div className="max-w-6xl mx-auto space-y-6">
           <Skeleton className="h-8 w-64" />
-          <Skeleton className="h-4 w-96" />
+          <Skeleton className="h-4 w-full sm:max-w-sm md:max-w-md lg:max-w-lg" />
           <Skeleton className="h-96 w-full" />
         </div>
       </div>

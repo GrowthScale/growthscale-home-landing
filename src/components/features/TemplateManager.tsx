@@ -309,7 +309,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
               Criar Novo Modelo
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-modal-md">
+          <DialogContent className="w-full sm:max-w-md md:max-w-lg lg:max-w-xl">
             <DialogHeader>
               <DialogTitle>Criar Novo Modelo</DialogTitle>
             </DialogHeader>

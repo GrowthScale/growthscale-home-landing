@@ -451,7 +451,7 @@ export function ScheduleEditor() {
           Nova Escala
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-modal-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-full sm:max-w-md md:max-w-lg lg:max-w-xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <Calendar className="h-5 w-5 text-primary" />
@@ -920,7 +920,7 @@ export function ScheduleEditor() {
 
       {/* Modal de Gerenciador de Modelos */}
       <Dialog open={showTemplates} onOpenChange={setShowTemplates}>
-        <DialogContent className="max-w-modal-md max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-full sm:max-w-md md:max-w-lg lg:max-w-xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5 text-secondary" />
@@ -936,7 +936,7 @@ export function ScheduleEditor() {
 
       {/* Modal de Aplicação de Modelo */}
       <Dialog open={isApplyTemplateModalOpen} onOpenChange={setApplyTemplateModalOpen}>
-        <DialogContent className="sm:max-w-3xl">
+        <DialogContent className="w-full sm:max-w-md md:max-w-lg lg:max-w-3xl">
           <DialogHeader>
             <DialogTitle>Aplicar um Modelo de Escala</DialogTitle>
             <DialogDescription>
