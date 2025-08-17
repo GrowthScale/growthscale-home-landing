@@ -1,36 +1,49 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { Toaster } from "@/components/ui/toaster";
+
+// Importar páginas
+import Index from "@/pages/Index";
+import Dashboard from "@/pages/Dashboard";
+import Companies from "@/pages/Companies";
+import Employees from "@/pages/Employees";
+import Schedules from "@/pages/Schedules";
+import Templates from "@/pages/Templates";
+import CLTAssistant from "@/pages/CLTAssistant";
+import Settings from "@/pages/Settings";
+import Contact from "@/pages/Contact";
+import FAQ from "@/pages/FAQ";
+import Legal from "@/pages/Legal";
+import NotFound from "@/pages/NotFound";
 
 const App = () => {
-  console.log('App.tsx: Component loaded');
+  console.log('App.tsx: FULL FRONTEND RESTORED');
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-      <div className="text-center p-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          🚀 GrowthScale
-        </h1>
-        <p className="text-xl text-gray-600 mb-8">
-          Sistema de Gestão de Escalas Inteligente
-        </p>
-        <div className="space-y-4">
-          <div className="bg-green-100 p-4 rounded-lg">
-            <p className="text-green-800 font-semibold">✅ React carregado com sucesso!</p>
+    <React.StrictMode>
+      <AuthProvider>
+        <BrowserRouter>
+          <div className="App">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/companies" element={<Companies />} />
+              <Route path="/employees" element={<Employees />} />
+              <Route path="/schedules" element={<Schedules />} />
+              <Route path="/templates" element={<Templates />} />
+              <Route path="/clt-assistant" element={<CLTAssistant />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/legal" element={<Legal />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Toaster />
           </div>
-          <div className="bg-blue-100 p-4 rounded-lg">
-            <p className="text-blue-800 font-semibold">✅ Vite funcionando!</p>
-          </div>
-          <div className="bg-purple-100 p-4 rounded-lg">
-            <p className="text-purple-800 font-semibold">✅ TypeScript ativo!</p>
-          </div>
-        </div>
-        <button 
-          className="mt-8 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700"
-          onClick={() => alert('Frontend funcionando!')}
-        >
-          Testar Interação
-        </button>
-      </div>
-    </div>
+        </BrowserRouter>
+      </AuthProvider>
+    </React.StrictMode>
   );
 };
 
