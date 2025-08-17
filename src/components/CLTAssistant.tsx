@@ -86,7 +86,7 @@ export const CLTAssistant: React.FC<CLTAssistantProps> = ({
     }, 1000);
     
     await askQuestion(message);
-  };
+  }, [isLoading, askQuestion]);
 
   const handleReset = useCallback(() => {
     setMessages([]);

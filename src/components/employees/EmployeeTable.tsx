@@ -517,6 +517,4 @@ export const EmployeeTable = memo(({ onEmployeeSelect, selectedEmployee }: Emplo
   );
 });
 
-// Memoized export for performance optimization
-export const EmployeeTable = React.memo(EmployeeTableComponent);
-EmployeeTable.displayName = 'EmployeeTable';
+// Component already exported above with memo
