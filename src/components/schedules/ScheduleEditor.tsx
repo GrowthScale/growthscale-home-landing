@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -209,7 +209,7 @@ export function ScheduleEditor() {
     enabled: shifts && shifts.length > 0,
   });
 
-  const handleEmployeeToggle = (employee: Employee) => {
+  const handleEmployeeToggle = useCallback((employee: Employee) => {
     const isSelected = form.employees.some(emp => emp.id === employee.id);
     if (isSelected) {
       setForm(prev => ({
@@ -222,7 +222,7 @@ export function ScheduleEditor() {
         employees: [...prev.employees, employee]
       }));
     }
-  };
+  }, [form.employees]);
 
   const handleGenerateWithAI = async () => {
     if (!form.date || !form.shift) {
@@ -421,7 +421,7 @@ export function ScheduleEditor() {
     });
   };
 
-  const handleOpenApplyTemplateModal = () => {
+  const handleOpenApplyTemplateModal = useCallback(() => {
     if (!templates || templates.length === 0) {
       toast({
         title: "Nenhum modelo disponível",
@@ -431,13 +431,13 @@ export function ScheduleEditor() {
       return;
     }
     setApplyTemplateModalOpen(true);
-  };
+  }, [templates]);
 
-  const handleSelectTemplate = (templateId: string) => {
+  const handleSelectTemplate = useCallback((templateId: string) => {
     const template = templates?.find(t => t.id === templateId);
     setSelectedTemplateForApply(template || null);
     setSelectedEmployeeIds([]); // Reset employee selection when template changes
-  };
+  }, [templates]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

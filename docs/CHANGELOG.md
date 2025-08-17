@@ -1,5 +1,43 @@
 # Changelog - GrowthScale
 
+## [3.1.4] - 2024-12-19
+
+### 🏗️ **PADRONIZAÇÃO E REUTILIZAÇÃO DE COMPONENTES**
+
+#### 🎯 **Componentes Reutilizáveis Criados**
+- **FeatureCard**: Componente padronizado para cards de features com ícone, título e conteúdo
+- **ActionButton**: Botão de ação com suporte a ícones, loading states e variantes
+- **Section**: Componente para seções com título, subtítulo e espaçamento configurável
+- **LoadingState**: Estado de carregamento padronizado com spinner e mensagem
+
+#### 📝 **Tipagem Melhorada**
+- **Tipos Compartilhados**: Arquivo `src/types/common.ts` com interfaces reutilizáveis
+- **Tipos Base**: `BaseEntity`, `User`, `Employee`, `Company`, `Schedule`
+- **Tipos de UI**: `ComponentProps`, `ModalProps`, `TabItem`, `DropdownItem`
+- **Tipos de API**: `ApiResponse`, `PaginatedResponse`, `ValidationResult`
+
+#### 🔧 **Hooks Reutilizáveis**
+- **useForm**: Hook completo para gerenciamento de formulários com validação
+- **Validação**: Suporte a regras de validação customizáveis
+- **Estado**: Gerenciamento de valores, erros, touched e submitting
+- **Performance**: Otimizado com useCallback e useMemo
+
+#### ✅ **Benefícios Alcançados**
+- **Consistência**: Design system padronizado em todo o projeto
+- **Reutilização**: Componentes podem ser usados em múltiplas páginas
+- **Manutenibilidade**: Mudanças centralizadas em componentes base
+- **Performance**: Hooks otimizados para evitar re-renderizações
+- **Type Safety**: Tipagem forte para melhor DX e menos bugs
+
+#### 📁 **Arquivos Criados/Modificados**
+- `src/components/ui/FeatureCard.tsx` - Componente reutilizável para features
+- `src/components/ui/ActionButton.tsx` - Botão de ação padronizado
+- `src/components/ui/Section.tsx` - Componente de seção reutilizável
+- `src/types/common.ts` - Tipos compartilhados do projeto
+- `src/hooks/useForm.ts` - Hook para gerenciamento de formulários
+
+---
+
 ## [3.1.3] - 2024-12-19
 
 ### ⚡ **OTIMIZAÇÃO DE PERFORMANCE EM COMPONENTES CRÍTICOS**
