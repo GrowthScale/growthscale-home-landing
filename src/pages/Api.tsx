@@ -34,7 +34,7 @@ const Api = () => {
                 <span className="text-xl font-bold text-primary">GrowthScale API</span>
               </div>
               
-              <Button onClick={() => navigate('/login')}>
+              <Button onClick={() => navigate('/auth')}>
                 Acessar API
               </Button>
             </div>
@@ -124,7 +124,7 @@ Authorization: Bearer YOUR_API_KEY
               Acesse nossa documentação completa e comece a integrar hoje mesmo
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={() => navigate('/login')}>
+              <Button size="lg" onClick={() => navigate('/auth')}>
                 Acessar API
               </Button>
               <Button variant="outline" size="lg" onClick={() => navigate('/')}>

@@ -89,13 +89,13 @@ const Header = () => {
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
             <button 
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/auth')}
               className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
             >
               Entrar
             </button>
             <button 
-              onClick={() => navigate('/signup')}
+              onClick={() => navigate('/auth')}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
             >
               Começar Grátis
@@ -185,7 +185,7 @@ const Header = () => {
               <div className="pt-4 pb-3 border-t border-gray-200">
                 <button 
                   onClick={() => {
-                    navigate('/login');
+                    navigate('/auth');
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
@@ -194,7 +194,7 @@ const Header = () => {
                 </button>
                 <button 
                   onClick={() => {
-                    navigate('/signup');
+                    navigate('/auth');
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md mt-2"

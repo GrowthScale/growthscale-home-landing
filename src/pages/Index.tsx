@@ -18,10 +18,16 @@ const Index = () => {
             Otimize escalas, reduza custos em até 30% e garanta compliance trabalhista automaticamente.
           </p>
           <div className="flex justify-center space-x-4">
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700">
+            <button 
+              onClick={() => window.location.href = '/auth'}
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700"
+            >
               Começar Agora
             </button>
-            <button className="border border-blue-600 text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50">
+            <button 
+              onClick={() => window.location.href = '/demo'}
+              className="border border-blue-600 text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50"
+            >
               Ver Demo
             </button>
           </div>

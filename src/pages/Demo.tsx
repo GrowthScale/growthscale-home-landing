@@ -34,7 +34,7 @@ const Demo = () => {
                 <span className="text-xl font-bold text-primary">GrowthScale</span>
               </div>
               
-              <Button onClick={() => navigate('/login')}>
+              <Button onClick={() => navigate('/auth')}>
                 Começar Grátis
               </Button>
             </div>
@@ -105,7 +105,7 @@ const Demo = () => {
               Comece gratuitamente e veja a diferença em 14 dias
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={() => navigate('/login')}>
+              <Button size="lg" onClick={() => navigate('/auth')}>
                 Começar Grátis
               </Button>
               <Button variant="outline" size="lg" onClick={() => navigate('/')}>
