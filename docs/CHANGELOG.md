@@ -1,5 +1,46 @@
 # Changelog - GrowthScale
 
+## [3.1.5] - 2024-12-19
+
+### 🔄 **REFATORAÇÃO ARQUITETURAL E CORREÇÃO DE TIPAGEM**
+
+#### 🎯 **Refatoração do ProblemSection**
+- **Componentes Reutilizáveis**: Migrado para usar `FeatureCard` e `Section`
+- **Código Simplificado**: Reduzido de 69 para 35 linhas (49% menos código)
+- **Manutenibilidade**: Dados estruturados em array para fácil modificação
+- **Consistência**: Design padronizado com o sistema de componentes
+
+#### 🔧 **Correção de Tipagem Any**
+- **exportUtils.ts**: Substituído todos os `any` por `Record<string, unknown>`
+- **Type Safety**: Melhor verificação de tipos em funções de export
+- **logger.ts**: Já estava bem tipado com `Record<string, unknown>`
+- **Segurança**: Prevenção de erros de runtime com tipagem forte
+
+#### 🏗️ **Refatoração do CLT Assistant**
+- **CLTChatBubble**: Componente para mensagens individuais do chat
+- **CLTChatInput**: Componente para input de mensagens com validação
+- **CLTChatHeader**: Componente para cabeçalho do chat com status
+- **Tipos Específicos**: Arquivo `src/types/clt.ts` com interfaces completas
+- **Modularidade**: Componentes menores e mais focados
+- **Reutilização**: Componentes podem ser usados em outros chats
+
+#### ✅ **Benefícios Alcançados**
+- **Código Mais Limpo**: Componentes menores e mais focados
+- **Reutilização**: Componentes modulares podem ser reutilizados
+- **Manutenibilidade**: Mudanças isoladas em componentes específicos
+- **Type Safety**: Eliminação de `any` para melhor segurança
+- **Performance**: Componentes otimizados com props específicas
+
+#### 📁 **Arquivos Criados/Modificados**
+- `src/components/ProblemSection.tsx` - Refatorado para usar componentes base
+- `src/lib/exportUtils.ts` - Tipagem corrigida (any → Record<string, unknown>)
+- `src/components/features/CLTChatBubble.tsx` - Novo componente de mensagem
+- `src/components/features/CLTChatInput.tsx` - Novo componente de input
+- `src/components/features/CLTChatHeader.tsx` - Novo componente de cabeçalho
+- `src/types/clt.ts` - Tipos específicos para CLT Assistant
+
+---
+
 ## [3.1.4] - 2024-12-19
 
 ### 🏗️ **PADRONIZAÇÃO E REUTILIZAÇÃO DE COMPONENTES**

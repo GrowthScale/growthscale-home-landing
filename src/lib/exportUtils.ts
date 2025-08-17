@@ -18,7 +18,7 @@ export interface ExportData {
 
 export interface ChartExportData {
   title: string;
-  chartData: any;
+  chartData: Record<string, unknown>;
   filename?: string;
 }
 
@@ -94,7 +94,7 @@ export const exportToExcel = (data: ExportData): void => {
 };
 
 // Export de relatório de funcionários
-export const exportEmployeesReport = (employees: any[]): void => {
+export const exportEmployeesReport = (employees: Record<string, unknown>[]): void => {
   const headers = ['Nome', 'Email', 'Cargo', 'Departamento', 'Status', 'Data de Contratação', 'Salário'];
   
   const rows = employees.map(emp => [
@@ -118,7 +118,7 @@ export const exportEmployeesReport = (employees: any[]): void => {
 };
 
 // Export de escala
-export const exportScheduleReport = (schedule: any[]): void => {
+export const exportScheduleReport = (schedule: Record<string, unknown>[]): void => {
   const headers = ['Funcionário', 'Data', 'Início', 'Fim', 'Horas', 'Departamento', 'Status'];
   
   const rows = schedule.map(shift => [
@@ -142,7 +142,7 @@ export const exportScheduleReport = (schedule: any[]): void => {
 };
 
 // Export de custos
-export const exportCostsReport = (costs: any[]): void => {
+export const exportCostsReport = (costs: Record<string, unknown>[]): void => {
   const headers = ['Mês', 'Custos com Pessoal', 'Receita', 'Margem', 'Funcionários Ativos'];
   
   const rows = costs.map(cost => [
@@ -164,7 +164,7 @@ export const exportCostsReport = (costs: any[]): void => {
 };
 
 // Export de compliance
-export const exportComplianceReport = (compliance: any[]): void => {
+export const exportComplianceReport = (compliance: Record<string, unknown>[]): void => {
   const headers = ['Funcionário', 'Violação', 'Severidade', 'Data', 'Status', 'Ação Corretiva'];
   
   const rows = compliance.map(item => [
@@ -187,7 +187,7 @@ export const exportComplianceReport = (compliance: any[]): void => {
 };
 
 // Export de dashboard completo
-export const exportDashboardReport = (dashboardData: any): void => {
+export const exportDashboardReport = (dashboardData: Record<string, unknown>): void => {
   const doc = new jsPDF();
   const date = new Date().toLocaleDateString('pt-BR');
   
@@ -233,7 +233,7 @@ export const exportDashboardReport = (dashboardData: any): void => {
     doc.text('Funcionários Recentes', PDF_CONFIG.margin, currentY);
     
     const headers = ['Nome', 'Cargo', 'Departamento', 'Data de Contratação'];
-    const rows = dashboardData.recentEmployees.map((emp: any) => [
+    const rows = dashboardData.recentEmployees.map((emp: Record<string, unknown>) => [
       emp.name || '',
       emp.position || '',
       emp.department || '',
@@ -267,7 +267,7 @@ export const exportChartAsImage = (chartElement: HTMLElement, filename: string):
 };
 
 // Utilitário para formatar dados para export
-export const formatDataForExport = (data: any[], fields: string[]): (string | number)[][] => {
+export const formatDataForExport = (data: Record<string, unknown>[], fields: string[]): (string | number)[][] => {
   return data.map(item => 
     fields.map(field => {
       const value = item[field];
