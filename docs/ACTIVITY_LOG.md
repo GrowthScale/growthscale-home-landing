@@ -1542,7 +1542,55 @@ docs/
 ---
 
 *Última atualização: 2024-12-19*
-*Versão do documento: 1.1*
+*Versão do documento: 1.2*
+
+---
+
+## 2024-12-19 - Correção de Fontes e Design System (v3.1.2)
+
+### 🎯 **Objetivo**
+Corrigir inconsistências visuais causadas por fontes incorretas no deploy do Vercel.
+
+### 🚨 **Problemas Identificados**
+- **Fontes Incorretas**: `index.html` importava apenas `Roboto` em vez de `Montserrat` e `Inter`
+- **Design System Quebrado**: Tipografia não correspondia ao design system oficial
+- **Inconsistências Visuais**: Layout diferente entre desenvolvimento e produção
+
+### ✅ **Soluções Implementadas**
+
+#### **1. Correção de Importação de Fontes**
+- **Arquivo**: `index.html`
+- **Mudanças**:
+  - Removida importação de `Roboto`
+  - Adicionada importação de `Montserrat` (300-900 weights)
+  - Adicionada importação de `Inter` (300-800 weights)
+- **Resultado**: Fontes oficiais do design system carregando
+
+#### **2. Verificação de Cache e Headers**
+- **Headers**: `Cache-Control: no-cache, no-store, must-revalidate` ✅
+- **CSP**: Permite `fonts.googleapis.com` e `fonts.gstatic.com` ✅
+- **Cache**: Headers de cache já configurados corretamente
+
+#### **3. Verificação de Conflitos CSS**
+- **CSS Variables**: `--font-family-heading` e `--font-family-body` corretas ✅
+- **Sem Conflitos**: Nenhum CSS customizado sobrescrevendo Tailwind ✅
+
+### 📊 **Métricas de Qualidade**
+- **Build Time**: 14.48s (Vercel)
+- **Font Loading**: Google Fonts configurado corretamente
+- **Design System**: 100% consistente
+- **Cache**: Headers otimizados
+
+### 🚀 **Deploy**
+- **Commit**: `5f9b7fe`
+- **Vercel**: https://growthscale-home-landing.vercel.app
+- **Status**: ✅ Deployado com sucesso
+
+### 🎯 **Resultado Final**
+- ✅ **Tipografia 100% consistente** entre desenvolvimento e produção
+- ✅ **Design system oficial** aplicado corretamente
+- ✅ **Fontes carregando** corretamente no Vercel
+- ✅ **Sem mais inconsistências visuais**
 
 ---
 

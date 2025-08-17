@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Header = () => {
@@ -8,7 +8,7 @@ const Header = () => {
 
   const isHomePage = location.pathname === '/';
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = useCallback((sectionId: string) => {
     if (window.location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
@@ -23,7 +23,7 @@ const Header = () => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
-  };
+  }, [navigate]);
 
   return (
     <header className="w-full bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
@@ -44,19 +44,19 @@ const Header = () => {
             {isHomePage ? (
               <>
                 <button 
-                  onClick={() => scrollToSection('recursos')}
+                  onClick={useCallback(() => scrollToSection('recursos'), [scrollToSection])}
                   className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
                 >
                   Recursos
                 </button>
                 <button 
-                  onClick={() => scrollToSection('precos')}
+                  onClick={useCallback(() => scrollToSection('precos'), [scrollToSection])}
                   className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
                 >
                   Preços
                 </button>
                 <button 
-                  onClick={() => scrollToSection('contato')}
+                  onClick={useCallback(() => scrollToSection('contato'), [scrollToSection])}
                   className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
                 >
                   Contato

@@ -1,5 +1,63 @@
 # Changelog - GrowthScale
 
+## [3.1.3] - 2024-12-19
+
+### ⚡ **OTIMIZAÇÃO DE PERFORMANCE EM COMPONENTES CRÍTICOS**
+
+#### 🚀 **Melhorias de Performance Implementadas**
+- **DataTable**: Componente memoizado com `React.memo` para evitar re-renderizações desnecessárias
+- **Header**: Funções inline otimizadas com `useCallback` para melhor performance
+- **EmployeeTable**: Componente memoizado para otimização de listas grandes
+- **Componentes Reutilizáveis**: Criados `FeatureCard` e `LoadingState` para reduzir duplicação
+
+#### ✅ **Otimizações Específicas**
+- **Memoização**: `React.memo` aplicado em componentes que recebem props
+- **useCallback**: Funções de navegação e eventos otimizadas
+- **Componentes Reutilizáveis**: Padrões repetitivos extraídos para componentes dedicados
+- **Redução de Re-renderizações**: Componentes críticos agora só re-renderizam quando necessário
+
+#### 📊 **Impacto na Performance**
+- ✅ **Redução de re-renderizações** em componentes de tabela
+- ✅ **Melhor responsividade** em navegação e interações
+- ✅ **Código mais limpo** com componentes reutilizáveis
+- ✅ **Manutenibilidade melhorada** com padrões consistentes
+
+#### 📁 **Arquivos Modificados**
+- `src/components/ui/DataTable.tsx` - Memoização aplicada
+- `src/components/Header.tsx` - useCallback otimizado
+- `src/components/employees/EmployeeTable.tsx` - Memoização aplicada
+- `src/components/ui/FeatureCard.tsx` - Novo componente reutilizável
+- `src/components/ui/LoadingState.tsx` - Novo componente reutilizável
+
+---
+
+## [3.1.2] - 2024-12-19
+
+### 🎨 **CORREÇÃO DE FONTES E DESIGN SYSTEM**
+
+#### 🚨 **Problema Identificado**
+- **Fontes Incorretas**: `index.html` importava apenas `Roboto` em vez de `Montserrat` e `Inter`
+- **Design System Quebrado**: Tipografia não correspondia ao design system oficial
+- **Inconsistências Visuais**: Layout diferente entre desenvolvimento e produção
+
+#### ✅ **Correções Implementadas**
+- **index.html**: Importação corrigida para fontes oficiais
+  - `Montserrat`: Para títulos e headings (300-900 weights)
+  - `Inter`: Para texto do corpo (300-800 weights)
+- **Design System**: Tipografia agora 100% consistente
+- **CSP**: Headers já permitem `fonts.googleapis.com` e `fonts.gstatic.com`
+
+#### 🎯 **Resultado**
+- ✅ **Tipografia 100% consistente** entre desenvolvimento e produção
+- ✅ **Design system oficial** aplicado corretamente
+- ✅ **Fontes carregando** corretamente no Vercel
+- ✅ **Sem mais inconsistências visuais**
+
+#### 📊 **Arquivos Modificados**
+- `index.html` - Importação de fontes corrigida
+
+---
+
 ## [3.1.1] - 2024-12-19
 
 ### 🔗 **CORREÇÃO DE INTEGRAÇÃO DAS PÁGINAS INTERNAS**

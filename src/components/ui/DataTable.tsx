@@ -42,7 +42,7 @@ export interface DataTableProps<T> {
   pageSizeOptions?: number[];
 }
 
-export function DataTable<T extends Record<string, unknown>>({
+function DataTableComponent<T extends Record<string, unknown>>({
   data,
   columns,
   loading = false,
@@ -356,4 +356,9 @@ export function DataTable<T extends Record<string, unknown>>({
       </CardContent>
     </Card>
   );
-} 
+}
+
+// Memoized export for performance optimization
+export const DataTable = React.memo(DataTableComponent) as <T extends Record<string, unknown>>(
+  props: DataTableProps<T>
+) => React.ReactElement;
