@@ -47,6 +47,13 @@
 - `src/components/settings/DataManagement.tsx` - Componente de interface
 - `src/pages/Settings.tsx` - Integração do componente de gestão de dados
 
+#### 🔧 **Integração na Interface Principal**
+- **Seção "Zona de Perigo"**: Adicionada nas Configurações da conta
+- **Fluxo de Confirmação Seguro**: Diálogo de confirmação dupla para exclusão
+- **Gestão de Dados do Utilizador (LGPD)**: Implementada funcionalidade completa
+- **Direitos do Titular**: Conformidade total com os direitos da LGPD
+- **Eliminação Permanente**: Fluxo seguro para exclusão de conta e dados associados
+
 ---
 
 ## [3.2.0] - 2024-12-19
