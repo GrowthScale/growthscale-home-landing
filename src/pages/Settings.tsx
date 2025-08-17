@@ -19,6 +19,7 @@ import {
   Globe
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { DataManagement } from '@/components/settings/DataManagement';
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState({
@@ -231,18 +232,6 @@ export default function SettingsPage() {
                   }
                 />
               </div>
-              <Button variant="outline" className="w-full">
-                <Download className="h-4 w-4 mr-2" />
-                Exportar Dados
-              </Button>
-              <Separator />
-              <div className="space-y-2">
-                <h4 className="font-medium text-destructive">Zona de Perigo</h4>
-                <Button variant="destructive" size="sm" className="w-full">
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Excluir Conta
-                </Button>
-              </div>
             </CardContent>
           </Card>
 
@@ -286,6 +275,18 @@ export default function SettingsPage() {
             Salvar Configurações
           </Button>
         </div>
+      </div>
+
+      {/* Data Management Section */}
+      <div className="container mx-auto px-6 py-8">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-foreground mb-2">Gestão de Dados e Privacidade</h2>
+          <p className="text-muted-foreground">
+            Gerencie seus dados pessoais e controle sua privacidade na plataforma
+          </p>
+        </div>
+        
+        <DataManagement />
       </div>
     </div>
   );
