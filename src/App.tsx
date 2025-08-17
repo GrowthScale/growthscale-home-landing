@@ -1,24 +1,33 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 
-// Importar todas as páginas
+// Página principal (carregada imediatamente)
 import Index from "@/pages/Index";
-import Dashboard from "@/pages/Dashboard";
-import Companies from "@/pages/Companies";
-import Employees from "@/pages/Employees";
-import Schedules from "@/pages/Schedules";
-import Templates from "@/pages/Templates";
-import CLTAssistant from "@/pages/CLTAssistant";
-import Settings from "@/pages/Settings";
-import Contact from "@/pages/Contact";
-import FAQ from "@/pages/FAQ";
-import Legal from "@/pages/Legal";
-import NotFound from "@/pages/NotFound";
+
+// Páginas com lazy loading (carregadas sob demanda)
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Companies = lazy(() => import("@/pages/Companies"));
+const Employees = lazy(() => import("@/pages/Employees"));
+const Schedules = lazy(() => import("@/pages/Schedules"));
+const Templates = lazy(() => import("@/pages/Templates"));
+const CLTAssistant = lazy(() => import("@/pages/CLTAssistant"));
+const Settings = lazy(() => import("@/pages/Settings"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const FAQ = lazy(() => import("@/pages/FAQ"));
+const Legal = lazy(() => import("@/pages/Legal"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
+
+// Componente de loading
+const LoadingSpinner = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+  </div>
+);
 
 const App = () => {
-  console.log('App.tsx: FRONTEND COMPLETO RESTAURADO - React loaded:', typeof React);
+  console.log('App.tsx: LAZY LOADING IMPLEMENTED - React loaded:', typeof React);
   
   return (
     <React.StrictMode>
@@ -27,17 +36,61 @@ const App = () => {
           <div className="App">
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/companies" element={<Companies />} />
-              <Route path="/employees" element={<Employees />} />
-              <Route path="/schedules" element={<Schedules />} />
-              <Route path="/templates" element={<Templates />} />
-              <Route path="/clt-assistant" element={<CLTAssistant />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/legal" element={<Legal />} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="/dashboard" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Dashboard />
+                </Suspense>
+              } />
+              <Route path="/companies" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Companies />
+                </Suspense>
+              } />
+              <Route path="/employees" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Employees />
+                </Suspense>
+              } />
+              <Route path="/schedules" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Schedules />
+                </Suspense>
+              } />
+              <Route path="/templates" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Templates />
+                </Suspense>
+              } />
+              <Route path="/clt-assistant" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <CLTAssistant />
+                </Suspense>
+              } />
+              <Route path="/settings" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Settings />
+                </Suspense>
+              } />
+              <Route path="/contact" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Contact />
+                </Suspense>
+              } />
+              <Route path="/faq" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <FAQ />
+                </Suspense>
+              } />
+              <Route path="/legal" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Legal />
+                </Suspense>
+              } />
+              <Route path="*" element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <NotFound />
+                </Suspense>
+              } />
             </Routes>
             <Toaster />
           </div>
