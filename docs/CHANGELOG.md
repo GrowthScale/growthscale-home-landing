@@ -1,5 +1,32 @@
 # Changelog - GrowthScale
 
+## [3.1.9] - 2024-12-19
+
+### 🔒 **CORREÇÃO CRÍTICA DE SEGURANÇA**
+
+#### 🚨 **Remoção de Credenciais Expostas**
+- **Arquivo Eliminado**: `test-auth.js` removido permanentemente
+- **Risco Crítico**: Arquivo continha chave do Supabase hardcoded
+- **Ação Imediata**: Eliminação completa do arquivo e commit de segurança
+- **Proteção**: Credenciais não mais expostas no repositório
+
+#### ✅ **Medidas Implementadas**
+- **Eliminação Permanente**: Arquivo removido do sistema de arquivos
+- **Versionamento**: Commit específico para documentar a correção
+- **Deploy**: Alterações enviadas para o repositório remoto
+- **Auditoria**: Verificação de que não há outros arquivos com credenciais
+
+#### 📊 **Impacto na Segurança**
+- **Risco Eliminado**: Credenciais de produção não mais expostas
+- **Conformidade**: Melhoria na postura de segurança da plataforma
+- **Boas Práticas**: Uso exclusivo de variáveis de ambiente para credenciais
+
+#### 📁 **Arquivos Modificados**
+- `test-auth.js` - **ELIMINADO PERMANENTEMENTE**
+- `docs/CHANGELOG.md` - Documentação da correção
+
+---
+
 ## [3.1.8] - 2024-12-19
 
 ### 🔧 **CORREÇÃO CRÍTICA NA JORNADA DO NOVO UTILIZADOR**
