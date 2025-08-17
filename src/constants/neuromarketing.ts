@@ -95,281 +95,6 @@ export const neuromarketingCopy = {
   },
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        name: "Maria Santos",
-        restaurant: "Cantina da Maria",
-        text: "Finalmente posso focar no que realmente importa: a qualidade da comida. A gestão de escalas ficou automática.",
-        rating: 5,
-        savings: "R$2.800/mês",
-      },
-      {
-        name: "Carlos Oliveira",
-        restaurant: "Bar do Carlos",
-        text: "A IA do GrowthScale é incrível. Ela entende melhor as necessidades do meu negócio que eu mesmo.",
-        rating: 5,
-        savings: "R$1.900/mês",
-      },
-    ],
-    stats: {
-      total: "500+",
-      savings: "R$2.500/mês",
-      rating: "4.8/5",
-      satisfaction: "98%",
-    },
-  },
-
-  features: {
-    title: "Tudo que você precisa para gestão perfeita",
-    subtitle: "Funcionalidades desenvolvidas especificamente para food service",
-    items: [
-      {
-        title: "IA Inteligente",
-        description: "Algoritmo que aprende com seu negócio e otimiza escalas automaticamente",
-        benefit: "Escalas 40% mais eficientes",
-      },
-      {
-        title: "Compliance Automático",
-        description: "Validação em tempo real de todas as regras da CLT",
-        benefit: "100% dentro da lei",
-      },
-      {
-        title: "WhatsApp Integrado",
-        description: "Confirmação automática de presença via WhatsApp",
-        benefit: "Redução de 90% em ausências",
-      },
-      {
-        title: "Relatórios Inteligentes",
-        description: "Insights detalhados sobre custos e produtividade",
-        benefit: "Decisões baseadas em dados",
-      },
-    ],
-  },
-
-  pricing: {
-    title: "Um plano para cada tamanho de ambição",
-    subtitle: "Comece de graça. Cresça sem medo. Sem taxas escondidas.",
-    cta: "Começar gratuitamente",
-    guarantee: "14 dias grátis • Cancele quando quiser",
-  },
-
-  cta: {
-    title: "Pronto para operar com 100% de segurança e tranquilidade?",
-    subtitle: "Junte-se a centenas de restaurantes que já trocaram o risco das planilhas pela inteligência do GrowthScale.",
-    cta: "Comece de Graça e Veja a Diferença",
-    urgency: "Oferta limitada - Apenas 50 vagas restantes",
-  },
-
-  howItWorks: {
-    title: "Como funciona",
-    subtitle: "Em 3 passos, você sai do caos para a escala perfeita.",
-    steps: [
-      {
-        step: "1",
-        title: "Importe sua equipe",
-        desc: "Planilha .csv ou cadastro rápido — pronto em minutos.",
-        icon: "👥"
-      },
-      {
-        step: "2", 
-        title: "Defina regras",
-        desc: "CLT, folgas, horários, preferências e restrições.",
-        icon: "⚙️"
-      },
-      {
-        step: "3",
-        title: "Gere a escala e publique", 
-        desc: "IA monta tudo automaticamente. Ajuste se quiser e publique.",
-        icon: "🚀"
-      }
-    ]
-  },
-};
-
-// Copy para micro-interações e feedback
-export const microCopy = {
-  success: {
-    scheduleCreated: "Escala criada com sucesso! 🎉",
-    schedulePublished: "Escala publicada e enviada para a equipe",
-    employeeAdded: "Funcionário adicionado com sucesso",
-    settingsSaved: "Configurações salvas",
-    dataImported: "Dados importados com sucesso",
-  },
-
-  progress: {
-    creating: "Criando sua escala...",
-    optimizing: "Otimizando com IA...",
-    publishing: "Publicando escala...",
-    saving: "Salvando alterações...",
-    loading: "Carregando...",
-  },
-
-  empty: {
-    schedules: "Nenhuma escala criada ainda",
-    employees: "Nenhum funcionário cadastrado",
-    reports: "Nenhum relatório disponível",
-    notifications: "Nenhuma notificação",
-  },
-
-  errors: {
-    generic: "Algo deu errado. Tente novamente.",
-    network: "Erro de conexão. Verifique sua internet.",
-    validation: "Por favor, corrija os erros acima.",
-    permission: "Você não tem permissão para esta ação.",
-  },
-
-  tooltips: {
-    optimize: "Otimizar escala com IA",
-    publish: "Publicar e enviar para equipe",
-    edit: "Editar escala",
-    delete: "Excluir escala",
-    duplicate: "Duplicar escala",
-  },
-};
-
-// Copy para WhatsApp templates
-export const whatsappTemplates = {
-  confirmation: {
-    name: "Confirmação de Turno",
-    message: "Olá {employee_name}! Você tem escala amanhã ({date}) das {start_time} às {end_time}. Confirma presença? Responda SIM ou NÃO.",
-    variables: ["employee_name", "date", "start_time", "end_time"],
-  },
-
-  reminder: {
-    name: "Lembrete de Turno",
-    message: "Oi {employee_name}! Lembrete: seu turno começa em 1 hora ({start_time}). Até lá! 😊",
-    variables: ["employee_name", "start_time"],
-  },
-
-  swap: {
-    name: "Troca de Turno",
-    message: "Olá {employee_name}! {swap_employee} gostaria de trocar turno com você. {swap_date} das {swap_start} às {swap_end}. Aceita? Responda SIM ou NÃO.",
-    variables: ["employee_name", "swap_employee", "swap_date", "swap_start", "swap_end"],
-  },
-
-  published: {
-    name: "Escala Publicada",
-    message: "Nova escala publicada! Verifique seus horários em: {schedule_link}",
-    variables: ["schedule_link"],
-  },
-
-  cltAlert: {
-    name: "Alerta CLT",
-    message: "⚠️ Alerta: {violation_type} detectado. {description} Verifique: {schedule_link}",
-    variables: ["violation_type", "description", "schedule_link"],
-  },
-};
-
-// Gatilhos psicológicos para A/B testing
-export const psychologicalTriggers = {
-  // Urgência
-  urgency: {
-    countdown: "Termina em: {time}",
-    limited: "Apenas {count} vagas restantes",
-    deadline: "Oferta expira hoje",
-    flash: "Flash sale: 50% OFF",
-  },
-
-  // Escassez
-  scarcity: {
-    exclusive: "Acesso exclusivo",
-    limited: "Edição limitada",
-    last: "Última chance",
-    few: "Poucos lugares",
-  },
-
-  // Prova social
-  socialProof: {
-    numbers: "{count} pessoas já usam",
-    recent: "{name} acabou de se inscrever",
-    popular: "Mais popular",
-    trending: "Em alta",
-  },
-
-  // Autoridade
-  authority: {
-    expert: "Especialistas recomendam",
-    certified: "Certificado",
-    trusted: "Confiável",
-    award: "Prêmio",
-  },
-
-  // Reciprocidade
-  reciprocity: {
-    free: "Grátis",
-    bonus: "Bônus",
-    gift: "Presente",
-    value: "Valor",
-  },
-
-  // Consistência
-  consistency: {
-    commitment: "Comprometa-se",
-    improve: "Melhore",
-    grow: "Cresça",
-    excel: "Excele",
-  },
-
-  // Afinidade
-  liking: {
-    understand: "Entendemos",
-    partner: "Parceiros",
-    support: "Apoiamos",
-    community: "Comunidade",
-  },
-};
-
 // Copy para diferentes personas
 export const personaCopy = {
   owner: {
@@ -543,5 +268,27 @@ export const landingPageCopy = {
       "✅ Suporte 24/7",
       "✅ Migração gratuita",
     ],
+  },
+};
+
+// Copy para micro-interações e feedback
+export const microCopy = {
+  success: {
+    scheduleCreated: "Escala criada com sucesso! 🎉",
+    schedulePublished: "Escala publicada e enviada para a equipe",
+    employeeAdded: "Funcionário adicionado com sucesso",
+    settingsSaved: "Configurações salvas",
+    dataImported: "Dados importados com sucesso",
+  },
+  error: {
+    scheduleError: "Erro ao criar escala. Tente novamente.",
+    networkError: "Erro de conexão. Verifique sua internet.",
+    validationError: "Dados inválidos. Verifique as informações.",
+  },
+  loading: {
+    creating: "Criando escala...",
+    publishing: "Publicando...",
+    saving: "Salvando...",
+    importing: "Importando dados...",
   },
 };
