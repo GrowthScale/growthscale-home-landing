@@ -1,8 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './card';
 import { Button } from './button';
 import { Badge } from './badge';
-import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 import { Users, Calendar, Clock, TrendingUp, AlertTriangle } from 'lucide-react';
 
 const meta: Meta<typeof Card> = {
@@ -10,266 +9,246 @@ const meta: Meta<typeof Card> = {
   component: Card,
   parameters: {
     layout: 'centered',
-    docs: {
-      description: {
-        component: 'Componente Card do Design System GrowthScale. Usado para agrupar conteúdo relacionado em containers visuais.',
-      },
-    },
   },
   tags: ['autodocs'],
 };
 
 export default meta;
-
 type Story = StoryObj<typeof Card>;
 
-// Card básico
-export const Basic: Story = {
+export const Default: Story = {
   render: () => (
-    <Card className="w-[350px]">
+    <Card className="w-80">
       <CardHeader>
-        <CardTitle>Card Básico</CardTitle>
-        <CardDescription>Descrição do card com informações adicionais</CardDescription>
+        <CardTitle>Card Title</CardTitle>
+        <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Conteúdo principal do card pode conter qualquer elemento.</p>
+        <p>Card Content</p>
       </CardContent>
       <CardFooter>
-        <Button>Ver Mais</Button>
+        <p>Card Footer</p>
       </CardFooter>
     </Card>
   ),
 };
 
-// Card de métrica/KPI
-export const MetricCard: Story = {
+export const WithImage: Story = {
   render: () => (
-    <Card className="w-[200px]">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          Taxa de Rotatividade
-        </CardTitle>
+    <Card className="w-80">
+      <CardHeader>
+        <CardTitle>Card with Image</CardTitle>
+        <CardDescription>Card with an image in the header</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">8.5%</div>
-        <p className="text-xs text-muted-foreground">
-          ↓ 2.3% vs mês anterior
-        </p>
+        <div className="w-full h-32 bg-muted rounded-md mb-4"></div>
+        <p>This card has an image placeholder above.</p>
       </CardContent>
+      <CardFooter>
+        <Button>Action</Button>
+      </CardFooter>
     </Card>
   ),
 };
 
-// Card de funcionário
-export const EmployeeCard: Story = {
+export const WithIcons: Story = {
   render: () => (
-    <Card className="w-[300px]">
+    <Card className="w-80">
       <CardHeader>
-        <div className="flex items-center space-x-4">
-          <Avatar>
-            <AvatarImage src="/avatars/01.png" />
-            <AvatarFallback>JS</AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle>João Silva</CardTitle>
-            <CardDescription>Vendedor • Vendas</CardDescription>
-          </div>
+        <div className="flex items-center gap-2">
+          <Users className="h-5 w-5 text-primary" />
+          <CardTitle>Team Members</CardTitle>
         </div>
+        <CardDescription>Current team members and their roles</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          <div className="flex items-center text-sm">
-            <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-            <span>Ingresso: 15/01/2023</span>
+          <div className="flex items-center justify-between">
+            <span>Active Members</span>
+            <Badge>12</Badge>
           </div>
-          <div className="flex items-center text-sm">
-            <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
-            <span>Última atualização: 10/08/2024 14:30</span>
+          <div className="flex items-center justify-between">
+            <span>Pending Invites</span>
+            <Badge variant="secondary">3</Badge>
           </div>
         </div>
       </CardContent>
       <CardFooter>
-        <div className="flex space-x-2">
-          <Button variant="outline" size="sm">
-            <Users className="mr-2 h-4 w-4" />
-            Ver Detalhes
-          </Button>
-          <Button size="sm">
-            <TrendingUp className="mr-2 h-4 w-4" />
-            Editar
-          </Button>
-        </div>
+        <Button variant="outline" className="w-full">View All Members</Button>
       </CardFooter>
     </Card>
   ),
 };
 
-// Card de alerta
-export const AlertCard: Story = {
+export const WithStats: Story = {
   render: () => (
-    <Card className="w-[400px] border-destructive">
+    <Card className="w-80">
       <CardHeader>
-        <div className="flex items-center space-x-2">
+        <CardTitle>Weekly Overview</CardTitle>
+        <CardDescription>Performance metrics for this week</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-primary">85%</div>
+            <div className="text-sm text-muted-foreground">Efficiency</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">92%</div>
+            <div className="text-sm text-muted-foreground">Satisfaction</div>
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Button className="w-full">View Details</Button>
+      </CardFooter>
+    </Card>
+  ),
+};
+
+export const WithActions: Story = {
+  render: () => (
+    <Card className="w-80">
+      <CardHeader>
+        <CardTitle>Project Status</CardTitle>
+        <CardDescription>Current project progress and next steps</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span>Design Phase - Complete</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+            <span>Development - In Progress</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+            <span>Testing - Pending</span>
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex gap-2">
+        <Button variant="outline" className="flex-1">Edit</Button>
+        <Button className="flex-1">Deploy</Button>
+      </CardFooter>
+    </Card>
+  ),
+};
+
+export const WithError: Story = {
+  render: () => (
+    <Card className="w-80 border-destructive">
+      <CardHeader>
+        <div className="flex items-center gap-2">
           <AlertTriangle className="h-5 w-5 text-destructive" />
-          <CardTitle className="text-destructive">Alerta de Compliance</CardTitle>
+          <CardTitle className="text-destructive">Error Detected</CardTitle>
         </div>
-        <CardDescription>
-          Violação detectada na escala de trabalho
-        </CardDescription>
+        <CardDescription>There was an issue with the last operation</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Funcionário:</span>
-            <span className="text-sm">João Silva</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Problema:</span>
-            <span className="text-sm">Excesso de horas extras</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Impacto:</span>
-            <Badge variant="destructive">Alto</Badge>
-          </div>
-        </div>
+        <p className="text-sm text-muted-foreground">
+          The system encountered an unexpected error while processing your request. 
+          Please try again or contact support if the problem persists.
+        </p>
       </CardContent>
       <CardFooter>
-        <div className="flex space-x-2">
-          <Button variant="outline" size="sm">
-            Ignorar
-          </Button>
-          <Button size="sm">
-            Resolver
-          </Button>
-        </div>
+        <Button variant="outline" className="w-full">Try Again</Button>
       </CardFooter>
     </Card>
   ),
 };
 
-// Card de escala
-export const ScheduleCard: Story = {
+export const Compact: Story = {
   render: () => (
-    <Card className="w-[350px]">
-      <CardHeader>
+    <Card className="w-80">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg">Quick Stats</CardTitle>
+      </CardHeader>
+      <CardContent className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle>Escala de Vendas</CardTitle>
-          <Badge variant="outline">Aprovada</Badge>
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm">Today's Tasks</span>
+          </div>
+          <Badge variant="secondary">8/12</Badge>
         </div>
-        <CardDescription>15/08/2024 • 06:00 - 14:00</CardDescription>
+      </CardContent>
+    </Card>
+  ),
+};
+
+export const WithHover: Story = {
+  render: () => (
+    <Card className="w-80 cursor-pointer transition-all hover:shadow-elegant hover:-translate-y-1">
+      <CardHeader>
+        <CardTitle>Interactive Card</CardTitle>
+        <CardDescription>This card has hover effects</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p>Hover over this card to see the animation effects.</p>
+      </CardContent>
+      <CardFooter>
+        <Button className="w-full">Interact</Button>
+      </CardFooter>
+    </Card>
+  ),
+};
+
+export const WithGradient: Story = {
+  render: () => (
+    <Card className="w-80 overflow-hidden">
+      <div className="h-2 bg-gradient-to-r from-primary to-secondary"></div>
+      <CardHeader>
+        <CardTitle>Gradient Header</CardTitle>
+        <CardDescription>Card with a gradient accent bar</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p>This card features a gradient accent bar at the top.</p>
+      </CardContent>
+      <CardFooter>
+        <Button className="w-full">Get Started</Button>
+      </CardFooter>
+    </Card>
+  ),
+};
+
+export const WithTimeline: Story = {
+  render: () => (
+    <Card className="w-80">
+      <CardHeader>
+        <CardTitle>Recent Activity</CardTitle>
+        <CardDescription>Latest updates and changes</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <Users className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm">2 funcionários</span>
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+            <div>
+              <p className="text-sm font-medium">New user registered</p>
+              <p className="text-xs text-muted-foreground">2 minutes ago</p>
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm">8 horas • Turno Manhã</span>
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 bg-secondary rounded-full mt-2"></div>
+            <div>
+              <p className="text-sm font-medium">Project updated</p>
+              <p className="text-xs text-muted-foreground">1 hour ago</p>
+            </div>
           </div>
-          <div className="text-sm text-muted-foreground">
-            Escala otimizada pela IA
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 bg-muted-foreground rounded-full mt-2"></div>
+            <div>
+              <p className="text-sm font-medium">System backup completed</p>
+              <p className="text-xs text-muted-foreground">3 hours ago</p>
+            </div>
           </div>
         </div>
       </CardContent>
       <CardFooter>
-        <div className="flex space-x-2">
-          <Button variant="outline" size="sm">
-            Visualizar
-          </Button>
-          <Button size="sm">
-            Editar
-          </Button>
-        </div>
+        <Button variant="outline" className="w-full">View All Activity</Button>
       </CardFooter>
     </Card>
   ),
-};
-
-// Card com imagem
-export const ImageCard: Story = {
-  render: () => (
-    <Card className="w-[300px] overflow-hidden">
-      <div className="aspect-video bg-gradient-to-br from-primary/20 to-primary/5" />
-      <CardHeader>
-        <CardTitle>Card com Imagem</CardTitle>
-        <CardDescription>
-          Cards podem incluir imagens ou gradientes como elementos visuais
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">
-          Este é um exemplo de card que inclui uma área de imagem ou gradiente no topo.
-        </p>
-      </CardContent>
-      <CardFooter>
-        <Button className="w-full">Ação Principal</Button>
-      </CardFooter>
-    </Card>
-  ),
-};
-
-// Card interativo
-export const InteractiveCard: Story = {
-  render: () => (
-    <Card className="w-[300px] cursor-pointer transition-all hover:shadow-elegant hover:-translate-y-1">
-      <CardHeader>
-        <CardTitle>Card Interativo</CardTitle>
-        <CardDescription>
-          Cards podem ser interativos com hover effects
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">
-          Passe o mouse sobre este card para ver os efeitos de hover.
-        </p>
-      </CardContent>
-      <CardFooter>
-        <Button variant="outline" className="w-full">
-          Interagir
-        </Button>
-      </CardFooter>
-    </Card>
-  ),
-};
-
-// Grid de cards
-export const CardGrid: Story = {
-  render: () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Card 1</CardTitle>
-          <CardDescription>Primeiro card do grid</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Conteúdo do primeiro card</p>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Card 2</CardTitle>
-          <CardDescription>Segundo card do grid</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Conteúdo do segundo card</p>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Card 3</CardTitle>
-          <CardDescription>Terceiro card do grid</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Conteúdo do terceiro card</p>
-        </CardContent>
-      </Card>
-    </div>
-  ),
-  parameters: {
-    layout: 'padded',
-  },
 };

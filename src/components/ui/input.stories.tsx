@@ -1,195 +1,208 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './input';
-import { Search, Mail, Lock, User, Phone } from 'lucide-react';
+import { Label } from './label';
+import { Search, Mail, Lock, User, Phone, X } from 'lucide-react';
 
 const meta: Meta<typeof Input> = {
   title: 'UI/Input',
   component: Input,
   parameters: {
     layout: 'centered',
-    docs: {
-      description: {
-        component: 'Componente Input do Design System GrowthScale. Campo de entrada de texto com suporte a ícones e validação.',
-      },
-    },
-  },
-  argTypes: {
-    type: {
-      control: { type: 'select' },
-      options: ['text', 'email', 'password', 'number', 'tel', 'url', 'search'],
-      description: 'Tipo do campo de entrada',
-    },
-    disabled: {
-      control: { type: 'boolean' },
-      description: 'Estado desabilitado',
-    },
   },
   tags: ['autodocs'],
+  argTypes: {
+    disabled: {
+      control: 'boolean',
+    },
+    type: {
+      control: 'select',
+      options: ['text', 'email', 'password', 'number', 'tel', 'url'],
+    },
+  },
 };
 
 export default meta;
-
 type Story = StoryObj<typeof Input>;
 
-// Input básico
 export const Default: Story = {
-  args: {
-    placeholder: 'Digite algo...',
-  },
+  render: () => <Input placeholder="Digite aqui..." />,
 };
 
-// Input com label
 export const WithLabel: Story = {
   render: () => (
     <div className="space-y-2">
-      <label htmlFor="email" className="text-sm font-medium">
-        Email
-      </label>
+      <Label htmlFor="email">Email</Label>
       <Input id="email" type="email" placeholder="seu@email.com" />
     </div>
   ),
 };
 
-// Input com ícone
 export const WithIcon: Story = {
   render: () => (
     <div className="relative">
-      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input placeholder="Buscar..." className="pl-10" />
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <Input className="pl-10" placeholder="Buscar..." />
     </div>
   ),
 };
 
-// Input de email
-export const Email: Story = {
+export const WithIconRight: Story = {
   render: () => (
     <div className="relative">
-      <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input type="email" placeholder="seu@email.com" className="pl-10" />
+      <Input className="pr-10" placeholder="Digite sua senha" type="password" />
+      <Lock className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
     </div>
   ),
 };
 
-// Input de senha
-export const Password: Story = {
+export const WithBothIcons: Story = {
   render: () => (
     <div className="relative">
-      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input type="password" placeholder="Sua senha" className="pl-10" />
+      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <Input className="pl-10 pr-10" placeholder="Email" type="email" />
+      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+      </div>
     </div>
   ),
 };
 
-// Input de nome
-export const Name: Story = {
-  render: () => (
-    <div className="relative">
-      <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input placeholder="Seu nome completo" className="pl-10" />
-    </div>
-  ),
-};
-
-// Input de telefone
-export const Phone: Story = {
-  render: () => (
-    <div className="relative">
-      <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input type="tel" placeholder="(11) 99999-9999" className="pl-10" />
-    </div>
-  ),
-};
-
-// Input desabilitado
 export const Disabled: Story = {
-  args: {
-    disabled: true,
-    placeholder: 'Campo desabilitado',
-  },
+  render: () => <Input disabled placeholder="Campo desabilitado" />,
 };
 
-// Input com erro
 export const WithError: Story = {
   render: () => (
     <div className="space-y-2">
-      <Input placeholder="Email inválido" className="border-destructive" />
-      <p className="text-sm text-destructive">Por favor, insira um email válido.</p>
+      <Input className="border-destructive" placeholder="Campo com erro" />
+      <p className="text-sm text-destructive">Este campo é obrigatório</p>
     </div>
   ),
 };
 
-// Input com sucesso
-export const WithSuccess: Story = {
+export const WithDescription: Story = {
   render: () => (
     <div className="space-y-2">
-      <Input placeholder="Email válido" className="border-success" />
-      <p className="text-sm text-success">Email válido!</p>
+      <Label htmlFor="username">Nome de usuário</Label>
+      <Input id="username" placeholder="Digite seu nome de usuário" />
+      <p className="text-sm text-muted-foreground">
+        Use apenas letras, números e underscores
+      </p>
     </div>
   ),
 };
 
-// Input de busca
-export const Search: Story = {
+export const DifferentTypes: Story = {
+  render: () => (
+    <div className="space-y-4 w-96">
+      <div className="space-y-2">
+        <Label htmlFor="text">Texto</Label>
+        <Input id="text" type="text" placeholder="Digite texto" />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" type="email" placeholder="seu@email.com" />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="password">Senha</Label>
+        <Input id="password" type="password" placeholder="Digite sua senha" />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="number">Número</Label>
+        <Input id="number" type="number" placeholder="Digite um número" />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="tel">Telefone</Label>
+        <Input id="tel" type="tel" placeholder="(11) 99999-9999" />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="url">URL</Label>
+        <Input id="url" type="url" placeholder="https://exemplo.com" />
+      </div>
+    </div>
+  ),
+};
+
+export const WithPrefix: Story = {
+  render: () => (
+    <div className="flex">
+      <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-input bg-muted text-sm text-muted-foreground">
+        https://
+      </span>
+      <Input className="rounded-l-none" placeholder="exemplo.com" />
+    </div>
+  ),
+};
+
+export const WithSuffix: Story = {
+  render: () => (
+    <div className="flex">
+      <Input className="rounded-r-none" placeholder="Digite o valor" />
+      <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-input bg-muted text-sm text-muted-foreground">
+        .com
+      </span>
+    </div>
+  ),
+};
+
+export const WithBothPrefixAndSuffix: Story = {
+  render: () => (
+    <div className="flex">
+      <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-input bg-muted text-sm text-muted-foreground">
+        R$
+      </span>
+      <Input className="rounded-none" placeholder="0,00" />
+      <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-input bg-muted text-sm text-muted-foreground">
+        BRL
+      </span>
+    </div>
+  ),
+};
+
+export const WithValidation: Story = {
+  render: () => (
+    <div className="space-y-2">
+      <Input 
+        className="border-green-500 focus:border-green-500" 
+        placeholder="Campo válido" 
+      />
+      <p className="text-sm text-green-600">✓ Campo válido</p>
+    </div>
+  ),
+};
+
+export const WithLoading: Story = {
   render: () => (
     <div className="relative">
-      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input placeholder="Buscar funcionários..." className="pl-10" />
+      <Input placeholder="Carregando..." disabled />
+      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+      </div>
     </div>
   ),
 };
 
-// Input de número
-export const Number: Story = {
-  args: {
-    type: 'number',
-    placeholder: 'Quantidade',
-  },
-};
-
-// Input de URL
-export const URL: Story = {
-  args: {
-    type: 'url',
-    placeholder: 'https://exemplo.com',
-  },
-};
-
-// Todos os tipos
-export const AllTypes: Story = {
+export const WithCharacterCount: Story = {
   render: () => (
-    <div className="space-y-4 w-[400px]">
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Texto</label>
-        <Input placeholder="Digite seu nome" />
-      </div>
-      
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Email</label>
-        <Input type="email" placeholder="seu@email.com" />
-      </div>
-      
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Senha</label>
-        <Input type="password" placeholder="Sua senha" />
-      </div>
-      
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Telefone</label>
-        <Input type="tel" placeholder="(11) 99999-9999" />
-      </div>
-      
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Número</label>
-        <Input type="number" placeholder="123" />
-      </div>
-      
-      <div className="space-y-2">
-        <label className="text-sm font-medium">URL</label>
-        <Input type="url" placeholder="https://exemplo.com" />
-      </div>
+    <div className="space-y-2">
+      <Input placeholder="Digite sua mensagem" maxLength={100} />
+      <p className="text-sm text-muted-foreground text-right">0/100</p>
     </div>
   ),
-  parameters: {
-    layout: 'padded',
-  },
+};
+
+export const WithClearButton: Story = {
+  render: () => (
+    <div className="relative">
+      <Input placeholder="Digite e limpe" />
+      <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground">
+        <X className="h-4 w-4" />
+      </button>
+    </div>
+  ),
 };

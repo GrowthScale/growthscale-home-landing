@@ -208,7 +208,7 @@ export const Compact: Story = {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">ID</TableHead>
+          <TableHead className="w-24">ID</TableHead>
           <TableHead>Nome</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Telefone</TableHead>
@@ -233,7 +233,7 @@ export const WithSelection: Story = {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[50px]">
+          <TableHead className="w-12">
             <input type="checkbox" className="rounded" />
           </TableHead>
           <TableHead>Nome</TableHead>
