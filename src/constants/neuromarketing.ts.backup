@@ -95,59 +95,59 @@ export const neuromarketingCopy = {
   },
 };
 
+// Copy específico para cada seção da landing page
+export const landingPageCopy = {
+  hero: {
+    h1: "Crie escalas perfeitas em minutos e fique 100% dentro da lei",
+    subtitle: "A plataforma com Inteligência Artificial que blinda seu restaurante, otimiza suas escalas e te dá controle total dos custos. Sem planilhas, sem medo.",
+    ctaPrimary: "Gerar minha escala agora",
+    ctaSecondary: "Ver demo de 3 minutos",
+    trustBadge: "500+ restaurantes já economizam R$2.500/mês",
+  },
 
+  benefits: {
+    title: "Por que restaurantes escolhem o GrowthScale?",
+    subtitle: "Resultados comprovados que transformam a gestão do seu negócio",
+    items: [
+      {
+        title: "Economia Garantida",
+        description: "Reduza custos operacionais em até 30% com escalas otimizadas",
+        value: "R$2.500/mês",
+        icon: "💰",
+      },
+      {
+        title: "Tempo Livre",
+        description: "Economize 8 horas por semana na gestão de escalas",
+        value: "8h/semana",
+        icon: "⏰",
+      },
+      {
+        title: "Segurança Jurídica",
+        description: "Fique 100% em conformidade com a CLT automaticamente",
+        value: "100%",
+        icon: "🛡️",
+      },
+      {
+        title: "Produtividade",
+        description: "Aumente a eficiência da sua equipe em 40%",
+        value: "40%",
+        icon: "📈",
+      },
+    ],
+  },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  socialProof: {
+    title: "Restaurantes que já transformaram sua gestão",
+    subtitle: "Veja o que nossos clientes dizem sobre o GrowthScale",
+    testimonials: [
+      {
+        name: "João Silva",
+        restaurant: "Restaurante Sabor & Arte",
+        text: "O GrowthScale salvou meu negócio. Economizei R$3.200 no primeiro mês e agora durmo tranquilo.",
+        rating: 5,
+        savings: "R$3.200/mês",
+      },
+      {
         name: "Maria Santos",
         restaurant: "Cantina da Maria",
         text: "Finalmente posso focar no que realmente importa: a qualidade da comida. A gestão de escalas ficou automática.",
@@ -422,126 +422,5 @@ export const funnelCopy = {
   retention: {
     title: "Continue otimizando sua gestão",
     subtitle: "Novas funcionalidades e melhorias constantes",
-  },
-};
-
-// 🧠 COPY NEUROCIENTÍFICO OTIMIZADO
-export const landingPageCopy = {
-  hero: {
-    h1: "🚨 Pare de perder R$2.500/mês com escalas desorganizadas",
-    subtitle: "A IA que já salvou 500+ restaurantes de multas trabalhistas. Crie escalas perfeitas em 3 minutos e durma tranquilo sabendo que está 100% dentro da lei.",
-    ctaPrimary: "🚀 Começar a economizar AGORA",
-    ctaSecondary: "👀 Ver como funciona (3 min)",
-    trustBadge: "⚡ 500+ restaurantes já economizam R$2.500/mês",
-  },
-
-  benefits: {
-    title: "Por que restaurantes escolhem o GrowthScale?",
-    subtitle: "Resultados comprovados que transformam a gestão do seu negócio",
-    items: [
-      {
-        title: "💰 Economia Garantida",
-        description: "Reduza custos operacionais em até 30% com escalas otimizadas",
-        value: "R$2.500/mês",
-        icon: "💰",
-      },
-      {
-        title: "⏰ Tempo Livre",
-        description: "Economize 8 horas por semana na gestão de escalas",
-        value: "8h/semana",
-        icon: "⏰",
-      },
-      {
-        title: "🛡️ Segurança Jurídica",
-        description: "Fique 100% em conformidade com a CLT automaticamente",
-        value: "100%",
-        icon: "🛡️",
-      },
-      {
-        title: "📈 Produtividade",
-        description: "Aumente a eficiência da sua equipe em 40%",
-        value: "40%",
-        icon: "📈",
-      },
-    ],
-  },
-
-  socialProof: {
-    title: "Restaurantes que já transformaram sua gestão",
-    subtitle: "Veja o que nossos clientes dizem sobre o GrowthScale",
-    testimonials: [
-      {
-        name: "João Silva",
-        restaurant: "Restaurante Sabor & Arte",
-        text: "O GrowthScale salvou meu negócio. Economizei R$3.200 no primeiro mês e agora durmo tranquilo.",
-        rating: 5,
-        savings: "R$3.200/mês",
-      },
-      {
-        name: "Maria Santos",
-        restaurant: "Cantina da Maria",
-        text: "Finalmente posso focar no que realmente importa: a qualidade da comida. A gestão de escalas ficou automática.",
-        rating: 5,
-        savings: "R$2.800/mês",
-      },
-      {
-        name: "Carlos Oliveira",
-        restaurant: "Bar do Carlos",
-        text: "A IA do GrowthScale é incrível. Ela entende melhor as necessidades do meu negócio que eu mesmo.",
-        rating: 5,
-        savings: "R$1.900/mês",
-      },
-    ],
-    stats: {
-      total: "500+",
-      savings: "R$2.500/mês",
-      rating: "4.8/5",
-      satisfaction: "98%",
-    },
-  },
-
-  features: {
-    title: "Tudo que você precisa para gestão perfeita",
-    subtitle: "Funcionalidades desenvolvidas especificamente para food service",
-    items: [
-      {
-        title: "🧠 IA Inteligente",
-        description: "Algoritmo que aprende com seu negócio e otimiza escalas automaticamente",
-        benefit: "Escalas 40% mais eficientes",
-      },
-      {
-        title: "⚖️ Compliance Automático",
-        description: "Validação em tempo real de todas as regras da CLT",
-        benefit: "100% dentro da lei",
-      },
-      {
-        title: "📱 WhatsApp Integrado",
-        description: "Confirmação automática de presença via WhatsApp",
-        benefit: "Redução de 90% em ausências",
-      },
-      {
-        title: "📊 Relatórios Inteligentes",
-        description: "Insights detalhados sobre custos e produtividade",
-        benefit: "Decisões baseadas em dados",
-      },
-    ],
-  },
-
-  urgency: {
-    title: "⏰ Oferta por tempo limitado",
-    subtitle: "Primeiros 100 restaurantes ganham 30 dias grátis + consultoria personalizada",
-    cta: "🚀 Garantir minha vaga AGORA",
-    countdown: "Restam apenas 23 vagas",
-  },
-
-  guarantee: {
-    title: "🛡️ Garantia de 30 dias ou seu dinheiro de volta",
-    subtitle: "Se em 30 dias você não economizar pelo menos R$1.000, devolvemos 100% do seu dinheiro",
-    features: [
-      "✅ Sem compromisso",
-      "✅ Cancelamento a qualquer momento",
-      "✅ Suporte 24/7",
-      "✅ Migração gratuita",
-    ],
   },
 };
