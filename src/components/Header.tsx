@@ -1,10 +1,26 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Button } from '@/components/ui/button';
+import { Menu, X, User, LogOut, Settings } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
+  // Obtém as iniciais do nome do utilizador para o Avatar
+  const getInitials = (name: string = '') => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+  };
 
   const isHomePage = location.pathname === '/';
 
@@ -26,21 +42,20 @@ const Header = () => {
   }, [navigate]);
 
   return (
-    <header className="w-full bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">G</span>
-            </div>
-            <span className="text-2xl font-bold text-gray-900">
-              GrowthScale
-            </span>
-          </Link>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 items-center">
+        {/* Logo */}
+        <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+            <span className="text-primary-foreground font-bold text-xl">G</span>
+          </div>
+          <span className="text-2xl font-bold text-foreground">
+            GrowthScale
+          </span>
+        </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-8 ml-8">
             {isHomePage ? (
               <>
                 <button 
@@ -86,20 +101,59 @@ const Header = () => {
             )}
           </nav>
 
-          {/* CTA Buttons */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <button 
-              onClick={() => navigate('/auth')}
-              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
-            >
-              Entrar
-            </button>
-            <button 
-              onClick={() => navigate('/auth')}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              Começar Grátis
-            </button>
+          {/* CTA Buttons / User Menu */}
+          <div className="flex flex-1 items-center justify-end space-x-2">
+            {user ? (
+              // Menu do utilizador logado
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="text-xs font-medium">
+                        {getInitials(user.user_metadata?.full_name || user.email || 'U')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="sr-only">Toggle user menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {user.user_metadata?.full_name || 'Usuário'}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/settings')}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Configurações</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/profile')}>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Perfil</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sair</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              // --- ESTA É A PARTE CRÍTICA CORRIGIDA ---
+              <>
+                <Button asChild variant="ghost">
+                  <Link to="/auth">Entrar</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/auth">Começar Grátis</Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}

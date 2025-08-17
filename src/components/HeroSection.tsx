@@ -1,4 +1,6 @@
-import { SecondaryButton, OutlineButton } from "@/components/ui/accessible-button";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 import { PlayCircle } from "lucide-react";
 import { landingPageCopy } from "@/constants/neuromarketing";
 
@@ -46,26 +48,29 @@ const HeroSection = () => {
           {landingPageCopy.hero.subtitle}
         </p>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons - CORRIGIDOS COM LINKS APROPRIADOS */}
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-8">
-          <SecondaryButton 
-            size="xl"
-            className="shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-            ariaLabel="Começar a usar GrowthScale gratuitamente"
-            onClick={() => window.location.href = '/login'}
+          <Button 
+            asChild 
+            size="lg" 
+            className="text-lg px-8 py-6 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
           >
-            {landingPageCopy.hero.ctaPrimary}
-          </SecondaryButton>
+            <Link to="/auth">
+              {landingPageCopy.hero.ctaPrimary}
+            </Link>
+          </Button>
           
-          <OutlineButton 
-            size="xl"
-            icon={<PlayCircle className="h-6 w-6" />}
-            className="border-white text-white hover:bg-white hover:text-primary-900 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-            ariaLabel="Ver demonstração do GrowthScale"
-            onClick={() => window.location.href = '/demo'}
+          <Button 
+            asChild 
+            size="lg" 
+            variant="outline" 
+            className="text-lg px-8 py-6 border-white text-white hover:bg-white hover:text-primary-900 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
           >
-            {landingPageCopy.hero.ctaSecondary}
-          </OutlineButton>
+            <Link to="/#recursos">
+              <PlayCircle className="mr-2 h-5 w-5" />
+              {landingPageCopy.hero.ctaSecondary}
+            </Link>
+          </Button>
         </div>
 
         {/* Social Proof */}
