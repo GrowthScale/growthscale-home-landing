@@ -828,4 +828,17 @@ export class ScheduleDraftService extends BaseApiService {
 // Instância do serviço de rascunhos
 export const scheduleDraftService = new ScheduleDraftService();
 
+// Função para exclusão de conta do usuário
+export async function deleteUserAccount() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Utilizador não encontrado.");
+
+  const { data, error } = await supabase.functions.invoke('delete-user-account', {
+    body: { user },
+  });
+
+  if (error) throw error;
+  return data;
+}
+
  
