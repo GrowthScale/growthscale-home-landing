@@ -48,7 +48,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="w-full bg-slate-900 text-white">
+    <footer id="contato" className="w-full bg-slate-900 text-white">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Logo e descrição */}

@@ -70,7 +70,12 @@ export function CTASection() {
               size="lg" 
               variant="outline" 
               className="text-lg px-8 py-6"
-              onClick={() => window.location.href = '/#precos'}
+              onClick={() => {
+                const element = document.getElementById('precos');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
             >
               Ver Todos os Planos
             </Button>

@@ -72,7 +72,12 @@ export function MobileCTASection() {
             variant="outline" 
             size="lg" 
             className="w-full sm:w-auto text-base px-6 py-4 border-white/30 text-white hover:bg-white hover:text-blue-600 transition-all duration-300 min-h-[48px]"
-            onClick={() => window.location.href = '/#precos'}
+                          onClick={() => {
+                const element = document.getElementById('precos');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
           >
             Ver Todos os Planos
           </Button>

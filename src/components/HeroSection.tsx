@@ -63,7 +63,12 @@ export function HeroSection() {
                         size="lg" 
                         variant="outline" 
                         className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-white/30 text-white hover:bg-white hover:text-slate-900 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 min-h-[56px] sm:min-h-[64px]"
-                        onClick={() => window.location.href = '/#precos'}
+                        onClick={() => {
+                          const element = document.getElementById('precos');
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
                       >
                         <span className="hidden sm:inline">Ver Todos os Planos</span>
                         <span className="sm:hidden">Ver Planos</span>

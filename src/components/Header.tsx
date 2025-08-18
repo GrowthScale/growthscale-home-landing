@@ -59,19 +59,34 @@ const Header = () => {
           {isHomePage ? (
             <>
               <button 
-                onClick={() => scrollToSection('recursos')}
+                onClick={() => {
+                  const element = document.getElementById('recursos');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Recursos
               </button>
               <button 
-                onClick={() => scrollToSection('precos')}
+                onClick={() => {
+                  const element = document.getElementById('precos');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Preços
               </button>
               <button 
-                onClick={() => scrollToSection('contato')}
+                onClick={() => {
+                  const element = document.getElementById('contato');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Contato
