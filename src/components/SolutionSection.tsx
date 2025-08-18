@@ -172,7 +172,7 @@ export function SolutionSection() {
                             <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                             <span className="text-red-700 dark:text-red-300 text-xs font-medium">VIOLAÇÃO DETECTADA</span>
                           </div>
-                          <p className="text-red-600 dark:text-red-200 text-xs">João Silva - Intervalo insuficiente (45min < 60min obrigatório)</p>
+                          <p className="text-red-600 dark:text-red-200 text-xs">João Silva - Intervalo insuficiente (45min menor que 60min obrigatório)</p>
                         </div>
                         <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
                           <div className="flex items-center gap-2 mb-1">
