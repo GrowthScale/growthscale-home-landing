@@ -1,0 +1,170 @@
+/* Design System v1 - GrowthScale */
+
+:root {
+  /* Base */
+  --background: 210 20% 99%;      /* quase branco */
+  --foreground: 222 47% 11%;      /* slate-900 */
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+
+  /* Brand */
+  --primary: 221.2 83.2% 53.3%;   /* #3B82F6 */
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 220 16% 96%;       /* section alt clara */
+  --secondary-foreground: 222 47% 15%;
+
+  --accent: 199 89% 48%;          /* info: #0EA5E9 */
+  --accent-foreground: 210 40% 98%;
+
+  /* Estados */
+  --success: 152 60% 45%;         /* #12B76A */
+  --success-foreground: 168 76% 96%;
+
+  --warning: 38 96% 50%;          /* #F59E0B */
+  --warning-foreground: 210 40% 98%;
+
+  --destructive: 0 84% 60%;       /* #EF4444 */
+  --destructive-foreground: 210 40% 98%;
+
+  /* Neutros */
+  --muted: 220 16% 96%;
+  --muted-foreground: 215 16% 45%;
+
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 217.2 91.2% 59.8%;      /* focus azul */
+
+  /* Superfícies semânticas */
+  --surface-base: 210 20% 99%;
+  --surface-alt: 220 16% 96%;     /* zebragem de seções */
+  --surface-card: 0 0% 100%;
+
+  /* Radius */
+  --radius: 14px;                 /* + moderno */
+}
+
+/***** Dark *****/
+.dark {
+  --background: 224 71% 4%;       /* #0B1220 */
+  --foreground: 213 31% 91%;      /* slate-200 */
+
+  --card: 222 47% 10%;            /* #111827 */
+  --card-foreground: 213 31% 91%;
+
+  --popover: 224 71% 4%;
+  --popover-foreground: 213 31% 91%;
+
+  --primary: 221.2 83.2% 60%;     /* um pouco mais claro no dark */
+  --primary-foreground: 222 47% 10%;
+
+  --secondary: 222 47% 12%;       /* section alt escura */
+  --secondary-foreground: 210 40% 98%;
+
+  --accent: 199 89% 56%;
+  --accent-foreground: 222 47% 10%;
+
+  --success: 152 60% 50%;
+  --success-foreground: 222 47% 10%;
+
+  --warning: 38 96% 56%;
+  --warning-foreground: 222 47% 10%;
+
+  --destructive: 0 84% 65%;
+  --destructive-foreground: 222 47% 10%;
+
+  --muted: 222 47% 11%;
+  --muted-foreground: 215 20% 70%;
+
+  --border: 222 47% 20%;
+  --input: 222 47% 20%;
+  --ring: 221.2 83.2% 66%;
+
+  --surface-base: 224 71% 4%;
+  --surface-alt: 222 47% 11%;
+  --surface-card: 222 47% 10%;
+}
+
+/* Gradientes utilitários */
+.bg-hero {
+  background:
+    radial-gradient(1200px 600px at 20% -10%, hsla(221,83%,53%,0.30), transparent 60%),
+    radial-gradient(900px 500px at 85% 120%, hsla(152,60%,45%,0.22), transparent 50%),
+    linear-gradient(180deg, hsl(224 71% 4%) 0%, hsl(222 47% 11%) 60%, hsl(224 71% 4%) 100%);
+}
+
+.bg-section-alt { 
+  background-color: hsl(var(--surface-alt)); 
+}
+
+/* Animações aprimoradas */
+@keyframes fade-in-down { 
+  from { 
+    opacity: 0; 
+    transform: translateY(-20px); 
+  } 
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  } 
+}
+
+@keyframes fade-in-up { 
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  } 
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  } 
+}
+
+@keyframes scale-in { 
+  from { 
+    opacity: 0; 
+    transform: scale(0.95); 
+  } 
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  } 
+}
+
+@keyframes pulse-glow { 
+  0%, 100% { 
+    box-shadow: 0 0 20px hsla(221,83%,53%,0.3); 
+  } 
+  50% { 
+    box-shadow: 0 0 30px hsla(221,83%,53%,0.6); 
+  } 
+}
+
+/* Classes utilitárias */
+.animate-fade-in-down { 
+  animation: fade-in-down 0.8s ease-out forwards; 
+}
+
+.animate-fade-in-up { 
+  animation: fade-in-up 0.8s ease-out forwards; 
+}
+
+.animate-scale-in { 
+  animation: scale-in 0.6s ease-out forwards; 
+}
+
+.animate-pulse-glow { 
+  animation: pulse-glow 2s ease-in-out infinite; 
+}
+
+/* Delays para sequência */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
