@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Clock, Shield, Zap, Users } from 'lucide-react';
+import { ArrowRight, CheckCircle, Clock, Shield } from 'lucide-react';
 
 export function CTASection() {
   const benefits = [
@@ -29,7 +29,7 @@ export function CTASection() {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-            Pronto para operar com 100% de segurança e tranquilidade?
+            Pronto para transformar a gestão das suas escalas?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Junte-se a centenas de restaurantes que já economizam tempo e dinheiro com o GrowthScale. 
@@ -79,21 +79,6 @@ export function CTASection() {
             >
               Ver Todos os Planos
             </Button>
-          </div>
-
-          {/* Urgency Banner */}
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6 max-w-2xl mx-auto mb-8">
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <Zap className="w-6 h-6 text-red-500" />
-              <h3 className="text-lg font-semibold text-red-800">Oferta Limitada</h3>
-            </div>
-            <p className="text-sm text-red-700 mb-4">
-              Primeiros 100 usuários ganham 30 dias de Professional grátis
-            </p>
-            <div className="flex items-center justify-center gap-2 text-xs text-red-600">
-              <Clock className="w-4 h-4" />
-              <span>Restam apenas 23 vagas</span>
-            </div>
           </div>
 
           {/* Garantia */}
