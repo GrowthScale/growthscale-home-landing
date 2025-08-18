@@ -50,29 +50,24 @@ export function HeroSection() {
 
         {/* 🧠 CTA BUTTONS - Mobile-First com Touch Targets */}
         <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 justify-center items-center mb-8 sm:mb-12 px-4">
-          <Button 
-            asChild 
-            size="lg" 
-            className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 bg-red-600 hover:bg-red-700 text-white font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 min-h-[56px] sm:min-h-[64px] animate-pulse"
-          >
-            <Link to="/demo" className="flex items-center justify-center">
-              <Phone className="w-5 h-5 mr-2 sm:mr-3 flex-shrink-0" />
-              <span className="hidden sm:inline">Agendar Demonstração</span>
-              <span className="sm:hidden">Agendar Demo</span>
-            </Link>
-          </Button>
+                                <Button 
+                        size="lg" 
+                        className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 bg-red-600 hover:bg-red-700 text-white font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 min-h-[56px] sm:min-h-[64px] animate-pulse"
+                        onClick={() => window.location.href = '/signup?plan=freemium'}
+                      >
+                        <span className="hidden sm:inline">Começar Gratuitamente</span>
+                        <span className="sm:hidden">Começar Grátis</span>
+                      </Button>
           
-          <Button 
-            asChild 
-            size="lg" 
-            variant="outline" 
-            className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-white/30 text-white hover:bg-white hover:text-slate-900 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 min-h-[56px] sm:min-h-[64px]"
-          >
-            <Link to="/#recursos" className="flex items-center justify-center">
-              <span className="hidden sm:inline">Conhecer Funcionalidades</span>
-              <span className="sm:hidden">Ver Funcionalidades</span>
-            </Link>
-          </Button>
+                                <Button 
+                        size="lg" 
+                        variant="outline" 
+                        className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-white/30 text-white hover:bg-white hover:text-slate-900 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 min-h-[56px] sm:min-h-[64px]"
+                        onClick={() => window.location.href = '/#precos'}
+                      >
+                        <span className="hidden sm:inline">Ver Todos os Planos</span>
+                        <span className="sm:hidden">Ver Planos</span>
+                      </Button>
         </div>
 
         {/* 🧠 SOCIAL PROOF - Otimizado para Mobile */}
