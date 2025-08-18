@@ -1,9 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
-@import './styles/variables.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+ 
+@layer base {
+  :root {
+    /* Paleta Escura Premium (Default) */
+    --background: 224 71% 4%;    /* Azul quase preto */
+    --foreground: 210 40% 98%;   /* Branco suave */
+    --card: 217.2 32.6% 17.5%; /* Azul escuro para cards */
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%; /* Azul elétrico */
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%; /* Cinza azulado para textos */
+    --accent: 38 92% 50%; /* Laranja/Dourado para acentos de confiança */
+    --accent-foreground: 24 9.8% 10%;
+    --destructive: 0 72% 51%; /* Vermelho para alertas, menos agressivo */
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --radius: 0.75rem; /* Bordas ligeiramente mais arredondadas */
+  }
+}
  
 @layer base {
   * {
@@ -20,29 +45,11 @@
   }
 }
 
-@layer components {
-  /* Escala Tipográfica */
-  .h1 {
-    @apply text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[1.05];
-  }
-  
-  .h2 {
-    @apply text-3xl md:text-4xl font-display font-bold leading-tight;
-  }
-  
-  .lead {
-    @apply text-lg md:text-xl text-muted-foreground;
-  }
-  
-  .body {
-    @apply text-base md:text-[17px] leading-relaxed;
-  }
-  
-  .small {
-    @apply text-sm text-muted-foreground;
-  }
-}
-
 @layer utilities {
-  /* Animações já definidas no variables.css */
+  @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+  .bg-grid {
+    background-image: linear-gradient(white 1px, transparent 1px), linear-gradient(to right, white 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
 }
