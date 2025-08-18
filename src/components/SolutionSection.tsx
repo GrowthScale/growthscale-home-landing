@@ -1,99 +1,107 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle, Zap, Shield, TrendingUp, Clock, Users, BarChart3, MessageSquare, Brain, Target } from 'lucide-react';
+import { CheckCircle, Shield, TrendingUp, Clock, Users, BarChart3, MessageSquare, Brain, Calendar, Settings } from 'lucide-react';
 
 export function SolutionSection() {
   const solutions = [
     {
-      id: "ai",
-      title: "🧠 IA Inteligente",
-      subtitle: "Algoritmo que aprende com seu negócio",
-      description: "Nossa IA analisa padrões, otimiza escalas e aprende com suas necessidades específicas.",
-      benefits: [
-        "Escalas 40% mais eficientes",
-        "Redução de 60% no tempo de criação",
-        "Otimização automática de custos",
-        "Previsão de demanda inteligente"
-      ],
-      icon: Brain,
-      color: "blue",
-      stats: {
-        value: "40%",
-        label: "Mais eficiência"
-      }
-    },
-    {
       id: "compliance",
-      title: "⚖️ Compliance Automático",
-      subtitle: "100% dentro da lei, sempre",
-      description: "Validação em tempo real de todas as regras da CLT, garantindo total conformidade.",
+      title: "Compliance CLT",
+      subtitle: "Conformidade automática com a legislação",
+      description: "Sistema que valida automaticamente todas as regras da CLT, incluindo jornadas de trabalho, intervalos e folgas obrigatórias.",
       benefits: [
-        "Zero multas trabalhistas",
         "Validação automática de jornadas",
         "Controle de horas extras",
+        "Alertas de violações em tempo real",
         "Relatórios para auditoria"
       ],
       icon: Shield,
-      color: "green",
-      stats: {
-        value: "100%",
-        label: "Compliance garantido"
-      }
+      color: "blue",
+      features: [
+        "Verificação de intervalos interjornada",
+        "Controle de horas extras",
+        "Validação de folgas semanais",
+        "Relatórios de conformidade"
+      ]
     },
     {
-      id: "communication",
-      title: "📱 Comunicação Integrada",
-      subtitle: "WhatsApp + notificações automáticas",
-      description: "Sistema de comunicação que mantém todos informados e reduz ausências drasticamente.",
+      id: "gestao",
+      title: "Gestão Inteligente",
+      subtitle: "Criação e otimização de escalas",
+      description: "Interface intuitiva para criar, editar e otimizar escalas de trabalho considerando disponibilidade, habilidades e demandas.",
       benefits: [
-        "Redução de 90% em ausências",
-        "Confirmação automática via WhatsApp",
-        "Notificações em tempo real",
-        "Histórico de comunicações"
+        "Interface visual intuitiva",
+        "Drag & drop para ajustes",
+        "Templates personalizáveis",
+        "Histórico de alterações"
+      ],
+      icon: Calendar,
+      color: "green",
+      features: [
+        "Calendário visual interativo",
+        "Templates de escalas",
+        "Cópia de escalas anteriores",
+        "Ajustes rápidos"
+      ]
+    },
+    {
+      id: "comunicacao",
+      title: "Comunicação Integrada",
+      subtitle: "Notificações e confirmações automáticas",
+      description: "Sistema de comunicação que mantém a equipe informada sobre escalas, mudanças e permite confirmações de presença.",
+      benefits: [
+        "Notificações automáticas",
+        "Confirmação de presença",
+        "Histórico de comunicações",
+        "Integração com WhatsApp"
       ],
       icon: MessageSquare,
       color: "purple",
-      stats: {
-        value: "90%",
-        label: "Menos ausências"
-      }
+      features: [
+        "Notificações push",
+        "Integração WhatsApp",
+        "Confirmação de escalas",
+        "Histórico de mensagens"
+      ]
     },
     {
       id: "analytics",
-      title: "📊 Analytics Avançado",
-      subtitle: "Insights que transformam decisões",
-      description: "Relatórios detalhados e insights que ajudam você a tomar decisões baseadas em dados.",
+      title: "Relatórios e Analytics",
+      subtitle: "Insights para decisões estratégicas",
+      description: "Relatórios detalhados sobre custos, produtividade e conformidade para embasar decisões gerenciais.",
       benefits: [
-        "Análise de produtividade",
         "Relatórios de custos",
-        "Métricas de performance",
-        "Previsões de demanda"
+        "Análise de produtividade",
+        "Métricas de conformidade",
+        "Exportação de dados"
       ],
       icon: BarChart3,
       color: "orange",
-      stats: {
-        value: "8h",
-        label: "Tempo economizado"
-      }
+      features: [
+        "Dashboard executivo",
+        "Relatórios personalizáveis",
+        "Exportação em PDF/Excel",
+        "Métricas em tempo real"
+      ]
     }
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20">
+    <section className="py-20 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 animate-fade-in">
-            🚀 A{" "}
-            <span className="text-blue-600 dark:text-blue-400">solução completa</span>{" "}
-            para seus problemas
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 animate-fade-in">
+            Solução{" "}
+            <span className="text-blue-600 dark:text-blue-400">completa</span>{" "}
+            para gestão de escalas
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto animate-slide-up">
-            Uma plataforma que combina IA avançada, compliance automático e comunicação integrada 
-            para transformar completamente sua gestão de escalas.
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto animate-slide-up">
+            Uma plataforma desenvolvida especificamente para o setor de alimentação, 
+            combinando tecnologia e conhecimento em legislação trabalhista.
           </p>
         </div>
 
-        <Tabs defaultValue="ai" className="max-w-6xl mx-auto">
+        <Tabs defaultValue="compliance" className="max-w-6xl mx-auto">
           <TabsList className="grid w-full grid-cols-4 mb-12">
             {solutions.map((solution) => (
               <TabsTrigger
@@ -108,14 +116,14 @@ export function SolutionSection() {
 
           {solutions.map((solution) => (
             <TabsContent key={solution.id} value={solution.id} className="space-y-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                 <div>
                   <div className="flex items-center mb-6">
-                    <div className={`w-16 h-16 bg-${solution.color}-100 dark:bg-${solution.color}-900/30 rounded-2xl flex items-center justify-center mr-6`}>
+                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mr-6">
                       <solution.icon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                      <h3 className="text-3xl font-bold text-gray-900 dark:text-white">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                         {solution.title}
                       </h3>
                       <p className="text-lg text-gray-600 dark:text-gray-300">
@@ -129,10 +137,11 @@ export function SolutionSection() {
                   </p>
 
                   <div className="space-y-4">
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Principais benefícios:</h4>
                     {solution.benefits.map((benefit, index) => (
                       <div key={index} className="flex items-center">
                         <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300 font-medium">
+                        <span className="text-gray-700 dark:text-gray-300">
                           {benefit}
                         </span>
                       </div>
@@ -140,46 +149,22 @@ export function SolutionSection() {
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl">
-                  <div className="text-center">
-                    <h4 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                      Resultados comprovados
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                  <div className="text-center mb-6">
+                    <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                      Funcionalidades incluídas
                     </h4>
-                    
-                    <div className="grid grid-cols-2 gap-6">
-                      <div className="text-center">
-                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                          {solution.stats.value}
-                        </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">
-                          {solution.stats.label}
-                        </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {solution.features.map((feature, index) => (
+                      <div key={index} className="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg">
+                        <Settings className="w-4 h-4 text-blue-500 mr-3 flex-shrink-0" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          {feature}
+                        </span>
                       </div>
-                      <div className="text-center">
-                        <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
-                          R$2.500
-                        </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">
-                          Economia/mês
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                          90%
-                        </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">
-                          Menos ausências
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">
-                          8h
-                        </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">
-                          Tempo economizado
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -188,15 +173,16 @@ export function SolutionSection() {
         </Tabs>
 
         <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-8 max-w-4xl mx-auto shadow-2xl">
-            <h3 className="text-2xl font-bold mb-4">
-              🎯 Pronto para transformar seu restaurante?
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl p-8 max-w-4xl mx-auto shadow-xl">
+            <h3 className="text-xl font-semibold mb-4">
+              Pronto para otimizar sua gestão de escalas?
             </h3>
             <p className="text-lg opacity-90 mb-6">
-              Junte-se a 500+ restaurantes que já economizam R$2.500/mês
+              Agende uma demonstração gratuita e descubra como nossa plataforma 
+              pode transformar a gestão do seu negócio.
             </p>
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-colors duration-300 neuro-hover">
-              🚀 Começar agora - 30 dias grátis
+            <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors duration-300">
+              Agendar Demonstração
             </button>
           </div>
         </div>

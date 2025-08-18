@@ -1,56 +1,50 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { PlayCircle, Clock, Users, TrendingUp, Zap, Shield } from "lucide-react";
+import { Shield, Clock, TrendingUp, CheckCircle, Award, Users } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden gradient-hero">
+    <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Background com overlay para melhor legibilidade */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
-        <div className="w-full h-full gradient-hero"></div>
-        {/* Overlay para melhor contraste */}
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-blue-900/80 to-slate-900/90"></div>
+        {/* Padrão sutil para credibilidade */}
+        <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
       </div>
       
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
-        {/* 🧠 FEATURE BADGE - Gatilho de Autoridade */}
+        {/* 🧠 TRUST BADGE - Gatilho de Autoridade */}
         <div className="mb-8">
-          <span className="inline-flex items-center px-6 py-3 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 text-white font-semibold text-sm shadow-lg animate-pulse-glow">
-            <Zap className="w-4 h-4 mr-2" />
-            ⚡ Sistema de gestão inteligente com IA
-          </span>
-        </div>
-
-        {/* 🧠 TRUST BADGE OTIMIZADO - Gatilho de Prova Social */}
-        <div className="mb-8">
-          <span className="inline-flex items-center px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 text-sm font-medium">
-            <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-            🏆 500+ restaurantes já economizam R$2.500/mês
+          <span className="inline-flex items-center px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium text-sm shadow-lg">
+            <Shield className="w-4 h-4 mr-2 text-blue-300" />
+            Plataforma de gestão de escalas com compliance CLT
           </span>
         </div>
 
         {/* 🧠 HEADLINE NEUROCIENTÍFICO - Gatilho de Dor + Solução */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-tight text-white drop-shadow-2xl animate-fade-in">
-          Transforme a Gestão de Escalas em{" "}
-          <span className="text-yellow-300">Vantagem Competitiva</span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 leading-tight text-white drop-shadow-2xl animate-fade-in">
+          Gestão de Escalas{" "}
+          <span className="text-blue-300">Simplificada</span>{" "}
+          e Conforme a Lei
         </h1>
 
         {/* 🧠 SUBTITLE OTIMIZADO - Gatilho de Benefício Claro */}
-        <p className="text-xl sm:text-2xl md:text-3xl text-white/95 max-w-4xl mx-auto mb-12 leading-relaxed drop-shadow-lg animate-slide-up">
-          Reduza custos em <strong className="text-yellow-300">30%</strong>, elimine multas da CLT e{" "}
-          <strong className="text-yellow-300">economize 8h por semana</strong> com IA que aprende com seu negócio.
+        <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-4xl mx-auto mb-12 leading-relaxed drop-shadow-lg animate-slide-up">
+          Crie escalas otimizadas, garanta conformidade com a CLT e{" "}
+          <strong className="text-blue-300">reduza riscos trabalhistas</strong> com uma plataforma 
+          desenvolvida especificamente para o setor de alimentação.
         </p>
 
-        {/* 🧠 CTA BUTTONS NEUROCIENTÍFICOS - Gatilho de Urgência + Escassez */}
+        {/* 🧠 CTA BUTTONS NEUROCIENTÍFICOS - Gatilho de Reciprocidade */}
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center mb-12">
           <Button 
             asChild 
             size="lg" 
-            className="text-xl px-10 py-6 gradient-cta text-white font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 animate-pulse-glow"
+            className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
           >
-            <Link to="/auth">
-              🚀 Começar Agora - 30 dias grátis
+            <Link to="/demo">
+              Agendar Demonstração Gratuita
             </Link>
           </Button>
           
@@ -58,62 +52,55 @@ export function HeroSection() {
             asChild 
             size="lg" 
             variant="outline" 
-            className="text-xl px-10 py-6 border-white/50 text-white hover:bg-white hover:text-primary-900 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 neuro-hover"
+            className="text-lg px-8 py-6 border-white/30 text-white hover:bg-white hover:text-slate-900 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
             <Link to="/#recursos">
-              <PlayCircle className="mr-3 h-6 w-6" />
-              Ver Demo em 2 Minutos
+              Conhecer Funcionalidades
             </Link>
           </Button>
         </div>
 
-        {/* 🧠 SOCIAL PROOF - Gatilho de Consenso */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-base text-white/90">
+        {/* 🧠 SOCIAL PROOF - Gatilho de Consenso (Real) */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-white/80">
           <div className="flex items-center gap-3">
-            <div className="flex -space-x-3">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div
-                  key={i}
-                  className="w-10 h-10 rounded-full bg-white/25 border-2 border-white/40 flex items-center justify-center text-sm font-bold"
-                >
-                  {String.fromCharCode(64 + i)}
-                </div>
-              ))}
+            <div className="flex items-center">
+              <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+              <span className="font-medium">Conformidade CLT</span>
             </div>
-            <span className="font-semibold">Sistema confiável</span>
           </div>
           
-          <div className="hidden sm:block w-px h-6 bg-white/30"></div>
+          <div className="hidden sm:block w-px h-6 bg-white/20"></div>
           
           <div className="flex items-center gap-3">
             <div className="flex items-center">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <svg
-                  key={star}
-                  className="w-5 h-5 text-yellow-400 fill-current"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
+              <Award className="w-5 h-5 text-yellow-400 mr-2" />
+              <span className="font-medium">Desenvolvido para restaurantes</span>
             </div>
-            <span className="font-semibold">5/5 avaliações</span>
+          </div>
+          
+          <div className="hidden sm:block w-px h-6 bg-white/20"></div>
+          
+          <div className="flex items-center gap-3">
+            <div className="flex items-center">
+              <Shield className="w-5 h-5 text-blue-400 mr-2" />
+              <span className="font-medium">Segurança de dados</span>
+            </div>
           </div>
         </div>
 
         {/* 🧠 BENEFÍCIOS RÁPIDOS - Gatilho de Resultados */}
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="flex items-center justify-center gap-3 text-white/90">
-            <TrendingUp className="w-6 h-6 text-green-400" />
-            <span className="font-medium">Economia de R$2.500/mês</span>
+          <div className="flex items-center justify-center gap-3 text-white/80">
+            <TrendingUp className="w-5 h-5 text-green-400" />
+            <span className="font-medium">Redução de riscos trabalhistas</span>
           </div>
-          <div className="flex items-center justify-center gap-3 text-white/90">
-            <Clock className="w-6 h-6 text-blue-400" />
-            <span className="font-medium">8h economizadas/semana</span>
+          <div className="flex items-center justify-center gap-3 text-white/80">
+            <Clock className="w-5 h-5 text-blue-400" />
+            <span className="font-medium">Economia de tempo na gestão</span>
           </div>
-          <div className="flex items-center justify-center gap-3 text-white/90">
-            <Shield className="w-6 h-6 text-purple-400" />
-            <span className="font-medium">100% compliance CLT</span>
+          <div className="flex items-center justify-center gap-3 text-white/80">
+            <Users className="w-5 h-5 text-purple-400" />
+            <span className="font-medium">Equipe mais organizada</span>
           </div>
         </div>
       </div>
