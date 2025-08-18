@@ -20,7 +20,7 @@ export function MobileCTASection() {
         {/* Main CTA */}
         <div className="mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-            Comece a economizar hoje mesmo
+            Pronto para operar com 100% de segurança?
           </h2>
           <p className="text-lg mb-8 opacity-90">
             Comece grátis, sem cartão de crédito. 500+ restaurantes já economizam com o GrowthScale

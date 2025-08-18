@@ -153,19 +153,81 @@ export function SolutionSection() {
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 sm:p-8">
                   <div className="text-center mb-4 sm:mb-6">
                     <h4 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2 sm:mb-4">
-                      Funcionalidades incluídas
+                      {solution.id === 'compliance' && 'Alerta de Compliance em Tempo Real'}
+                      {solution.id === 'ia' && 'IA Sugerindo Escala Perfeita'}
+                      {solution.id === 'custos' && 'Painel de Custos Atualizado'}
                     </h4>
                   </div>
                   
-                  <div className="space-y-3 sm:space-y-4">
-                    {solution.features.map((feature, index) => (
-                      <div key={index} className="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg">
-                        <Settings className="w-4 h-4 text-blue-500 mr-2 sm:mr-3 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                          {feature}
-                        </span>
+                  {/* Demonstração visual da plataforma */}
+                  <div className="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                    {solution.id === 'compliance' && (
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                          <span className="text-gray-900 dark:text-white text-sm font-medium">Alerta de Compliance CLT</span>
+                        </div>
+                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 mb-2">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span className="text-red-700 dark:text-red-300 text-xs font-medium">VIOLAÇÃO DETECTADA</span>
+                          </div>
+                          <p className="text-red-600 dark:text-red-200 text-xs">João Silva - Intervalo insuficiente (45min < 60min obrigatório)</p>
+                        </div>
+                        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span className="text-yellow-700 dark:text-yellow-300 text-xs font-medium">ATENÇÃO</span>
+                          </div>
+                          <p className="text-yellow-600 dark:text-yellow-200 text-xs">Maria Santos - Jornada próxima ao limite (8h45min)</p>
+                        </div>
                       </div>
-                    ))}
+                    )}
+                    
+                    {solution.id === 'ia' && (
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                          <span className="text-gray-900 dark:text-white text-sm font-medium">IA Sugerindo Escala</span>
+                        </div>
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-2">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span className="text-blue-700 dark:text-blue-300 text-xs font-medium">SUGESTÃO IA</span>
+                          </div>
+                          <p className="text-blue-600 dark:text-blue-200 text-xs">Segunda: João (8h) + Maria (6h) = Custo: R$ 280</p>
+                        </div>
+                        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span className="text-green-700 dark:text-green-300 text-xs font-medium">OTIMIZADO</span>
+                          </div>
+                          <p className="text-green-600 dark:text-green-200 text-xs">Economia de R$ 45 vs. escala manual</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {solution.id === 'custos' && (
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="text-gray-900 dark:text-white text-sm font-medium">Painel de Custos em Tempo Real</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
+                            <p className="text-green-700 dark:text-green-300 text-xs font-medium">Custo Semanal</p>
+                            <p className="text-green-600 dark:text-green-200 text-lg font-bold">R$ 2.450</p>
+                          </div>
+                          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                            <p className="text-blue-700 dark:text-blue-300 text-xs font-medium">Economia</p>
+                            <p className="text-blue-600 dark:text-blue-200 text-lg font-bold">R$ 320</p>
+                          </div>
+                        </div>
+                        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                          <p className="text-gray-600 dark:text-gray-300 text-xs">Projeção mensal: R$ 9.800 (vs. R$ 11.200 anterior)</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -176,14 +238,17 @@ export function SolutionSection() {
         <div className="text-center mt-12 sm:mt-16">
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl p-6 sm:p-8 max-w-4xl mx-auto shadow-xl">
             <h3 className="text-lg sm:text-xl font-semibold mb-4">
-              Pronto para otimizar sua gestão de escalas?
+              Pronto para operar com 100% de segurança?
             </h3>
             <p className="text-base sm:text-lg opacity-90 mb-4 sm:mb-6">
-              Agende uma demonstração gratuita e descubra como nossa plataforma 
+              Comece grátis hoje mesmo e descubra como nossa plataforma 
               pode transformar a gestão do seu negócio.
             </p>
-            <button className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-100 transition-colors duration-300 min-h-[44px]">
-              Agendar Demonstração
+            <button 
+              onClick={() => window.location.href = '/signup?plan=freemium'}
+              className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-100 transition-colors duration-300 min-h-[44px]"
+            >
+              Começar Gratuitamente
             </button>
           </div>
         </div>

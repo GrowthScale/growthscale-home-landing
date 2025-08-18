@@ -43,9 +43,9 @@ export function HeroSection() {
 
         {/* 🧠 SUBTITLE - Otimizado para Mobile */}
         <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed drop-shadow-lg animate-slide-up px-2">
-          <span className="block sm:inline">Crie escalas otimizadas, garanta conformidade com a CLT e</span>{" "}
-          <strong className="text-blue-300 block sm:inline">reduza riscos trabalhistas</strong>{" "}
-          <span className="block sm:inline">com uma plataforma desenvolvida especificamente para o setor de alimentação.</span>
+          <span className="block sm:inline">A plataforma com Inteligência Artificial que</span>{" "}
+          <strong className="text-blue-300 block sm:inline">blinda o seu restaurante contra riscos da CLT</strong>{" "}
+          <span className="block sm:inline">, otimiza a sua equipa e prevê os seus custos em tempo real.</span>
         </p>
 
         {/* 🧠 CTA BUTTONS - Mobile-First com Touch Targets */}

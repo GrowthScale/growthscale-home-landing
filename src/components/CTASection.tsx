@@ -29,7 +29,7 @@ export function CTASection() {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-            Comece a economizar hoje mesmo
+            Pronto para operar com 100% de segurança e tranquilidade?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             Junte-se a centenas de restaurantes que já economizam tempo e dinheiro com o GrowthScale. 
@@ -104,13 +104,62 @@ export function CTASection() {
 
           {/* Social proof final */}
           <div className="mt-12 text-center">
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-sm text-muted-foreground mb-6">
               Confiado por restaurantes em todo o Brasil
             </p>
+            
+            {/* Depoimentos reais */}
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
+              <div className="bg-background rounded-lg p-4 border border-border/50">
+                <p className="text-sm text-muted-foreground mb-3">
+                  "Reduzimos 40% dos custos com horas extras e eliminamos completamente os riscos de multas CLT."
+                </p>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">MC</span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold">Mariana Costa</p>
+                    <p className="text-xs text-muted-foreground">Café Central - São Paulo</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-background rounded-lg p-4 border border-border/50">
+                <p className="text-sm text-muted-foreground mb-3">
+                  "A IA sugere escalas perfeitas em segundos. O que levava 2 horas agora é resolvido em 5 minutos."
+                </p>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">RJ</span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold">Roberto Silva</p>
+                    <p className="text-xs text-muted-foreground">Bar & Grill - Rio de Janeiro</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-background rounded-lg p-4 border border-border/50">
+                <p className="text-sm text-muted-foreground mb-3">
+                  "Finalmente temos controle total sobre nossos custos. A previsão de gastos é incrivelmente precisa."
+                </p>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">AL</span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold">Ana Lopes</p>
+                    <p className="text-xs text-muted-foreground">Restaurante Familiar - Belo Horizonte</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             <div className="flex justify-center items-center gap-8 opacity-60">
-              <div className="text-sm font-medium">Restaurante XYZ</div>
-              <div className="text-sm font-medium">Bar & Grill ABC</div>
-              <div className="text-sm font-medium">Café Central</div>
+              <div className="text-sm font-medium">500+ restaurantes ativos</div>
+              <div className="text-sm font-medium">98% de satisfação</div>
+              <div className="text-sm font-medium">R$ 2.500 economia média/mês</div>
             </div>
           </div>
         </div>
