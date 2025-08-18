@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
 @import './styles/variables.css';
 
 @tailwind base;
@@ -17,6 +17,29 @@
   }
   html {
     scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Escala Tipográfica */
+  .h1 {
+    @apply text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-[1.05];
+  }
+  
+  .h2 {
+    @apply text-3xl md:text-4xl font-display font-bold leading-tight;
+  }
+  
+  .lead {
+    @apply text-lg md:text-xl text-muted-foreground;
+  }
+  
+  .body {
+    @apply text-base md:text-[17px] leading-relaxed;
+  }
+  
+  .small {
+    @apply text-sm text-muted-foreground;
   }
 }
 
