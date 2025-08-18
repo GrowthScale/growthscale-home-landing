@@ -37,31 +37,90 @@ export default function LegalPage() {
           {/* Política de Privacidade */}
           <Card>
             <CardHeader>
-              <CardTitle>Política de Privacidade</CardTitle>
+              <CardTitle>Política de Privacidade - LGPD</CardTitle>
             </CardHeader>
             <CardContent className="prose prose-sm max-w-none">
-              <h3>1. Coleta de Informações</h3>
-              <p>
-                Coletamos informações que você nos fornece diretamente, como quando você 
-                cria uma conta, utiliza nossos serviços ou entra em contato conosco.
+              <p className="text-sm text-gray-600 mb-4">
+                <strong>Última atualização:</strong> 17 de agosto de 2024
               </p>
               
-              <h3>2. Uso das Informações</h3>
+              <h3>1. Responsável pelo Tratamento</h3>
               <p>
-                Utilizamos suas informações para fornecer, manter e melhorar nossos 
-                serviços, processar transações e comunicar com você.
+                <strong>GrowthScale</strong><br/>
+                E-mail: privacy@growthscale.com<br/>
+                Endereço: [Endereço da empresa]<br/>
+                CNPJ: [CNPJ da empresa]
               </p>
               
-              <h3>3. Compartilhamento</h3>
+              <h3>2. Base Legal para Tratamento</h3>
               <p>
-                Não vendemos, alugamos ou compartilhamos suas informações pessoais 
-                com terceiros, exceto conforme descrito nesta política.
+                Tratamos seus dados pessoais com base nas seguintes hipóteses legais da LGPD:
+              </p>
+              <ul>
+                <li><strong>Execução de contrato:</strong> Para prestação dos serviços contratados</li>
+                <li><strong>Legítimo interesse:</strong> Para melhorar nossos serviços e segurança</li>
+                <li><strong>Consentimento:</strong> Para marketing e comunicações promocionais</li>
+                <li><strong>Cumprimento de obrigação legal:</strong> Para atender requisitos legais</li>
+              </ul>
+              
+              <h3>3. Dados Coletados</h3>
+              <p>
+                <strong>Dados pessoais:</strong> Nome, e-mail, telefone, CPF/CNPJ<br/>
+                <strong>Dados de uso:</strong> Logs de acesso, cookies, analytics<br/>
+                <strong>Dados empresariais:</strong> Informações da empresa e funcionários
               </p>
               
-              <h3>4. Segurança</h3>
+              <h3>4. Finalidade do Tratamento</h3>
+              <ul>
+                <li>Prestação dos serviços contratados</li>
+                <li>Suporte técnico e atendimento ao cliente</li>
+                <li>Melhoria e desenvolvimento de produtos</li>
+                <li>Comunicações sobre serviços e atualizações</li>
+                <li>Cumprimento de obrigações legais</li>
+              </ul>
+              
+              <h3>5. Compartilhamento de Dados</h3>
               <p>
-                Implementamos medidas de segurança técnicas e organizacionais para 
-                proteger suas informações contra acesso não autorizado.
+                Não vendemos seus dados pessoais. Compartilhamos apenas com:
+              </p>
+              <ul>
+                <li>Prestadores de serviços essenciais (hospedagem, pagamentos)</li>
+                <li>Autoridades competentes quando exigido por lei</li>
+                <li>Com seu consentimento expresso</li>
+              </ul>
+              
+              <h3>6. Seus Direitos LGPD</h3>
+              <p>Você tem direito a:</p>
+              <ul>
+                <li><strong>Acesso:</strong> Saber quais dados temos sobre você</li>
+                <li><strong>Correção:</strong> Corrigir dados incompletos ou incorretos</li>
+                <li><strong>Exclusão:</strong> Solicitar a exclusão de seus dados</li>
+                <li><strong>Portabilidade:</strong> Receber seus dados em formato estruturado</li>
+                <li><strong>Revogação:</strong> Revogar consentimento a qualquer momento</li>
+                <li><strong>Oposição:</strong> Opor-se ao tratamento de dados</li>
+              </ul>
+              
+              <h3>7. Segurança dos Dados</h3>
+              <p>
+                Implementamos medidas técnicas e organizacionais adequadas para proteger seus dados, incluindo:
+              </p>
+              <ul>
+                <li>Criptografia de dados em trânsito e em repouso</li>
+                <li>Controle de acesso rigoroso</li>
+                <li>Monitoramento contínuo de segurança</li>
+                <li>Backup regular e seguro</li>
+              </ul>
+              
+              <h3>8. Retenção de Dados</h3>
+              <p>
+                Mantemos seus dados apenas pelo tempo necessário para cumprir as finalidades descritas ou exigido por lei.
+              </p>
+              
+              <h3>9. Contato</h3>
+              <p>
+                Para exercer seus direitos ou esclarecer dúvidas:<br/>
+                <strong>E-mail:</strong> privacy@growthscale.com<br/>
+                <strong>Telefone:</strong> [Telefone de contato]
               </p>
             </CardContent>
           </Card>

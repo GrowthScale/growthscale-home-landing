@@ -15,11 +15,11 @@ const HeroSection = () => {
       </div>
       
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
-        {/* 🧠 URGENCY BADGE NEUROCIENTÍFICO */}
+        {/* 🧠 FEATURE BADGE */}
         <div className="mb-8">
-          <span className="inline-flex items-center px-6 py-3 rounded-full urgency-badge text-white font-semibold text-sm shadow-lg animate-urgency-pulse">
+          <span className="inline-flex items-center px-6 py-3 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 text-white font-semibold text-sm shadow-lg">
             <Clock className="w-4 h-4 mr-2" />
-            ⏰ Oferta por tempo limitado - Restam apenas 23 vagas
+            ⏰ Sistema de gestão inteligente
           </span>
         </div>
 
@@ -66,7 +66,7 @@ const HeroSection = () => {
           </Button>
         </div>
 
-        {/* 🧠 SOCIAL PROOF NEUROCIENTÍFICO */}
+        {/* 🧠 SOCIAL PROOF */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-base text-white/90">
           <div className="flex items-center gap-3">
             <div className="flex -space-x-3">
@@ -79,7 +79,7 @@ const HeroSection = () => {
                 </div>
               ))}
             </div>
-            <span className="font-semibold">500+ restaurantes confiam</span>
+            <span className="font-semibold">Sistema confiável</span>
           </div>
           
           <div className="hidden sm:block w-px h-6 bg-white/30"></div>
@@ -96,7 +96,7 @@ const HeroSection = () => {
                 </svg>
               ))}
             </div>
-            <span className="font-semibold">4.8/5 (500+ avaliações)</span>
+            <span className="font-semibold">5/5 avaliações</span>
           </div>
         </div>
 

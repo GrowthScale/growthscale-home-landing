@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import ProblemSection from "@/components/ProblemSection";
 import SolutionSection from "@/components/SolutionSection";
+import { CookieBanner } from "@/components/CookieBanner";
 
 const Index = () => {
   return (
@@ -193,33 +194,36 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4">Produto</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Recursos</a></li>
-                <li><a href="#" className="hover:text-white">Preços</a></li>
-                <li><a href="#" className="hover:text-white">Demo</a></li>
+                <li><a href="#recursos" className="hover:text-white">Recursos</a></li>
+                <li><a href="#precos" className="hover:text-white">Preços</a></li>
+                <li><a href="/demo" className="hover:text-white">Demo</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Suporte</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Central de Ajuda</a></li>
-                <li><a href="#" className="hover:text-white">Contato</a></li>
-                <li><a href="#" className="hover:text-white">Documentação</a></li>
+                <li><a href="/contato" className="hover:text-white">Central de Ajuda</a></li>
+                <li><a href="/contato" className="hover:text-white">Contato</a></li>
+                <li><a href="/legal" className="hover:text-white">Documentação</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Legal</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Privacidade</a></li>
-                <li><a href="#" className="hover:text-white">Termos de Uso</a></li>
-                <li><a href="#" className="hover:text-white">Cookies</a></li>
+                <li><a href="/legal" className="hover:text-white">Política de Privacidade</a></li>
+                <li><a href="/legal" className="hover:text-white">Termos de Uso</a></li>
+                <li><a href="/legal" className="hover:text-white">Política de Cookies</a></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 GrowthScale. Todos os direitos reservados.</p>
+            <p>&copy; 2024 GrowthScale. Todos os direitos reservados. Conforme LGPD.</p>
           </div>
         </div>
       </footer>
+
+      {/* Cookie Banner LGPD */}
+      <CookieBanner />
     </div>
   );
 };
