@@ -21,7 +21,7 @@ interface SEOHeadProps {
 
 export const SEOHead = ({ 
   title = "GrowthScale - Gestão Inteligente de Escalas para Food Service",
-  description = "Transforme a gestão da sua equipe com IA. Otimize escalas, reduza custos operacionais em até 30% e garanta compliance trabalhista automaticamente. Comece grátis por 14 dias.",
+  description = "Transforme a gestão da sua equipe com IA. Otimize escalas, reduza custos operacionais em até 30% e garanta compliance trabalhista automaticamente. Agende sua demonstração.",
   keywords = "gestão de escalas, food service, restaurante, bar, CLT, compliance trabalhista, IA, inteligência artificial, otimização de custos, gestão de funcionários, escala de trabalho, software restaurante",
   ogImage = "https://growthscale.com.br/og-image.jpg",
   ogUrl = "https://growthscale.com.br",
@@ -44,9 +44,9 @@ export const SEOHead = ({
     "operatingSystem": "Web Browser",
     "offers": {
       "@type": "Offer",
-      "price": "0",
+      "price": "Sob consulta",
       "priceCurrency": "BRL",
-      "description": "14 dias grátis"
+      "description": "Demonstração personalizada"
     },
     "aggregateRating": {
       "@type": "AggregateRating",

@@ -23,7 +23,7 @@ export function MobileCTASection() {
             Pronto para evitar multas de R$ 50.000+?
           </h2>
           <p className="text-lg mb-8 opacity-90">
-            Agende sua demonstração gratuita e descubra como proteger seu negócio
+            Agende sua demonstração e descubra como proteger seu negócio
           </p>
           
           <Button 
@@ -33,7 +33,7 @@ export function MobileCTASection() {
           >
             <Link to="/demo" className="flex items-center justify-center">
               <Phone className="w-6 h-6 mr-3" />
-              Agendar Demo Grátis
+              Agendar Demonstração
             </Link>
           </Button>
         </div>
@@ -42,7 +42,7 @@ export function MobileCTASection() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
           <div className="flex items-center justify-center gap-3">
             <CheckCircle className="w-6 h-6 text-green-400" />
-            <span className="font-medium">Demo gratuita</span>
+            <span className="font-medium">Sem compromisso</span>
           </div>
           <div className="flex items-center justify-center gap-3">
             <Clock className="w-6 h-6 text-yellow-400" />
@@ -50,7 +50,7 @@ export function MobileCTASection() {
           </div>
           <div className="flex items-center justify-center gap-3">
             <CheckCircle className="w-6 h-6 text-green-400" />
-            <span className="font-medium">Sem compromisso</span>
+            <span className="font-medium">Compliance garantido</span>
           </div>
         </div>
 

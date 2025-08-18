@@ -1,16 +1,16 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Clock, DollarSign } from 'lucide-react';
+import { ArrowRight, CheckCircle, Clock, Shield } from 'lucide-react';
 
 export function CTASection() {
   const benefits = [
     {
       icon: Clock,
-      text: "Comece a usar em 24 horas"
+      text: "Implementação em 24 horas"
     },
     {
-      icon: DollarSign,
-      text: "30 dias grátis, sem compromisso"
+      icon: Shield,
+      text: "Compliance CLT garantido"
     },
     {
       icon: CheckCircle,
@@ -43,22 +43,22 @@ export function CTASection() {
           {/* CTAs principais */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-primary/90">
-              Começar Gratuitamente
+              Agendar Demonstração
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8 py-6">
-              Agendar Demonstração
+              Conhecer Funcionalidades
             </Button>
           </div>
 
           {/* Garantia */}
           <div className="bg-background rounded-xl p-6 border border-border/50 max-w-2xl mx-auto">
             <h3 className="text-lg font-semibold text-foreground mb-2">
-              🛡️ Garantia de 30 dias
+              🛡️ Garantia de satisfação
             </h3>
             <p className="text-sm text-muted-foreground">
-              Se em 30 dias você não estiver satisfeito, devolvemos 100% do seu dinheiro. 
-              Sem perguntas, sem complicações.
+              Se você não estiver satisfeito com nossa solução, trabalhamos até que esteja. 
+              Sua satisfação é nossa prioridade.
             </p>
           </div>
 
