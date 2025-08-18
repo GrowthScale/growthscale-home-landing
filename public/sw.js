@@ -372,3 +372,120 @@ self.addEventListener('message', (event) => {
 });
 
 console.log('✅ Service Worker carregado'); 
+// =====================================================
+// MOBILE OPTIMIZATIONS
+// =====================================================
+
+// Mobile-specific cache strategy
+const MOBILE_CACHE_STRATEGY = {
+  CRITICAL: 'cache-first',
+  API: 'network-first',
+  IMAGES: 'stale-while-revalidate'
+};
+
+// Mobile assets to cache
+const MOBILE_ASSETS = [
+  '/mobile-hero.jpg',
+  '/mobile-icons/',
+  '/mobile-css/'
+];
+
+// Mobile performance monitoring
+const mobilePerformanceMetrics = {
+  LCP: 'largest-contentful-paint',
+  FID: 'first-input-delay',
+  CLS: 'cumulative-layout-shift',
+  mobileLoadTime: 'mobile-load-time',
+  touchResponseTime: 'touch-response-time'
+};
+
+// Mobile-specific fetch handler
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+  
+  // Mobile-specific caching for images
+  if (request.destination === 'image') {
+    event.respondWith(
+      caches.match(request).then((response) => {
+        if (response) {
+          // Return cached image immediately
+          return response;
+        }
+        
+        // Fetch and cache new image
+        return fetch(request).then((response) => {
+          if (response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(DYNAMIC_CACHE).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        });
+      })
+    );
+  }
+  
+  // Mobile-specific caching for CSS/JS
+  if (request.destination === 'style' || request.destination === 'script') {
+    event.respondWith(
+      caches.match(request).then((response) => {
+        if (response) {
+          return response;
+        }
+        
+        return fetch(request).then((response) => {
+          if (response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(STATIC_CACHE).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        });
+      })
+    );
+  }
+});
+
+// Mobile push notification handler
+self.addEventListener('push', (event) => {
+  const options = {
+    body: event.data ? event.data.text() : 'Nova notificação do GrowthScale',
+    icon: '/icons/icon-192x192.png',
+    badge: '/icons/icon-72x72.png',
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1
+    },
+    actions: [
+      {
+        action: 'explore',
+        title: 'Ver Demo',
+        icon: '/icons/icon-72x72.png'
+      },
+      {
+        action: 'close',
+        title: 'Fechar',
+        icon: '/icons/icon-72x72.png'
+      }
+    ]
+  };
+
+  event.waitUntil(
+    self.registration.showNotification('GrowthScale', options)
+  );
+});
+
+// Mobile notification click handler
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  if (event.action === 'explore') {
+    event.waitUntil(
+      clients.openWindow('/demo')
+    );
+  }
+});

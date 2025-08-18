@@ -1,62 +1,50 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { PlayCircle } from "lucide-react";
-import { landingPageCopy } from "@/constants/neuromarketing";
+import { Shield, Clock, TrendingUp, CheckCircle, Award, Users } from "lucide-react";
 
-const HeroSection = () => {
+export function HeroSection() {
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden gradient-hero">
-      {/* Background with overlay for better text readability */}
+    <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+      {/* Background com overlay para melhor legibilidade */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
-        {/* Configuração de vídeo/visual */}
-        {process.env.NODE_ENV === 'development' && process.env.VITE_HERO_VIDEO === 'true' ? ( // HAS_HERO_VIDEO - alterar para true quando tiver o vídeo
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster="/hero-poster.jpg"
-            className="h-full w-full object-cover"
-          >
-            <source src="/hero-demo.mp4" type="video/mp4" />
-          </video>
-        ) : (
-          <div className="w-full h-full gradient-hero"></div>
-        )}
-        {/* Overlay for better text contrast */}
-        <div className="absolute inset-0 bg-primary-900/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-blue-900/80 to-slate-900/90"></div>
+        {/* Padrão sutil para credibilidade */}
+        <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
       </div>
       
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
-        {/* Trust Badge */}
-        <div className="mb-6">
-          <span className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm font-medium">
-            <span className="w-2 h-2 bg-success rounded-full mr-2 animate-pulse"></span>
-            {landingPageCopy.hero.trustBadge}
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+        {/* 🧠 TRUST BADGE - Gatilho de Autoridade */}
+        <div className="mb-8">
+          <span className="inline-flex items-center px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium text-sm shadow-lg">
+            <Shield className="w-4 h-4 mr-2 text-blue-300" />
+            Plataforma de gestão de escalas com compliance CLT
           </span>
         </div>
 
-        {/* Main Headline */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight text-white drop-shadow-lg animate-fade-in">
-          {landingPageCopy.hero.h1}
+        {/* 🧠 HEADLINE NEUROCIENTÍFICO - Gatilho de Dor + Solução */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 leading-tight text-white drop-shadow-2xl animate-fade-in">
+          Gestão de Escalas{" "}
+          <span className="text-blue-300">Simplificada</span>{" "}
+          e Conforme a Lei
         </h1>
 
-        {/* Subtitle */}
-        <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-10 leading-relaxed drop-shadow-md animate-slide-up">
-          {landingPageCopy.hero.subtitle}
+        {/* 🧠 SUBTITLE OTIMIZADO - Gatilho de Benefício Claro */}
+        <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-4xl mx-auto mb-12 leading-relaxed drop-shadow-lg animate-slide-up">
+          Crie escalas otimizadas, garanta conformidade com a CLT e{" "}
+          <strong className="text-blue-300">reduza riscos trabalhistas</strong> com uma plataforma 
+          desenvolvida especificamente para o setor de alimentação.
         </p>
 
-        {/* CTA Buttons - CORRIGIDOS COM LINKS APROPRIADOS */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-8">
+        {/* 🧠 CTA BUTTONS NEUROCIENTÍFICOS - Gatilho de Reciprocidade */}
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center mb-12">
           <Button 
             asChild 
             size="lg" 
-            className="text-lg px-8 py-6 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+            className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
           >
-            <Link to="/auth">
-              {landingPageCopy.hero.ctaPrimary}
+            <Link to="/demo">
+              Agendar Demonstração Gratuita
             </Link>
           </Button>
           
@@ -64,58 +52,58 @@ const HeroSection = () => {
             asChild 
             size="lg" 
             variant="outline" 
-            className="text-lg px-8 py-6 border-white text-white hover:bg-white hover:text-primary-900 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+            className="text-lg px-8 py-6 border-white/30 text-white hover:bg-white hover:text-slate-900 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
             <Link to="/#recursos">
-              <PlayCircle className="mr-2 h-5 w-5" />
-              {landingPageCopy.hero.ctaSecondary}
+              Conhecer Funcionalidades
             </Link>
           </Button>
         </div>
 
-        {/* Social Proof */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-white/80">
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="w-8 h-8 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center text-xs font-bold"
-                >
-                  {String.fromCharCode(64 + i)}
-                </div>
-              ))}
+        {/* 🧠 SOCIAL PROOF - Gatilho de Consenso (Real) */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-white/80">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center">
+              <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
+              <span className="font-medium">Conformidade CLT</span>
             </div>
-            <span>500+ restaurantes confiam</span>
           </div>
           
-          <div className="hidden sm:block w-px h-4 bg-white/30"></div>
+          <div className="hidden sm:block w-px h-6 bg-white/20"></div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <div className="flex items-center">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <svg
-                  key={star}
-                  className="w-4 h-4 text-yellow-400 fill-current"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
+              <Award className="w-5 h-5 text-yellow-400 mr-2" />
+              <span className="font-medium">Desenvolvido para restaurantes</span>
             </div>
-            <span>4.8/5 estrelas</span>
+          </div>
+          
+          <div className="hidden sm:block w-px h-6 bg-white/20"></div>
+          
+          <div className="flex items-center gap-3">
+            <div className="flex items-center">
+              <Shield className="w-5 h-5 text-blue-400 mr-2" />
+              <span className="font-medium">Segurança de dados</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
+        {/* 🧠 BENEFÍCIOS RÁPIDOS - Gatilho de Resultados */}
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="flex items-center justify-center gap-3 text-white/80">
+            <TrendingUp className="w-5 h-5 text-green-400" />
+            <span className="font-medium">Redução de riscos trabalhistas</span>
+          </div>
+          <div className="flex items-center justify-center gap-3 text-white/80">
+            <Clock className="w-5 h-5 text-blue-400" />
+            <span className="font-medium">Economia de tempo na gestão</span>
+          </div>
+          <div className="flex items-center justify-center gap-3 text-white/80">
+            <Users className="w-5 h-5 text-purple-400" />
+            <span className="font-medium">Equipe mais organizada</span>
+          </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default HeroSection;
+}
