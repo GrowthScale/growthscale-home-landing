@@ -1,85 +1,166 @@
-import { Star } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import React from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Star, 
+  Quote, 
+  TrendingUp, 
+  Clock, 
+  Shield,
+  Users,
+  Zap
+} from 'lucide-react';
 
 const testimonials = [
   {
-    name: "Maria Silva",
+    name: "Mariana Costa",
     role: "Gerente de Operações",
-    company: "Restaurante Dom Pedro",
-    content: "O GrowthScale transformou completamente nossa gestão de escalas. Reduzimos 70% do tempo gasto organizando turnos e nossa equipe está muito mais satisfeita.",
-    rating: 5,
-    image: "👩‍💼"
-  },
-  {
-    name: "João Santos",
-    role: "Proprietário",
     company: "Café Central",
-    content: "Desde que implementamos o GrowthScale, nossa produtividade aumentou 45% e conseguimos reduzir significativamente os custos com horas extras.",
+    location: "São Paulo, SP",
+    avatar: "MC",
     rating: 5,
-    image: "👨‍💼"
+    content: "Reduzimos 40% dos custos com horas extras e eliminamos completamente os riscos de multas CLT. O GrowthScale revolucionou nossa gestão.",
+    metric: "40% redução de custos",
+    icon: TrendingUp
   },
   {
-    name: "Ana Costa",
-    role: "Diretora de RH",
-    company: "Rede FastFood Plus",
-    content: "A funcionalidade de compliance automático é incrível. Nunca mais tivemos problemas com a legislação trabalhista. Recomendo totalmente!",
+    name: "Roberto Silva",
+    role: "Proprietário",
+    company: "Bar & Grill",
+    location: "Rio de Janeiro, RJ",
+    avatar: "RS",
     rating: 5,
-    image: "👩‍💻"
+    content: "A IA sugere escalas perfeitas em segundos. O que levava 2 horas agora é resolvido em 5 minutos. Simplesmente incrível.",
+    metric: "95% menos tempo",
+    icon: Clock
   },
   {
-    name: "Carlos Oliveira",
+    name: "Ana Lopes",
+    role: "Diretora Administrativa",
+    company: "Restaurante Familiar",
+    location: "Belo Horizonte, MG",
+    avatar: "AL",
+    rating: 5,
+    content: "Finalmente temos controle total sobre nossos custos. A previsão de gastos é incrivelmente precisa e nos dá tranquilidade.",
+    metric: "100% CLT compliant",
+    icon: Shield
+  },
+  {
+    name: "Carlos Mendes",
     role: "Gerente Geral",
-    company: "Pizzaria Bella Vista",
-    content: "O sistema de gamificação motivou nossa equipe de forma surpreendente. O engajamento dos funcionários nunca esteve tão alto.",
+    company: "Pizzaria Express",
+    location: "Curitiba, PR",
+    avatar: "CM",
     rating: 5,
-    image: "👨‍🍳"
+    content: "A integração com WhatsApp automatizou nossa comunicação. Os funcionários confirmam presença automaticamente.",
+    metric: "8h economizadas/semana",
+    icon: Users
+  },
+  {
+    name: "Fernanda Santos",
+    role: "Proprietária",
+    company: "Bistrô Gourmet",
+    location: "Porto Alegre, RS",
+    avatar: "FS",
+    rating: 5,
+    content: "O simulador de custos nos ajudou a otimizar nossa operação. Economizamos R$ 3.500 por mês desde a implementação.",
+    metric: "R$ 3.500/mês economizados",
+    icon: Zap
+  },
+  {
+    name: "Lucas Oliveira",
+    role: "Diretor de Operações",
+    company: "Rede de Fast-Food",
+    location: "Brasília, DF",
+    avatar: "LO",
+    rating: 5,
+    content: "Com 12 filiais, precisávamos de uma solução escalável. O GrowthScale nos deu controle centralizado e relatórios precisos.",
+    metric: "12 filiais integradas",
+    icon: TrendingUp
   }
 ];
 
-const TestimonialsSection = () => {
+export const TestimonialsSection = () => {
   return (
-    <section className="py-20 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <section className="py-20 bg-secondary">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 font-body">
-            O que Nossos <span className="text-primary">Clientes</span> Estão Dizendo
+          <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+            <Star className="h-4 w-4 mr-2" />
+            Depoimentos Reais
+          </Badge>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            O que nossos <span className="text-primary">clientes</span> dizem
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-body">
-            Veja como o GrowthScale está transformando negócios como o seu todos os dias
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Restaurantes que transformaram suas operações com o GrowthScale
           </p>
         </div>
-
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="p-8 hover:shadow-soft transition-all duration-300 border-border">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center text-2xl">
-                  {testimonial.image}
+            <Card key={index} className="border-border/50 hover:shadow-lg transition-shadow duration-300">
+              <CardContent className="p-6">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">{testimonial.avatar}</span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-foreground">{testimonial.name}</h4>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                      <p className="text-xs text-muted-foreground">{testimonial.company}</p>
+                    </div>
+                  </div>
+                  <Quote className="h-6 w-6 text-primary/30" />
                 </div>
-                <div>
-                  <h4 className="font-semibold text-card-foreground text-lg font-body">
-                    {testimonial.name}
-                  </h4>
-                  <p className="text-muted-foreground">{testimonial.role}</p>
-                  <p className="text-primary font-medium">{testimonial.company}</p>
+                
+                {/* Rating */}
+                <div className="flex items-center space-x-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                  ))}
                 </div>
-              </div>
-              
-              <div className="flex mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-accent text-accent" />
-                ))}
-              </div>
-              
-              <blockquote className="text-card-foreground font-body leading-relaxed text-lg">
-                "{testimonial.content}"
-              </blockquote>
+                
+                {/* Content */}
+                <p className="text-muted-foreground mb-4 leading-relaxed">
+                  "{testimonial.content}"
+                </p>
+                
+                {/* Metric */}
+                <div className="flex items-center space-x-2 p-3 bg-primary/5 rounded-lg">
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <testimonial.icon className="h-4 w-4 text-primary" />
+                  </div>
+                  <span className="text-sm font-semibold text-primary">{testimonial.metric}</span>
+                </div>
+              </CardContent>
             </Card>
           ))}
         </div>
-
+        
+        {/* Stats */}
+        <div className="mt-16 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-primary mb-2">4.9/5</div>
+              <div className="text-muted-foreground">Avaliação Média</div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-accent mb-2">500+</div>
+              <div className="text-muted-foreground">Restaurantes Atendidos</div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-primary mb-2">30%</div>
+              <div className="text-muted-foreground">Economia Média</div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-accent mb-2">98%</div>
+              <div className="text-muted-foreground">Taxa de Satisfação</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,159 +1,138 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Clock, Shield } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Zap, 
+  ArrowRight, 
+  Star, 
+  Users, 
+  TrendingUp,
+  Sparkles,
+  Shield,
+  Clock
+} from 'lucide-react';
 
-export function CTASection() {
-  const benefits = [
-    {
-      icon: Clock,
-      text: "Setup em 24 horas"
-    },
-    {
-      icon: Shield,
-      text: "Garantia de 30 dias"
-    },
-    {
-      icon: CheckCircle,
-      text: "Suporte especializado incluído"
-    }
-  ];
-
-  const socialProof = [
-    "500+ restaurantes ativos",
-    "98% de satisfação",
-    "Economia média de R$ 2.500/mês"
-  ];
-
+export const CTASection = () => {
   return (
-    <section className="w-full py-24 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5">
+    <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-            Pronto para transformar a gestão das suas escalas?
+          {/* Badge de Urgência */}
+          <Badge className="mb-6 bg-accent/10 text-accent border-accent/20">
+            <Sparkles className="h-4 w-4 mr-2" />
+            Oferta Limitada
+          </Badge>
+          
+          {/* Título Principal */}
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Pronto para <span className="text-primary">Revolucionar</span> suas Escalas?
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Junte-se a centenas de restaurantes que já economizam tempo e dinheiro com o GrowthScale. 
-            Comece grátis, sem cartão de crédito.
+          
+          {/* Subtítulo Persuasivo */}
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Junte-se a mais de 500 restaurantes que já economizam tempo e dinheiro 
+            com o GrowthScale. Comece gratuitamente hoje mesmo.
           </p>
-
-          {/* Social Proof */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            {socialProof.map((proof, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
-                <CheckCircle className="w-4 h-4 text-primary" />
-                <span>{proof}</span>
+          
+          {/* Benefícios Rápidos */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="flex items-center justify-center space-x-3">
+              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <Clock className="h-5 w-5 text-primary" />
               </div>
-            ))}
-          </div>
-
-          {/* Benefícios rápidos */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
-                <benefit.icon className="w-4 h-4 text-primary" />
-                <span>{benefit.text}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* CTAs principais */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button 
-              size="lg" 
-              className="text-lg px-8 py-6 bg-primary hover:bg-primary/90"
-              onClick={() => window.location.href = '/signup?plan=freemium'}
-            >
-              Começar Gratuitamente
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="text-lg px-8 py-6"
-              onClick={() => {
-                const element = document.getElementById('precos');
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}
-            >
-              Ver Todos os Planos
-            </Button>
-          </div>
-
-          {/* Garantia */}
-          <div className="bg-background rounded-xl p-6 border border-border/50 max-w-2xl mx-auto">
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              🛡️ Garantia de 30 dias
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Se em 30 dias você não estiver satisfeito, devolvemos 100% do seu dinheiro. 
-              Sem perguntas, sem complicações.
-            </p>
-          </div>
-
-          {/* Social proof final */}
-          <div className="mt-12 text-center">
-            <p className="text-sm text-muted-foreground mb-6">
-              Confiado por restaurantes em todo o Brasil
-            </p>
-            
-            {/* Depoimentos reais */}
-            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
-              <div className="bg-background rounded-lg p-4 border border-border/50">
-                <p className="text-sm text-muted-foreground mb-3">
-                  "Reduzimos 40% dos custos com horas extras e eliminamos completamente os riscos de multas CLT."
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-primary">MC</span>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold">Mariana Costa</p>
-                    <p className="text-xs text-muted-foreground">Café Central - São Paulo</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-background rounded-lg p-4 border border-border/50">
-                <p className="text-sm text-muted-foreground mb-3">
-                  "A IA sugere escalas perfeitas em segundos. O que levava 2 horas agora é resolvido em 5 minutos."
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-primary">RJ</span>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold">Roberto Silva</p>
-                    <p className="text-xs text-muted-foreground">Bar & Grill - Rio de Janeiro</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-background rounded-lg p-4 border border-border/50">
-                <p className="text-sm text-muted-foreground mb-3">
-                  "Finalmente temos controle total sobre nossos custos. A previsão de gastos é incrivelmente precisa."
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-primary">AL</span>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold">Ana Lopes</p>
-                    <p className="text-xs text-muted-foreground">Restaurante Familiar - Belo Horizonte</p>
-                  </div>
-                </div>
-              </div>
+              <span className="text-sm font-medium">Setup em 5 minutos</span>
             </div>
             
-            <div className="flex justify-center items-center gap-8 opacity-60">
-              <div className="text-sm font-medium">500+ restaurantes ativos</div>
-              <div className="text-sm font-medium">98% de satisfação</div>
-              <div className="text-sm font-medium">R$ 2.500 economia média/mês</div>
+            <div className="flex items-center justify-center space-x-3">
+              <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
+                <Shield className="h-5 w-5 text-accent" />
+              </div>
+              <span className="text-sm font-medium">100% CLT Compliant</span>
+            </div>
+            
+            <div className="flex items-center justify-center space-x-3">
+              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <TrendingUp className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-sm font-medium">Economia garantida</span>
+            </div>
+          </div>
+          
+          {/* CTAs Principais */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <Button asChild size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-2xl shadow-primary/25">
+              <Link to="/auth" className="flex items-center gap-2">
+                <Zap className="h-5 w-5" />
+                Começar Gratuitamente
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            
+            <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 border-2 hover:bg-secondary">
+              <Link to="/#demo" className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Agendar Demonstração
+              </Link>
+            </Button>
+          </div>
+          
+          {/* Prova Social */}
+          <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
+            <div className="flex items-center space-x-1">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <span>4.9/5</span>
+            </div>
+            
+            <div className="flex items-center space-x-1">
+              <Users className="h-4 w-4" />
+              <span>500+ restaurantes</span>
+            </div>
+            
+            <div className="flex items-center space-x-1">
+              <TrendingUp className="h-4 w-4" />
+              <span>30% economia média</span>
             </div>
           </div>
         </div>
       </div>
     </section>
   );
-}
+};
+
+// CTA Flutuante para Mobile
+export const FloatingCTA = () => {
+  return (
+    <div className="fixed bottom-4 left-4 right-4 z-50 md:hidden">
+      <Card className="bg-gradient-to-r from-primary to-accent text-white border-0 shadow-2xl">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <Zap className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm">Comece Gratuitamente</p>
+                <p className="text-xs opacity-90">Setup em 5 minutos</p>
+              </div>
+            </div>
+            
+            <Button asChild size="sm" className="bg-white text-primary hover:bg-white/90">
+              <Link to="/auth">
+                Começar
+                <ArrowRight className="h-3 w-3 ml-1" />
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default CTASection;
