@@ -20,3 +20,4 @@ ReactDOM.createRoot(rootElement).render(
     </AuthProvider>
   </React.StrictMode>,
 );
+// Force deploy - Tue Aug 19 14:33:55 -03 2025 - Cache busting
