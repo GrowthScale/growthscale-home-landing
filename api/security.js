@@ -73,7 +73,7 @@ export default async function handler(req, res) {
       if (req.body) {
         const payload = JSON.stringify(req.body).toLowerCase();
         const suspiciousPatterns = [
-          'script', 'javascript:', 'onload', 'onerror', 'eval(', 'document.cookie',
+          'onload', 'onerror', 'eval(', 'document.cookie',
           'sql', 'union', 'select', 'drop', 'delete', 'insert', 'update'
         ];
         
@@ -86,7 +86,6 @@ export default async function handler(req, res) {
       }
 
       // Verificar rate limiting
-      const rateLimitKey = `rate_limit:${clientIP}`;
       const currentTime = Date.now();
       const windowMs = 15 * 60 * 1000; // 15 minutos
       const maxRequests = 100;

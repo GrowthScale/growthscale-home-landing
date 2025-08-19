@@ -15,19 +15,12 @@ import {
   MousePointer,
   Zap,
   Download,
-  RefreshCw,
   Play,
   Pause,
-  Settings,
   BarChart,
-  PieChart,
-  LineChart,
   Target,
   UserCheck,
-  Globe,
-  Smartphone,
-  Monitor,
-  Tablet
+  Globe
 } from 'lucide-react';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart as RechartsBarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 

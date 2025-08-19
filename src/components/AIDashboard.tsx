@@ -18,7 +18,6 @@ import {
   PieChart,
   Target,
   Zap,
-  Clock,
   CheckCircle,
   XCircle,
   Info

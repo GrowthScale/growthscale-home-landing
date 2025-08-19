@@ -114,14 +114,9 @@ const filesToProcess = [
   'supabase/seed.js'
 ];
 
-let processedFiles = 0;
-let modifiedFiles = 0;
-
 filesToProcess.forEach(filePath => {
   if (fs.existsSync(filePath)) {
-    processedFiles++;
     if (removeConsoleLogs(filePath)) {
-      modifiedFiles++;
       // console.log(`✅ Processado: ${filePath}`);
     }
   }
