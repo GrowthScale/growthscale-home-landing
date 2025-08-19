@@ -10,6 +10,7 @@ import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { AdvancedPerformanceMonitor } from '@/components/AdvancedPerformanceMonitor';
 import { SEOHead } from '@/components/SEOHead';
 import { useEdgeAnalytics } from '@/hooks/useEdgeAnalytics';
+import { useSecurity } from '@/hooks/useSecurity';
 import './App.css';
 
 // Configuração do React Query
@@ -29,6 +30,7 @@ const queryClient = new QueryClient({
 
 function AppContent() {
   const { trackPageView, trackPerformance } = useEdgeAnalytics();
+  const { logLoginAttempt, logDataAccess, logSecurityIncident } = useSecurity();
 
   // Track page views
   React.useEffect(() => {
@@ -72,6 +74,23 @@ function AppContent() {
     window.addEventListener('load', trackPerformanceMetrics);
     return () => window.removeEventListener('load', trackPerformanceMetrics);
   }, [trackPerformance]);
+
+  // Security monitoring
+  React.useEffect(() => {
+    // Monitor for security incidents
+    const handleSecurityIncident = (event: ErrorEvent) => {
+      logSecurityIncident('javascript_error', 'error', {
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        error: event.error?.toString()
+      });
+    };
+
+    window.addEventListener('error', handleSecurityIncident);
+    return () => window.removeEventListener('error', handleSecurityIncident);
+  }, [logSecurityIncident]);
 
   return (
     <>

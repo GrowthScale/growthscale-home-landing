@@ -67,6 +67,12 @@ export function MainLayout({ children }: MainLayoutProps) {
       roles: ['owner', 'admin'],
     },
     {
+      label: 'Security',
+      href: '/security',
+      icon: 'Shield',
+      roles: ['owner', 'admin'],
+    },
+    {
       label: 'Configurações',
       href: '/settings',
       icon: 'Settings',

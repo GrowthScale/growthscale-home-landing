@@ -25,7 +25,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
         },
         {
           "key": "Cross-Origin-Opener-Policy",
@@ -36,8 +36,28 @@
           "value": "same-origin"
         },
         {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "off"
+        },
+        {
+          "key": "X-Download-Options",
+          "value": "noopen"
+        },
+        {
+          "key": "X-Permitted-Cross-Domain-Policies",
+          "value": "none"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; connect-src 'self' https://*.supabase.co https://api.openai.com https://*.stripe.com https://*.vercel.app wss://*.supabase.co; img-src 'self' data: blob: https:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; connect-src 'self' https://*.supabase.co https://api.openai.com https://*.stripe.com https://*.vercel.app wss://*.supabase.co; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'"
+        },
+        {
+          "key": "Feature-Policy",
+          "value": "camera 'none'; microphone 'none'; geolocation 'none'; payment 'none'; usb 'none'; magnetometer 'none'; gyroscope 'none'; accelerometer 'none'"
         }
       ]
     },
@@ -118,7 +138,19 @@
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization, X-Requested-With"
+          "value": "Content-Type, Authorization, X-Requested-With, X-API-Key"
+        },
+        {
+          "key": "X-RateLimit-Limit",
+          "value": "100"
+        },
+        {
+          "key": "X-RateLimit-Remaining",
+          "value": "99"
+        },
+        {
+          "key": "X-RateLimit-Reset",
+          "value": "1640995200"
         }
       ]
     }
@@ -143,6 +175,16 @@
       "source": "/index.html",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/admin",
+      "destination": "/dashboard",
+      "permanent": true
+    },
+    {
+      "source": "/login",
+      "destination": "/auth",
+      "permanent": true
     }
   ],
   "buildCommand": "npm run build",
@@ -157,10 +199,12 @@
     },
     "api/health.js": {
       "maxDuration": 5
+    },
+    "api/security.js": {
+      "maxDuration": 5
+    },
+    "api/audit.js": {
+      "maxDuration": 10
     }
-  },
-  "regions": ["iad1", "sfo1", "hnd1", "fra1", "cdg1"],
-  "experimental": {
-    "edgeConfig": true
   }
 }
