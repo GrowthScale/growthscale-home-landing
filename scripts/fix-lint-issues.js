@@ -8,19 +8,19 @@
 import fs from 'fs';
 import { execSync } from 'child_process';
 
-console.log('🔧 Iniciando correções automáticas de linting...\n');
+// console.log('🔧 Iniciando correções automáticas de linting...\n');
 
 // 1. Executar correções automáticas do ESLint
 try {
-  console.log('📝 Executando correções automáticas do ESLint...');
+  // console.log('📝 Executando correções automáticas do ESLint...');
   execSync('npm run lint -- --fix', { stdio: 'inherit' });
-  console.log('✅ Correções automáticas concluídas\n');
+  // console.log('✅ Correções automáticas concluídas\n');
 } catch (error) {
-  console.log('⚠️  Algumas correções automáticas falharam\n');
+  // console.log('⚠️  Algumas correções automáticas falharam\n');
 }
 
 // 2. Remover console.log statements em produção
-console.log('🗑️  Removendo console.log statements...');
+// console.log('🗑️  Removendo console.log statements...');
 
 const removeConsoleLogs = (filePath) => {
   try {
@@ -122,21 +122,21 @@ filesToProcess.forEach(filePath => {
     processedFiles++;
     if (removeConsoleLogs(filePath)) {
       modifiedFiles++;
-      console.log(`✅ Processado: ${filePath}`);
+      // console.log(`✅ Processado: ${filePath}`);
     }
   }
 });
 
-console.log(`\n📊 Resumo:`);
-console.log(`   - Arquivos processados: ${processedFiles}`);
-console.log(`   - Arquivos modificados: ${modifiedFiles}`);
+// console.log(`\n📊 Resumo:`);
+// console.log(`   - Arquivos processados: ${processedFiles}`);
+// console.log(`   - Arquivos modificados: ${modifiedFiles}`);
 
 // 4. Executar lint novamente para verificar melhorias
-console.log('\n🔍 Executando verificação final...');
+// console.log('\n🔍 Executando verificação final...');
 try {
   execSync('npm run lint', { stdio: 'inherit' });
 } catch (error) {
-  console.log('\n⚠️  Ainda existem problemas de linting que precisam de correção manual');
+  // console.log('\n⚠️  Ainda existem problemas de linting que precisam de correção manual');
 }
 
-console.log('\n✨ Processo de correção concluído!');
+// console.log('\n✨ Processo de correção concluído!');

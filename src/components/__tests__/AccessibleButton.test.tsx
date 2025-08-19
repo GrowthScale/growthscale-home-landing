@@ -2,11 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 import { AccessibleButton, PrimaryButton, SecondaryButton } from '../ui/accessible-button';
 
-// Mock do jest para compatibilidade
-const jest = {
-  fn: vi.fn
-};
-
 describe('AccessibleButton', () => {
   it('renders correctly with default props', () => {
     render(<AccessibleButton>Click me</AccessibleButton>);

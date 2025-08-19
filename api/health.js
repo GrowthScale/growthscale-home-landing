@@ -39,7 +39,7 @@ export default async function handler(req, res) {
         supabaseStatus = error ? 'error' : 'healthy';
       } catch (error) {
         supabaseStatus = 'error';
-        console.error('Supabase Health Check Error:', error);
+        // console.error('Supabase Health Check Error:', error);
       }
     }
 
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
 
     // Testar Google Fonts
     try {
-      const fontsStart = Date.now();
+      // const fontsStart = Date.now();
       const fontsResponse = await fetch('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap', {
         method: 'HEAD',
         timeout: 5000,
@@ -110,7 +110,7 @@ export default async function handler(req, res) {
     res.status(statusCode).json(healthData);
 
   } catch (error) {
-    console.error('Health Check Error:', error);
+    // console.error('Health Check Error:', error);
     
     res.status(500).json({
       status: 'error',

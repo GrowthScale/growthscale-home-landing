@@ -213,7 +213,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método não permitido' });
 
   } catch (error) {
-    console.error('Audit Error:', error);
+            // console.error('Audit Error:', error);
     return res.status(500).json({ 
       error: 'Erro interno do servidor',
       message: error.message 

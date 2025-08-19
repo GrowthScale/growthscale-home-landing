@@ -3,7 +3,7 @@
 // Cache offline e funcionalidades PWA
 // =====================================================
 
-const CACHE_NAME = 'growthscale-v2.0.0';
+// const CACHE_NAME = 'growthscale-v2.0.0';
 const STATIC_CACHE = 'growthscale-static-v2.0.0';
 const DYNAMIC_CACHE = 'growthscale-dynamic-v2.0.0';
 const API_CACHE = 'growthscale-api-v2.0.0';

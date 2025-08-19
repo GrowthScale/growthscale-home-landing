@@ -134,17 +134,13 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
 
   // Keyboard navigation detection
   useEffect(() => {
-    let isUsingKeyboard = false;
-    
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Tab') {
-        isUsingKeyboard = true;
         document.body.classList.add('using-keyboard');
       }
     };
     
     const handleMouseDown = () => {
-      isUsingKeyboard = false;
       document.body.classList.remove('using-keyboard');
     };
     
