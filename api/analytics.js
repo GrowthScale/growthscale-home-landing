@@ -49,7 +49,9 @@ export default async function handler(req, res) {
       }
 
       // Log para debugging
-      console.log('Analytics Event:', processedData);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Analytics Event:', processedData);
+      }
 
       return res.status(200).json({ 
         success: true, 

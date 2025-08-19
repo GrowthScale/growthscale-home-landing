@@ -65,7 +65,9 @@ export default async function handler(req, res) {
       }
 
       // Log para debugging
-      console.log('Audit Event:', processedAuditData);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Audit Event:', processedAuditData);
+      }
 
       return res.status(200).json({ 
         success: true, 

@@ -59,7 +59,9 @@ export default async function handler(req, res) {
       }
 
       // Log para debugging
-      console.log('Performance Metrics:', processedData);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Performance Metrics:', processedData);
+      }
 
       return res.status(200).json({ 
         success: true, 
