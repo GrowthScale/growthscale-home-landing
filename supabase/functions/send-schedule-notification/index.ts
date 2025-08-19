@@ -12,21 +12,21 @@ serve(async (req) => {
   try {
     const { employeeIds, scheduleId, webhookUrl, tenantId } = await req.json();
 
-    if (!webhookUrl) throw new Error("Webhook URL não configurada.");
+    if (!webhookUrl) {throw new Error("Webhook URL não configurada.");}
 
     // 1. Buscar os dados dos funcionários
     const { data: employeesData, error: empError } = await supabaseClient
       .from('employees')
       .select('id, name, phone_number')
       .in('id', employeeIds);
-    if (empError) throw empError;
+    if (empError) {throw empError;}
 
     // 2. Buscar os turnos da escala
     const { data: shiftsData, error: shiftError } = await supabaseClient
       .from('shifts') // Assumindo que sua tabela de turnos se chama 'shifts'
       .select('employee_id, startTime, endTime')
       .eq('schedule_id', scheduleId);
-    if (shiftError) throw shiftError;
+    if (shiftError) {throw shiftError;}
 
     const logsToInsert = [];
 

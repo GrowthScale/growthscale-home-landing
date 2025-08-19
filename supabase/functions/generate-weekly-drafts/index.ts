@@ -6,7 +6,7 @@ serve(async (req) => {
   try {
     // Use a chave de Service Role para ter acesso total ao banco
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    if (!serviceRoleKey) throw new Error("Chave de serviço do Supabase não encontrada.");
+    if (!serviceRoleKey) {throw new Error("Chave de serviço do Supabase não encontrada.");}
 
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
@@ -17,19 +17,19 @@ serve(async (req) => {
     const { data: tenants, error: tenantsError } = await supabaseAdmin
       .from('companies') // Garanta que o nome da sua tabela de empresas/tenants está correto
       .select('id');
-    if (tenantsError) throw tenantsError;
+    if (tenantsError) {throw tenantsError;}
 
-    console.log(`Encontrados ${tenants.length} tenants para processar.`);
+    if (process.env.NODE_ENV === 'development') { console.log(`Encontrados ${tenants.length} tenants para processar.`); }
 
     // 2. Para cada tenant, gerar um rascunho
     for (const tenant of tenants) {
-      console.log(`Processando tenant: ${tenant.id}`);
+      if (process.env.NODE_ENV === 'development') { console.log(`Processando tenant: ${tenant.id}`); }
       
       // Lógica para determinar a data de início da próxima semana (próxima segunda-feira)
       const today = new Date();
       const nextMonday = new Date(today);
       nextMonday.setDate(today.getDate() + (1 + 7 - today.getDay()) % 7);
-      if (today.getDay() === 1) nextMonday.setDate(today.getDate() + 7); // Se hoje é segunda, pegue a próxima
+      if (today.getDay() === 1) {nextMonday.setDate(today.getDate() + 7);} // Se hoje é segunda, pegue a próxima
       const targetWeekStart = nextMonday.toISOString().split('T')[0];
 
       // Verificar se já não existe um rascunho para esta semana para este tenant
@@ -46,7 +46,7 @@ serve(async (req) => {
       }
 
       if (existingDraft) {
-        console.log(`Rascunho para a semana de ${targetWeekStart} já existe para o tenant ${tenant.id}. Pulando.`);
+        if (process.env.NODE_ENV === 'development') { console.log(`Rascunho para a semana de ${targetWeekStart} já existe para o tenant ${tenant.id}. Pulando.`); }
         continue;
       }
       
@@ -62,7 +62,7 @@ serve(async (req) => {
       }
 
       if (!employees || employees.length === 0) {
-        console.log(`Nenhum funcionário encontrado para o tenant ${tenant.id}. Pulando.`);
+        if (process.env.NODE_ENV === 'development') { console.log(`Nenhum funcionário encontrado para o tenant ${tenant.id}. Pulando.`); }
         continue;
       }
 
@@ -139,7 +139,7 @@ serve(async (req) => {
         continue;
       }
 
-      console.log(`Rascunho para a semana de ${targetWeekStart} criado com sucesso para o tenant ${tenant.id}.`);
+      if (process.env.NODE_ENV === 'development') { console.log(`Rascunho para a semana de ${targetWeekStart} criado com sucesso para o tenant ${tenant.id}.`); }
     }
 
     return new Response(JSON.stringify({ 

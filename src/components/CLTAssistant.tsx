@@ -52,7 +52,7 @@ export const CLTAssistant: React.FC<CLTAssistantProps> = ({
   });
 
   const handleSendMessage = useCallback(async (message: string) => {
-    if (!message.trim() || isLoading) return;
+    if (!message.trim() || isLoading) {return;}
     
     // Adicionar mensagem do usuário
     const userMessage: CLTMessage = {

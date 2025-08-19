@@ -69,7 +69,7 @@ class Analytics {
 
   // Inicializar analytics
   async initialize(userId?: string): Promise<void> {
-    if (this.isInitialized) return;
+    if (this.isInitialized) {return;}
 
     this.userId = userId;
     
@@ -99,7 +99,7 @@ class Analytics {
     }
 
     this.isInitialized = true;
-    console.log('✅ Analytics initialized');
+    if (process.env.NODE_ENV === 'development') { console.log('✅ Analytics initialized'); }
   }
 
   // Track de eventos
@@ -123,7 +123,7 @@ class Analytics {
     
     // Log local em desenvolvimento
     if (process.env.NODE_ENV === 'development') {
-      console.log('📊 Analytics Event:', analyticsEvent);
+      if (process.env.NODE_ENV === 'development') { console.log('📊 Analytics Event:', analyticsEvent); }
     }
   }
 
@@ -168,7 +168,7 @@ class Analytics {
 
     // Log local
     if (process.env.NODE_ENV === 'development') {
-      console.log('📄 Page View:', pageView);
+      if (process.env.NODE_ENV === 'development') { console.log('📄 Page View:', pageView); }
     }
   }
 
@@ -298,7 +298,7 @@ class Analytics {
 
   // Métodos privados para inicialização
   private async initializeGA4(): Promise<void> {
-    if (!ANALYTICS_CONFIG.GA4_MEASUREMENT_ID) return;
+    if (!ANALYTICS_CONFIG.GA4_MEASUREMENT_ID) {return;}
 
     // Carregar script do GA4
     const script = document.createElement('script');
@@ -316,7 +316,7 @@ class Analytics {
   }
 
   private async initializeMixpanel(): Promise<void> {
-    if (!ANALYTICS_CONFIG.MIXPANEL_TOKEN) return;
+    if (!ANALYTICS_CONFIG.MIXPANEL_TOKEN) {return;}
 
     // Carregar script do Mixpanel
     const script = document.createElement('script');
@@ -337,7 +337,7 @@ class Analytics {
   // }
 
   private initializeHotjar(): void {
-    if (!ANALYTICS_CONFIG.HOTJAR_ID) return;
+    if (!ANALYTICS_CONFIG.HOTJAR_ID) {return;}
 
     // Carregar Hotjar
     (function(h: Record<string, unknown>, o: Document, t: string, j: string, a?: HTMLElement, r?: HTMLScriptElement) {
@@ -355,10 +355,10 @@ class Analytics {
   }
 
   private async initializeAmplitude(): Promise<void> {
-    if (!ANALYTICS_CONFIG.AMPLITUDE_API_KEY) return;
+    if (!ANALYTICS_CONFIG.AMPLITUDE_API_KEY) {return;}
 
     // Amplitude comentado até instalar a dependência
-    console.log('Amplitude initialization skipped - dependency not installed');
+    if (process.env.NODE_ENV === 'development') { console.log('Amplitude initialization skipped - dependency not installed'); }
   }
 
   // Métodos privados para envio de dados

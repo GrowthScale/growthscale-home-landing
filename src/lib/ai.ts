@@ -56,14 +56,14 @@ export class AIService {
   }
 
   init() {
-    if (this.isInitialized) return;
+    if (this.isInitialized) {return;}
     
     if (!process.env.VITE_OPENAI_API_KEY) {
       console.warn('OpenAI API key not configured. AI features will be limited.');
     }
     
     this.isInitialized = true;
-    console.log('AI Service initialized');
+    if (process.env.NODE_ENV === 'development') { console.log('AI Service initialized'); }
   }
 
   // Anomaly Detection

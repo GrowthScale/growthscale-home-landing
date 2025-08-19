@@ -55,10 +55,10 @@ export function ScheduleFilters() {
 
   const getActiveFilters = () => {
     const activeFilters = [];
-    if (filters.department) activeFilters.push({ key: 'department', label: 'Departamento', value: filters.department });
-    if (filters.shift) activeFilters.push({ key: 'shift', label: 'Turno', value: filters.shift });
-    if (filters.status) activeFilters.push({ key: 'status', label: 'Status', value: filters.status });
-    if (filters.dateRange) activeFilters.push({ key: 'dateRange', label: 'Período', value: filters.dateRange });
+    if (filters.department) {activeFilters.push({ key: 'department', label: 'Departamento', value: filters.department });}
+    if (filters.shift) {activeFilters.push({ key: 'shift', label: 'Turno', value: filters.shift });}
+    if (filters.status) {activeFilters.push({ key: 'status', label: 'Status', value: filters.status });}
+    if (filters.dateRange) {activeFilters.push({ key: 'dateRange', label: 'Período', value: filters.dateRange });}
     return activeFilters;
   };
 

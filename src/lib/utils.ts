@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // Security utilities for no-code safety
 export const sanitizeInput = (input: string): string => {
-  if (typeof input !== 'string') return '';
+  if (typeof input !== 'string') {return '';}
   return input.trim().replace(/[<>]/g, '');
 };
 

@@ -53,7 +53,7 @@ export const usePWA = () => {
   }, []);
 
   const installPWA = async () => {
-    if (!deferredPrompt) return false;
+    if (!deferredPrompt) {return false;}
 
     try {
       await deferredPrompt.prompt();

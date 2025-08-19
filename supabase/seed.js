@@ -7,7 +7,7 @@ const supabaseKey = 'SUA_CHAVE_DE_SERVICO';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function seedTemplates() {
-  console.log('Iniciando o processo de seeding com a lista COMPLETA de modelos...');
+  if (process.env.NODE_ENV === 'development') { console.log('Iniciando o processo de seeding com a lista COMPLETA de modelos...'); }
 
   const templates = [
     {
@@ -200,30 +200,30 @@ async function seedTemplates() {
   ];
 
   // Limpa a tabela antes de inserir para evitar duplicatas
-  console.log('Limpando a tabela de modelos existente...');
+  if (process.env.NODE_ENV === 'development') { console.log('Limpando a tabela de modelos existente...'); }
   const { error: deleteError } = await supabase.from('schedule_templates').delete().neq('id', '00000000-0000-0000-0000-000000000000');
   if (deleteError) {
     console.error('Erro ao limpar a tabela de modelos:', deleteError);
     return;
   }
-  console.log('Tabela limpa. Inserindo os novos modelos...');
+  if (process.env.NODE_ENV === 'development') { console.log('Tabela limpa. Inserindo os novos modelos...'); }
 
   const { data, error } = await supabase.from('schedule_templates').insert(templates);
   
   if (error) {
     console.error('Erro ao inserir a lista completa de modelos:', error);
   } else {
-    console.log(`${data ? data.length : 0} modelos padrão foram inseridos com sucesso!`);
-    console.log('\n📋 Lista de modelos inseridos:');
+    if (process.env.NODE_ENV === 'development') { console.log(`${data ? data.length : 0} modelos padrão foram inseridos com sucesso!`); }
+    if (process.env.NODE_ENV === 'development') { console.log('\n📋 Lista de modelos inseridos:'); }
     templates.forEach((template, index) => {
-      console.log(`${index + 1}. ${template.name} - ${template.description}`);
+      if (process.env.NODE_ENV === 'development') { console.log(`${index + 1}. ${template.name} - ${template.description}`); }
     });
   }
 }
 
 // Função para verificar se a tabela existe e tem a estrutura correta
 async function checkTableStructure() {
-  console.log('Verificando estrutura da tabela schedule_templates...');
+  if (process.env.NODE_ENV === 'development') { console.log('Verificando estrutura da tabela schedule_templates...'); }
   
   const { data, error } = await supabase
     .from('schedule_templates')
@@ -232,25 +232,25 @@ async function checkTableStructure() {
   
   if (error) {
     console.error('Erro ao verificar tabela:', error);
-    console.log('Certifique-se de que a tabela schedule_templates existe no seu banco de dados.');
+    if (process.env.NODE_ENV === 'development') { console.log('Certifique-se de que a tabela schedule_templates existe no seu banco de dados.'); }
     return false;
   }
   
-  console.log('✅ Tabela schedule_templates encontrada e acessível');
+  if (process.env.NODE_ENV === 'development') { console.log('✅ Tabela schedule_templates encontrada e acessível'); }
   return true;
 }
 
 // Função principal que executa as verificações antes do seeding
 async function main() {
-  console.log('🚀 Iniciando processo de seeding dos modelos de escala...\n');
+  if (process.env.NODE_ENV === 'development') { console.log('🚀 Iniciando processo de seeding dos modelos de escala...\n'); }
   
   // Verifica se as credenciais foram configuradas
   if (supabaseUrl === 'URL_DO_SEU_PROJETO' || supabaseKey === 'SUA_CHAVE_DE_SERVICO') {
     console.error('❌ ERRO: Configure as credenciais do Supabase no início do script!');
-    console.log('📝 Instruções:');
-    console.log('1. Substitua URL_DO_SEU_PROJETO pela URL do seu projeto Supabase');
-    console.log('2. Substitua SUA_CHAVE_DE_SERVICO pela Service Role Key do Supabase');
-    console.log('3. Execute novamente o script');
+    if (process.env.NODE_ENV === 'development') { console.log('📝 Instruções:'); }
+    if (process.env.NODE_ENV === 'development') { console.log('1. Substitua URL_DO_SEU_PROJETO pela URL do seu projeto Supabase'); }
+    if (process.env.NODE_ENV === 'development') { console.log('2. Substitua SUA_CHAVE_DE_SERVICO pela Service Role Key do Supabase'); }
+    if (process.env.NODE_ENV === 'development') { console.log('3. Execute novamente o script'); }
     return;
   }
   
@@ -263,8 +263,8 @@ async function main() {
   // Executa o seeding
   await seedTemplates();
   
-  console.log('\n✅ Processo de seeding concluído!');
-  console.log('📊 Agora você tem 11 modelos de escala pré-configurados no sistema.');
+  if (process.env.NODE_ENV === 'development') { console.log('\n✅ Processo de seeding concluído!'); }
+  if (process.env.NODE_ENV === 'development') { console.log('📊 Agora você tem 11 modelos de escala pré-configurados no sistema.'); }
 }
 
 // Executa o script

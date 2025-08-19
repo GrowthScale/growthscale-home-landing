@@ -156,7 +156,7 @@ export function ScheduleList() {
   };
 
   const confirmNotification = () => {
-    if (!notificationDialog.schedule) return;
+    if (!notificationDialog.schedule) {return;}
 
     const payload = {
       employeeIds: notificationDialog.schedule.employees.map(emp => emp.id),

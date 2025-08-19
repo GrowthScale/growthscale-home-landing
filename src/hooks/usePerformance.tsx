@@ -100,13 +100,13 @@ export function usePerformance() {
 
   const logMetrics = () => {
     console.group('🚀 Performance Metrics');
-    console.log('FCP:', metrics.fcp?.toFixed(2), 'ms');
-    console.log('LCP:', metrics.lcp?.toFixed(2), 'ms');
-    console.log('FID:', metrics.fid?.toFixed(2), 'ms');
-    console.log('CLS:', metrics.cls?.toFixed(3));
-    console.log('TTFB:', metrics.ttfb?.toFixed(2), 'ms');
-    console.log('Load Time:', metrics.loadTime?.toFixed(2), 'ms');
-    console.log('Performance Score:', getPerformanceScore(), '/100');
+    if (process.env.NODE_ENV === 'development') { console.log('FCP:', metrics.fcp?.toFixed(2) }, 'ms');
+    if (process.env.NODE_ENV === 'development') { console.log('LCP:', metrics.lcp?.toFixed(2) }, 'ms');
+    if (process.env.NODE_ENV === 'development') { console.log('FID:', metrics.fid?.toFixed(2) }, 'ms');
+    if (process.env.NODE_ENV === 'development') { console.log('CLS:', metrics.cls?.toFixed(3) });
+    if (process.env.NODE_ENV === 'development') { console.log('TTFB:', metrics.ttfb?.toFixed(2) }, 'ms');
+    if (process.env.NODE_ENV === 'development') { console.log('Load Time:', metrics.loadTime?.toFixed(2) }, 'ms');
+    if (process.env.NODE_ENV === 'development') { console.log('Performance Score:', getPerformanceScore() }, '/100');
     console.groupEnd();
   };
 

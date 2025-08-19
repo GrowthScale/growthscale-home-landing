@@ -133,7 +133,7 @@ export function useAI() {
 
   // Get anomaly insights
   const getAnomalyInsights = useCallback(() => {
-    if (anomalies.length === 0) return null;
+    if (anomalies.length === 0) {return null;}
 
     const highImpactAnomalies = anomalies.filter(a => a.impact === 'high');
     const avgScore = anomalies.reduce((sum, a) => sum + a.score, 0) / anomalies.length;
@@ -153,7 +153,7 @@ export function useAI() {
 
   // Get prediction insights
   const getPredictionInsights = useCallback(() => {
-    if (predictions.length === 0) return null;
+    if (predictions.length === 0) {return null;}
 
     const increasingTrends = predictions.filter(p => p.trend === 'increasing');
     const decreasingTrends = predictions.filter(p => p.trend === 'decreasing');
@@ -171,7 +171,7 @@ export function useAI() {
 
   // Get alert insights
   const getAlertInsights = useCallback(() => {
-    if (smartAlerts.length === 0) return null;
+    if (smartAlerts.length === 0) {return null;}
 
     const priorityCounts = {
       critical: smartAlerts.filter(a => a.priority === 'critical').length,

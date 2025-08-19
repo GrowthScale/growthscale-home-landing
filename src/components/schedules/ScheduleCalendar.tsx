@@ -108,7 +108,7 @@ export function ScheduleCalendar({
   };
 
   const getPreviewEventsForDay = (day: number) => {
-    if (!previewShifts) return [];
+    if (!previewShifts) {return [];}
     
     // Simular eventos de preview baseados nas sugestões de IA
     const previewEvents: ScheduleEvent[] = [];

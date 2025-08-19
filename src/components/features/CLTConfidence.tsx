@@ -18,17 +18,17 @@ export function CLTConfidence({
   showIcon = true 
 }: CLTConfidenceProps) {
   const getConfidenceLevel = (value: number) => {
-    if (value >= 0.9) return { level: 'Muito Alta', color: 'text-green-600', bgColor: 'bg-green-100' };
-    if (value >= 0.7) return { level: 'Alta', color: 'text-blue-600', bgColor: 'bg-blue-100' };
-    if (value >= 0.5) return { level: 'Média', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
-    if (value >= 0.3) return { level: 'Baixa', color: 'text-orange-600', bgColor: 'bg-orange-100' };
+    if (value >= 0.9) {return { level: 'Muito Alta', color: 'text-green-600', bgColor: 'bg-green-100' };}
+    if (value >= 0.7) {return { level: 'Alta', color: 'text-blue-600', bgColor: 'bg-blue-100' };}
+    if (value >= 0.5) {return { level: 'Média', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };}
+    if (value >= 0.3) {return { level: 'Baixa', color: 'text-orange-600', bgColor: 'bg-orange-100' };}
     return { level: 'Muito Baixa', color: 'text-red-600', bgColor: 'bg-red-100' };
   };
 
   const getConfidenceIcon = (value: number) => {
-    if (value >= 0.8) return CheckCircle;
-    if (value >= 0.6) return TrendingUp;
-    if (value >= 0.4) return Info;
+    if (value >= 0.8) {return CheckCircle;}
+    if (value >= 0.6) {return TrendingUp;}
+    if (value >= 0.4) {return Info;}
     return AlertTriangle;
   };
 

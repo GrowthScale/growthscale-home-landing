@@ -83,11 +83,11 @@ function DataTableComponent<T extends Record<string, unknown>>({
 
   // Sort data
   const sortedData = useMemo(() => {
-    if (!sortColumn || !sortable) return filteredData;
+    if (!sortColumn || !sortable) {return filteredData;}
 
     return [...filteredData].sort((a, b) => {
       const column = columns.find(col => col.key === sortColumn);
-      if (!column) return 0;
+      if (!column) {return 0;}
 
       const aValue = column.accessor(a);
       const bValue = column.accessor(b);
@@ -108,7 +108,7 @@ function DataTableComponent<T extends Record<string, unknown>>({
 
   // Paginate data
   const paginatedData = useMemo(() => {
-    if (!pagination) return sortedData;
+    if (!pagination) {return sortedData;}
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -123,7 +123,7 @@ function DataTableComponent<T extends Record<string, unknown>>({
 
   // Handle sorting
   const handleSort = (columnKey: string) => {
-    if (!sortable) return;
+    if (!sortable) {return;}
 
     if (sortColumn === columnKey) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');

@@ -53,7 +53,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
     queryKey: ['scheduleTemplates'],
     queryFn: async () => {
       const response = await scheduleTemplateService.getTemplates();
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
       return response.data || [];
     }
   });
@@ -62,7 +62,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
   const createMutation = useMutation({
     mutationFn: async (template: CreateScheduleTemplateDto) => {
       const response = await scheduleTemplateService.createTemplate(template);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
       return response.data;
     },
     onSuccess: () => {
@@ -96,7 +96,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
   const updateMutation = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<CreateScheduleTemplateDto> }) => {
       const response = await scheduleTemplateService.updateTemplate(id, { ...updates, id });
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
       return response.data;
     },
     onSuccess: () => {
@@ -121,7 +121,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const response = await scheduleTemplateService.deleteTemplate(id);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['scheduleTemplates'] });
@@ -144,7 +144,7 @@ export function TemplateManager({ onTemplateSelect }: TemplateManagerProps) {
   };
 
   const handleUpdateTemplate = () => {
-    if (!selectedTemplate) return;
+    if (!selectedTemplate) {return;}
     updateMutation.mutate({
       id: selectedTemplate.id,
       updates: formData

@@ -31,14 +31,14 @@ export default function ScheduleDraft() {
   const { data: draft, isLoading, error } = useQuery({
     queryKey: ['scheduleDraft', draftId],
     queryFn: async () => {
-      if (!draftId) throw new Error('ID do rascunho não fornecido');
+      if (!draftId) {throw new Error('ID do rascunho não fornecido');}
       
       // Como não temos um método específico para buscar por ID, vamos buscar todos e filtrar
       const response = await scheduleDraftService.getDrafts(currentTenant?.id || '');
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
       
       const foundDraft = response.data?.find(d => d.id === draftId);
-      if (!foundDraft) throw new Error('Rascunho não encontrado');
+      if (!foundDraft) {throw new Error('Rascunho não encontrado');}
       
       return foundDraft;
     },
@@ -49,7 +49,7 @@ export default function ScheduleDraft() {
   const approveMutation = useMutation({
     mutationFn: async (draftId: string) => {
       const response = await scheduleDraftService.approveDraft(draftId);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
     },
     onSuccess: () => {
       toast({
@@ -72,7 +72,7 @@ export default function ScheduleDraft() {
   const dismissMutation = useMutation({
     mutationFn: async (draftId: string) => {
       const response = await scheduleDraftService.dismissDraft(draftId);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
     },
     onSuccess: () => {
       toast({

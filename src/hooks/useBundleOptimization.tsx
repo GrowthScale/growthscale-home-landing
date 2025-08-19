@@ -19,10 +19,10 @@ export function useBundleOptimization() {
 
   // Medir performance do bundle
   const measureBundlePerformance = useCallback(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
 
     const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-    if (!navigationEntry) return;
+    if (!navigationEntry) {return;}
 
     const resourceEntries = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
     const scriptEntries = resourceEntries.filter(entry => entry.initiatorType === 'script');
@@ -44,7 +44,7 @@ export function useBundleOptimization() {
 
   // Pré-carregar recursos críticos
   const preloadResource = useCallback((url: string, options: PreloadOptions = {}) => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
 
     const link = document.createElement('link');
     link.rel = 'preload';
@@ -87,7 +87,7 @@ export function useBundleOptimization() {
 
   // Otimizar carregamento de fontes
   const optimizeFontLoading = useCallback(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
 
     // Preload fontes críticas
     preloadResource('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap', {
@@ -110,7 +110,7 @@ export function useBundleOptimization() {
 
   // Otimizar carregamento de CSS crítico
   const optimizeCriticalCSS = useCallback(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
 
     // Inline CSS crítico
     const criticalCSS = `
@@ -132,7 +132,7 @@ export function useBundleOptimization() {
 
   // Lazy load não crítico
   const lazyLoadNonCritical = useCallback(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -168,7 +168,7 @@ export function useBundleOptimization() {
 
   // Otimizar carregamento de ícones
   const optimizeIconLoading = useCallback(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
 
     // Preload ícones críticos
     const criticalIcons = [

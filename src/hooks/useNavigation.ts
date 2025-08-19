@@ -76,7 +76,7 @@ export const useNavigation = () => {
   // Track active section based on scroll position
   useEffect(() => {
     const handleScroll = () => {
-      if (location.pathname !== '/') return;
+      if (location.pathname !== '/') {return;}
 
       const headerOffset = 100;
       const scrollPosition = window.scrollY + headerOffset;

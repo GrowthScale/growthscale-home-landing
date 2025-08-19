@@ -408,7 +408,7 @@ export class MonitoringService {
   }
 
   private async flush(): Promise<void> {
-    if (!CONFIG.enableRemote) return;
+    if (!CONFIG.enableRemote) {return;}
 
     try {
       const data = {

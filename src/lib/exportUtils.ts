@@ -263,7 +263,7 @@ export const exportDashboardReport = (dashboardData: Record<string, unknown>): v
 // Export de gráfico como imagem (se necessário)
 export const exportChartAsImage = (chartElement: HTMLElement, filename: string): void => {
   // Esta função pode ser implementada usando html2canvas se necessário
-  console.log('Export de gráfico como imagem:', filename);
+  if (process.env.NODE_ENV === 'development') { console.log('Export de gráfico como imagem:', filename); }
 };
 
 // Utilitário para formatar dados para export

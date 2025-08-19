@@ -124,7 +124,7 @@ export class EnterpriseService {
     };
 
     // In a real app, save to database
-    console.log('SAML SSO configured:', ssoConfig);
+    if (process.env.NODE_ENV === 'development') { console.log('SAML SSO configured:', ssoConfig); }
     return ssoConfig;
   }
 
@@ -153,7 +153,7 @@ export class EnterpriseService {
     };
 
     // In a real app, save to database
-    console.log('OIDC SSO configured:', ssoConfig);
+    if (process.env.NODE_ENV === 'development') { console.log('OIDC SSO configured:', ssoConfig); }
     return ssoConfig;
   }
 
@@ -180,20 +180,20 @@ export class EnterpriseService {
     };
 
     // In a real app, save to database and test connection
-    console.log('LDAP configured:', ldapConfig);
+    if (process.env.NODE_ENV === 'development') { console.log('LDAP configured:', ldapConfig); }
     return ldapConfig;
   }
 
   async testLDAPConnection(config: LDAPConfig): Promise<boolean> {
     try {
       // In a real app, test LDAP connection
-      console.log('Testing LDAP connection to:', config.server);
+      if (process.env.NODE_ENV === 'development') { console.log('Testing LDAP connection to:', config.server); }
       
       // Simulate connection test
       const isConnected = Math.random() > 0.2; // 80% success rate
       
       if (isConnected) {
-        console.log('LDAP connection successful');
+        if (process.env.NODE_ENV === 'development') { console.log('LDAP connection successful'); }
         return true;
       } else {
         console.error('LDAP connection failed');
@@ -212,7 +212,7 @@ export class EnterpriseService {
     errors: string[];
   }> {
     try {
-      console.log('Starting LDAP user sync');
+      if (process.env.NODE_ENV === 'development') { console.log('Starting LDAP user sync'); }
       
       // In a real app, connect to LDAP and sync users
       const result = {
@@ -225,7 +225,7 @@ export class EnterpriseService {
       // Update last sync time
       ldapConfig.lastSync = new Date();
       
-      console.log('LDAP sync completed:', result);
+      if (process.env.NODE_ENV === 'development') { console.log('LDAP sync completed:', result); }
       return result;
     } catch (error) {
       console.error('LDAP sync error:', error);
@@ -263,7 +263,7 @@ export class EnterpriseService {
     };
 
     // In a real app, save to database with hashed key
-    console.log('API key generated:', { ...apiKeyRecord, key: 'hidden' });
+    if (process.env.NODE_ENV === 'development') { console.log('API key generated:', { ...apiKeyRecord, key: 'hidden' }); }
     return apiKeyRecord;
   }
 
@@ -301,7 +301,7 @@ export class EnterpriseService {
 
   async revokeAPIKey(keyId: string): Promise<void> {
     // In a real app, mark key as revoked in database
-    console.log('API key revoked:', keyId);
+    if (process.env.NODE_ENV === 'development') { console.log('API key revoked:', keyId); }
   }
 
   // Rate Limiting
@@ -419,20 +419,20 @@ export class EnterpriseService {
     };
 
     // In a real app, save to database
-    console.log('Webhook created:', webhook);
+    if (process.env.NODE_ENV === 'development') { console.log('Webhook created:', webhook); }
     return webhook;
   }
 
   async triggerWebhook(webhookId: string, event: string, data: any): Promise<boolean> {
     try {
       // In a real app, send HTTP request to webhook URL
-      console.log(`Triggering webhook ${webhookId} for event ${event}:`, data);
+      if (process.env.NODE_ENV === 'development') { console.log(`Triggering webhook ${webhookId} for event ${event}:`, data); }
       
       // Simulate webhook call
       const success = Math.random() > 0.1; // 90% success rate
       
       if (success) {
-        console.log('Webhook delivered successfully');
+        if (process.env.NODE_ENV === 'development') { console.log('Webhook delivered successfully'); }
         return true;
       } else {
         console.error('Webhook delivery failed');
@@ -457,7 +457,7 @@ export class EnterpriseService {
       size: Math.floor(Math.random() * 1000000) + 100000, // Random size in bytes
     };
 
-    console.log('User data export generated:', exportData);
+    if (process.env.NODE_ENV === 'development') { console.log('User data export generated:', exportData); }
     return exportData;
   }
 
@@ -482,7 +482,7 @@ export class EnterpriseService {
 
     result.failed = tables.filter(table => !result.deleted.includes(table));
 
-    console.log('User data deletion result:', result);
+    if (process.env.NODE_ENV === 'development') { console.log('User data deletion result:', result); }
     return result;
   }
 

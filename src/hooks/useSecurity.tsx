@@ -42,12 +42,12 @@ export function useSecurity() {
   useEffect(() => {
     const handleOnline = () => {
       isOnline.current = true;
-      console.log('Security: Conexão restaurada');
+      if (process.env.NODE_ENV === 'development') { console.log('Security: Conexão restaurada'); }
     };
 
     const handleOffline = () => {
       isOnline.current = false;
-      console.log('Security: Conexão perdida');
+      if (process.env.NODE_ENV === 'development') { console.log('Security: Conexão perdida'); }
     };
 
     window.addEventListener('online', handleOnline);
@@ -125,7 +125,7 @@ export function useSecurity() {
         throw new Error(`Audit logging error: ${response.status}`);
       }
 
-      console.log('Audit Event:', auditData);
+      if (process.env.NODE_ENV === 'development') { console.log('Audit Event:', auditData); }
     } catch (error) {
       console.error('Audit Logging Error:', error);
       storeOfflineAuditEvent(event);
@@ -138,7 +138,7 @@ export function useSecurity() {
       const response = await fetch('/api/security');
       const securityData = await response.json();
       
-      console.log('Security Status:', securityData);
+      if (process.env.NODE_ENV === 'development') { console.log('Security Status:', securityData); }
       return securityData;
     } catch (error) {
       console.error('Security Status Check Error:', error);
@@ -159,7 +159,7 @@ export function useSecurity() {
       const params = new URLSearchParams();
       if (filters) {
         Object.entries(filters).forEach(([key, value]) => {
-          if (value) params.append(key, value.toString());
+          if (value) {params.append(key, value.toString());}
         });
       }
 
@@ -188,7 +188,7 @@ export function useSecurity() {
       });
 
       const result = await response.json();
-      console.log('GDPR Deletion Request:', result);
+      if (process.env.NODE_ENV === 'development') { console.log('GDPR Deletion Request:', result); }
       return result;
     } catch (error) {
       console.error('GDPR Deletion Request Error:', error);
@@ -214,7 +214,7 @@ export function useSecurity() {
 
   // Sincronizar dados offline
   const syncOfflineData = useCallback(async () => {
-    if (!isOnline.current) return;
+    if (!isOnline.current) {return;}
 
     try {
       // Sincronizar eventos de auditoria offline
@@ -228,7 +228,7 @@ export function useSecurity() {
           });
         }
         localStorage.removeItem('offline_audit_events');
-        console.log(`Synced ${offlineAuditEvents.length} offline audit events`);
+        if (process.env.NODE_ENV === 'development') { console.log(`Synced ${offlineAuditEvents.length} offline audit events`); }
       }
     } catch (error) {
       console.error('Offline sync error:', error);

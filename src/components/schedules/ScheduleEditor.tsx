@@ -94,7 +94,7 @@ export function ScheduleEditor() {
     queryKey: ['scheduleTemplates'],
     queryFn: async () => {
       const response = await scheduleTemplateService.getTemplates();
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
       return response.data || [];
     }
   });
@@ -142,7 +142,7 @@ export function ScheduleEditor() {
 
   // Convert form data to validation format
   const shifts = useMemo(() => {
-    if (!form.date || !form.shift || form.employees.length === 0) return [];
+    if (!form.date || !form.shift || form.employees.length === 0) {return [];}
     
     return form.employees.map((employee, index) => ({
       id: `shift-${index + 1}`,
@@ -326,7 +326,7 @@ export function ScheduleEditor() {
   };
 
   const handleApplySuggestion = () => {
-    if (!suggestion) return;
+    if (!suggestion) {return;}
 
     // Crie um mapa da sugestão para acesso rápido: { shiftId: employeeId }
     const suggestionMap = new Map(suggestion.suggestion.map(s => [s.shiftId, s.employeeId]));

@@ -87,7 +87,7 @@ export function useAdvancedAnalytics() {
 
   // Track page view
   const trackPageView = useCallback((url: string, title: string) => {
-    if (!isTracking.current) return;
+    if (!isTracking.current) {return;}
 
     const now = new Date();
     const timeSpent = now.getTime() - lastPageView.current.getTime();
@@ -121,7 +121,7 @@ export function useAdvancedAnalytics() {
     element: string,
     properties: Record<string, any> = {}
   ) => {
-    if (!isTracking.current) return;
+    if (!isTracking.current) {return;}
 
     const interaction: Interaction = {
       type,
@@ -148,7 +148,7 @@ export function useAdvancedAnalytics() {
     value: number,
     category: PerformanceMetric['category'] = 'navigation'
   ) => {
-    if (!isTracking.current) return;
+    if (!isTracking.current) {return;}
 
     const metric: PerformanceMetric = {
       name,
@@ -172,7 +172,7 @@ export function useAdvancedAnalytics() {
     stack?: string,
     severity: ErrorEvent['severity'] = 'error'
   ) => {
-    if (!isTracking.current) return;
+    if (!isTracking.current) {return;}
 
     const error: ErrorEvent = {
       message,
@@ -196,7 +196,7 @@ export function useAdvancedAnalytics() {
     value: number,
     properties: Record<string, any> = {}
   ) => {
-    if (!isTracking.current) return;
+    if (!isTracking.current) {return;}
 
     const conversion: Conversion = {
       type,

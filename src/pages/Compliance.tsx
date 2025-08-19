@@ -142,7 +142,7 @@ export default function CompliancePage() {
     // 2. Processar cada turno
     mockShifts.forEach(shift => {
       const employee = mockEmployees.find(e => e.id === shift.employee_id);
-      if (!employee) return;
+      if (!employee) {return;}
 
       const startDate = new Date(shift.startTime);
       const endDate = new Date(shift.endTime);

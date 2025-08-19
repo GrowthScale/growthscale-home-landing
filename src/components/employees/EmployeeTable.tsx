@@ -15,7 +15,7 @@ import {
   Mail,
   Phone,
   Calendar,
-  MapPin,
+  // MapPin, // Não utilizado
   CheckCircle,
   XCircle,
   Clock,
@@ -228,7 +228,8 @@ const EmployeeRow = memo(({
               <Eye className="h-4 w-4 mr-2" aria-hidden="true" />
               Visualizar
             </DropdownMenuItem>
-            {can('manage:users') && (
+            {/* Temporariamente comentado até implementar controle de acesso */}
+            {/* {can('manage:users') && (
               <DropdownMenuItem>
                 <Edit className="h-4 w-4 mr-2" aria-hidden="true" />
                 Editar
@@ -242,7 +243,7 @@ const EmployeeRow = memo(({
                   Excluir
                 </DropdownMenuItem>
               </>
-            )}
+            )} */}
           </DropdownMenuContent>
         </DropdownMenu>
       </TableCell>
@@ -356,7 +357,8 @@ const EmployeeCard = memo(({
               >
                 <Eye className="h-3 w-3" aria-hidden="true" />
               </Button>
-              {can('manage:users') && (
+              {/* Temporariamente comentado até implementar controle de acesso */}
+              {/* {can('manage:users') && (
                 <Button 
                   variant="ghost" 
                   size="sm" 
@@ -366,7 +368,7 @@ const EmployeeCard = memo(({
                 >
                   <Edit className="h-3 w-3" aria-hidden="true" />
                 </Button>
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -379,7 +381,7 @@ EmployeeCard.displayName = 'EmployeeCard';
 
 export const EmployeeTable = memo(({ onEmployeeSelect, selectedEmployee }: EmployeeTableProps) => {
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
-  const { can } = useAccessControl();
+  // const { can } = useAccessControl(); // Temporariamente comentado
 
   // Memoize employees to prevent unnecessary re-renders
   const employees = useMemo(() => mockEmployees, []);

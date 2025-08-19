@@ -85,7 +85,7 @@ export const AccessibleButton = React.forwardRef<HTMLButtonElement, AccessibleBu
     };
 
     const renderIcon = () => {
-      if (!icon) return null;
+      if (!icon) {return null;}
       
       const iconClasses = cn(
         'flex-shrink-0',

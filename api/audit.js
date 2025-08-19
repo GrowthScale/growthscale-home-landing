@@ -78,7 +78,7 @@ export default async function handler(req, res) {
       // Retornar logs de auditoria
       const { userId, event, category, startDate, endDate, limit = 100 } = req.query;
 
-      let query = {
+      const query = {
         timestamp: new Date().toISOString(),
         total_events: 0,
         events_by_category: {},
@@ -141,9 +141,9 @@ export default async function handler(req, res) {
             // Contar compliance GDPR
             if (event.compliance && event.compliance.gdpr_article) {
               const article = event.compliance.gdpr_article;
-              if (article.includes('6')) query.compliance_summary.gdpr_article_6++;
-              if (article.includes('7')) query.compliance_summary.gdpr_article_7++;
-              if (article.includes('17')) query.compliance_summary.gdpr_article_17++;
+              if (article.includes('6')) {query.compliance_summary.gdpr_article_6++;}
+              if (article.includes('7')) {query.compliance_summary.gdpr_article_7++;}
+              if (article.includes('17')) {query.compliance_summary.gdpr_article_17++;}
             }
           });
         }

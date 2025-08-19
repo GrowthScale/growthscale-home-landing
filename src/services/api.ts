@@ -670,7 +670,7 @@ export async function calculateScheduleCost(context: { shifts: ShiftForCostCalcu
   const { data, error } = await supabase.functions.invoke('calculate-schedule-cost', {
     body: context,
   });
-  if (error) throw error;
+  if (error) {throw error;}
   return data;
 }
 
@@ -684,7 +684,7 @@ export async function sendScheduleNotification(payload: {
   const { data, error } = await supabase.functions.invoke('send-schedule-notification', { 
     body: payload 
   });
-  if (error) throw error;
+  if (error) {throw error;}
   return data;
 }
 
@@ -718,7 +718,7 @@ export class WhatsAppNotificationService extends BaseApiService {
         body: notificationData,
       });
       
-      if (error) throw error;
+      if (error) {throw error;}
       return { data, error: null };
     });
   }
@@ -731,7 +731,7 @@ export class WhatsAppNotificationService extends BaseApiService {
         .eq('tenant_id', tenantId)
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {throw error;}
       return { data, error: null };
     });
   }
@@ -773,7 +773,7 @@ export class ScheduleDraftService extends BaseApiService {
           .from('schedules')
           .insert([scheduleData]);
         
-        if (createError) throw createError;
+        if (createError) {throw createError;}
       }
 
       // Atualizar o status do rascunho para 'approved'
@@ -782,7 +782,7 @@ export class ScheduleDraftService extends BaseApiService {
         .update({ status: 'approved' })
         .eq('id', draftId);
       
-      if (updateError) throw updateError;
+      if (updateError) {throw updateError;}
 
       return { data: { success: true }, error: null };
     });
@@ -819,7 +819,7 @@ export class ScheduleDraftService extends BaseApiService {
         .eq('id', draftId)
         .single();
       
-      if (error) throw error;
+      if (error) {throw error;}
       return { data, error: null };
     });
   }
@@ -831,13 +831,13 @@ export const scheduleDraftService = new ScheduleDraftService();
 // Função para exclusão de conta do usuário
 export async function deleteUserAccount() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error("Utilizador não encontrado.");
+  if (!user) {throw new Error("Utilizador não encontrado.");}
 
   const { data, error } = await supabase.functions.invoke('delete-user-account', {
     body: { user },
   });
 
-  if (error) throw error;
+  if (error) {throw error;}
   return data;
 }
 

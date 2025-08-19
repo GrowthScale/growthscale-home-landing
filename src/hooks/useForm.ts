@@ -31,7 +31,7 @@ export function useForm<T extends Record<string, unknown>>({
   // Validar um campo específico
   const validateField = useCallback((name: keyof T, value: unknown): string => {
     const rules = validationRules[name];
-    if (!rules) return '';
+    if (!rules) {return '';}
 
     for (const rule of rules) {
       switch (rule.type) {

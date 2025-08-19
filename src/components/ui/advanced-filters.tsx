@@ -63,7 +63,7 @@ export const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
   // Adicionar filtro
   const addFilter = (key: string, value: string | number | boolean | Date | Date[]) => {
     const filter = filters.find(f => f.key === key);
-    if (!filter) return;
+    if (!filter) {return;}
 
     const newFilter: FilterValue = {
       key,

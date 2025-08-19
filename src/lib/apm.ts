@@ -46,12 +46,12 @@ export class APMService {
   }
 
   init() {
-    if (this.isInitialized) return;
+    if (this.isInitialized) {return;}
 
     try {
       initSentry();
       this.isInitialized = true;
-      console.log('APM services initialized successfully');
+      if (process.env.NODE_ENV === 'development') { console.log('APM services initialized successfully'); }
     } catch (error) {
       console.error('Failed to initialize APM services:', error);
     }
@@ -71,7 +71,7 @@ export class APMService {
     if (process.env.NODE_ENV === 'production') {
       Sentry.captureMessage(message, level);
     }
-    console.log(`APM ${level}:`, message);
+    if (process.env.NODE_ENV === 'development') { console.log(`APM ${level}:`, message); }
   }
 
   // Performance Monitoring
@@ -90,7 +90,7 @@ export class APMService {
     if (process.env.NODE_ENV === 'production') {
       Sentry.setUser(user);
     }
-    console.log('APM User Set:', user);
+    if (process.env.NODE_ENV === 'development') { console.log('APM User Set:', user); }
   }
 
   // Event Tracking (Local Analytics)
@@ -108,7 +108,7 @@ export class APMService {
       this.analyticsEvents = this.analyticsEvents.slice(-1000);
     }
 
-    console.log('APM Event:', event);
+    if (process.env.NODE_ENV === 'development') { console.log('APM Event:', event); }
   }
 
   // Page View Tracking

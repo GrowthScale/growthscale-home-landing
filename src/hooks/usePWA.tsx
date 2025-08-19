@@ -30,8 +30,8 @@ export function usePWA(): PWAState {
     // Verificar se o app está instalado
     const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
     
-    if (isInstalled) {
-      console.log('GrowthScale PWA está instalado');
+    if (isInstalled && process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === 'development') { console.log('GrowthScale PWA está instalado'); }
     }
   }, []);
 

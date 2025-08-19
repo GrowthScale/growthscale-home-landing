@@ -26,8 +26,8 @@ export function PerformanceMonitor({ showInConsole = true, showInUI = false }: P
 
   const score = getPerformanceScore();
   const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600';
-    if (score >= 70) return 'text-yellow-600';
+    if (score >= 90) {return 'text-green-600';}
+    if (score >= 70) {return 'text-yellow-600';}
     return 'text-red-600';
   };
 

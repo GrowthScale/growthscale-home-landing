@@ -62,7 +62,7 @@ class AnalyticsService {
   }
 
   trackEvent(event: string, properties?: Record<string, unknown>) {
-    if (!this.isEnabled) return;
+    if (!this.isEnabled) {return;}
 
     const analyticsEvent: AnalyticsEvent = {
       event,
@@ -82,7 +82,7 @@ class AnalyticsService {
   }
 
   trackPageView(path: string, title: string, tenantId?: string, userId?: string) {
-    if (!this.isEnabled) return;
+    if (!this.isEnabled) {return;}
 
     const pageView: PageView = {
       path,
@@ -105,7 +105,7 @@ class AnalyticsService {
 
   // Funnel tracking específico para landing page
   trackFunnel(event: string, properties?: Record<string, unknown>) {
-    if (!this.isEnabled) return;
+    if (!this.isEnabled) {return;}
 
     const funnelEvent: AnalyticsEvent = {
       event: `funnel_${event}`,

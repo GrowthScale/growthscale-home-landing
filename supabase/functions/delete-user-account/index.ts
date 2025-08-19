@@ -53,14 +53,14 @@ serve(async (req) => {
       throw new Error("Utilizador não autenticado ou dados inválidos.");
     }
 
-    console.log(`🔒 Iniciando exclusão de conta para usuário: ${user.email} (${user.id})`);
-    console.log(`📝 Motivo: ${reason || 'Não informado'}`);
-    console.log(`🗑️ Exclusão permanente: ${permanent}`);
+    if (process.env.NODE_ENV === 'development') { console.log(`🔒 Iniciando exclusão de conta para usuário: ${user.email} (${user.id}) }`);
+    if (process.env.NODE_ENV === 'development') { console.log(`📝 Motivo: ${reason || 'Não informado'}`); }
+    if (process.env.NODE_ENV === 'development') { console.log(`🗑️ Exclusão permanente: ${permanent}`); }
 
     // A ORDEM É IMPORTANTE: Primeiro elimina os dados relacionados, depois o utilizador.
     
     // 1. Eliminar logs de comunicação
-    console.log("🗑️ Eliminando logs de comunicação...");
+    if (process.env.NODE_ENV === 'development') { console.log("🗑️ Eliminando logs de comunicação..."); }
     const { error: commLogsError } = await supabaseAdmin
       .from('communication_logs')
       .delete()
@@ -71,7 +71,7 @@ serve(async (req) => {
     }
 
     // 2. Eliminar rascunhos de escalas
-    console.log("🗑️ Eliminando rascunhos de escalas...");
+    if (process.env.NODE_ENV === 'development') { console.log("🗑️ Eliminando rascunhos de escalas..."); }
     const { error: draftsError } = await supabaseAdmin
       .from('schedule_drafts')
       .delete()
@@ -82,7 +82,7 @@ serve(async (req) => {
     }
 
     // 3. Eliminar escalas
-    console.log("🗑️ Eliminando escalas...");
+    if (process.env.NODE_ENV === 'development') { console.log("🗑️ Eliminando escalas..."); }
     const { error: schedulesError } = await supabaseAdmin
       .from('schedules')
       .delete()
@@ -93,7 +93,7 @@ serve(async (req) => {
     }
 
     // 4. Eliminar turnos
-    console.log("🗑️ Eliminando turnos...");
+    if (process.env.NODE_ENV === 'development') { console.log("🗑️ Eliminando turnos..."); }
     const { error: shiftsError } = await supabaseAdmin
       .from('shifts')
       .delete()
@@ -104,7 +104,7 @@ serve(async (req) => {
     }
 
     // 5. Eliminar funcionários
-    console.log("🗑️ Eliminando funcionários...");
+    if (process.env.NODE_ENV === 'development') { console.log("🗑️ Eliminando funcionários..."); }
     const { error: employeesError } = await supabaseAdmin
       .from('employees')
       .delete()
@@ -115,7 +115,7 @@ serve(async (req) => {
     }
 
     // 6. Eliminar associações de usuário com empresas
-    console.log("🗑️ Eliminando associações com empresas...");
+    if (process.env.NODE_ENV === 'development') { console.log("🗑️ Eliminando associações com empresas..."); }
     const { error: companyUsersError } = await supabaseAdmin
       .from('company_users')
       .delete()
@@ -126,7 +126,7 @@ serve(async (req) => {
     }
 
     // 7. Eliminar empresas (se o usuário for o proprietário)
-    console.log("🗑️ Verificando e eliminando empresas...");
+    if (process.env.NODE_ENV === 'development') { console.log("🗑️ Verificando e eliminando empresas..."); }
     const { data: userCompanies, error: companiesQueryError } = await supabaseAdmin
       .from('companies')
       .select('id, name')
@@ -135,10 +135,10 @@ serve(async (req) => {
     if (companiesQueryError) {
       console.error("Erro ao consultar empresas:", companiesQueryError);
     } else if (userCompanies && userCompanies.length > 0) {
-      console.log(`🏢 Eliminando ${userCompanies.length} empresa(s) do usuário...`);
+      if (process.env.NODE_ENV === 'development') { console.log(`🏢 Eliminando ${userCompanies.length} empresa(s) } do usuário...`);
       
       for (const company of userCompanies) {
-        console.log(`🗑️ Eliminando empresa: ${company.name} (${company.id})`);
+        if (process.env.NODE_ENV === 'development') { console.log(`🗑️ Eliminando empresa: ${company.name} (${company.id}) }`);
         
         // Eliminar funcionários da empresa
         await supabaseAdmin
@@ -161,7 +161,7 @@ serve(async (req) => {
     }
 
     // 8. Log da exclusão para auditoria
-    console.log("📝 Registrando log de auditoria...");
+    if (process.env.NODE_ENV === 'development') { console.log("📝 Registrando log de auditoria..."); }
     const { error: auditError } = await supabaseAdmin
       .from('audit_logs')
       .insert({
@@ -189,7 +189,7 @@ serve(async (req) => {
     }
 
     // 9. Finalmente, elimina o utilizador do sistema de autenticação do Supabase
-    console.log("👤 Eliminando usuário do sistema de autenticação...");
+    if (process.env.NODE_ENV === 'development') { console.log("👤 Eliminando usuário do sistema de autenticação..."); }
     const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(user.id);
     
     if (deleteError) {
@@ -197,7 +197,7 @@ serve(async (req) => {
       throw deleteError;
     }
 
-    console.log("✅ Conta eliminada com sucesso!");
+    if (process.env.NODE_ENV === 'development') { console.log("✅ Conta eliminada com sucesso!"); }
 
     return new Response(
       JSON.stringify({ 

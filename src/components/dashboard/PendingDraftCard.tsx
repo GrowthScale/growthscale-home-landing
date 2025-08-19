@@ -32,9 +32,9 @@ export function PendingDraftCard({ className }: PendingDraftCardProps) {
   const { data: pendingDraft, isLoading, error } = useQuery({
     queryKey: ['pendingDraft', tenant?.id],
     queryFn: async () => {
-      if (!tenant?.id) return null;
+      if (!tenant?.id) {return null;}
       const response = await scheduleDraftService.getPendingDraft(tenant.id);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
       return response.data;
     },
     enabled: !!tenant?.id,
@@ -45,7 +45,7 @@ export function PendingDraftCard({ className }: PendingDraftCardProps) {
   const approveMutation = useMutation({
     mutationFn: async (draftId: string) => {
       const response = await scheduleDraftService.approveDraft(draftId);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
     },
     onSuccess: () => {
       toast({
@@ -67,7 +67,7 @@ export function PendingDraftCard({ className }: PendingDraftCardProps) {
   const dismissMutation = useMutation({
     mutationFn: async (draftId: string) => {
       const response = await scheduleDraftService.dismissDraft(draftId);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
     },
     onSuccess: () => {
       toast({

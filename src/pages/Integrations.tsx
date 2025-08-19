@@ -249,8 +249,8 @@ const Integrations = () => {
     }
 
     return filtered.sort((a, b) => {
-      if (a.featured && !b.featured) return -1;
-      if (!a.featured && b.featured) return 1;
+      if (a.featured && !b.featured) {return -1;}
+      if (!a.featured && b.featured) {return 1;}
       return b.popularity - a.popularity;
     });
   }, [searchTerm, selectedCategory]);
@@ -278,7 +278,7 @@ const Integrations = () => {
   };
 
   const handleSaveWebhook = async () => {
-    if (!webhookUrl.trim()) return;
+    if (!webhookUrl.trim()) {return;}
     
     setIsSavingWebhook(true);
     try {

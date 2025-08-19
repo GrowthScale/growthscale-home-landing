@@ -103,7 +103,7 @@ class NotificationService {
   }
 
   async unsubscribeFromPush(): Promise<boolean> {
-    if (!this.isSupported) return false;
+    if (!this.isSupported) {return false;}
 
     try {
       const registration = await navigator.serviceWorker.ready;
@@ -159,7 +159,7 @@ class NotificationService {
   }
 
   private showPushNotification(notification: Notification) {
-    if (!this.isSupported || this.permission !== 'granted') return;
+    if (!this.isSupported || this.permission !== 'granted') {return;}
 
     const pushNotification = new Notification(notification.title, {
       body: notification.message,

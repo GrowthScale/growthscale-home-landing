@@ -125,7 +125,7 @@ export function CLTSuggestions({
             size="sm"
             onClick={() => {
               // Aqui você pode implementar lógica para mostrar mais sugestões
-              console.log('Mostrar mais sugestões');
+              if (process.env.NODE_ENV === 'development') { console.log('Mostrar mais sugestões'); }
             }}
             className="text-blue-600 hover:text-blue-700"
           >

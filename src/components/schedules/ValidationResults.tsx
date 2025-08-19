@@ -34,20 +34,20 @@ export const ValidationResults: React.FC<ValidationResultsProps> = ({
   const warningViolations = violations.filter(v => v.severity === 'warning');
 
   const getRiskColor = (score: number) => {
-    if (score > 75) return 'text-red-600';
-    if (score > 50) return 'text-yellow-600';
+    if (score > 75) {return 'text-red-600';}
+    if (score > 50) {return 'text-yellow-600';}
     return 'text-green-600';
   };
 
   const getRiskLabel = (score: number) => {
-    if (score > 75) return 'Alto Risco';
-    if (score > 50) return 'Risco Moderado';
+    if (score > 75) {return 'Alto Risco';}
+    if (score > 50) {return 'Risco Moderado';}
     return 'Baixo Risco';
   };
 
   const getRiskIcon = (score: number) => {
-    if (score > 75) return <AlertTriangle className="h-4 w-4" />;
-    if (score > 50) return <Clock className="h-4 w-4" />;
+    if (score > 75) {return <AlertTriangle className="h-4 w-4" />;}
+    if (score > 50) {return <Clock className="h-4 w-4" />;}
     return <CheckCircle className="h-4 w-4" />;
   };
 

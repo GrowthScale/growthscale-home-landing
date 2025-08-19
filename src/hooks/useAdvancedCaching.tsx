@@ -37,7 +37,7 @@ class AdvancedCache {
 
   get<T>(key: string): CacheEntry<T> | null {
     const entry = this.cache.get(key);
-    if (!entry) return null;
+    if (!entry) {return null;}
 
     const now = Date.now();
     
@@ -52,7 +52,7 @@ class AdvancedCache {
 
   isStale(key: string): boolean {
     const entry = this.cache.get(key);
-    if (!entry) return true;
+    if (!entry) {return true;}
 
     const now = Date.now();
     return now > entry.staleAt;
@@ -234,7 +234,7 @@ export function useBackgroundSync<T>(
   const result = useAdvancedCaching(key, fetcher, cacheOptions);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
 
     const interval = setInterval(() => {
       if (document.visibilityState === 'visible') {

@@ -85,10 +85,10 @@ export const EmployeeFilters = memo(() => {
 
   const activeFilters = useMemo(() => {
     const activeFilters = [];
-    if (filters.department) activeFilters.push({ key: 'department', label: 'Departamento', value: filters.department });
-    if (filters.status) activeFilters.push({ key: 'status', label: 'Status', value: filters.status });
-    if (filters.position) activeFilters.push({ key: 'position', label: 'Cargo', value: filters.position });
-    if (filters.startDate) activeFilters.push({ key: 'startDate', label: 'Período', value: filters.startDate });
+    if (filters.department) {activeFilters.push({ key: 'department', label: 'Departamento', value: filters.department });}
+    if (filters.status) {activeFilters.push({ key: 'status', label: 'Status', value: filters.status });}
+    if (filters.position) {activeFilters.push({ key: 'position', label: 'Cargo', value: filters.position });}
+    if (filters.startDate) {activeFilters.push({ key: 'startDate', label: 'Período', value: filters.startDate });}
     return activeFilters;
   }, [filters]);
 

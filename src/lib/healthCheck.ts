@@ -301,7 +301,7 @@ class HealthChecker {
         
         // Log em desenvolvimento
         if (process.env.NODE_ENV === 'development') {
-          console.log('🏥 Health Check:', health);
+          if (process.env.NODE_ENV === 'development') { console.log('🏥 Health Check:', health); }
         }
 
         // Alertar se sistema estiver down
@@ -339,11 +339,11 @@ class HealthChecker {
     // Enviar para serviço de métricas (DataDog, New Relic, etc.)
     if (process.env.NODE_ENV === 'production') {
       // Implementar envio de métricas
-      console.log('📊 Health Metrics:', {
+      if (process.env.NODE_ENV === 'development') { console.log('📊 Health Metrics:', {
         overall: health.overall,
         uptime: health.uptime,
         services: health.services.length
-      });
+      }); }
     }
   }
 

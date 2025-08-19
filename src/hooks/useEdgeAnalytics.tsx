@@ -39,12 +39,12 @@ export function useEdgeAnalytics() {
   useEffect(() => {
     const handleOnline = () => {
       isOnline.current = true;
-      console.log('Analytics: Conexão restaurada');
+      if (process.env.NODE_ENV === 'development') { console.log('Analytics: Conexão restaurada'); }
     };
 
     const handleOffline = () => {
       isOnline.current = false;
-      console.log('Analytics: Conexão perdida');
+      if (process.env.NODE_ENV === 'development') { console.log('Analytics: Conexão perdida'); }
     };
 
     window.addEventListener('online', handleOnline);
@@ -85,7 +85,7 @@ export function useEdgeAnalytics() {
         throw new Error(`Analytics error: ${response.status}`);
       }
 
-      console.log('Analytics Event:', analyticsData);
+      if (process.env.NODE_ENV === 'development') { console.log('Analytics Event:', analyticsData); }
     } catch (error) {
       console.error('Analytics Error:', error);
       // Armazenar para retry
@@ -120,7 +120,7 @@ export function useEdgeAnalytics() {
         throw new Error(`Performance tracking error: ${response.status}`);
       }
 
-      console.log('Performance Data:', performanceData);
+      if (process.env.NODE_ENV === 'development') { console.log('Performance Data:', performanceData); }
     } catch (error) {
       console.error('Performance Tracking Error:', error);
       storeOfflinePerformance(data);
@@ -133,7 +133,7 @@ export function useEdgeAnalytics() {
       const response = await fetch('/api/health');
       const healthData = await response.json();
       
-      console.log('Health Check:', healthData);
+      if (process.env.NODE_ENV === 'development') { console.log('Health Check:', healthData); }
       return healthData;
     } catch (error) {
       console.error('Health Check Error:', error);
@@ -201,7 +201,7 @@ export function useEdgeAnalytics() {
 
   // Sincronizar dados offline
   const syncOfflineData = useCallback(async () => {
-    if (!isOnline.current) return;
+    if (!isOnline.current) {return;}
 
     try {
       // Sincronizar eventos offline
@@ -215,7 +215,7 @@ export function useEdgeAnalytics() {
           });
         }
         localStorage.removeItem('offline_analytics');
-        console.log(`Synced ${offlineEvents.length} offline analytics events`);
+        if (process.env.NODE_ENV === 'development') { console.log(`Synced ${offlineEvents.length} offline analytics events`); }
       }
 
       // Sincronizar performance offline
@@ -229,7 +229,7 @@ export function useEdgeAnalytics() {
           });
         }
         localStorage.removeItem('offline_performance');
-        console.log(`Synced ${offlinePerformance.length} offline performance events`);
+        if (process.env.NODE_ENV === 'development') { console.log(`Synced ${offlinePerformance.length} offline performance events`); }
       }
     } catch (error) {
       console.error('Offline sync error:', error);

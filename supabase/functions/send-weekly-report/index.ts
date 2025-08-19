@@ -6,7 +6,7 @@ import { OpenAI } from "https://deno.land/x/openai/mod.ts";
 // Função para gerar o resumo com a IA
 async function getAISummary(metrics: Record<string, unknown>) {
   const openAIKey = Deno.env.get("OPENAI_API_KEY");
-  if (!openAIKey) return "Resumo da IA indisponível.";
+  if (!openAIKey) {return "Resumo da IA indisponível.";}
 
   const openai = new OpenAI(openAIKey);
   const totalCost = (metrics.totalCost as number) || 0;
@@ -143,12 +143,12 @@ serve(async (req) => {
       throw tenantsError;
     }
 
-    console.log(`Encontrados ${tenants?.length || 0} tenants para processar relatórios`);
+    if (process.env.NODE_ENV === 'development') { console.log(`Encontrados ${tenants?.length || 0} tenants para processar relatórios`); }
 
     // 2. Para cada tenant, processar o relatório
     for (const tenant of tenants || []) {
       try {
-        console.log(`Processando relatório para tenant: ${tenant.id} (${tenant.name})`);
+        if (process.env.NODE_ENV === 'development') { console.log(`Processando relatório para tenant: ${tenant.id} (${tenant.name}) }`);
 
         // 3. Obter os dados reais da semana passada
         const weeklyMetrics = await getWeeklyMetrics(supabaseAdmin, tenant.id);
@@ -244,17 +244,17 @@ serve(async (req) => {
           });
 
           if (emailResponse.ok) {
-            console.log(`✅ E-mail enviado com sucesso para ${tenant.owner_email}`);
+            if (process.env.NODE_ENV === 'development') { console.log(`✅ E-mail enviado com sucesso para ${tenant.owner_email}`); }
           } else {
             const errorData = await emailResponse.text();
             console.error(`❌ Erro ao enviar e-mail para ${tenant.owner_email}:`, errorData);
           }
         } else {
           // Fallback: usar Supabase Auth (limitado)
-          console.log(`⚠️ RESEND_API_KEY não configurada. E-mail não enviado para ${tenant.owner_email}`);
-          console.log(`📧 Conteúdo do e-mail que seria enviado:`);
-          console.log(`Para: ${tenant.owner_email}`);
-          console.log(`Assunto: 📊 Seu Relatório Semanal de Escalas - ${tenant.name}`);
+          if (process.env.NODE_ENV === 'development') { console.log(`⚠️ RESEND_API_KEY não configurada. E-mail não enviado para ${tenant.owner_email}`); }
+          if (process.env.NODE_ENV === 'development') { console.log(`📧 Conteúdo do e-mail que seria enviado:`); }
+          if (process.env.NODE_ENV === 'development') { console.log(`Para: ${tenant.owner_email}`); }
+          if (process.env.NODE_ENV === 'development') { console.log(`Assunto: 📊 Seu Relatório Semanal de Escalas - ${tenant.name}`); }
         }
       } catch (tenantError) {
         console.error(`❌ Erro ao processar tenant ${tenant.id}:`, tenantError);

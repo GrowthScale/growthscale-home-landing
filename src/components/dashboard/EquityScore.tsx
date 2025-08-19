@@ -12,26 +12,26 @@ interface EquityScoreProps {
 
 export function EquityScore({ value, message, className = '' }: EquityScoreProps) {
   const getEquityColor = (score: number) => {
-    if (score >= 75) return 'text-green-600';
-    if (score >= 50) return 'text-yellow-600';
+    if (score >= 75) {return 'text-green-600';}
+    if (score >= 50) {return 'text-yellow-600';}
     return 'text-red-600';
   };
 
   const getEquityBadgeVariant = (score: number) => {
-    if (score >= 75) return 'default';
-    if (score >= 50) return 'secondary';
+    if (score >= 75) {return 'default';}
+    if (score >= 50) {return 'secondary';}
     return 'destructive';
   };
 
   const getEquityIcon = (score: number) => {
-    if (score >= 75) return <TrendingUp className="h-4 w-4" />;
-    if (score >= 50) return <Minus className="h-4 w-4" />;
+    if (score >= 75) {return <TrendingUp className="h-4 w-4" />;}
+    if (score >= 50) {return <Minus className="h-4 w-4" />;}
     return <TrendingDown className="h-4 w-4" />;
   };
 
   const getEquityStatus = (score: number) => {
-    if (score >= 75) return 'Excelente';
-    if (score >= 50) return 'Regular';
+    if (score >= 75) {return 'Excelente';}
+    if (score >= 50) {return 'Regular';}
     return 'Crítico';
   };
 

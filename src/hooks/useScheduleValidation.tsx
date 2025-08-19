@@ -101,20 +101,20 @@ export const useScheduleValidation = (options: UseScheduleValidationOptions = {}
   }, []);
 
   const getRiskLevel = useCallback((riskScore: number) => {
-    if (riskScore > 75) return 'high';
-    if (riskScore > 50) return 'medium';
+    if (riskScore > 75) {return 'high';}
+    if (riskScore > 50) {return 'medium';}
     return 'low';
   }, []);
 
   const getRiskColor = useCallback((riskScore: number) => {
-    if (riskScore > 75) return 'text-red-600';
-    if (riskScore > 50) return 'text-yellow-600';
+    if (riskScore > 75) {return 'text-red-600';}
+    if (riskScore > 50) {return 'text-yellow-600';}
     return 'text-green-600';
   }, []);
 
   const getRiskLabel = useCallback((riskScore: number) => {
-    if (riskScore > 75) return 'Alto Risco';
-    if (riskScore > 50) return 'Risco Moderado';
+    if (riskScore > 75) {return 'Alto Risco';}
+    if (riskScore > 50) {return 'Risco Moderado';}
     return 'Baixo Risco';
   }, []);
 

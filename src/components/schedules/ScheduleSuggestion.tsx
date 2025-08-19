@@ -41,7 +41,7 @@ export const ScheduleSuggestion: React.FC<ScheduleSuggestionProps> = ({
 
   const getShiftInfo = (shiftId: string) => {
     const shift = shifts.find(s => s.id === shiftId);
-    if (!shift) return { startTime: '', endTime: '', requiredSkill: '' };
+    if (!shift) {return { startTime: '', endTime: '', requiredSkill: '' };}
     
     const startTime = new Date(shift.startTime).toLocaleTimeString('pt-BR', { 
       hour: '2-digit', 

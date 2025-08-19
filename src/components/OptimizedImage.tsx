@@ -31,7 +31,7 @@ export function OptimizedImage({
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    if (priority) return;
+    if (priority) {return;}
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -78,7 +78,7 @@ export function OptimizedImage({
 
   // Detectar suporte a formatos modernos
   const supportsWebP = () => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === 'undefined') {return false;}
     const canvas = document.createElement('canvas');
     canvas.width = 1;
     canvas.height = 1;
@@ -86,7 +86,7 @@ export function OptimizedImage({
   };
 
   const supportsAVIF = () => {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === 'undefined') {return false;}
     const canvas = document.createElement('canvas');
     canvas.width = 1;
     canvas.height = 1;

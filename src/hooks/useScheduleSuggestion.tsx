@@ -96,7 +96,7 @@ export const useScheduleSuggestion = (options: UseScheduleSuggestionOptions = {}
   }, [trackEvent]);
 
   const getSuggestionSummary = useCallback(() => {
-    if (!currentSuggestion) return null;
+    if (!currentSuggestion) {return null;}
 
     const totalSuggestions = currentSuggestion.suggestion.length;
     const uniqueEmployees = new Set(currentSuggestion.suggestion.map(s => s.employeeId)).size;

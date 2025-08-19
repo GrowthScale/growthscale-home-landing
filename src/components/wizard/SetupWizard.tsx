@@ -133,7 +133,7 @@ const SetupWizard: React.FC = () => {
         .select()
         .single();
 
-      if (companyError) throw companyError;
+      if (companyError) {throw companyError;}
 
       // 2. Criar relacionamento company_users (owner)
       const { error: companyUserError } = await supabase
@@ -144,7 +144,7 @@ const SetupWizard: React.FC = () => {
           role: 'owner'
         });
 
-      if (companyUserError) throw companyUserError;
+      if (companyUserError) {throw companyUserError;}
 
       // 3. Criar user_profile
       const { error: profileError } = await supabase
@@ -155,7 +155,7 @@ const SetupWizard: React.FC = () => {
           tenant_id: company.id
         });
 
-      if (profileError) throw profileError;
+      if (profileError) {throw profileError;}
 
       // 4. Criar filiais
       if (branchesData.length > 0) {
@@ -168,7 +168,7 @@ const SetupWizard: React.FC = () => {
           .from('branches')
           .insert(branchesToInsert);
 
-        if (branchesError) throw branchesError;
+        if (branchesError) {throw branchesError;}
       }
 
       // 5. Criar funcionários
@@ -186,7 +186,7 @@ const SetupWizard: React.FC = () => {
           .from('employees')
           .insert(employeesToInsert);
 
-        if (employeesError) throw employeesError;
+        if (employeesError) {throw employeesError;}
       }
 
       toast({

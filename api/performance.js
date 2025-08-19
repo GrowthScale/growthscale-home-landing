@@ -131,10 +131,10 @@ export default async function handler(req, res) {
           // Distribuição de performance
           recentMetrics.forEach(metric => {
             const score = metric.score || 0;
-            if (score >= 90) aggregatedMetrics.performanceDistribution.excellent++;
-            else if (score >= 70) aggregatedMetrics.performanceDistribution.good++;
-            else if (score >= 50) aggregatedMetrics.performanceDistribution.needsImprovement++;
-            else aggregatedMetrics.performanceDistribution.poor++;
+            if (score >= 90) {aggregatedMetrics.performanceDistribution.excellent++;}
+            else if (score >= 70) {aggregatedMetrics.performanceDistribution.good++;}
+            else if (score >= 50) {aggregatedMetrics.performanceDistribution.needsImprovement++;}
+            else {aggregatedMetrics.performanceDistribution.poor++;}
           });
 
           // Gerar alertas

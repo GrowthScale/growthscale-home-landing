@@ -141,7 +141,7 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
 
   // Update tenant settings
   const updateTenantSettings = async (settings: Partial<Tenant['settings']>) => {
-    if (!currentTenant) return;
+    if (!currentTenant) {return;}
 
     try {
       const response = await companyService.updateCompany(currentTenant.id, {

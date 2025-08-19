@@ -136,13 +136,13 @@ class AuditLogger {
       
       // Log local para debugging
       if (process.env.NODE_ENV === 'development') {
-        console.log('🔍 AUDIT LOG:', {
+        if (process.env.NODE_ENV === 'development') { console.log('🔍 AUDIT LOG:', {
           action: entry.action,
           user: entry.user_id,
           resource: `${entry.resource_type}${entry.resource_id ? `:${entry.resource_id}` : ''}`,
           severity: entry.severity,
           timestamp: fullEntry.timestamp
-        });
+        }); }
       }
       
       return { success: true };

@@ -36,7 +36,7 @@ export function CltAssistantChat() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || mutation.isLoading) return;
+    if (!input.trim() || mutation.isLoading) {return;}
 
     const userMessage: Message = { 
       role: 'user', 

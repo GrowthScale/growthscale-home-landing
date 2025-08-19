@@ -74,7 +74,7 @@ export function VirtualList<T>({
   // Resize observer
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container) {return;}
 
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -305,7 +305,7 @@ export function VirtualGrid<T>({
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container) {return;}
 
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {

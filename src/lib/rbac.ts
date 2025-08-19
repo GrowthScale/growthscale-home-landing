@@ -441,10 +441,10 @@ export class AdvancedRBACService {
   }
 
   private isValidPermission(permission: string): boolean {
-    if (permission === '*') return true;
+    if (permission === '*') {return true;}
     
     const [resource, action] = permission.split(':');
-    if (action === '*') return true;
+    if (action === '*') {return true;}
     
     return SYSTEM_PERMISSIONS.some(p => p.id === permission);
   }
@@ -483,7 +483,7 @@ export class AdvancedRBACService {
     }
 
     // In a real app, save to database/logging service
-    console.log('Audit Log:', auditLog);
+    if (process.env.NODE_ENV === 'development') { console.log('Audit Log:', auditLog); }
   }
 
   // Get audit logs

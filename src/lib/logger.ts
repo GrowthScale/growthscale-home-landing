@@ -17,7 +17,7 @@ function redact(obj: Any) {
 }
 
 function deepRedact(input: Any): Any {
-  if (!input || typeof input !== 'object') return input;
+  if (!input || typeof input !== 'object') {return input;}
   
   const out: Any = Array.isArray(input) ? [] : {};
   

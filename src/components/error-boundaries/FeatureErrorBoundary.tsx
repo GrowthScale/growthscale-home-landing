@@ -100,12 +100,12 @@ export class FeatureErrorBoundary extends Component<Props, State> {
     // Em produção, enviar para serviço de monitoramento
     if (process.env.NODE_ENV === 'production') {
       // Aqui você pode integrar com Sentry, LogRocket, etc.
-      console.log('Error report would be sent to monitoring service:', {
+      if (process.env.NODE_ENV === 'development') { console.log('Error report would be sent to monitoring service:', {
         feature,
         error: error?.message,
         stack: error?.stack,
         componentStack: errorInfo?.componentStack
-      });
+      }); }
     }
     
     // Log para audit

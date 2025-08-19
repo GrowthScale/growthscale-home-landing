@@ -77,7 +77,7 @@ const ActivityFeed = () => {
   };
 
   const getUserInitials = (name: string) => {
-    if (name === "Sistema") return "S";
+    if (name === "Sistema") {return "S";}
     return name.split(" ").map(n => n[0]).join("").toUpperCase();
   };
 

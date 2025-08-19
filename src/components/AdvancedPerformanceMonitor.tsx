@@ -61,19 +61,19 @@ export function AdvancedPerformanceMonitor() {
   }, [metrics, bundleMetrics]);
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600 bg-green-100 dark:bg-green-900';
-    if (score >= 70) return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900';
+    if (score >= 90) {return 'text-green-600 bg-green-100 dark:bg-green-900';}
+    if (score >= 70) {return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900';}
     return 'text-red-600 bg-red-100 dark:bg-red-900';
   };
 
   const getScoreIcon = (score: number) => {
-    if (score >= 90) return <CheckCircle className="w-4 h-4" />;
-    if (score >= 70) return <AlertTriangle className="w-4 h-4" />;
+    if (score >= 90) {return <CheckCircle className="w-4 h-4" />;}
+    if (score >= 70) {return <AlertTriangle className="w-4 h-4" />;}
     return <X className="w-4 h-4" />;
   };
 
   const getMetricStatus = (value: number | null, threshold: number, unit: string) => {
-    if (!value) return { status: 'unknown', color: 'text-gray-500' };
+    if (!value) {return { status: 'unknown', color: 'text-gray-500' };}
     
     const isGood = value <= threshold;
     return {

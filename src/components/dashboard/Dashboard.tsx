@@ -53,9 +53,9 @@ const Dashboard = () => {
   const { data: pendingDraft, isLoading: isLoadingDraft } = useQuery({
     queryKey: ['pendingDraft', tenant?.id],
     queryFn: async () => {
-      if (!tenant?.id) return null;
+      if (!tenant?.id) {return null;}
       const response = await scheduleDraftService.getPendingDraft(tenant.id);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
       return response.data;
     },
     enabled: !!tenant?.id,

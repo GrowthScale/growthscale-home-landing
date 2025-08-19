@@ -140,8 +140,8 @@ function validateEquity(shifts: Shift[], employees: Employee[]): { value: number
   const equityValue = Math.max(0, 100 - (stdDev * 50));
   
   let message = "Distribuição de turnos de fim de semana parece justa.";
-  if (equityValue < 50) message = "A distribuição de turnos de fim de semana está muito desigual.";
-  else if (equityValue < 75) message = "A distribuição de turnos de fim de semana pode ser melhorada.";
+  if (equityValue < 50) {message = "A distribuição de turnos de fim de semana está muito desigual.";}
+  else if (equityValue < 75) {message = "A distribuição de turnos de fim de semana pode ser melhorada.";}
 
   return { value: Math.round(equityValue), message };
 }

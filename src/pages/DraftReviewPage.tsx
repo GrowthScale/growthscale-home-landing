@@ -31,9 +31,9 @@ export default function DraftReviewPage() {
   const { data: draft, isLoading, isError } = useQuery({
     queryKey: ['scheduleDraft', draftId],
     queryFn: async () => {
-      if (!draftId) throw new Error('ID do rascunho não fornecido');
+      if (!draftId) {throw new Error('ID do rascunho não fornecido');}
       const response = await scheduleDraftService.getDraftById(draftId);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
       return response.data;
     },
     enabled: !!draftId,
@@ -41,9 +41,9 @@ export default function DraftReviewPage() {
 
   const approveMutation = useMutation({
     mutationFn: async (scheduleData: Record<string, unknown>) => {
-      if (!draftId) throw new Error('ID do rascunho não fornecido');
+      if (!draftId) {throw new Error('ID do rascunho não fornecido');}
       const response = await scheduleDraftService.approveDraft(draftId, scheduleData);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
       return response.data;
     },
     onSuccess: () => {
@@ -65,9 +65,9 @@ export default function DraftReviewPage() {
 
   const dismissMutation = useMutation({
     mutationFn: async () => {
-      if (!draftId) throw new Error('ID do rascunho não fornecido');
+      if (!draftId) {throw new Error('ID do rascunho não fornecido');}
       const response = await scheduleDraftService.dismissDraft(draftId);
-      if (response.error) throw new Error(response.error);
+      if (response.error) {throw new Error(response.error);}
     },
     onSuccess: () => {
       toast({ 
