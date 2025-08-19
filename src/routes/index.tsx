@@ -45,17 +45,17 @@ const publicRoutes = [
 
 // Rotas protegidas
 const protectedRoutes = [
-  { path: '/dashboard', element: <Dashboard />, roles: ['admin', 'manager', 'employee'] },
-  { path: '/schedules', element: <Schedules />, roles: ['admin', 'manager'] },
-  { path: '/employees', element: <Employees />, roles: ['admin', 'manager'] },
-  { path: '/companies', element: <Companies />, roles: ['admin'] },
-  { path: '/settings', element: <Settings />, roles: ['admin', 'manager'] },
-  { path: '/profile', element: <Profile />, roles: ['admin', 'manager', 'employee'] },
-  { path: '/clt-assistant', element: <CLTAssistant />, roles: ['admin', 'manager'] },
-  { path: '/templates', element: <Templates />, roles: ['admin', 'manager'] },
-  { path: '/integrations', element: <Integrations />, roles: ['admin'] },
-  { path: '/compliance', element: <Compliance />, roles: ['admin', 'manager'] },
-  { path: '/setup', element: <Setup />, roles: ['admin'] },
+  { path: '/dashboard', element: <Dashboard />, roles: ['owner', 'admin', 'manager', 'employee'] },
+  { path: '/schedules', element: <Schedules />, roles: ['owner', 'admin', 'manager'] },
+  { path: '/employees', element: <Employees />, roles: ['owner', 'admin', 'manager'] },
+  { path: '/companies', element: <Companies />, roles: ['owner', 'admin'] },
+  { path: '/settings', element: <Settings />, roles: ['owner', 'admin', 'manager'] },
+  { path: '/profile', element: <Profile />, roles: ['owner', 'admin', 'manager', 'employee'] },
+  { path: '/clt-assistant', element: <CLTAssistant />, roles: ['owner', 'admin', 'manager'] },
+  { path: '/templates', element: <Templates />, roles: ['owner', 'admin', 'manager'] },
+  { path: '/integrations', element: <Integrations />, roles: ['owner', 'admin'] },
+  { path: '/compliance', element: <Compliance />, roles: ['owner', 'admin', 'manager'] },
+  { path: '/setup', element: <Setup />, roles: ['owner', 'admin'] },
 ];
 
 // Componente principal de rotas

@@ -8,6 +8,9 @@ import { CompanyStep } from './steps/CompanyStep';
 import { BranchesStep } from './steps/BranchesStep';
 import { EmployeesStep } from './steps/EmployeesStep';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export interface CompanyData {
   name: string;
@@ -70,7 +73,10 @@ const SetupWizard: React.FC = () => {
   const [companyData, setCompanyData] = useState<CompanyData | null>(null);
   const [branchesData, setBranchesData] = useState<BranchData[]>([]);
   const [employeesData, setEmployeesData] = useState<EmployeeData[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const progress = ((currentStep - 1) / (steps.length - 1)) * 100;
 
@@ -97,6 +103,112 @@ const SetupWizard: React.FC = () => {
     });
   };
 
+  const handleFinishSetup = async () => {
+    if (!user || !companyData) {
+      toast({
+        title: "Erro",
+        description: "Dados incompletos para finalizar o setup.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // 1. Criar empresa
+      const { data: company, error: companyError } = await supabase
+        .from('companies')
+        .insert({
+          name: companyData.name,
+          cnpj: companyData.cnpj,
+          trade_name: companyData.name,
+          address: companyData.address,
+          contact: {
+            email: companyData.email,
+            phone: companyData.phone,
+          },
+          status: 'active'
+        })
+        .select()
+        .single();
+
+      if (companyError) throw companyError;
+
+      // 2. Criar relacionamento company_users (owner)
+      const { error: companyUserError } = await supabase
+        .from('company_users')
+        .insert({
+          user_id: user.id,
+          company_id: company.id,
+          role: 'owner'
+        });
+
+      if (companyUserError) throw companyUserError;
+
+      // 3. Criar user_profile
+      const { error: profileError } = await supabase
+        .from('user_profiles')
+        .insert({
+          id: user.id,
+          role: 'owner',
+          tenant_id: company.id
+        });
+
+      if (profileError) throw profileError;
+
+      // 4. Criar filiais
+      if (branchesData.length > 0) {
+        const branchesToInsert = branchesData.map(branch => ({
+          ...branch,
+          company_id: company.id
+        }));
+
+        const { error: branchesError } = await supabase
+          .from('branches')
+          .insert(branchesToInsert);
+
+        if (branchesError) throw branchesError;
+      }
+
+      // 5. Criar funcionários
+      if (employeesData.length > 0) {
+        const employeesToInsert = employeesData.map(employee => ({
+          name: employee.name,
+          email: employee.email,
+          position: employee.role,
+          company_id: company.id,
+          status: 'active',
+          start_date: new Date().toISOString().split('T')[0]
+        }));
+
+        const { error: employeesError } = await supabase
+          .from('employees')
+          .insert(employeesToInsert);
+
+        if (employeesError) throw employeesError;
+      }
+
+      toast({
+        title: "Setup concluído!",
+        description: "Sua empresa foi configurada com sucesso.",
+      });
+
+      // Redirecionar para dashboard
+      navigate('/dashboard');
+
+    } catch (error) {
+      console.error('Erro no setup:', error);
+      toast({
+        title: "Erro no setup",
+        description: "Ocorreu um erro ao configurar sua empresa. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const nextStep = () => {
     if (currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
@@ -116,26 +228,7 @@ const SetupWizard: React.FC = () => {
   };
 
   const handleFinish = async () => {
-    try {
-      // Simular API call para salvar todos os dados
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      toast({
-        title: "Configuração concluída!",
-        description: "Sua empresa foi criada com sucesso. Redirecionando para o dashboard...",
-      });
-
-      // Redirecionar para o dashboard após 2 segundos
-      setTimeout(() => {
-        window.location.href = '/dashboard';
-      }, 2000);
-    } catch (error) {
-      toast({
-        title: "Erro",
-        description: "Ocorreu um erro ao finalizar a configuração. Tente novamente.",
-        variant: "destructive",
-      });
-    }
+    await handleFinishSetup();
   };
 
   const renderStep = () => {
