@@ -88,6 +88,29 @@ export class AuthService {
     return AuthService.instance;
   }
 
+  // Resetar senha
+  async resetPassword(email: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      const emailSchema = z.string().email('Email inválido');
+      const validatedEmail = emailSchema.parse(email);
+
+      const { error } = await supabase.auth.resetPasswordForEmail(validatedEmail);
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      // Log de auditoria
+      await this.logAuditEvent('reset_password_requested', { email: validatedEmail });
+
+      return { success: true };
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return { success: false, error: error.errors[0].message };
+      }
+      return { success: false, error: 'Erro ao solicitar redefinição de senha' };
+    }
+  }
+
   // Login com validação
   async login(email: string, password: string, rememberMe = false): Promise<{ success: boolean; user?: User; error?: string }> {
     try {

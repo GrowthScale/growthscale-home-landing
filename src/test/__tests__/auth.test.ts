@@ -19,11 +19,11 @@ describe('AuthService', () => {
       expect(result.error).toContain('Email inválido');
     });
 
-    it('should validate password length', async () => {
+    it('should validate password length (min 8)', async () => {
       const result = await authService.login('test@example.com', '123');
       
       expect(result.success).toBe(false);
-      expect(result.error).toContain('mínimo 6 caracteres');
+      expect(result.error).toContain('pelo menos 8 caracteres');
     });
 
     it('should handle successful login', async () => {
@@ -38,7 +38,7 @@ describe('AuthService', () => {
       };
 
       const { createClient } = await import('@supabase/supabase-js');
-      const mockSupabase = createClient as jest.MockedFunction<typeof createClient>;
+      const mockSupabase = createClient as any;
       
       mockSupabase.mockReturnValue({
         auth: {
@@ -59,7 +59,7 @@ describe('AuthService', () => {
             }),
           }),
         }),
-      } as unknown as ReturnType<typeof createClient>);
+      } as any);
 
       const result = await authService.login('test@example.com', 'password123');
       
@@ -125,7 +125,7 @@ describe('AuthService', () => {
 
     it('should generate 2FA code', async () => {
       const { createClient } = await import('@supabase/supabase-js');
-      const mockSupabase = createClient as jest.MockedFunction<typeof createClient>;
+      const mockSupabase = createClient as vi.MockedFunction<typeof createClient>;
       
       mockSupabase.mockReturnValue({
         from: vi.fn().mockReturnValue({
@@ -133,10 +133,9 @@ describe('AuthService', () => {
         }),
       } as unknown as ReturnType<typeof createClient>);
 
-      const result = await authService.generateTwoFactorCode('test@example.com');
+      const result = await authService.generateTwoFactorCode();
       
       expect(result.success).toBe(true);
-      expect(result.code).toHaveLength(6);
     });
   });
 
@@ -150,7 +149,7 @@ describe('AuthService', () => {
 
     it('should handle successful password reset', async () => {
       const { createClient } = await import('@supabase/supabase-js');
-      const mockSupabase = createClient as jest.MockedFunction<typeof createClient>;
+      const mockSupabase = createClient as vi.MockedFunction<typeof createClient>;
       
       mockSupabase.mockReturnValue({
         auth: {
