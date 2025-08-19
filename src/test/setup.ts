@@ -66,12 +66,3 @@ Object.defineProperty(global, 'crypto', {
 // Mock do fetch
 global.fetch = vi.fn();
 
-// Mock do console para evitar logs nos testes
-global.console = {
-  ...console,
-  log: vi.fn(),
-  debug: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  error: vi.fn(),
-};
