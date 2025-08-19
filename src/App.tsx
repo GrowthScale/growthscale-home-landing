@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { ThemeProvider } from '@/contexts/ThemeContext';
@@ -48,41 +47,39 @@ function App() {
       <AccessibilityProvider>
         <ThemeProvider>
           <AuthProvider>
-            <TenantProvider>
-              <Router>
-                <div className="App">
-                  <a href="#main-content" className="skip-link">
-                    Pular para o conteúdo principal
-                  </a>
-                  <div id="main-content">
-                    <AppRoutes />
-                  </div>
-                  <PWAInstallPrompt />
-                
-                {/* Development Monitors - Only show in development */}
-                {process.env.NODE_ENV === 'development' && (
-                  <div className="fixed bottom-4 right-4 space-y-2 z-50">
-                    <PerformanceMonitor />
-                    <AdvancedPerformanceMonitor />
-                    <EdgeAnalyticsDashboard />
-                    <SecurityDashboard />
-                    <AIDashboard />
-                  </div>
-                )}
-                
-                <Toaster 
-                  position="top-right"
-                  richColors
-                  closeButton
-                  duration={4000}
-                />
-                
-                {/* ARIA live regions for accessibility */}
-                <div aria-live="polite" aria-atomic="true" className="sr-only" id="status-updates"></div>
-                <div aria-live="assertive" aria-atomic="true" className="sr-only" id="error-announcements"></div>
+                      <TenantProvider>
+            <div className="App">
+              <a href="#main-content" className="skip-link">
+                Pular para o conteúdo principal
+              </a>
+              <div id="main-content">
+                <AppRoutes />
               </div>
-            </Router>
-          </TenantProvider>
+              <PWAInstallPrompt />
+            
+            {/* Development Monitors - Only show in development */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="fixed bottom-4 right-4 space-y-2 z-50">
+                <PerformanceMonitor />
+                <AdvancedPerformanceMonitor />
+                <EdgeAnalyticsDashboard />
+                <SecurityDashboard />
+                <AIDashboard />
+              </div>
+            )}
+            
+            <Toaster 
+              position="top-right"
+              richColors
+              closeButton
+              duration={4000}
+            />
+            
+            {/* ARIA live regions for accessibility */}
+            <div aria-live="polite" aria-atomic="true" className="sr-only" id="status-updates"></div>
+            <div aria-live="assertive" aria-atomic="true" className="sr-only" id="error-announcements"></div>
+          </div>
+        </TenantProvider>
         </AuthProvider>
       </ThemeProvider>
       </AccessibilityProvider>
