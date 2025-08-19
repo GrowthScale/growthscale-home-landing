@@ -53,7 +53,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; connect-src 'self' https://*.supabase.co https://api.openai.com https://*.stripe.com https://*.vercel.app wss://*.supabase.co; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'"
+          "value": "default-src 'self'; connect-src 'self' https://*.supabase.co https://api.openai.com https://*.stripe.com https://*.vercel.app wss://*.supabase.co; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
         },
         {
           "key": "Feature-Policy",

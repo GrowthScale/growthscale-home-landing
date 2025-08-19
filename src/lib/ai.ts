@@ -1,11 +1,11 @@
 // AI Service - OpenAI Integration for Intelligent Analysis
 import OpenAI from 'openai';
 
-// Initialize OpenAI
-const openai = new OpenAI({
+// Initialize OpenAI with fallback
+const openai = process.env.VITE_OPENAI_API_KEY ? new OpenAI({
   apiKey: process.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true, // Only for client-side analysis
-});
+}) : null;
 
 export interface AIAnalysis {
   type: 'anomaly' | 'prediction' | 'recommendation' | 'alert';
@@ -68,7 +68,7 @@ export class AIService {
 
   // Anomaly Detection
   async detectAnomalies(data: any[]): Promise<AnomalyDetection[]> {
-    if (!process.env.VITE_OPENAI_API_KEY) {
+    if (!openai || !process.env.VITE_OPENAI_API_KEY) {
       return this.simulateAnomalyDetection(data);
     }
 
@@ -114,7 +114,7 @@ export class AIService {
 
   // Predictive Analytics
   async predictMetrics(historicalData: any[]): Promise<Prediction[]> {
-    if (!process.env.VITE_OPENAI_API_KEY) {
+    if (!openai || !process.env.VITE_OPENAI_API_KEY) {
       return this.simulatePredictions(historicalData);
     }
 
@@ -162,7 +162,7 @@ export class AIService {
 
   // Smart Recommendations
   async generateRecommendations(data: any): Promise<string[]> {
-    if (!process.env.VITE_OPENAI_API_KEY) {
+    if (!openai || !process.env.VITE_OPENAI_API_KEY) {
       return this.simulateRecommendations(data);
     }
 
@@ -203,7 +203,7 @@ export class AIService {
 
   // Smart Alerts
   async generateSmartAlerts(data: any): Promise<SmartAlert[]> {
-    if (!process.env.VITE_OPENAI_API_KEY) {
+    if (!openai || !process.env.VITE_OPENAI_API_KEY) {
       return this.simulateSmartAlerts(data);
     }
 
