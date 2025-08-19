@@ -5,6 +5,7 @@ import { Toaster } from 'sonner';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { TenantProvider } from '@/contexts/TenantContext';
+import { AccessibilityProvider } from '@/components/AccessibilityProvider';
 import { apm } from '@/lib/apm';
 import { ai } from '@/lib/ai';
 import AppRoutes from '@/routes';
@@ -44,13 +45,19 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <AuthProvider>
-          <TenantProvider>
-            <Router>
-              <div className="App">
-                <AppRoutes />
-                <PWAInstallPrompt />
+      <AccessibilityProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <TenantProvider>
+              <Router>
+                <div className="App">
+                  <a href="#main-content" className="skip-link">
+                    Pular para o conteúdo principal
+                  </a>
+                  <div id="main-content">
+                    <AppRoutes />
+                  </div>
+                  <PWAInstallPrompt />
                 
                 {/* Development Monitors - Only show in development */}
                 {process.env.NODE_ENV === 'development' && (
@@ -69,11 +76,16 @@ function App() {
                   closeButton
                   duration={4000}
                 />
+                
+                {/* ARIA live regions for accessibility */}
+                <div aria-live="polite" aria-atomic="true" className="sr-only" id="status-updates"></div>
+                <div aria-live="assertive" aria-atomic="true" className="sr-only" id="error-announcements"></div>
               </div>
             </Router>
           </TenantProvider>
         </AuthProvider>
       </ThemeProvider>
+      </AccessibilityProvider>
     </QueryClientProvider>
   );
 }

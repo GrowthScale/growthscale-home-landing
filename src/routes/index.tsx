@@ -24,6 +24,7 @@ const LazyIntegrations = React.lazy(() => import('@/pages/Integrations'));
 const LazyAnalytics = React.lazy(() => import('@/pages/Analytics'));
 const LazySecurity = React.lazy(() => import('@/pages/Security'));
 const LazyAI = React.lazy(() => import('@/pages/AI'));
+const LazyEnterprise = React.lazy(() => import('@/pages/Enterprise'));
 
 export default function AppRoutes() {
   return (
@@ -54,8 +55,9 @@ export default function AppRoutes() {
           <Route path="integrations" element={<LazyIntegrations />} />
           <Route path="analytics" element={<LazyAnalytics />} />
           <Route path="security" element={<LazySecurity />} />
-          <Route path="ai" element={<LazyAI />} />
-        </Route>
+                     <Route path="ai" element={<LazyAI />} />
+           <Route path="enterprise" element={<LazyEnterprise />} />
+         </Route>
 
         {/* 404 Route */}
         <Route path="*" element={<LazyNotFound />} />

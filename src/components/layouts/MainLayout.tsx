@@ -124,6 +124,12 @@ export function MainLayout() {
       roles: ['owner', 'admin', 'manager'],
     },
     {
+      label: 'Enterprise',
+      href: '/enterprise',
+      icon: 'Building2',
+      roles: ['owner', 'admin'],
+    },
+    {
       label: 'Configurações',
       href: '/settings',
       icon: 'Settings',

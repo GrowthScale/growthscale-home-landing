@@ -5,6 +5,7 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import { VitePWA } from 'vite-plugin-pwa'
 import ViteImageOptimizer from 'vite-plugin-imagemin'
 
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -194,6 +195,13 @@ export default defineConfig({
     // Otimizações de performance
     assetsInlineLimit: 4096, // 4KB
     reportCompressedSize: true,
+    // Configurações de compressão
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
   server: {
     port: 3000,
