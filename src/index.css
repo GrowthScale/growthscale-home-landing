@@ -16,13 +16,13 @@
     --card-foreground: 222.2 84% 4.9%;
     --card-dark: 217.2 32.6% 17.5%;
     
-    --primary: 217.2 91.2% 59.8%; /* Azul elétrico */
+    --primary: 217.2 91.2% 59.8%; /* Azul elétrico para AÇÃO */
     --primary-foreground: 222.2 47.4% 11.2%;
     
     --secondary: 210 40% 96.1%; /* Cinza muito claro para fundos e cards claros */
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --accent: 38 92% 50%; /* Laranja/Dourado para acentos de confiança e CTAs secundários */
+    --accent: 38 92% 50%; /* Laranja/Dourado para VALIDAÇÃO e SUCESSO */
     --accent-foreground: 24 9.8% 10%;
     
     --muted: 210 40% 96.1%;
@@ -39,12 +39,7 @@
  
 @layer base {
   * { @apply border-border; }
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+  body { @apply bg-background text-foreground; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   html { scroll-behavior: smooth; }
 }
 
