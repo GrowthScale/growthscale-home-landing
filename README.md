@@ -205,3 +205,4 @@ Este projeto está sob a licença MIT.
 # Force deploy Sat Aug 16 18:41:26 -03 2025
 # Força novo deploy - Sun Aug 17 22:04:34 -03 2025
 # Força novo deploy
+# Teste deploy com Vercel keys configuradas
