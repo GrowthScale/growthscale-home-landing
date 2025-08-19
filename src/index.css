@@ -6,40 +6,41 @@
  
 @layer base {
   :root {
-    /* Paleta Escura Premium (Default) */
-    --background-dark: 224 71% 4%;    /* Azul quase preto */
+    /* Paleta para Fundos */
     --background: 0 0% 100%; /* Fundo principal claro */
+    --background-dark: 224 71% 4%; /* Azul quase preto para seções de impacto */
     --foreground: 222.2 84% 4.9%; /* Texto principal escuro */
     --foreground-dark: 210 40% 98%; /* Texto principal claro */
     
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --card-dark: 217.2 32.6% 17.5%;
-    
-    --primary: 217.2 91.2% 59.8%; /* Azul elétrico para AÇÃO */
-    --primary-foreground: 222.2 47.4% 11.2%;
-    
+    /* Cores Semânticas */
+    --primary: 221.2 83.2% 53.3%; /* Azul forte e confiável */
+    --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%; /* Cinza muito claro para fundos e cards claros */
     --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --accent: 38 92% 50%; /* Laranja/Dourado para VALIDAÇÃO e SUCESSO */
+    --accent: 38 92% 50%; /* Laranja/Dourado para acentos de confiança */
     --accent-foreground: 24 9.8% 10%;
     
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     
     --border: 214.3 31.8% 91.4%;
     --border-dark: 217.2 32.6% 17.5%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
     --radius: 0.75rem;
   }
 }
  
 @layer base {
   * { @apply border-border; }
-  body { @apply bg-background text-foreground; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
   html { scroll-behavior: smooth; }
 }
 

@@ -2,12 +2,12 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { PlayCircle, ShieldCheck, Clock, BarChart3, Check, X, BrainCircuit, TrendingUp, AlertTriangle, Zap, Users, Star, ArrowRight, Sparkles, Target, Award, Rocket, Eye } from 'lucide-react';
+import { PlayCircle, ShieldCheck, Clock, BarChart3, Check, X, BrainCircuit, TrendingUp, AlertTriangle, Zap, Users, Star, ArrowRight, Sparkles, Target, Award, Rocket, Eye, ChevronRight } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
-// --- COMPONENTE DO CABEÇALHO (NAVBAR) ---
+// --- HEADER PREMIUM ---
 const Header = () => (
   <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-xl">
     <div className="container flex h-16 items-center">
@@ -38,7 +38,7 @@ const Header = () => (
   </header>
 );
 
-// --- COMPONENTE DA SECÇÃO HERO (MODO CINEMA - ESCURO) ---
+// --- HERO SECTION (MODO CINEMA - ESCURO) ---
 const HeroSection = () => (
   <section className="relative w-full py-24 md:py-32 lg:py-40 text-center text-foreground-dark bg-gradient-to-br from-background-dark via-background-dark to-primary/20 overflow-hidden">
     <div className="absolute inset-0 z-0 bg-grid-dark opacity-10 [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"></div>
@@ -77,89 +77,89 @@ const HeroSection = () => (
   </section>
 );
 
-// --- COMPONENTE DA SECÇÃO DE PROVA SOCIAL (MODO ANÁLISE - CLARO) ---
+// --- PROVA SOCIAL (MODO ANÁLISE - CLARO) ---
 const SocialProofSection = () => (
-    <section className="py-20 bg-gradient-to-br from-background via-secondary to-background">
-        <div className="container mx-auto px-4 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2 text-sm font-medium text-accent mb-8">
-                <Award className="h-4 w-4" />
-                Resultados Comprovados
-            </div>
-            <p className="text-muted-foreground mb-12 text-lg">A ferramenta de confiança para gestores de restaurantes que valorizam o seu tempo e a sua tranquilidade</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div className="text-center p-6 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 mb-4">
-                        <Clock className="h-6 w-6 text-accent" />
-                    </div>
-                    <p className="text-4xl font-bold text-primary mb-1">5 Minutos</p>
-                    <p className="text-muted-foreground">Tempo médio para criar uma escala semanal otimizada.</p>
-                </div>
-                <div className="text-center p-6 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 mb-4">
-                        <Rocket className="h-6 w-6 text-accent" />
-                    </div>
-                    <p className="text-4xl font-bold text-primary mb-1">90% Menos</p>
-                    <p className="text-muted-foreground">Tempo gasto em tarefas manuais de agendamento.</p>
-                </div>
-                <div className="text-center p-6 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 mb-4">
-                        <Target className="h-6 w-6 text-accent" />
-                    </div>
-                    <p className="text-4xl font-bold text-primary mb-1">Até 30%</p>
-                    <p className="text-muted-foreground">Redução de custos com horas extras não planeadas.</p>
-                </div>
-                <div className="text-center p-6 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 mb-4">
-                        <Eye className="h-6 w-6 text-accent" />
-                    </div>
-                    <p className="text-4xl font-bold text-primary mb-1">100% Visível</p>
-                    <p className="text-muted-foreground">Clareza total sobre os custos e riscos de cada escala.</p>
-                </div>
-            </div>
+  <section className="py-20 bg-gradient-to-br from-background via-secondary to-background">
+    <div className="container mx-auto px-4 text-center">
+      <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2 text-sm font-medium text-accent mb-8">
+        <Award className="h-4 w-4" />
+        Resultados Comprovados
+      </div>
+      <p className="text-muted-foreground mb-12 text-lg">A ferramenta de confiança para gestores de restaurantes que valorizam o seu tempo e a sua tranquilidade</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="text-center p-6 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 mb-4">
+            <Clock className="h-6 w-6 text-accent" />
+          </div>
+          <p className="text-4xl font-bold text-primary mb-1">5 Minutos</p>
+          <p className="text-muted-foreground">Tempo médio para criar uma escala semanal otimizada.</p>
         </div>
-    </section>
+        <div className="text-center p-6 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 mb-4">
+            <Rocket className="h-6 w-6 text-accent" />
+          </div>
+          <p className="text-4xl font-bold text-primary mb-1">90% Menos</p>
+          <p className="text-muted-foreground">Tempo gasto em tarefas manuais de agendamento.</p>
+        </div>
+        <div className="text-center p-6 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 mb-4">
+            <Target className="h-6 w-6 text-accent" />
+          </div>
+          <p className="text-4xl font-bold text-primary mb-1">Até 30%</p>
+          <p className="text-muted-foreground">Redução de custos com horas extras não planeadas.</p>
+        </div>
+        <div className="text-center p-6 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 mb-4">
+            <Eye className="h-6 w-6 text-accent" />
+          </div>
+          <p className="text-4xl font-bold text-primary mb-1">100% Visível</p>
+          <p className="text-muted-foreground">Clareza total sobre os custos e riscos de cada escala.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 );
 
-// --- COMPONENTE DA SECÇÃO DE PROBLEMAS (MODO ANÁLISE - CLARO) ---
+// --- PROBLEMAS (MODO ANÁLISE - CLARO) ---
 const ProblemSection = () => (
-    <section className="py-20 md:py-28 bg-gradient-to-br from-background via-secondary to-background" aria-labelledby="problem-title">
-        <div className="container mx-auto px-4">
-            <header className="text-center mb-16 max-w-3xl mx-auto">
-                <div className="inline-flex items-center gap-2 rounded-full bg-destructive/10 px-4 py-2 text-sm font-medium text-destructive mb-4">
-                    <AlertTriangle className="h-4 w-4" />
-                    Risco Oculto
-                </div>
-                <h2 id="problem-title" className="text-3xl md:text-4xl font-bold text-foreground mb-4">A gestão manual é o maior risco oculto do seu negócio.</h2>
-                <p className="text-lg text-muted-foreground">Descubra como as planilhas estão comprometendo sua operação</p>
-            </header>
-            <div className="grid md:grid-cols-3 gap-8">
-                <div className="text-center p-8 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-destructive/10 mb-6">
-                        <AlertTriangle className="h-8 w-8 text-destructive" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3">Risco Jurídico Constante</h3>
-                    <p className="text-muted-foreground">Cada planilha é um convite a erros de cálculo de horas e intervalos, que se transformam em processos caros e inesperados.</p>
-                </div>
-                <div className="text-center p-8 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-6">
-                        <Clock className="h-8 w-8 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3">Tempo que Não Volta</h3>
-                    <p className="text-muted-foreground">Horas gastas montando o quebra-cabeça das escalas são horas que você não dedica a treinar a sua equipe e a servir os seus clientes.</p>
-                </div>
-                <div className="text-center p-8 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-accent/10 mb-6">
-                        <BarChart3 className="h-8 w-8 text-accent" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3">Decisões no Escuro</h3>
-                    <p className="text-muted-foreground">Sem visibilidade dos custos em tempo real, cada decisão de escala é um palpite que pode comprometer a sua margem de lucro.</p>
-                </div>
-            </div>
+  <section className="py-20 md:py-28 bg-gradient-to-br from-background via-secondary to-background" aria-labelledby="problem-title">
+    <div className="container mx-auto px-4">
+      <header className="text-center mb-16 max-w-3xl mx-auto">
+        <div className="inline-flex items-center gap-2 rounded-full bg-destructive/10 px-4 py-2 text-sm font-medium text-destructive mb-4">
+          <AlertTriangle className="h-4 w-4" />
+          Risco Oculto
         </div>
-    </section>
+        <h2 id="problem-title" className="text-3xl md:text-4xl font-bold text-foreground mb-4">A gestão manual é o maior risco oculto do seu negócio.</h2>
+        <p className="text-lg text-muted-foreground">Descubra como as planilhas estão comprometendo sua operação</p>
+      </header>
+      <div className="grid md:grid-cols-3 gap-8">
+        <div className="text-center p-8 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-destructive/10 mb-6">
+            <AlertTriangle className="h-8 w-8 text-destructive" />
+          </div>
+          <h3 className="text-xl font-semibold mb-3">Risco Jurídico Constante</h3>
+          <p className="text-muted-foreground">Cada planilha é um convite a erros de cálculo de horas e intervalos, que se transformam em processos caros e inesperados.</p>
+        </div>
+        <div className="text-center p-8 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-6">
+            <Clock className="h-8 w-8 text-primary" />
+          </div>
+          <h3 className="text-xl font-semibold mb-3">Tempo que Não Volta</h3>
+          <p className="text-muted-foreground">Horas gastas montando o quebra-cabeça das escalas são horas que você não dedica a treinar a sua equipe e a servir os seus clientes.</p>
+        </div>
+        <div className="text-center p-8 rounded-xl bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-accent/10 mb-6">
+            <BarChart3 className="h-8 w-8 text-accent" />
+          </div>
+          <h3 className="text-xl font-semibold mb-3">Decisões no Escuro</h3>
+          <p className="text-muted-foreground">Sem visibilidade dos custos em tempo real, cada decisão de escala é um palpite que pode comprometer a sua margem de lucro.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 );
 
-// --- COMPONENTE DA SECÇÃO DE SOLUÇÕES (MODO CINEMA - ESCURO) ---
+// --- SOLUÇÕES (MODO CINEMA - ESCURO) ---
 const SolutionSection = () => (
   <section id="recursos" className="py-20 md:py-28 bg-gradient-to-br from-background-dark via-background-dark to-primary/10 text-foreground-dark" aria-labelledby="solution-title">
     <div className="container mx-auto px-4 space-y-24">
@@ -227,198 +227,198 @@ const SolutionSection = () => (
   </section>
 );
 
-// --- COMPONENTE DA TABELA COMPARATIVA (MODO ANÁLISE - CLARO) ---
+// --- COMPARAÇÃO (MODO ANÁLISE - CLARO) ---
 const ComparisonSection = () => (
-    <section className="py-20 md:py-28 bg-gradient-to-br from-background via-secondary to-background" aria-labelledby="comparison-title">
-        <div className="container mx-auto px-4 max-w-4xl">
-            <header className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary mb-4">
-                    <TrendingUp className="h-4 w-4" />
-                    Comparação Objetiva
-                </div>
-                <h2 id="comparison-title" className="text-3xl md:text-4xl font-bold text-foreground mb-4">Chega de operar com base em "achismo".</h2>
-                <p className="text-lg text-muted-foreground">Veja por que as planilhas são o maior risco para o seu negócio.</p>
-            </header>
-            <div className="border border-border rounded-xl shadow-xl overflow-hidden bg-card">
-                <table className="w-full">
-                    <thead className="bg-gradient-to-r from-primary/5 to-accent/5">
-                        <tr>
-                            <th className="p-6 text-left font-semibold text-foreground">A capacidade de...</th>
-                            <th className="p-6 w-40 text-center font-semibold text-muted-foreground">Planilhas</th>
-                            <th className="p-6 w-40 text-center font-semibold text-primary">GrowthScale</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr className="border-t border-border hover:bg-muted/30 transition-colors">
-                            <td className="p-6 font-medium">Validar a CLT em tempo real</td>
-                            <td className="p-6 text-center">
-                                <X className="mx-auto h-6 w-6 text-muted-foreground/50" />
-                            </td>
-                            <td className="p-6 text-center">
-                                <Check className="mx-auto h-6 w-6 text-accent" />
-                            </td>
-                        </tr>
-                        <tr className="border-t border-border hover:bg-muted/30 transition-colors">
-                            <td className="p-6 font-medium">Simular o custo antes de gastar</td>
-                            <td className="p-6 text-center">
-                                <X className="mx-auto h-6 w-6 text-muted-foreground/50" />
-                            </td>
-                            <td className="p-6 text-center">
-                                <Check className="mx-auto h-6 w-6 text-accent" />
-                            </td>
-                        </tr>
-                        <tr className="border-t border-border hover:bg-muted/30 transition-colors">
-                            <td className="p-6 font-medium">Sugerir a escala ideal com IA</td>
-                            <td className="p-6 text-center">
-                                <X className="mx-auto h-6 w-6 text-muted-foreground/50" />
-                            </td>
-                            <td className="p-6 text-center">
-                                <Check className="mx-auto h-6 w-6 text-accent" />
-                            </td>
-                        </tr>
-                        <tr className="border-t border-border hover:bg-muted/30 transition-colors">
-                            <td className="p-6 font-medium">Notificar a equipe de forma integrada</td>
-                            <td className="p-6 text-center">
-                                <X className="mx-auto h-6 w-6 text-muted-foreground/50" />
-                            </td>
-                            <td className="p-6 text-center">
-                                <Check className="mx-auto h-6 w-6 text-accent" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+  <section className="py-20 md:py-28 bg-gradient-to-br from-background via-secondary to-background" aria-labelledby="comparison-title">
+    <div className="container mx-auto px-4 max-w-4xl">
+      <header className="text-center mb-12">
+        <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary mb-4">
+          <TrendingUp className="h-4 w-4" />
+          Comparação Objetiva
         </div>
-    </section>
+        <h2 id="comparison-title" className="text-3xl md:text-4xl font-bold text-foreground mb-4">Chega de operar com base em "achismo".</h2>
+        <p className="text-lg text-muted-foreground">Veja por que as planilhas são o maior risco para o seu negócio.</p>
+      </header>
+      <div className="border border-border rounded-xl shadow-xl overflow-hidden bg-card">
+        <table className="w-full">
+          <thead className="bg-gradient-to-r from-primary/5 to-accent/5">
+            <tr>
+              <th className="p-6 text-left font-semibold text-foreground">A capacidade de...</th>
+              <th className="p-6 w-40 text-center font-semibold text-muted-foreground">Planilhas</th>
+              <th className="p-6 w-40 text-center font-semibold text-primary">GrowthScale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-t border-border hover:bg-muted/30 transition-colors">
+              <td className="p-6 font-medium">Validar a CLT em tempo real</td>
+              <td className="p-6 text-center">
+                <X className="mx-auto h-6 w-6 text-muted-foreground/50" />
+              </td>
+              <td className="p-6 text-center">
+                <Check className="mx-auto h-6 w-6 text-accent" />
+              </td>
+            </tr>
+            <tr className="border-t border-border hover:bg-muted/30 transition-colors">
+              <td className="p-6 font-medium">Simular o custo antes de gastar</td>
+              <td className="p-6 text-center">
+                <X className="mx-auto h-6 w-6 text-muted-foreground/50" />
+              </td>
+              <td className="p-6 text-center">
+                <Check className="mx-auto h-6 w-6 text-accent" />
+              </td>
+            </tr>
+            <tr className="border-t border-border hover:bg-muted/30 transition-colors">
+              <td className="p-6 font-medium">Sugerir a escala ideal com IA</td>
+              <td className="p-6 text-center">
+                <X className="mx-auto h-6 w-6 text-muted-foreground/50" />
+              </td>
+              <td className="p-6 text-center">
+                <Check className="mx-auto h-6 w-6 text-accent" />
+              </td>
+            </tr>
+            <tr className="border-t border-border hover:bg-muted/30 transition-colors">
+              <td className="p-6 font-medium">Notificar a equipe de forma integrada</td>
+              <td className="p-6 text-center">
+                <X className="mx-auto h-6 w-6 text-muted-foreground/50" />
+              </td>
+              <td className="p-6 text-center">
+                <Check className="mx-auto h-6 w-6 text-accent" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 );
 
-// --- COMPONENTE DA SECÇÃO DE PLANOS (MODO ANÁLISE - CLARO) ---
+// --- PLANOS (MODO ANÁLISE - CLARO) ---
 const PricingSection = () => (
-    <section id="precos" className="py-20 md:py-28 bg-gradient-to-br from-background via-secondary to-background" aria-labelledby="pricing-title">
-        <div className="container mx-auto px-4">
-            <header className="text-center mb-16 max-w-3xl mx-auto">
-                <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2 text-sm font-medium text-accent mb-4">
-                    <Star className="h-4 w-4" />
-                    Planos Flexíveis
-                </div>
-                <h2 id="pricing-title" className="text-3xl md:text-4xl font-bold text-foreground mb-4">Um plano para cada tamanho de ambição.</h2>
-                <p className="text-lg text-muted-foreground">Comece de graça e cresça sem medo. Sem taxas escondidas, sem surpresas.</p>
-            </header>
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <Card className="flex flex-col border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <CardHeader className="text-center">
-                        <CardTitle className="text-2xl">Free</CardTitle>
-                        <CardDescription>Para equipes pequenas começando.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-1 space-y-6">
-                        <div className="text-center">
-                            <p className="text-4xl font-bold">R$0</p>
-                            <p className="text-sm text-muted-foreground">Para sempre</p>
-                        </div>
-                        <ul className="space-y-3 text-muted-foreground">
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Até 5 funcionários
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Criação de escalas básica
-                            </li>
-                        </ul>
-                    </CardContent>
-                    <div className="p-6">
-                        <Button asChild variant="outline" className="w-full border-accent/30 text-accent hover:bg-accent/10">
-                            <Link to="/auth">Começar de Graça</Link>
-                        </Button>
-                    </div>
-                </Card>
-                
-                <Card className="flex flex-col border-primary shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative">
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <Badge className="bg-gradient-to-r from-primary to-accent text-white px-4 py-1">
-                            Mais Popular
-                        </Badge>
-                    </div>
-                    <CardHeader className="text-center">
-                        <CardTitle className="text-2xl">Business</CardTitle>
-                        <CardDescription>Para operações que precisam de poder total.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-1 space-y-6">
-                        <div className="text-center">
-                            <p className="text-4xl font-bold">R$99<span className="text-sm font-normal text-muted-foreground">/mês</span></p>
-                            <p className="text-sm text-muted-foreground">Cancele quando quiser</p>
-                        </div>
-                        <ul className="space-y-3 text-muted-foreground">
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Até 25 funcionários
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Sugestões de Escala com IA
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Alertas de Risco CLT
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Simulador de Custos
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Notificações por WhatsApp
-                            </li>
-                        </ul>
-                    </CardContent>
-                    <div className="p-6">
-                        <Button asChild className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg shadow-primary/25">
-                            <Link to="/auth">Escolher Business</Link>
-                        </Button>
-                    </div>
-                </Card>
-                
-                <Card className="flex flex-col border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    <CardHeader className="text-center">
-                        <CardTitle className="text-2xl">Enterprise</CardTitle>
-                        <CardDescription>Para redes e grandes operações.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-1 space-y-6">
-                        <div className="text-center">
-                            <p className="text-4xl font-bold">Contato</p>
-                            <p className="text-sm text-muted-foreground">Preço personalizado</p>
-                        </div>
-                        <ul className="space-y-3 text-muted-foreground">
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Funcionários ilimitados
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Múltiplas filiais
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Regras sindicais
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <Check className="h-4 w-4 text-accent flex-shrink-0" />
-                                Suporte dedicado
-                            </li>
-                        </ul>
-                    </CardContent>
-                    <div className="p-6">
-                        <Button asChild variant="outline" className="w-full border-accent/30 text-accent hover:bg-accent/10">
-                            <Link to="/contato">Agendar Demonstração</Link>
-                        </Button>
-                    </div>
-                </Card>
-            </div>
+  <section id="precos" className="py-20 md:py-28 bg-gradient-to-br from-background via-secondary to-background" aria-labelledby="pricing-title">
+    <div className="container mx-auto px-4">
+      <header className="text-center mb-16 max-w-3xl mx-auto">
+        <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-2 text-sm font-medium text-accent mb-4">
+          <Star className="h-4 w-4" />
+          Planos Flexíveis
         </div>
-    </section>
+        <h2 id="pricing-title" className="text-3xl md:text-4xl font-bold text-foreground mb-4">Um plano para cada tamanho de ambição.</h2>
+        <p className="text-lg text-muted-foreground">Comece de graça e cresça sem medo. Sem taxas escondidas, sem surpresas.</p>
+      </header>
+      <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <Card className="flex flex-col border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Free</CardTitle>
+            <CardDescription>Para equipes pequenas começando.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex-1 space-y-6">
+            <div className="text-center">
+              <p className="text-4xl font-bold">R$0</p>
+              <p className="text-sm text-muted-foreground">Para sempre</p>
+            </div>
+            <ul className="space-y-3 text-muted-foreground">
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Até 5 funcionários
+              </li>
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Criação de escalas básica
+              </li>
+            </ul>
+          </CardContent>
+          <div className="p-6">
+            <Button asChild variant="outline" className="w-full border-accent/30 text-accent hover:bg-accent/10">
+              <Link to="/auth">Começar de Graça</Link>
+            </Button>
+          </div>
+        </Card>
+        
+        <Card className="flex flex-col border-primary shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative">
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <Badge className="bg-gradient-to-r from-primary to-accent text-white px-4 py-1">
+              Mais Popular
+            </Badge>
+          </div>
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Business</CardTitle>
+            <CardDescription>Para operações que precisam de poder total.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex-1 space-y-6">
+            <div className="text-center">
+              <p className="text-4xl font-bold">R$99<span className="text-sm font-normal text-muted-foreground">/mês</span></p>
+              <p className="text-sm text-muted-foreground">Cancele quando quiser</p>
+            </div>
+            <ul className="space-y-3 text-muted-foreground">
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Até 25 funcionários
+              </li>
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Sugestões de Escala com IA
+              </li>
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Alertas de Risco CLT
+              </li>
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Simulador de Custos
+              </li>
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Notificações por WhatsApp
+              </li>
+            </ul>
+          </CardContent>
+          <div className="p-6">
+            <Button asChild className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg shadow-primary/25">
+              <Link to="/auth">Escolher Business</Link>
+            </Button>
+          </div>
+        </Card>
+        
+        <Card className="flex flex-col border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Enterprise</CardTitle>
+            <CardDescription>Para redes e grandes operações.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex-1 space-y-6">
+            <div className="text-center">
+              <p className="text-4xl font-bold">Contato</p>
+              <p className="text-sm text-muted-foreground">Preço personalizado</p>
+            </div>
+            <ul className="space-y-3 text-muted-foreground">
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Funcionários ilimitados
+              </li>
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Múltiplas filiais
+              </li>
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Regras sindicais
+              </li>
+              <li className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                Suporte dedicado
+              </li>
+            </ul>
+          </CardContent>
+          <div className="p-6">
+            <Button asChild variant="outline" className="w-full border-accent/30 text-accent hover:bg-accent/10">
+              <Link to="/contato">Agendar Demonstração</Link>
+            </Button>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </section>
 );
 
-// --- COMPONENTE DA SECÇÃO DE FAQ (MODO ANÁLISE - CLARO) ---
+// --- FAQ (MODO ANÁLISE - CLARO) ---
 const FaqSection = () => (
   <section className="py-20 md:py-28 bg-secondary" aria-labelledby="faq-title">
     <div className="container mx-auto px-4 max-w-3xl">
@@ -443,7 +443,7 @@ const FaqSection = () => (
   </section>
 );
 
-// --- COMPONENTE DO RODAPÉ ---
+// --- FOOTER (MODO CINEMA - ESCURO) ---
 const Footer = () => (
   <footer className="py-12 bg-gradient-to-br from-background-dark via-background-dark to-primary/5 border-t border-border-dark/40">
     <div className="container mx-auto px-4 text-center">
@@ -463,7 +463,7 @@ const Footer = () => (
   </footer>
 );
 
-// --- A PÁGINA PRINCIPAL QUE JUNTA TUDO ---
+// --- PÁGINA PRINCIPAL ---
 export default function Index() {
   return (
     <>
