@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { VitePWA } from 'vite-plugin-pwa'
+import ViteImageOptimizer from 'vite-plugin-imagemin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -43,6 +44,17 @@ export default defineConfig({
               expiration: {
                 maxEntries: 50,
                 maxAgeSeconds: 60 * 60 * 24, // 1 day
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/.*\.vercel\.app\/.*/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'vercel-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
               },
             },
           },
@@ -101,6 +113,37 @@ export default defineConfig({
             type: 'image/png',
           },
         ],
+      },
+    }),
+    ViteImageOptimizer({
+      gifsicle: {
+        optimizationLevel: 3,
+      },
+      mozjpeg: {
+        quality: 80,
+        progressive: true,
+      },
+      pngquant: {
+        quality: [0.8, 0.9],
+        speed: 4,
+      },
+      svgo: {
+        plugins: [
+          {
+            name: 'preset-default',
+            params: {
+              overrides: {
+                removeViewBox: false,
+                removeTitle: false,
+              },
+            },
+          },
+          'removeDimensions',
+        ],
+      },
+      webp: {
+        lossless: false,
+        quality: 80,
       },
     }),
     visualizer({

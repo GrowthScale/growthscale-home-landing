@@ -7,6 +7,7 @@ import { TenantProvider } from '@/contexts/TenantContext';
 import AppRoutes from '@/routes';
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 import { PerformanceMonitor } from '@/components/PerformanceMonitor';
+import { AdvancedPerformanceMonitor } from '@/components/AdvancedPerformanceMonitor';
 import { SEOHead } from '@/components/SEOHead';
 import './App.css';
 
@@ -35,6 +36,7 @@ function App() {
             <AppRoutes />
             <PWAInstallPrompt />
             <PerformanceMonitor showInConsole={true} showInUI={process.env.NODE_ENV === 'development'} />
+            <AdvancedPerformanceMonitor />
             <Toaster />
           </TenantProvider>
         </AuthProvider>
