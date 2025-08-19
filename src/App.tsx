@@ -97,3 +97,4 @@ export default App;
 // DEPLOY RADICAL - Tue Aug 19 15:41:22 -03 2025 - vercel.json removido para resolver conflito
 // DEPLOY FORÇADO - Tue Aug 19 16:06:33 -03 2025 - vercel.json aplicado
 // DEPLOY FINAL - Tue Aug 19 16:14:58 -03 2025 - vercel.json definitivo aplicado
+// DEPLOY DEFINITIVO - Tue Aug 19 16:23:46 -03 2025 - vercel.json perfeito aplicado
