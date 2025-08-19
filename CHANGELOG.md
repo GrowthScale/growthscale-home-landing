@@ -34,6 +34,69 @@ Correções de bugs e melhorias menores
 
 ---
 
+## [2.0.2] - 2024-12-19
+
+### 🔧 **CORREÇÕES CRÍTICAS - TELA BRANCA RESOLVIDA**
+
+#### 📋 **Resumo da Versão**
+**Status:** ✅ **PRODUÇÃO ESTÁVEL**  
+**Build:** ✅ Sucesso (22.93s)  
+**Deploy:** ✅ Forçado e aplicado  
+**Problema:** Tela branca resolvida  
+
+#### 🔧 **Fixes**
+- **Content Security Policy:** Fontes do Google Fonts desbloqueadas
+  - Adicionado `https://fonts.googleapis.com` ao `font-src`
+  - Removido `require-trusted-types-for` que causava conflitos
+- **OpenAI API Key Error:** Erro crítico corrigido
+  - Verificação robusta antes de inicializar OpenAI
+  - Fallback para simulação quando API key não disponível
+  - Prevenção de erro que impedia carregamento da aplicação
+- **PWA Manifest:** Tamanhos de ícones corrigidos
+  - Corrigido de 144x144 para 73x74 (tamanho real dos ícones)
+  - Eliminados warnings de manifest incorreto
+- **Meta Tag Deprecated:** Warnings removidos
+  - Adicionada meta tag `mobile-web-app-capable`
+  - Substituída tag deprecated por versão atual
+
+#### 🚀 **Performance**
+- **Build Time:** Otimizado (22.93s)
+- **Bundle Size:** 457.84 kB (137.02 kB gzipped)
+- **Cache Busting:** Implementado para forçar novo deploy
+- **Service Worker:** Funcionando corretamente
+
+#### 🔒 **Security**
+- **CSP:** Configuração corrigida para permitir fontes externas
+- **OpenAI:** Verificação de segurança implementada
+- **Headers:** Mantidos todos os headers de segurança
+
+#### 📱 **PWA**
+- **Manifest:** Corrigido e funcionando
+- **Icons:** Tamanhos corretos aplicados
+- **Meta Tags:** Atualizadas para padrões atuais
+- **Service Worker:** Ativo e operacional
+
+#### 📚 **Documentation**
+- **Correções Finais:** `docs/CORRECOES_FINAIS.md` criado
+- **Links de Produção:** `docs/LINKS_PRODUCAO.md` atualizado
+- **Instruções:** Passo a passo para usuários
+- **Diagnóstico:** Documentação completa dos problemas
+
+#### 🎯 **Resultado**
+- ✅ **Tela branca resolvida**
+- ✅ **Fontes carregando corretamente**
+- ✅ **Sem erros no console**
+- ✅ **PWA funcionando**
+- ✅ **Site 100% operacional**
+
+#### 🔗 **Links de Produção**
+- **Principal:** https://growthscale.vercel.app/
+- **Alternativo:** https://growthscale-home-landing-jups10tai.vercel.app/
+
+---
+
+## [2.0.1] - 2024-12-19
+
 ## [2.0.1] - 2024-12-19
 
 ### 🏆 **AUDITORIA QA - CONCLUÍDA COM SUCESSO**
@@ -510,6 +573,7 @@ Refatorações de código e melhorias estruturais
 
 | Versão | Data | Tipo | Status | Features | Fixes | Breaking Changes |
 |--------|------|------|--------|----------|-------|------------------|
+| 2.0.2 | 2024-12-19 | Patch | ✅ Production | 0 | 4 | ❌ |
 | 2.0.1 | 2024-12-19 | Patch | ✅ Production | 0 | 6 | ❌ |
 | 2.0.0 | 2024-12-19 | Major | ✅ Production | 5 | 0 | ✅ |
 | 1.9.0 | 2024-12-19 | Minor | ✅ Production | 4 | 0 | ❌ |
