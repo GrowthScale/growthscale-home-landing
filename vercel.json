@@ -1,23 +1,30 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
+  "regions": ["gru1"],
+  "functions": {
+    "api/*.js": {
+      "runtime": "edge"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=31536000; includeSubDomains; preload"
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
         },
         {
           "key": "X-Frame-Options",
           "value": "DENY"
         },
         {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
         },
         {
           "key": "Referrer-Policy",
@@ -25,19 +32,15 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
         },
         {
-          "key": "Cross-Origin-Opener-Policy",
-          "value": "same-origin"
-        },
-        {
-          "key": "Cross-Origin-Resource-Policy",
-          "value": "same-origin"
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
         },
         {
           "key": "X-DNS-Prefetch-Control",
-          "value": "off"
+          "value": "on"
         },
         {
           "key": "X-Download-Options",
@@ -46,18 +49,6 @@
         {
           "key": "X-Permitted-Cross-Domain-Policies",
           "value": "none"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; connect-src 'self' https://*.supabase.co https://api.openai.com https://*.stripe.com https://*.vercel.app wss://*.supabase.co; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
-        },
-        {
-          "key": "Feature-Policy",
-          "value": "camera 'none'; microphone 'none'; geolocation 'none'; payment 'none'; usb 'none'; magnetometer 'none'; gyroscope 'none'; accelerometer 'none'"
         }
       ]
     },
@@ -69,55 +60,26 @@
           "value": "public, max-age=31536000, immutable"
         },
         {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, HEAD, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Origin, X-Requested-With, Content-Type, Accept, Range"
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
         }
       ]
     },
     {
-      "source": "/icons/(.*)",
+      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
         }
       ]
     },
     {
-      "source": "/manifest.webmanifest",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600, stale-while-revalidate=86400"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/manifest+json"
-        }
-      ]
-    },
-    {
-      "source": "/sw.js",
+      "source": "/(.*\\.html)",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
         }
       ]
     },
@@ -126,43 +88,17 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=300, stale-while-revalidate=600"
+          "value": "no-cache, no-store, must-revalidate"
         },
         {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
+          "key": "Pragma",
+          "value": "no-cache"
         },
         {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization, X-Requested-With, X-API-Key"
-        },
-        {
-          "key": "X-RateLimit-Limit",
-          "value": "100"
-        },
-        {
-          "key": "X-RateLimit-Remaining",
-          "value": "99"
-        },
-        {
-          "key": "X-RateLimit-Reset",
-          "value": "1640995200"
+          "key": "Expires",
+          "value": "0"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/:path((?!api/|sw.js|favicon.ico|assets/|icons/|manifest.webmanifest).*)",
-      "destination": "/"
     }
   ],
   "redirects": [
@@ -172,39 +108,34 @@
       "permanent": true
     },
     {
-      "source": "/index.html",
+      "source": "/index",
       "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/admin",
-      "destination": "/dashboard",
-      "permanent": true
-    },
-    {
-      "source": "/login",
-      "destination": "/auth",
       "permanent": true
     }
   ],
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite",
-  "functions": {
-    "api/analytics.js": {
-      "maxDuration": 10
-    },
-    "api/performance.js": {
-      "maxDuration": 10
-    },
-    "api/health.js": {
-      "maxDuration": 5
-    },
-    "api/security.js": {
-      "maxDuration": 5
-    },
-    "api/audit.js": {
-      "maxDuration": 10
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
+  ],
+  "security": {
+    "headers": [
+      {
+        "key": "Content-Security-Policy",
+        "value": "default-src 'self'; connect-src 'self' https://*.supabase.co https://api.openai.com https://*.stripe.com https://*.vercel.app wss://*.supabase.co; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+      },
+      {
+        "key": "Feature-Policy",
+        "value": "camera 'none'; microphone 'none'; geolocation 'none'; payment 'none'"
+      }
+    ]
+  },
+  "rateLimit": {
+    "windowMs": 15 * 60 * 1000,
+    "max": 100
+  },
+  "env": {
+    "NODE_ENV": "production"
   }
 }
