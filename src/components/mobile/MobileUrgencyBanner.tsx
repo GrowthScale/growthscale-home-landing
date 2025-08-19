@@ -41,7 +41,7 @@ export const MobileUrgencyBanner = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  if (!isVisible) return null;
+  if (!isVisible) {return null;}
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 md:hidden animate-fade-in-down">
