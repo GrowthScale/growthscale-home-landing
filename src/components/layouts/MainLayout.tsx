@@ -73,6 +73,12 @@ export function MainLayout({ children }: MainLayoutProps) {
       roles: ['owner', 'admin'],
     },
     {
+      label: 'Monitoring',
+      href: '/monitoring',
+      icon: 'Activity',
+      roles: ['owner', 'admin'],
+    },
+    {
       label: 'Configurações',
       href: '/settings',
       icon: 'Settings',

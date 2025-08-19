@@ -19,6 +19,7 @@ const LazyCompliance = React.lazy(() => import('@/pages/Compliance'));
 const LazySetup = React.lazy(() => import('@/pages/Setup'));
 const LazyAnalytics = React.lazy(() => import('@/pages/Analytics'));
 const LazySecurity = React.lazy(() => import('@/pages/Security'));
+const LazyMonitoring = React.lazy(() => import('@/pages/Monitoring'));
 const LazyContact = React.lazy(() => import('@/pages/Contact'));
 const LazyFAQ = React.lazy(() => import('@/pages/FAQ'));
 const LazyLegal = React.lazy(() => import('@/pages/Legal'));
@@ -159,6 +160,17 @@ export default function AppRoutes() {
             <ProtectedRoute>
               <MainLayout>
                 <LazySecurity />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/monitoring"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <LazyMonitoring />
               </MainLayout>
             </ProtectedRoute>
           }

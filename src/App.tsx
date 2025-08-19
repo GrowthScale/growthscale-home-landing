@@ -11,6 +11,8 @@ import { AdvancedPerformanceMonitor } from '@/components/AdvancedPerformanceMoni
 import { SEOHead } from '@/components/SEOHead';
 import { useEdgeAnalytics } from '@/hooks/useEdgeAnalytics';
 import { useSecurity } from '@/hooks/useSecurity';
+import { useAdvancedAnalytics } from '@/hooks/useAdvancedAnalytics';
+import { apm } from '@/lib/apm';
 import './App.css';
 
 // Configuração do React Query
@@ -31,11 +33,30 @@ const queryClient = new QueryClient({
 function AppContent() {
   const { trackPageView, trackPerformance } = useEdgeAnalytics();
   const { logLoginAttempt, logDataAccess, logSecurityIncident } = useSecurity();
+  const { trackPageView: trackAdvancedPageView, trackInteraction, trackConversion } = useAdvancedAnalytics();
+
+  // Initialize APM
+  React.useEffect(() => {
+    apm.init();
+  }, []);
 
   // Track page views
   React.useEffect(() => {
-    trackPageView(window.location.pathname);
-  }, [trackPageView]);
+    const currentPath = window.location.pathname;
+    trackPageView(currentPath);
+    trackAdvancedPageView(currentPath, document.title);
+    
+    // Set user in APM if available
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (user) {
+      apm.setUser({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      });
+    }
+  }, [trackPageView, trackAdvancedPageView]);
 
   // Track performance metrics
   React.useEffect(() => {
@@ -91,6 +112,66 @@ function AppContent() {
     window.addEventListener('error', handleSecurityIncident);
     return () => window.removeEventListener('error', handleSecurityIncident);
   }, [logSecurityIncident]);
+
+  // Track user interactions
+  React.useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target) {
+        trackInteraction('click', target.tagName.toLowerCase(), {
+          id: target.id,
+          className: target.className,
+          text: target.textContent?.substring(0, 50),
+        });
+      }
+    };
+
+    const handleFormSubmit = (event: Event) => {
+      const form = event.target as HTMLFormElement;
+      if (form) {
+        trackInteraction('form_submit', form.tagName.toLowerCase(), {
+          action: form.action,
+          method: form.method,
+        });
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+    document.addEventListener('submit', handleFormSubmit);
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+      document.removeEventListener('submit', handleFormSubmit);
+    };
+  }, [trackInteraction]);
+
+  // Track conversions
+  React.useEffect(() => {
+    // Track signup conversion
+    const trackSignup = () => {
+      trackConversion('signup', 1, {
+        source: 'landing_page',
+        timestamp: new Date().toISOString(),
+      });
+    };
+
+    // Track pricing page view as potential conversion
+    if (window.location.pathname.includes('/pricing')) {
+      trackConversion('pricing_view', 1, {
+        source: 'navigation',
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Listen for custom conversion events
+    window.addEventListener('conversion', (event: any) => {
+      trackConversion(event.detail.type, event.detail.value, event.detail.properties);
+    });
+
+    return () => {
+      window.removeEventListener('conversion', () => {});
+    };
+  }, [trackConversion]);
 
   return (
     <>
