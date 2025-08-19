@@ -14,7 +14,7 @@ on:
 env:
   NODE_VERSION: '18'
   # Variáveis de ambiente com fallbacks
-  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN || '' }}
+  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN || '' }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID || '' }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID || '' }}
