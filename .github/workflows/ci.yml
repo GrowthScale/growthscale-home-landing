@@ -1,104 +1,21 @@
-name: GrowthScale CI Pipeline
+# Este arquivo foi desabilitado para evitar conflitos
+# Use ci-cd.yml como workflow principal
+name: GrowthScale CI Pipeline (DISABLED)
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+  # Desabilitado para evitar conflitos
+  # push:
+  #   branches: [ main, develop ]
+  # pull_request:
+  #   branches: [ main, develop ]
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
 
 jobs:
-  quality:
-    name: Quality & Security
+  disabled:
+    name: Disabled - Use ci-cd.yml
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Run ESLint
-        run: npm run lint
-        
-      - name: Run TypeScript check
-        run: npm run type-check
-        
-      - name: Check formatting
-        run: npm run format:check
-        
-      - name: Run security audit
-        run: npm audit --audit-level=moderate
-
-  tests:
-    name: Tests
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Run tests
-        run: npm run test
-
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Build application
-        run: npm run build
-
-  deploy-production:
-    runs-on: ubuntu-latest
-    name: Deploy to Production
-    needs: [quality, tests, build]
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Deploy to Vercel (Production)
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-        continue-on-error: true
-          
-      - name: Notify deployment
-        run: |
-          echo "🚀 Production deployment completed!"
-          echo "URL: https://growthscale-home-landing.vercel.app"
+      - name: This workflow is disabled
+        run: echo "Use ci-cd.yml as the main workflow"

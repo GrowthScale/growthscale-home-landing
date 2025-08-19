@@ -46,17 +46,6 @@ export default defineConfig({
     minify: 'esbuild',
     target: 'es2020',
     cssCodeSplit: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'vendor': ['react', 'react-dom', 'react-router-dom'],
-          'supabase': ['@supabase/supabase-js'],
-          'ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select'],
-          'utils': ['date-fns', 'clsx', 'tailwind-merge'],
-          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
-        }
-      }
-    },
     chunkSizeWarningLimit: 1000,
     assetsInlineLimit: 4096,
     reportCompressedSize: true,
