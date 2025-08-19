@@ -23,7 +23,7 @@ export function ProblemSection() {
               <Clock className="h-6 w-6 text-primary" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Tempo que Não Volta</h3>
-            <p className="text-muted-foreground">Horas gastas a montar o quebra-cabeça das escalas são horas que você não dedica a treinar a sua equipa e a servir os seus clientes.</p>
+            <p className="text-muted-foreground">Horas gastas montando o quebra-cabeça das escalas são horas que você não dedica a treinar a sua equipe e a servir os seus clientes.</p>
           </div>
           <div className="text-center p-6">
             <div className="inline-flex items-center justify-center h-12 w-12 rounded-lg bg-secondary/10 mb-4">

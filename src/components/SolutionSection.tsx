@@ -8,7 +8,7 @@ export function SolutionSection() {
       <div className="container mx-auto px-4">
         <header className="text-center mb-16 max-w-3xl mx-auto">
           <h2 id="solution-title" className="text-3xl md:text-4xl font-bold text-foreground">
-            A sua operação, finalmente sob controlo.
+            A sua operação, finalmente sob controle.
           </h2>
         </header>
         <Tabs defaultValue="compliance" className="w-full max-w-4xl mx-auto">
@@ -41,7 +41,7 @@ export function SolutionSection() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-2xl font-bold mb-2">Crie a escala perfeita em segundos.</h3>
-                <p className="text-muted-foreground">Esqueça o quebra-cabeça. Com um clique, a nossa IA sugere a escala ideal, considerando custo, habilidades da equipa e equidade. O que levava horas, agora é resolvido no tempo de um café.</p>
+                <p className="text-muted-foreground">Esqueça o quebra-cabeça. Com um clique, a nossa IA sugere a escala ideal, considerando custo, habilidades da equipe e equidade. O que levava horas, agora é resolvido no tempo de um café.</p>
               </div>
               <div className="bg-slate-800 rounded-xl p-2 shadow-lg">
                 {/* ANOTAÇÃO PARA O VISUAL: TODO: GIF da sugestão de IA. */}
@@ -54,7 +54,7 @@ export function SolutionSection() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-2xl font-bold mb-2">Saiba o seu custo antes de gastar.</h3>
-                <p className="text-muted-foreground">Cada alteração na escala atualiza o seu custo em tempo real. Tenha uma visão de raio-x das suas despesas com horas extras e adicionais, assumindo o controlo total da sua principal despesa operacional.</p>
+                <p className="text-muted-foreground">Cada alteração na escala atualiza o seu custo em tempo real. Tenha uma visão de raio-x das suas despesas com horas extras e adicionais, assumindo o controle total da sua principal despesa operacional.</p>
               </div>
               <div className="bg-slate-800 rounded-xl p-2 shadow-lg">
                 {/* ANOTAÇÃO PARA O VISUAL: TODO: GIF do simulador de custo. */}

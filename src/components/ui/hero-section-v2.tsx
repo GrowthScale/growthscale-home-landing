@@ -33,7 +33,7 @@ export const HeroSectionV2: React.FC<HeroSectionV2Props> = ({ className }) => {
 
           {/* H1 */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-foreground mb-6 animate-fade-in-down delay-100">
-            Assuma o controlo total das suas{' '}
+            Assuma o controle total das suas{' '}
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               escalas
             </span>

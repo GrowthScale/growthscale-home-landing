@@ -6,7 +6,7 @@ const comparisonData = [
     { feature: "Simulador de custo instantâneo", growthscale: true, old_way: false },
     { feature: "Sugestão de escala com IA", growthscale: true, old_way: false },
     { feature: "Biblioteca de modelos (12x36, 6x1...)", growthscale: true, old_way: false },
-    { feature: "Notificação integrada à equipa", growthscale: true, old_way: false },
+    { feature: "Notificação integrada à equipe", growthscale: true, old_way: false },
     { feature: "Risco oculto de processos trabalhistas", growthscale: false, old_way: true },
     { feature: "Gestão baseada em 'achismo'", growthscale: false, old_way: true },
 ];
@@ -19,7 +19,7 @@ export function ComparisonSection() {
                     <h2 id="comparison-title" className="text-3xl md:text-4xl font-bold text-foreground">
                         Chega de operar no escuro.
                     </h2>
-                    <p className="text-lg text-muted-foreground mt-4">Veja porque planilhas e sistemas antigos são o maior risco para o seu negócio.</p>
+                    <p className="text-lg text-muted-foreground mt-4">Veja por que planilhas e sistemas antigos são o maior risco para o seu negócio.</p>
                 </header>
                 <div className="border border-border rounded-lg shadow-sm overflow-hidden">
                     <table className="w-full">

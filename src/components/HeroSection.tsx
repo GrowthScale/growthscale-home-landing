@@ -8,7 +8,7 @@ export function HeroSection() {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-foreground mb-6 animate-fade-in-down">
-            Assuma o controlo total das suas escalas. Sem o stress.
+            Assuma o controle total das suas escalas. Sem o stress.
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in-down" style={{ animationDelay: '0.2s' }}>
             O GrowthScale é o seu consultor de operações digital. Crie escalas otimizadas com IA, preveja custos e evite riscos da CLT, de forma simples e visual.
