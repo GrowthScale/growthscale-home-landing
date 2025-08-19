@@ -134,6 +134,9 @@ export default function Index() {
   return (
     <>
       <Header />
+      <div className="w-full bg-yellow-400 p-2 text-center font-bold text-yellow-900">
+        <p>AMBIENTE DE TESTE - Vanguarda v1.0 - Deploy OK!</p>
+      </div>
       <main>
         <HeroSection />
         <SocialProofSection />
