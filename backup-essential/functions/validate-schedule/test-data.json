@@ -1,0 +1,68 @@
+{
+  "shifts": [
+    {
+      "id": "shift-1",
+      "employeeId": "emp-1",
+      "startTime": "2024-01-15T08:00:00Z",
+      "endTime": "2024-01-15T17:00:00Z"
+    },
+    {
+      "id": "shift-2",
+      "employeeId": "emp-1",
+      "startTime": "2024-01-16T06:00:00Z",
+      "endTime": "2024-01-16T15:00:00Z"
+    },
+    {
+      "id": "shift-3",
+      "employeeId": "emp-1",
+      "startTime": "2024-01-17T08:00:00Z",
+      "endTime": "2024-01-17T17:00:00Z"
+    },
+    {
+      "id": "shift-4",
+      "employeeId": "emp-1",
+      "startTime": "2024-01-18T08:00:00Z",
+      "endTime": "2024-01-18T17:00:00Z"
+    },
+    {
+      "id": "shift-5",
+      "employeeId": "emp-1",
+      "startTime": "2024-01-19T08:00:00Z",
+      "endTime": "2024-01-19T17:00:00Z"
+    },
+    {
+      "id": "shift-6",
+      "employeeId": "emp-1",
+      "startTime": "2024-01-20T08:00:00Z",
+      "endTime": "2024-01-20T17:00:00Z"
+    },
+    {
+      "id": "shift-7",
+      "employeeId": "emp-1",
+      "startTime": "2024-01-21T08:00:00Z",
+      "endTime": "2024-01-21T17:00:00Z"
+    },
+    {
+      "id": "shift-8",
+      "employeeId": "emp-2",
+      "startTime": "2024-01-15T08:00:00Z",
+      "endTime": "2024-01-15T17:00:00Z"
+    },
+    {
+      "id": "shift-9",
+      "employeeId": "emp-2",
+      "startTime": "2024-01-16T08:00:00Z",
+      "endTime": "2024-01-16T17:00:00Z"
+    }
+  ],
+  "employees": [
+    {
+      "id": "emp-1",
+      "workload": 44
+    },
+    {
+      "id": "emp-2",
+      "workload": 40
+    }
+  ]
+}

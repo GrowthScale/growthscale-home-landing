@@ -1,0 +1,6 @@
+{
+  "employeeIds": ["emp-001", "emp-002", "emp-003"],
+  "scheduleId": "schedule-001",
+  "webhookUrl": "https://api.whatsapp.com/webhook/your-endpoint",
+  "tenantId": "tenant-001"
+}

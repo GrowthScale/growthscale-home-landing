@@ -1,0 +1,341 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirm": "Confirmar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "close": "Fechar",
+    "open": "Abrir",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "refresh": "Atualizar",
+    "export": "Exportar",
+    "import": "Importar",
+    "download": "Baixar",
+    "upload": "Enviar",
+    "yes": "Sim",
+    "no": "Não",
+    "all": "Todos",
+    "none": "Nenhum",
+    "select": "Selecionar",
+    "clear": "Limpar",
+    "apply": "Aplicar",
+    "reset": "Resetar",
+    "submit": "Enviar",
+    "continue": "Continuar",
+    "finish": "Finalizar",
+    "skip": "Pular",
+    "retry": "Tentar novamente",
+    "dismiss": "Descartar",
+    "learnMore": "Saiba mais",
+    "viewDetails": "Ver detalhes",
+    "hideDetails": "Ocultar detalhes"
+  },
+  "auth": {
+    "login": "Entrar",
+    "logout": "Sair",
+    "register": "Cadastrar",
+    "email": "E-mail",
+    "password": "Senha",
+    "confirmPassword": "Confirmar senha",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "companyName": "Nome da empresa",
+    "acceptTerms": "Aceito os termos e condições",
+    "forgotPassword": "Esqueci minha senha",
+    "rememberMe": "Lembrar de mim",
+    "twoFactorCode": "Código de verificação",
+    "twoFactorEnabled": "Autenticação de dois fatores ativada",
+    "twoFactorDisabled": "Autenticação de dois fatores desativada",
+    "enableTwoFactor": "Ativar autenticação de dois fatores",
+    "disableTwoFactor": "Desativar autenticação de dois fatores",
+    "generateCode": "Gerar código",
+    "verifyCode": "Verificar código",
+    "invalidCredentials": "Credenciais inválidas",
+    "accountCreated": "Conta criada com sucesso",
+    "loginSuccess": "Login realizado com sucesso",
+    "logoutSuccess": "Logout realizado com sucesso"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "schedules": "Escalas",
+    "employees": "Funcionários",
+    "companies": "Empresas",
+    "settings": "Configurações",
+    "profile": "Perfil",
+    "help": "Ajuda",
+    "support": "Suporte",
+    "documentation": "Documentação",
+    "pricing": "Preços",
+    "about": "Sobre",
+    "contact": "Contato",
+    "privacy": "Privacidade",
+    "terms": "Termos"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Bem-vindo ao GrowthScale",
+    "overview": "Visão geral",
+    "recentActivity": "Atividade recente",
+    "quickActions": "Ações rápidas",
+    "statistics": "Estatísticas",
+    "notifications": "Notificações",
+    "upcomingSchedules": "Próximas escalas",
+    "pendingApprovals": "Aprovações pendentes",
+    "totalEmployees": "Total de funcionários",
+    "activeSchedules": "Escalas ativas",
+    "complianceScore": "Score de compliance",
+    "costSavings": "Economia de custos",
+    "hoursSaved": "Horas economizadas"
+  },
+  "schedules": {
+    "title": "Escalas",
+    "createSchedule": "Criar escala",
+    "editSchedule": "Editar escala",
+    "deleteSchedule": "Excluir escala",
+    "publishSchedule": "Publicar escala",
+    "scheduleName": "Nome da escala",
+    "startDate": "Data de início",
+    "endDate": "Data de fim",
+    "employee": "Funcionário",
+    "shift": "Turno",
+    "startTime": "Hora de início",
+    "endTime": "Hora de fim",
+    "breakTime": "Tempo de pausa",
+    "totalHours": "Total de horas",
+    "overtime": "Horas extras",
+    "status": "Status",
+    "draft": "Rascunho",
+    "published": "Publicada",
+    "archived": "Arquivada",
+    "validationErrors": "Erros de validação",
+    "complianceIssues": "Problemas de compliance",
+    "costEstimate": "Estimativa de custo",
+    "aiSuggestions": "Sugestões da IA"
+  },
+  "employees": {
+    "title": "Funcionários",
+    "addEmployee": "Adicionar funcionário",
+    "editEmployee": "Editar funcionário",
+    "deleteEmployee": "Excluir funcionário",
+    "employeeName": "Nome do funcionário",
+    "position": "Cargo",
+    "department": "Departamento",
+    "hireDate": "Data de contratação",
+    "salary": "Salário",
+    "hourlyRate": "Taxa horária",
+    "maxHoursPerWeek": "Máximo de horas por semana",
+    "preferredShifts": "Turnos preferidos",
+    "unavailableDays": "Dias indisponíveis",
+    "skills": "Habilidades",
+    "certifications": "Certificações",
+    "emergencyContact": "Contato de emergência",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "onLeave": "Em licença",
+    "terminated": "Demitido"
+  },
+  "companies": {
+    "title": "Empresas",
+    "addCompany": "Adicionar empresa",
+    "editCompany": "Editar empresa",
+    "deleteCompany": "Excluir empresa",
+    "companyName": "Nome da empresa",
+    "industry": "Setor",
+    "size": "Tamanho",
+    "location": "Localização",
+    "contactPerson": "Pessoa de contato",
+    "phone": "Telefone",
+    "website": "Website",
+    "plan": "Plano",
+    "free": "Gratuito",
+    "pro": "Profissional",
+    "business": "Empresarial",
+    "subscriptionStatus": "Status da assinatura",
+    "active": "Ativa",
+    "expired": "Expirada",
+    "cancelled": "Cancelada",
+    "trial": "Período de teste"
+  },
+  "settings": {
+    "title": "Configurações",
+    "general": "Geral",
+    "security": "Segurança",
+    "notifications": "Notificações",
+    "integrations": "Integrações",
+    "billing": "Cobrança",
+    "team": "Equipe",
+    "timezone": "Fuso horário",
+    "language": "Idioma",
+    "dateFormat": "Formato de data",
+    "timeFormat": "Formato de hora",
+    "workingHours": "Horário de trabalho",
+    "holidays": "Feriados",
+    "overtimeRules": "Regras de horas extras",
+    "breakRules": "Regras de pausa",
+    "emailNotifications": "Notificações por e-mail",
+    "pushNotifications": "Notificações push",
+    "smsNotifications": "Notificações por SMS",
+    "twoFactorAuth": "Autenticação de dois fatores",
+    "passwordPolicy": "Política de senha",
+    "sessionTimeout": "Timeout de sessão",
+    "dataRetention": "Retenção de dados",
+    "backupSettings": "Configurações de backup"
+  },
+  "notifications": {
+    "title": "Notificações",
+    "markAsRead": "Marcar como lida",
+    "markAllAsRead": "Marcar todas como lidas",
+    "delete": "Excluir",
+    "deleteAll": "Excluir todas",
+    "noNotifications": "Nenhuma notificação",
+    "newSchedule": "Nova escala criada",
+    "scheduleUpdated": "Escala atualizada",
+    "schedulePublished": "Escala publicada",
+    "complianceAlert": "Alerta de compliance",
+    "overtimeWarning": "Aviso de horas extras",
+    "employeeRequest": "Solicitação de funcionário",
+    "systemMaintenance": "Manutenção do sistema",
+    "securityAlert": "Alerta de segurança"
+  },
+  "errors": {
+    "general": "Ocorreu um erro inesperado",
+    "network": "Erro de conexão",
+    "unauthorized": "Não autorizado",
+    "forbidden": "Acesso negado",
+    "notFound": "Página não encontrada",
+    "validation": "Erro de validação",
+    "server": "Erro do servidor",
+    "timeout": "Tempo limite excedido",
+    "invalidInput": "Entrada inválida",
+    "requiredField": "Campo obrigatório",
+    "invalidEmail": "E-mail inválido",
+    "passwordTooShort": "Senha muito curta",
+    "passwordsDoNotMatch": "Senhas não coincidem",
+    "invalidCode": "Código inválido",
+    "expiredCode": "Código expirado"
+  },
+  "success": {
+    "saved": "Salvo com sucesso",
+    "created": "Criado com sucesso",
+    "updated": "Atualizado com sucesso",
+    "deleted": "Excluído com sucesso",
+    "published": "Publicado com sucesso",
+    "sent": "Enviado com sucesso",
+    "verified": "Verificado com sucesso",
+    "activated": "Ativado com sucesso",
+    "deactivated": "Desativado com sucesso"
+  },
+  "landing": {
+    "hero": {
+      "title": "Crie escalas perfeitas em minutos e fique 100% dentro da lei",
+      "subtitle": "Software de escalas com Inteligência Artificial e compliance CLT automático para restaurantes e bares com 5–50 colaboradores. Menos retrabalho, menos risco, mais lucro.",
+      "cta": "Começar grátis por 14 dias",
+      "demo": "Ver demonstração (30s)",
+      "limitedOffer": "Oferta limitada — 50 vagas para o teste gratuito este mês."
+    },
+    "benefits": {
+      "title": "Como a GrowthScale resolve seus maiores problemas",
+      "subtitle": "Automatizamos escalas, reduzimos custos e eliminamos erros trabalhistas — sem planilhas, sem dor de cabeça.",
+      "aiSchedules": {
+        "title": "Escalas automáticas por IA",
+        "description": "Gere a escala ideal em segundos considerando CLT, folgas, horas extras e preferências."
+      },
+      "compliance": {
+        "title": "Compliance CLT automático",
+        "description": "Alertas e bloqueios para regras trabalhistas. Evite multas e passivos."
+      },
+      "costControl": {
+        "title": "Custo sob controle",
+        "description": "Simule cenários e reduza horas extras desnecessárias. Controle total do orçamento."
+      },
+      "operations": {
+        "title": "Operação sem atrito",
+        "description": "Trocas de turno e ausências tratadas automaticamente, com comunicação integrada."
+      },
+      "visibility": {
+        "title": "Visão e controle em tempo real",
+        "description": "Dashboard com indicadores-chave: presença, horas, custos, aderência e alertas."
+      },
+      "integration": {
+        "title": "Integração simples",
+        "description": "Importe equipe por planilha e comece em minutos. Sem projeto demorado."
+      }
+    },
+    "socialProof": {
+      "title": "500+ restaurantes confiam",
+      "subtitle": "Resultados reais, mês a mês. Aqui está o que nossos clientes dizem:",
+      "testimonials": {
+        "costReduction": "Reduzimos em 27% o gasto com horas extras no primeiro mês.",
+        "timeSaved": "Economizamos 6–8 horas/semana e acabaram-se os conflitos de escala.",
+        "compliance": "Auditoria CLT integrada nos deu tranquilidade total."
+      }
+    },
+    "howItWorks": {
+      "title": "Como funciona",
+      "subtitle": "Em 3 passos, você sai do caos para a escala perfeita.",
+      "step1": {
+        "title": "Importe sua equipe",
+        "description": "Planilha .csv ou cadastro rápido — pronto em minutos."
+      },
+      "step2": {
+        "title": "Defina regras",
+        "description": "CLT, folgas, horários, preferências e restrições."
+      },
+      "step3": {
+        "title": "Gere a escala e publique",
+        "description": "IA monta tudo automaticamente. Ajuste se quiser e publique."
+      }
+    },
+    "pricing": {
+      "title": "Planos simples, valor imediato",
+      "subtitle": "Teste grátis por 14 dias. Sem cartão. Cancele quando quiser.",
+      "start": {
+        "name": "Start",
+        "price": "R$ 0",
+        "badge": "Teste 14 dias",
+        "features": [
+          "Até 10 colaboradores",
+          "Geração de escala por IA",
+          "Compliance CLT básico"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "R$ 199/mês",
+        "badge": "Mais popular",
+        "features": [
+          "Até 30 colaboradores",
+          "Compliance CLT avançado",
+          "Simulador de custos",
+          "Suporte prioritário"
+        ]
+      },
+      "business": {
+        "name": "Business",
+        "price": "Sob consulta",
+        "badge": "Sob medida",
+        "features": [
+          "50+ colaboradores",
+          "SLA e integrações",
+          "Treinamento da equipe",
+          "Gestor dedicado"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Pronto para sair do caos e ganhar previsibilidade?",
+      "subtitle": "Leva menos de 2 minutos para começar. Sem cartão de crédito.",
+      "button": "Criar minha conta grátis",
+      "limitedOffer": "Oferta do mês: 50 vagas no teste gratuito este mês. Não perca."
+    }
+  }
+}
