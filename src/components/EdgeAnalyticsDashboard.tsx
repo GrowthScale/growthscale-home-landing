@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { 
   Activity, 
   TrendingUp, 
-  TrendingDown, 
+  // TrendingDown, // Não utilizado
   AlertTriangle,
   CheckCircle,
   RefreshCw,
@@ -16,10 +16,10 @@ import {
   Database,
   Globe,
   Clock,
-  Users,
+  // Users, // Não utilizado
   Eye,
-  MousePointer,
-  FileText,
+  // MousePointer, // Não utilizado
+  // FileText, // Não utilizado
   AlertCircle
 } from 'lucide-react';
 

@@ -135,10 +135,10 @@ serve(async (req) => {
     if (companiesQueryError) {
       console.error("Erro ao consultar empresas:", companiesQueryError);
     } else if (userCompanies && userCompanies.length > 0) {
-      if (process.env.NODE_ENV === 'development') { console.log(`🏢 Eliminando ${userCompanies.length} empresa(s) } do usuário...`);
+      if (process.env.NODE_ENV === 'development') { console.log(`🏢 Eliminando ${userCompanies.length} empresa(s) do usuário...`); }
       
       for (const company of userCompanies) {
-        if (process.env.NODE_ENV === 'development') { console.log(`🗑️ Eliminando empresa: ${company.name} (${company.id}) }`);
+        if (process.env.NODE_ENV === 'development') { console.log(`🗑️ Eliminando empresa: ${company.name} (${company.id})`); }
         
         // Eliminar funcionários da empresa
         await supabaseAdmin

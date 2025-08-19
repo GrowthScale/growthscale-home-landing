@@ -148,7 +148,7 @@ serve(async (req) => {
     // 2. Para cada tenant, processar o relatório
     for (const tenant of tenants || []) {
       try {
-        if (process.env.NODE_ENV === 'development') { console.log(`Processando relatório para tenant: ${tenant.id} (${tenant.name}) }`);
+        if (process.env.NODE_ENV === 'development') { console.log(`Processando relatório para tenant: ${tenant.id} (${tenant.name})`); }
 
         // 3. Obter os dados reais da semana passada
         const weeklyMetrics = await getWeeklyMetrics(supabaseAdmin, tenant.id);
