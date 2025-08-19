@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         );
 
         const supabaseStart = Date.now();
-        const { data, error } = await supabase
+        const { error } = await supabase
           .from('companies')
           .select('count')
           .limit(1);

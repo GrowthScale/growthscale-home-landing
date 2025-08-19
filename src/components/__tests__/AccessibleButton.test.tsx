@@ -1,5 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { vi } from 'vitest';
 import { AccessibleButton, PrimaryButton, SecondaryButton } from '../ui/accessible-button';
+
+// Mock do jest para compatibilidade
+const jest = {
+  fn: vi.fn
+};
 
 describe('AccessibleButton', () => {
   it('renders correctly with default props', () => {
@@ -52,14 +58,14 @@ describe('AccessibleButton', () => {
   });
 
   it('handles click events', () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(<AccessibleButton onClick={handleClick}>Click me</AccessibleButton>);
     fireEvent.click(screen.getByText('Click me'));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
   it('handles keyboard events', () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(<AccessibleButton onClick={handleClick}>Click me</AccessibleButton>);
     const button = screen.getByText('Click me');
     

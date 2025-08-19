@@ -26,13 +26,13 @@ const CRITICAL_ASSETS = [
 ];
 
 // APIs que devem ser cacheadas
-const CACHEABLE_APIS = [
-  '/api/companies',
-  '/api/employees',
-  '/api/schedules',
-  '/api/templates',
-  '/api/settings'
-];
+// const CACHEABLE_APIS = [
+//   '/api/companies',
+//   '/api/employees',
+//   '/api/schedules',
+//   '/api/templates',
+//   '/api/settings'
+// ];
 
 // Instalação do Service Worker
 self.addEventListener('install', (event) => {
