@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { Checkbox } from '@/components/ui/checkbox'
+import { loginSchema, registerSchema, validateInputSafe, type LoginInput, type RegisterInput } from '@/lib/validation'
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -25,14 +26,25 @@ const Auth = () => {
     
     try {
       if (isLogin) {
-        const { error } = await signIn(email, password)
+        const loginData: LoginInput = { email, password, rememberMe: false }
+        const { error } = await signIn(loginData)
         if (!error) {
           navigate('/dashboard')
         } else {
           alert('Erro no login: ' + error)
         }
       } else {
-        const { error } = await signUp(email, password, fullName, companyName, companyEmail, employeeCount)
+        const registerData: RegisterInput = {
+          email,
+          password,
+          confirmPassword: password, // Assumindo que não há campo de confirmação separado
+          fullName,
+          companyName,
+          companyEmail,
+          employeeCount,
+          acceptTerms: acceptedTerms
+        }
+        const { error } = await signUp(registerData)
         if (!error) {
           alert('Cadastro realizado! Verifique seu email.')
           setIsLogin(true)

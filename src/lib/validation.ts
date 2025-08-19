@@ -1,217 +1,216 @@
 import { z } from 'zod';
 
-// Schemas de validação para segurança e integridade de dados
+// =====================================================
+// SCHEMAS DE AUTENTICAÇÃO
+// =====================================================
 
-// User schemas
-export const userSchema = z.object({
+export const loginSchema = z.object({
   email: z.string().email('Email inválido'),
-  password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres')
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Senha deve conter letra maiúscula, minúscula e número'),
-  name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100, 'Nome muito longo'),
-  phone: z.string().optional(),
-  role: z.enum(['admin', 'manager', 'employee']).default('employee'),
-  companyId: z.string().uuid().optional(),
+  password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres'),
+  rememberMe: z.boolean().optional().default(false)
 });
 
-export const userUpdateSchema = userSchema.partial().omit({ password: true });
-
-export const userLoginSchema = z.object({
+export const registerSchema = z.object({
   email: z.string().email('Email inválido'),
-  password: z.string().min(1, 'Senha é obrigatória'),
+  password: z.string()
+    .min(8, 'Senha deve ter pelo menos 8 caracteres')
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Senha deve conter maiúscula, minúscula e número'),
+  confirmPassword: z.string(),
+  fullName: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100),
+  companyName: z.string().min(2, 'Nome da empresa deve ter pelo menos 2 caracteres').max(100),
+  companyEmail: z.string().email('Email da empresa inválido'),
+  employeeCount: z.number().min(1, 'Número de funcionários deve ser pelo menos 1').max(10000),
+  acceptTerms: z.boolean().refine(val => val === true, 'Você deve aceitar os termos')
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Senhas não coincidem",
+  path: ["confirmPassword"]
 });
 
-// Company schemas
+export const resetPasswordSchema = z.object({
+  email: z.string().email('Email inválido')
+});
+
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, 'Senha atual é obrigatória'),
+  newPassword: z.string()
+    .min(8, 'Nova senha deve ter pelo menos 8 caracteres')
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Senha deve conter maiúscula, minúscula e número'),
+  confirmNewPassword: z.string()
+}).refine(data => data.newPassword === data.confirmNewPassword, {
+  message: "Senhas não coincidem",
+  path: ["confirmNewPassword"]
+});
+
+// =====================================================
+// SCHEMAS DE EMPRESA
+// =====================================================
+
 export const companySchema = z.object({
-  name: z.string().min(2, 'Nome da empresa deve ter pelo menos 2 caracteres').max(100),
+  name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100),
   cnpj: z.string().regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido'),
+  tradeName: z.string().optional(),
+  description: z.string().max(500).optional(),
+  logo: z.string().url().optional(),
+  status: z.enum(['active', 'inactive', 'pending']).default('active'),
   address: z.object({
-    street: z.string().min(5),
-    number: z.string(),
-    complement: z.string().optional(),
-    neighborhood: z.string(),
-    city: z.string(),
-    state: z.string().length(2),
-    zipCode: z.string().regex(/^\d{5}-\d{3}$/, 'CEP inválido'),
+    street: z.string().min(1, 'Rua é obrigatória'),
+    number: z.string().min(1, 'Número é obrigatório'),
+    city: z.string().min(1, 'Cidade é obrigatória'),
+    state: z.string().length(2, 'Estado deve ter 2 caracteres'),
+    zipCode: z.string().regex(/^\d{5}-\d{3}$/, 'CEP inválido')
   }),
-  phone: z.string(),
-  email: z.string().email('Email inválido'),
-  industry: z.string().optional(),
-  employeeCount: z.number().min(1).max(1000),
+  contact: z.object({
+    email: z.string().email('Email inválido'),
+    phone: z.string().regex(/^\(\d{2}\) \d{4,5}-\d{4}$/, 'Telefone inválido'),
+    website: z.string().url().optional()
+  })
 });
 
-// Employee schemas
+// =====================================================
+// SCHEMAS DE FUNCIONÁRIO
+// =====================================================
+
 export const employeeSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100),
-  email: z.string().email('Email inválido').optional(),
-  phone: z.string().optional(),
-  cpf: z.string().regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido'),
-  position: z.string().min(2, 'Cargo deve ter pelo menos 2 caracteres'),
+  email: z.string().email('Email inválido'),
+  phoneNumber: z.string().regex(/^\(\d{2}\) \d{4,5}-\d{4}$/, 'Telefone inválido'),
+  position: z.string().min(1, 'Cargo é obrigatório'),
   department: z.string().optional(),
-  hireDate: z.string().datetime(),
-  salary: z.number().positive('Salário deve ser positivo'),
-  workHours: z.number().min(1).max(24, 'Horas de trabalho inválidas'),
-  cltType: z.enum(['CLT', 'PJ', 'Temporário', 'Estagiário']),
-  companyId: z.string().uuid(),
-});
-
-// Schedule schemas
-export const scheduleSchema = z.object({
-  employeeId: z.string().uuid('ID do funcionário inválido'),
-  date: z.string().date('Data inválida'),
-  startTime: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Horário de início inválido'),
-  endTime: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Horário de fim inválido'),
-  breakTime: z.number().min(0).max(480, 'Tempo de pausa inválido (máximo 8h)').default(0),
-  type: z.enum(['regular', 'overtime', 'holiday', 'sick']).default('regular'),
-  notes: z.string().max(500, 'Notas muito longas').optional(),
-  companyId: z.string().uuid(),
-});
-
-export const scheduleBatchSchema = z.object({
-  schedules: z.array(scheduleSchema).min(1, 'Pelo menos uma escala deve ser fornecida'),
-  weekStart: z.string().date('Data de início da semana inválida'),
-  weekEnd: z.string().date('Data de fim da semana inválida'),
-});
-
-// CLT Compliance schemas
-export const cltComplianceSchema = z.object({
-  employeeId: z.string().uuid(),
-  date: z.string().date(),
-  totalHours: z.number().min(0).max(24),
-  overtimeHours: z.number().min(0).max(12),
-  nightShiftHours: z.number().min(0).max(8),
-  holidayHours: z.number().min(0).max(24),
-  restPeriod: z.number().min(11, 'Período de descanso mínimo não respeitado'),
-  weeklyRest: z.number().min(24, 'Descanso semanal mínimo não respeitado'),
-  violations: z.array(z.object({
-    type: z.enum(['overtime_limit', 'rest_period', 'weekly_rest', 'night_shift', 'holiday_work']),
-    description: z.string(),
-    severity: z.enum(['low', 'medium', 'high', 'critical']),
-    cltArticle: z.string(),
-  })).default([]),
-});
-
-// Report schemas
-export const reportSchema = z.object({
-  type: z.enum(['economy', 'compliance', 'productivity', 'overtime']),
-  startDate: z.string().date(),
-  endDate: z.string().date(),
-  companyId: z.string().uuid(),
-  filters: z.object({
-    departments: z.array(z.string()).optional(),
-    employees: z.array(z.string().uuid()).optional(),
-    scheduleTypes: z.array(z.string()).optional(),
+  status: z.enum(['active', 'inactive', 'vacation', 'sick_leave']).default('active'),
+  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Data inválida'),
+  endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  salary: z.number().min(0, 'Salário deve ser positivo').optional(),
+  workloadHours: z.number().min(1, 'Carga horária deve ser pelo menos 1').max(168).default(44),
+  skills: z.array(z.string()).optional(),
+  address: z.object({
+    street: z.string().optional(),
+    number: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().length(2).optional(),
+    zipCode: z.string().optional()
   }).optional(),
+  avatar: z.string().url().optional()
 });
 
-// Notification schemas
-export const notificationSchema = z.object({
-  type: z.enum(['schedule_confirmation', 'clt_alert', 'overtime_warning', 'system']),
-  recipientId: z.string().uuid(),
-  title: z.string().min(1).max(100),
-  message: z.string().min(1).max(500),
-  priority: z.enum(['low', 'medium', 'high', 'urgent']).default('medium'),
-  channel: z.enum(['email', 'sms', 'whatsapp', 'in_app']).default('in_app'),
-  scheduledAt: z.string().datetime().optional(),
+// =====================================================
+// SCHEMAS DE ESCALA
+// =====================================================
+
+export const scheduleSchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Data inválida'),
+  status: z.enum(['draft', 'published', 'archived']).default('draft'),
+  notes: z.string().max(500).optional(),
+  companyId: z.string().uuid('ID da empresa inválido')
 });
 
-// WhatsApp template schemas
-export const whatsappTemplateSchema = z.object({
-  name: z.string().min(1).max(50),
-  type: z.enum(['confirmation', 'reminder', 'alert', 'custom']),
-  message: z.string().min(1).max(1000),
-  variables: z.array(z.string()).optional(),
-  isActive: z.boolean().default(true),
-  companyId: z.string().uuid(),
+export const shiftSchema = z.object({
+  employeeId: z.string().uuid('ID do funcionário inválido'),
+  startTime: z.string().regex(/^\d{2}:\d{2}$/, 'Horário de início inválido'),
+  endTime: z.string().regex(/^\d{2}:\d{2}$/, 'Horário de fim inválido'),
+  breakTime: z.number().min(0).default(0),
+  notes: z.string().max(200).optional()
 });
 
-// Settings schemas
-export const companySettingsSchema = z.object({
-  cltSettings: z.object({
-    maxDailyHours: z.number().min(1).max(12).default(8),
-    maxWeeklyHours: z.number().min(1).max(60).default(44),
-    maxOvertimeHours: z.number().min(0).max(12).default(2),
-    restPeriodHours: z.number().min(11).max(24).default(11),
-    weeklyRestHours: z.number().min(24).max(48).default(24),
+// =====================================================
+// SCHEMAS DE FILIAL
+// =====================================================
+
+export const branchSchema = z.object({
+  name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100),
+  address: z.object({
+    street: z.string().min(1, 'Rua é obrigatória'),
+    number: z.string().min(1, 'Número é obrigatório'),
+    city: z.string().min(1, 'Cidade é obrigatória'),
+    state: z.string().length(2, 'Estado deve ter 2 caracteres'),
+    zipCode: z.string().regex(/^\d{5}-\d{3}$/, 'CEP inválido')
   }),
-  notificationSettings: z.object({
-    emailNotifications: z.boolean().default(true),
-    smsNotifications: z.boolean().default(false),
-    whatsappNotifications: z.boolean().default(true),
-    cltAlerts: z.boolean().default(true),
-    overtimeWarnings: z.boolean().default(true),
+  workingHours: z.object({
+    start: z.string().regex(/^\d{2}:\d{2}$/, 'Horário de início inválido'),
+    end: z.string().regex(/^\d{2}:\d{2}$/, 'Horário de fim inválido')
   }),
-  scheduleSettings: z.object({
-    autoGenerate: z.boolean().default(false),
-    aiOptimization: z.boolean().default(true),
-    conflictDetection: z.boolean().default(true),
-    approvalRequired: z.boolean().default(false),
-  }),
+  status: z.enum(['active', 'inactive']).default('active'),
+  companyId: z.string().uuid('ID da empresa inválido')
 });
 
-// Form validation helpers
-export const validateForm = <T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; errors: string[] } => {
+// =====================================================
+// SCHEMAS DE USUÁRIO
+// =====================================================
+
+export const userProfileSchema = z.object({
+  role: z.enum(['owner', 'admin', 'manager', 'employee']).default('employee'),
+  firstName: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(50),
+  lastName: z.string().min(2, 'Sobrenome deve ter pelo menos 2 caracteres').max(50),
+  avatar: z.string().url().optional(),
+  phone: z.string().regex(/^\(\d{2}\) \d{4,5}-\d{4}$/, 'Telefone inválido').optional(),
+  preferences: z.object({
+    theme: z.enum(['light', 'dark', 'system']).default('system'),
+    language: z.enum(['pt-BR', 'en-US']).default('pt-BR'),
+    notifications: z.boolean().default(true)
+  }).optional()
+});
+
+// =====================================================
+// SCHEMAS DE PAGINAÇÃO E FILTROS
+// =====================================================
+
+export const paginationSchema = z.object({
+  page: z.number().min(1).default(1),
+  limit: z.number().min(1).max(100).default(10),
+  sortBy: z.string().optional(),
+  sortOrder: z.enum(['asc', 'desc']).default('asc')
+});
+
+export const searchSchema = z.object({
+  query: z.string().min(1, 'Query é obrigatória').max(100),
+  filters: z.record(z.any()).optional()
+});
+
+// =====================================================
+// TIPOS INFERIDOS
+// =====================================================
+
+export type LoginInput = z.infer<typeof loginSchema>;
+export type RegisterInput = z.infer<typeof registerSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
+export type CompanyInput = z.infer<typeof companySchema>;
+export type EmployeeInput = z.infer<typeof employeeSchema>;
+export type ScheduleInput = z.infer<typeof scheduleSchema>;
+export type ShiftInput = z.infer<typeof shiftSchema>;
+export type BranchInput = z.infer<typeof branchSchema>;
+export type UserProfileInput = z.infer<typeof userProfileSchema>;
+export type PaginationInput = z.infer<typeof paginationSchema>;
+export type SearchInput = z.infer<typeof searchSchema>;
+
+// =====================================================
+// FUNÇÕES DE VALIDAÇÃO
+// =====================================================
+
+export const validateInput = <T>(schema: z.ZodSchema<T>, data: unknown): T => {
   try {
-    const validatedData = schema.parse(data);
-    return { success: true, data: validatedData };
+    return schema.parse(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const errors = error.errors.map(err => err.message);
-      return { success: false, errors };
+      throw new Error(`Validação falhou: ${error.errors.map(e => e.message).join(', ')}`);
     }
-    return { success: false, errors: ['Erro de validação desconhecido'] };
+    throw error;
   }
 };
 
-// Sanitization helpers
-export const sanitizeString = (input: string): string => {
-  return input
-    .trim()
-    .replace(/[<>]/g, '') // Remove potential HTML tags
-    .replace(/javascript:/gi, '') // Remove javascript: protocol
-    .replace(/on\w+=/gi, ''); // Remove event handlers
+export const validateInputSafe = <T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; errors: string[] } => {
+  try {
+    const result = schema.parse(data);
+    return { success: true, data: result };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { 
+        success: false, 
+        errors: error.errors.map(e => e.message) 
+      };
+    }
+    return { 
+      success: false, 
+      errors: ['Erro interno de validação'] 
+    };
+  }
 };
-
-export const sanitizeEmail = (email: string): string => {
-  return email.toLowerCase().trim();
-};
-
-export const sanitizePhone = (phone: string): string => {
-  return phone.replace(/\D/g, ''); // Remove non-digits
-};
-
-// Rate limiting helpers
-export const rateLimitConfig = {
-  login: { maxAttempts: 5, windowMs: 15 * 60 * 1000 }, // 5 attempts per 15 minutes
-  registration: { maxAttempts: 3, windowMs: 60 * 60 * 1000 }, // 3 attempts per hour
-  api: { maxAttempts: 100, windowMs: 15 * 60 * 1000 }, // 100 requests per 15 minutes
-};
-
-// Export all schemas
-export const schemas = {
-  user: userSchema,
-  userUpdate: userUpdateSchema,
-  userLogin: userLoginSchema,
-  company: companySchema,
-  employee: employeeSchema,
-  schedule: scheduleSchema,
-  scheduleBatch: scheduleBatchSchema,
-  cltCompliance: cltComplianceSchema,
-  report: reportSchema,
-  notification: notificationSchema,
-  whatsappTemplate: whatsappTemplateSchema,
-  companySettings: companySettingsSchema,
-};
-
-// Type exports
-export type User = z.infer<typeof userSchema>;
-export type UserUpdate = z.infer<typeof userUpdateSchema>;
-export type UserLogin = z.infer<typeof userLoginSchema>;
-export type Company = z.infer<typeof companySchema>;
-export type Employee = z.infer<typeof employeeSchema>;
-export type Schedule = z.infer<typeof scheduleSchema>;
-export type ScheduleBatch = z.infer<typeof scheduleBatchSchema>;
-export type CLTCompliance = z.infer<typeof cltComplianceSchema>;
-export type Report = z.infer<typeof reportSchema>;
-export type Notification = z.infer<typeof notificationSchema>;
-export type WhatsAppTemplate = z.infer<typeof whatsappTemplateSchema>;
-export type CompanySettings = z.infer<typeof companySettingsSchema>;

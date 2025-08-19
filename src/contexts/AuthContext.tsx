@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { supabase, type AuthUser } from '@/lib/supabase'
 import { Session } from '@supabase/supabase-js'
+import { loginSchema, registerSchema, validateInputSafe, type LoginInput, type RegisterInput } from '@/lib/validation'
 
 interface AuthContextType {
   user: AuthUser | null
   session: Session | null
   loading: boolean
-  signIn: (email: string, password: string) => Promise<{ error: unknown }>
-  signUp: (email: string, password: string, fullName: string, companyName: string, companyEmail: string, employeeCount: number) => Promise<{ error: unknown }>
+  signIn: (data: LoginInput) => Promise<{ error: unknown }>
+  signUp: (data: RegisterInput) => Promise<{ error: unknown }>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: unknown }>
 }
@@ -67,12 +68,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe()
   }, [])
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (data: LoginInput) => {
     try {
-      console.log('AuthProvider: Attempting sign in for:', email);
+      // Validar dados de entrada
+      const validation = validateInputSafe(loginSchema, data);
+      if (!validation.success) {
+        return { error: new Error(validation.errors.join(', ')) };
+      }
+
+      console.log('AuthProvider: Attempting sign in for:', data.email);
       const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: data.email,
+        password: data.password,
       });
       
       if (error) {
@@ -88,20 +95,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  const signUp = async (email: string, password: string, fullName: string, companyName: string, companyEmail: string, employeeCount: number) => {
+  const signUp = async (data: RegisterInput) => {
     try {
-      console.log('AuthProvider: Attempting sign up for:', email);
+      // Validar dados de entrada
+      const validation = validateInputSafe(registerSchema, data);
+      if (!validation.success) {
+        return { error: new Error(validation.errors.join(', ')) };
+      }
+
+      console.log('AuthProvider: Attempting sign up for:', data.email);
       
       // 1. Criar usuário no Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
+        email: data.email,
+        password: data.password,
         options: {
           data: {
-            full_name: fullName,
-            company_name: companyName,
-            company_email: companyEmail,
-            employee_count: employeeCount,
+            full_name: data.fullName,
+            company_name: data.companyName,
+            company_email: data.companyEmail,
+            employee_count: data.employeeCount,
           },
         },
       });
