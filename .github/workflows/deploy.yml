@@ -23,15 +23,23 @@ jobs:
       - name: Build application
         run: npm run build
         
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-        continue-on-error: true
-        
-      - name: Notify deployment
+      - name: Deploy to Vercel (Manual)
         run: |
-          echo "🎉 Deployment completed for GrowthScale!"
+          echo "🚀 Build completed successfully!"
+          echo "📦 Bundle size: $(du -sh dist/ | cut -f1)"
+          echo "📊 Files generated: $(find dist/ -type f | wc -l)"
+          echo ""
+          echo "⚠️  Para deploy automático no Vercel:"
+          echo "1. Configure os secrets no GitHub:"
+          echo "   - VERCEL_TOKEN"
+          echo "   - VERCEL_ORG_ID"
+          echo "   - VERCEL_PROJECT_ID"
+          echo "2. Ou conecte o repositório diretamente no Vercel"
+          echo ""
+          echo "✅ Build pronto para deploy manual!"
+        
+      - name: Notify completion
+        run: |
+          echo "🎉 Build completed for GrowthScale!"
+          echo "📱 Acesse: https://vercel.com/dashboard"
+          echo "🔗 Conecte este repositório para deploy automático"
