@@ -9,6 +9,7 @@ import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { AdvancedPerformanceMonitor } from '@/components/AdvancedPerformanceMonitor';
 import { SEOHead } from '@/components/SEOHead';
+import { useEdgeAnalytics } from '@/hooks/useEdgeAnalytics';
 import './App.css';
 
 // Configuração do React Query
@@ -26,18 +27,71 @@ const queryClient = new QueryClient({
   },
 });
 
+function AppContent() {
+  const { trackPageView, trackPerformance } = useEdgeAnalytics();
+
+  // Track page views
+  React.useEffect(() => {
+    trackPageView(window.location.pathname);
+  }, [trackPageView]);
+
+  // Track performance metrics
+  React.useEffect(() => {
+    const trackPerformanceMetrics = () => {
+      if ('performance' in window) {
+        const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+        if (navigationEntry) {
+          const metrics = {
+            lcp: null,
+            fid: null,
+            cls: null,
+            ttfb: navigationEntry.responseStart - navigationEntry.requestStart,
+            fcp: null,
+            loadTime: navigationEntry.loadEventEnd - navigationEntry.loadEventStart,
+            bundleSize: 0,
+            chunkCount: 0,
+          };
+
+          // Get bundle size from resource timing
+          const resourceEntries = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+          const scriptEntries = resourceEntries.filter(entry => entry.initiatorType === 'script');
+          metrics.bundleSize = scriptEntries.reduce((sum, entry) => sum + (entry.transferSize || 0), 0);
+          metrics.chunkCount = scriptEntries.length;
+
+          trackPerformance({
+            metrics,
+            score: 85, // Default score
+            url: window.location.href,
+            environment: process.env.NODE_ENV || 'production',
+          });
+        }
+      }
+    };
+
+    // Track after page load
+    window.addEventListener('load', trackPerformanceMetrics);
+    return () => window.removeEventListener('load', trackPerformanceMetrics);
+  }, [trackPerformance]);
+
+  return (
+    <>
+      <SEOHead />
+      <AppRoutes />
+      <PWAInstallPrompt />
+      <PerformanceMonitor showInConsole={true} showInUI={process.env.NODE_ENV === 'development'} />
+      <AdvancedPerformanceMonitor />
+      <Toaster />
+    </>
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AuthProvider>
           <TenantProvider>
-            <SEOHead />
-            <AppRoutes />
-            <PWAInstallPrompt />
-            <PerformanceMonitor showInConsole={true} showInUI={process.env.NODE_ENV === 'development'} />
-            <AdvancedPerformanceMonitor />
-            <Toaster />
+            <AppContent />
           </TenantProvider>
         </AuthProvider>
       </ThemeProvider>
