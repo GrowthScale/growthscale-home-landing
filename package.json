@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:analyze": "tsc && vite build && open dist/stats.html",
+    "preview": "vite preview",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
@@ -15,7 +17,6 @@
     "test:ui": "vitest",
     "e2e": "playwright test",
     "e2e:headed": "playwright test --headed",
-    "preview": "vite preview",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -88,10 +89,13 @@
     "lint-staged": "^15.2.2",
     "postcss": "^8.4.31",
     "prettier": "^3.3.3",
+    "rollup-plugin-visualizer": "^6.0.3",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.2.2",
     "vite": "^7.1.2",
-    "vitest": "^3.2.4"
+    "vite-plugin-pwa": "^1.0.2",
+    "vitest": "^3.2.4",
+    "workbox-window": "^7.3.0"
   },
   "engines": {
     "node": ">=18"
