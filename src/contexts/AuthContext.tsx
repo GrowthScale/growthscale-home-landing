@@ -103,14 +103,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Determine the redirect URL based on environment
       const getRedirectUrl = () => {
-        const isProduction = import.meta.env.VITE_APP_ENVIRONMENT === 'production' || 
-                            import.meta.env.PROD || 
-                            window.location.hostname !== 'localhost';
-        
-        if (isProduction) {
-          return 'https://growthscale-home-landing.vercel.app/auth/callback';
+        // Sempre usar produção para evitar problemas de redirecionamento
+        // Se estiver em localhost, usar localhost, senão usar produção
+        if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+          return 'http://localhost:3000/auth/callback';
         }
-        return 'http://localhost:3000/auth/callback';
+        
+        // Para todos os outros casos (produção, preview, etc.), usar a URL de produção
+        return 'https://growthscale-home-landing.vercel.app/auth/callback';
       };
 
       

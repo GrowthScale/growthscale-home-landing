@@ -16,7 +16,7 @@ const Auth = () => {
   const [fullName, setFullName] = useState('')
   const [companyName, setCompanyName] = useState('')
   const [companyEmail, setCompanyEmail] = useState('')
-  const [employeeCount, setEmployeeCount] = useState<number>(50)
+  const [employeeCount, setEmployeeCount] = useState<number>(10)
 
   const { signIn, signUp } = useAuth()
   const navigate = useNavigate()
@@ -71,6 +71,8 @@ const Auth = () => {
     }
   }
 
+  const employeeOptions = [5, 10, 25, 50, 100, 250, 500, 1000]
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -91,7 +93,7 @@ const Auth = () => {
             {!isLogin && (
               <>
                 <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-900">
                     Nome Completo
                   </label>
                   <input
@@ -101,12 +103,13 @@ const Auth = () => {
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Digite seu nome completo"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="companyName" className="block text-sm font-medium text-gray-900">
                     Nome da Empresa
                   </label>
                   <input
@@ -116,12 +119,13 @@ const Auth = () => {
                     required
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Digite o nome da empresa"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="companyEmail" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="companyEmail" className="block text-sm font-medium text-gray-900">
                     Email da Empresa
                   </label>
                   <input
@@ -131,29 +135,40 @@ const Auth = () => {
                     required
                     value={companyEmail}
                     onChange={(e) => setCompanyEmail(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="empresa@exemplo.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="employeeCount" className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-900 mb-3">
                     Número de Funcionários
                   </label>
-                  <input
-                    id="employeeCount"
-                    name="employeeCount"
-                    type="number"
-                    required
-                    value={employeeCount}
-                    onChange={(e) => setEmployeeCount(Number(e.target.value))}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                  />
+                  <div className="grid grid-cols-4 gap-2">
+                    {employeeOptions.map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => setEmployeeCount(option)}
+                        className={`px-3 py-2 text-sm font-medium rounded-md border transition-colors ${
+                          employeeCount === option
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white text-gray-900 border-gray-300 hover:bg-gray-50'
+                        }`}
+                      >
+                        {option === 1000 ? '1000+' : option}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-2 text-xs text-gray-600">
+                    Selecionado: {employeeCount} funcionários
+                  </div>
                 </div>
               </>
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-900">
                 Email
               </label>
               <input
@@ -164,12 +179,13 @@ const Auth = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="seu@email.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-900">
                 Senha
               </label>
               <input
@@ -180,23 +196,33 @@ const Auth = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Digite sua senha"
               />
             </div>
 
             {!isLogin && (
-              <div className="flex items-center space-x-2 my-4">
-                <Checkbox 
-                  id="terms" 
-                  checked={acceptedTerms}
-                  onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
-                />
-                <label
-                  htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700"
-                >
-                  Eu li e aceito os <a href="/legal" target="_blank" className="underline hover:text-blue-600">Termos de Uso</a> e a <a href="/legal" target="_blank" className="underline hover:text-blue-600">Política de Privacidade</a>.
-                </label>
+              <div className="flex items-start">
+                <div className="flex items-center h-5">
+                  <Checkbox
+                    id="terms"
+                    checked={acceptedTerms}
+                    onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label htmlFor="terms" className="font-medium text-gray-900">
+                    Aceito os{' '}
+                    <a href="/legal/termos" className="text-blue-600 hover:text-blue-500">
+                      Termos de Uso
+                    </a>{' '}
+                    e{' '}
+                    <a href="/legal/privacidade" className="text-blue-600 hover:text-blue-500">
+                      Política de Privacidade
+                    </a>
+                  </label>
+                </div>
               </div>
             )}
 
@@ -204,25 +230,37 @@ const Auth = () => {
               <button
                 type="submit"
                 disabled={loading || (!isLogin && !acceptedTerms)}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Carregando...' : (isLogin ? 'Entrar' : 'Criar Conta')}
+                {loading ? 'Processando...' : (isLogin ? 'Entrar' : 'Criar Conta')}
               </button>
             </div>
           </form>
 
           <div className="mt-6">
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="w-full text-center text-sm text-blue-600 hover:text-blue-500"
-            >
-              {isLogin ? 'Não tem uma conta? Criar conta' : 'Já tem uma conta? Entrar'}
-            </button>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">ou</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={() => setIsLogin(!isLogin)}
+                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                {isLogin ? 'Criar nova conta' : 'Já tenho uma conta'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Auth
+export default Auth;
