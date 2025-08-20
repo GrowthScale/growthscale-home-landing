@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
-import { TenantContext } from '@/contexts/TenantContext';
+import { useTenant } from '@/contexts/TenantContext';
 import { userProfileService } from '@/services/userProfileService';
 
 // Defina os papéis e permissões da sua aplicação
@@ -93,7 +93,7 @@ type Plan = keyof typeof planPermissions;
 
 export function useAccessControl() {
   const { user } = useContext(AuthContext);
-  const { currentTenant } = useContext(TenantContext);
+  const { currentTenant } = useTenant();
   const [userRole, setUserRole] = useState<Role>('employee');
   const [userCompanyId, setUserCompanyId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
