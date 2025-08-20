@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { TenantProvider } from '@/contexts/TenantContext';
 import { AccessibilityProvider } from '@/components/AccessibilityProvider';
-import { apm } from '@/lib/apm';
+import { initializeAPM } from '@/lib/apm';
 import { ai } from '@/lib/ai';
 import AppRoutes from '@/routes';
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
@@ -29,13 +29,13 @@ const queryClient = new QueryClient({
 function App() {
   useEffect(() => {
     // Initialize APM
-    apm.init();
+    initializeAPM();
     
     // Initialize AI
     ai.init();
     
-    // Track initial page view
-    apm.trackPageView('App Initialized', {
+    // Log initial page view
+    console.log('App Initialized', {
       timestamp: new Date().toISOString(),
       userAgent: navigator.userAgent,
       language: navigator.language,
