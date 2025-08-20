@@ -6,9 +6,7 @@ import { TrialUpgradeBanner } from '@/components/TrialUpgradeBanner';
 import { FeatureGate } from '@/components/FeatureGate';
 import DashboardHeader from './DashboardHeader';
 import KPICard from './KPICard';
-import QuickActions from './QuickActions';
-import RecentActivity from './RecentActivity';
-import ProactiveCard from './ProactiveCard';
+import ActivityFeed from './ActivityFeed';
 import {
   Users,
   Clock,
@@ -19,7 +17,8 @@ import {
   ArrowRight,
   Sparkles,
   Zap,
-  Brain
+  Brain,
+  Button
 } from 'lucide-react';
 import { useTenant } from '@/contexts/TenantContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -132,20 +131,47 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Quick Actions and Recent Activity */}
+      {/* Activity Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <QuickActions />
+          <div className="bg-card border rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4">Ações Rápidas</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <button 
+                className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
+                onClick={() => navigate('/schedules')}
+              >
+                <Calendar className="h-6 w-6 text-primary" />
+                <span className="text-sm font-medium">Nova Escala</span>
+              </button>
+              <button 
+                className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
+                onClick={() => navigate('/employees')}
+              >
+                <Users className="h-6 w-6 text-primary" />
+                <span className="text-sm font-medium">Adicionar Funcionário</span>
+              </button>
+              <button 
+                className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
+                onClick={() => navigate('/analytics')}
+              >
+                <TrendingUp className="h-6 w-6 text-primary" />
+                <span className="text-sm font-medium">Ver Relatórios</span>
+              </button>
+              <button 
+                className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
+                onClick={() => navigate('/settings')}
+              >
+                <Shield className="h-6 w-6 text-primary" />
+                <span className="text-sm font-medium">Configurações</span>
+              </button>
+            </div>
+          </div>
         </div>
         <div>
-          <RecentActivity />
+          <ActivityFeed />
         </div>
       </div>
-
-      {/* Proactive Card */}
-      {pendingDraft && (
-        <ProactiveCard draft={pendingDraft} />
-      )}
 
       {/* Feature Gates - Demonstrando funcionalidades premium */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -164,10 +190,10 @@ const Dashboard = () => {
               Nossa IA analisa padrões e sugere melhorias para suas escalas, 
               economizando tempo e reduzindo custos.
             </p>
-            <Button variant="outline" size="sm">
+            <button className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
               <Zap className="h-4 w-4 mr-2" />
               Gerar Sugestões
-            </Button>
+            </button>
           </div>
         </FeatureGate>
 
@@ -186,10 +212,10 @@ const Dashboard = () => {
               Relatórios avançados com métricas de produtividade, 
               análise de custos e previsões inteligentes.
             </p>
-            <Button variant="outline" size="sm">
+            <button className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
               <ArrowRight className="h-4 w-4 mr-2" />
               Ver Relatórios
-            </Button>
+            </button>
           </div>
         </FeatureGate>
       </div>
