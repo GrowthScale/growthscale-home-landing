@@ -1,9 +1,8 @@
 // src/pages/Index.tsx
-import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { PlayCircle, ShieldCheck, Clock, BarChart3, Check, Star, BrainCircuit, TrendingUp } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { PlayCircle, ShieldCheck, Clock, Star } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 
 // --- COMPONENTES DA PÁGINA ---
 
