@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { PlayCircle, ShieldCheck, Clock, BarChart3, Check, Star, X } from 'lucide-react';
+import { PlayCircle, ShieldCheck, Clock, BarChart3, Check, Star, X, Users, TrendingUp, Zap } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -97,15 +97,37 @@ const SocialProofSection = () => (
     <div className="container mx-auto px-4">
       <div className="text-center max-w-3xl mx-auto mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          {landingPageCopy.socialProof.title}
+          O que nossos clientes dizem
         </h2>
         <p className="text-lg text-muted-foreground">
-          {landingPageCopy.socialProof.subtitle}
+          Empresas que transformaram sua gestão de escalas com o GrowthScale
         </p>
       </div>
       
       <div className="grid md:grid-cols-3 gap-8 mb-16">
-        {landingPageCopy.socialProof.testimonials.map((testimonial, index) => (
+        {[
+          {
+            rating: 5,
+            text: "O GrowthScale revolucionou nossa gestão de escalas. Economizamos 15 horas por semana e eliminamos erros de CLT.",
+            name: "Maria Silva",
+            restaurant: "Restaurante Sabor & Arte",
+            savings: "15h/semana"
+          },
+          {
+            rating: 5,
+            text: "Interface intuitiva e suporte excepcional. Nossa produtividade aumentou 40% desde a implementação.",
+            name: "João Santos",
+            restaurant: "Café Central",
+            savings: "40% produtividade"
+          },
+          {
+            rating: 5,
+            text: "A IA realmente entende as regras da CLT. Nunca mais tivemos problemas com multas trabalhistas.",
+            name: "Ana Costa",
+            restaurant: "Pizzaria Bella Vista",
+            savings: "0 multas"
+          }
+        ].map((testimonial, index) => (
           <Card key={index} className="border-0 shadow-lg bg-gradient-to-br from-background to-secondary/20">
             <CardContent className="p-6">
               <div className="flex items-center mb-4">
@@ -147,17 +169,33 @@ const FeaturesSection = () => (
     <div className="container mx-auto px-4">
       <div className="text-center max-w-3xl mx-auto mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          {landingPageCopy.features.title}
+          Recursos Avançados
         </h2>
         <p className="text-lg text-muted-foreground">
-          {landingPageCopy.features.subtitle}
+          Tudo que você precisa para uma gestão de escalas perfeita
         </p>
       </div>
       
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <div>
           <div className="space-y-8">
-            {landingPageCopy.features.items.map((feature, index) => (
+            {[
+              {
+                icon: "🤖",
+                title: "IA Especializada em CLT",
+                description: "Nossa inteligência artificial entende todas as regras da CLT e cria escalas automaticamente respeitando os direitos dos funcionários."
+              },
+              {
+                icon: "📊",
+                title: "Análise de Produtividade",
+                description: "Obtenha insights detalhados sobre produtividade, custos e otimização de recursos em tempo real."
+              },
+              {
+                icon: "⚡",
+                title: "Automação Inteligente",
+                description: "Reduza em 80% o tempo gasto na criação e gestão de escalas com nossa tecnologia avançada."
+              }
+            ].map((feature, index) => (
               <div key={index} className="flex items-start space-x-4">
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <span className="text-xl">{feature.icon}</span>
@@ -166,7 +204,7 @@ const FeaturesSection = () => (
                   <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
                   <p className="text-muted-foreground mb-2">{feature.description}</p>
                   <Badge variant="outline" className="bg-success/10 text-success border-success/20">
-                    {feature.benefit}
+                    Benefício
                   </Badge>
                 </div>
               </div>
@@ -315,13 +353,13 @@ const CtaSection = () => (
   <section className="py-20 bg-gradient-to-r from-primary to-primary/80">
     <div className="container mx-auto px-4 text-center">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-        {landingPageCopy.urgency.title}
+        Comece a transformar sua gestão hoje mesmo
       </h2>
       <p className="text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
-        {landingPageCopy.urgency.subtitle}
+        Junte-se a centenas de empresas que já economizam tempo e dinheiro com o GrowthScale
       </p>
       <Button asChild size="lg" className="text-lg px-8 py-6 bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-        <Link to="/auth">{landingPageCopy.urgency.cta}</Link>
+        <Link to="/auth">Começar Teste Gratuito</Link>
       </Button>
     </div>
   </section>
