@@ -1,12 +1,12 @@
+/* ===== FONTES E TIPOGRAFIA ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ===== NEURODESIGN SYSTEM - GROWTHSCALE ===== */
 /* Baseado em princípios de psicologia visual e UX */
-
-/* ===== FONTES E TIPOGRAFIA ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* ===== VARIÁVEIS CSS CUSTOMIZADAS ===== */
 :root {

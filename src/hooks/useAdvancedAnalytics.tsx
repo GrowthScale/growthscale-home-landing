@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { apm } from '@/lib/apm';
+import { recordConversion, reportCustomError } from '@/lib/apm';
 
 interface UserBehavior {
   sessionId: string;
@@ -107,12 +107,8 @@ export function useAdvancedAnalytics() {
 
     lastPageView.current = now;
 
-    // Send to APM
-    apm.trackPageView(title, {
-      url,
-      timeSpent,
-      referrer: document.referrer,
-    });
+    // Log page view
+    console.log('Page View:', { title, url, timeSpent, referrer: document.referrer });
   }, []);
 
   // Track user interaction
@@ -135,11 +131,8 @@ export function useAdvancedAnalytics() {
       interactions: [...prev.interactions, interaction],
     }));
 
-    // Send to APM
-    apm.trackUserAction(type, {
-      element,
-      ...properties,
-    });
+    // Log user action
+    console.log('User Action:', { type, element, ...properties });
   }, []);
 
   // Track performance metric
@@ -162,8 +155,8 @@ export function useAdvancedAnalytics() {
       performance: [...prev.performance, metric],
     }));
 
-    // Send to APM
-    apm.trackPerformance(name, value, { category });
+    // Log performance metric
+    console.log('Performance Metric:', { name, value, category });
   }, []);
 
   // Track error
@@ -187,7 +180,7 @@ export function useAdvancedAnalytics() {
     }));
 
     // Send to APM
-    apm.captureError(new Error(message), { stack, severity });
+    reportCustomError(message, severity === 'error' ? 'high' : 'medium');
   }, []);
 
   // Track conversion
@@ -211,7 +204,7 @@ export function useAdvancedAnalytics() {
     }));
 
     // Send to APM
-    apm.trackEvent('conversion', {
+    recordConversion({
       type,
       value,
       ...properties,
