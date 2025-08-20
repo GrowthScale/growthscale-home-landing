@@ -184,14 +184,14 @@ class FunnelTracker {
         action: stepName,
         label: `Step ${step}`,
         value: step,
-        properties: {
+      properties: {
           funnel: funnelName,
           step: step,
           stepName: stepName,
           previousStep: this.getPreviousStep(step),
           timeInFunnel: this.funnelStartTime ? Date.now() - this.funnelStartTime : 0
         },
-        timestamp: Date.now(),
+      timestamp: Date.now(),
         sessionId: sessionManager.getSessionId(),
         funnel: funnelName,
         step: step
@@ -614,9 +614,9 @@ function sendToAnalyticsServices(event: AnalyticsEvent): void {
       label: event.label,
       value: event.value,
       ...event.properties
-    });
+      });
+    }
   }
-}
 
 // ===== INICIALIZAÇÃO =====
 export function initializeAnalytics(): void {
