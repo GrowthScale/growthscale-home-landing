@@ -2,7 +2,27 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { PlayCircle, ShieldCheck, Clock, BarChart3, Check, Star, X, Users, TrendingUp, Zap } from 'lucide-react';
+import { 
+  PlayCircle, 
+  ShieldCheck, 
+  Clock, 
+  BarChart3, 
+  Check, 
+  Star, 
+  X, 
+  Users, 
+  TrendingUp, 
+  Zap,
+  Brain,
+  MessageSquare,
+  Smartphone,
+  FileCheck,
+  ArrowRight,
+  Rocket,
+  Target,
+  Award,
+  Sparkles
+} from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -10,29 +30,98 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 // --- COMPONENTES DA PÁGINA ---
 
 const Header = () => (
-  <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/90 backdrop-blur-lg">
+  <header className="sticky top-0 z-50 w-full border-b border-neutral-light bg-background/90 backdrop-blur-lg">
     <div className="container flex h-16 items-center">
-      <div className="mr-6 flex"><Link to="/" className="flex items-center space-x-2"><svg className="h-6 w-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg><span className="font-bold text-foreground">GrowthScale</span></Link></div>
-      <nav className="hidden md:flex items-center space-x-6 text-sm font-medium"><Link to="/#recursos" className="text-muted-foreground transition-colors hover:text-foreground">Recursos</Link><Link to="/#precos" className="text-muted-foreground transition-colors hover:text-foreground">Preços</Link></nav>
-      <div className="flex flex-1 items-center justify-end space-x-2"><Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button><Button asChild><Link to="/auth">Começar Agora</Link></Button></div>
+      <div className="mr-6 flex">
+        <Link to="/" className="flex items-center space-x-2">
+          <div className="h-8 w-8 rounded-lg bg-gradient-modern flex items-center justify-center">
+            <Sparkles className="h-5 w-5 text-white" />
+          </div>
+          <span className="font-bold text-foreground">GrowthScale</span>
+        </Link>
+      </div>
+      <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+        <Link to="/#recursos" className="text-neutral-medium transition-colors hover:text-foreground">Recursos</Link>
+        <Link to="/#precos" className="text-neutral-medium transition-colors hover:text-foreground">Preços</Link>
+      </nav>
+      <div className="flex flex-1 items-center justify-end space-x-2">
+        <Button asChild variant="ghost">
+          <Link to="/auth">Entrar</Link>
+        </Button>
+        <Button asChild className="bg-accent hover:bg-accent-light text-white">
+          <Link to="/auth">Começar Agora</Link>
+        </Button>
+      </div>
     </div>
   </header>
 );
 
 const HeroSection = () => (
-  <section className="relative w-full py-24 md:py-32 lg:py-40 text-center text-foreground-dark bg-[hsl(var(--background-dark))] overflow-hidden">
-    <div className="absolute inset-0 z-0 bg-grid-dark opacity-5 [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"></div>
+  <section className="relative w-full py-24 md:py-32 lg:py-40 text-center bg-gradient-to-br from-neutral-light to-white overflow-hidden">
+    <div className="absolute inset-0 z-0 bg-grid-modern opacity-5"></div>
     <div className="container relative z-10 mx-auto px-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 animate-fade-in-up">
-          Onde a gestão de escalas encontra a paz de espírito.
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          O GrowthScale é a plataforma de inteligência operacional que transforma o caos das escalas em controlo absoluto. Automatize, preveja custos e opere com clareza sobre as regras da CLT.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-          <Button asChild size="lg" className="text-lg px-8 py-6"><Link to="/auth">Começar a Simplificar Agora</Link></Button>
-          <Button asChild size="lg" variant="secondary" className="text-lg px-8 py-6 bg-secondary/10 text-secondary-foreground hover:bg-secondary/20"><Link to="/#recursos"><PlayCircle className="mr-2 h-5 w-5" />Ver Recursos</Link></Button>
+      <div className="max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Texto */}
+          <div className="text-left">
+            <Badge className="mb-6 bg-accent/10 text-accent border-accent/20">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Plataforma Inovadora
+            </Badge>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 animate-fade-in-up text-foreground">
+              Gestão de escalas <span className="bg-gradient-modern bg-clip-text text-transparent">simples e inteligente</span>
+            </h1>
+            <p className="text-lg md:text-xl text-neutral-medium max-w-2xl mb-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              Automatize escalas, reduza custos em 30% e garanta compliance CLT automaticamente com IA.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+              <Button asChild size="lg" className="text-lg px-8 py-6 bg-accent hover:bg-accent-light text-white shadow-glow-warm">
+                <Link to="/auth">
+                  <Rocket className="mr-2 h-5 w-5" />
+                  Começar Gratuitamente
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 border-primary text-primary hover:bg-primary hover:text-white">
+                <Link to="/#recursos">
+                  <PlayCircle className="mr-2 h-5 w-5" />
+                  Ver Demo
+                </Link>
+              </Button>
+            </div>
+          </div>
+          
+          {/* Mockup/Imagem */}
+          <div className="relative animate-float-gentle">
+            <div className="relative bg-white rounded-2xl shadow-soft p-6 border border-neutral-light">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex space-x-2">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <div className="text-sm text-neutral-medium">Dashboard GrowthScale</div>
+              </div>
+              <div className="space-y-3">
+                <div className="h-4 bg-gradient-modern rounded"></div>
+                <div className="h-4 bg-neutral-light rounded w-3/4"></div>
+                <div className="h-4 bg-neutral-light rounded w-1/2"></div>
+                <div className="grid grid-cols-3 gap-2 mt-4">
+                  <div className="h-8 bg-primary/20 rounded flex items-center justify-center">
+                    <Users className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="h-8 bg-secondary/20 rounded flex items-center justify-center">
+                    <Clock className="w-4 h-4 text-secondary" />
+                  </div>
+                  <div className="h-8 bg-accent/20 rounded flex items-center justify-center">
+                    <TrendingUp className="w-4 h-4 text-accent" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="absolute -top-4 -right-4 bg-accent text-white rounded-full p-3 shadow-glow-warm">
+              <Check className="w-6 h-6" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -40,51 +129,55 @@ const HeroSection = () => (
 );
 
 const BenefitsSection = () => (
-  <section className="py-24 bg-background">
+  <section className="py-24 bg-white">
     <div className="container mx-auto px-4">
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+          <Target className="w-4 h-4 mr-2" />
           Por que escolher o GrowthScale?
+        </Badge>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+          Transforme sua gestão de escalas
         </h2>
-        <p className="text-lg text-muted-foreground">
-          Uma plataforma completa que resolve todos os desafios da gestão de escalas
+        <p className="text-lg text-neutral-medium">
+          Uma plataforma completa que resolve todos os desafios
         </p>
       </div>
       
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="border-0 shadow-soft hover:shadow-medium transition-all duration-300 group">
           <CardHeader>
-            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <ShieldCheck className="h-6 w-6 text-primary" />
             </div>
-            <CardTitle className="text-xl">Conformidade CLT</CardTitle>
+            <CardTitle className="text-xl text-foreground">Compliance CLT</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">Automatize a criação de escalas respeitando todas as regras da CLT, evitando multas e processos trabalhistas.</p>
+            <p className="text-neutral-medium">Automatize a criação de escalas respeitando todas as regras da CLT, evitando multas.</p>
           </CardContent>
         </Card>
         
-        <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="border-0 shadow-soft hover:shadow-medium transition-all duration-300 group">
           <CardHeader>
-            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <Clock className="h-6 w-6 text-primary" />
+            <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <Clock className="h-6 w-6 text-secondary" />
             </div>
-            <CardTitle className="text-xl">Economia de Tempo</CardTitle>
+            <CardTitle className="text-xl text-foreground">Economia de Tempo</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">Reduza em 80% o tempo gasto na criação e gestão de escalas com nossa IA especializada.</p>
+            <p className="text-neutral-medium">Reduza em 80% o tempo gasto na criação e gestão de escalas com nossa IA.</p>
           </CardContent>
         </Card>
         
-        <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="border-0 shadow-soft hover:shadow-medium transition-all duration-300 group">
           <CardHeader>
-            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <BarChart3 className="h-6 w-6 text-primary" />
+            <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <BarChart3 className="h-6 w-6 text-accent" />
             </div>
-            <CardTitle className="text-xl">Análise Inteligente</CardTitle>
+            <CardTitle className="text-xl text-foreground">Análise Inteligente</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">Obtenha insights valiosos sobre produtividade, custos e otimização de recursos.</p>
+            <p className="text-neutral-medium">Obtenha insights valiosos sobre produtividade, custos e otimização.</p>
           </CardContent>
         </Card>
       </div>
@@ -93,394 +186,287 @@ const BenefitsSection = () => (
 );
 
 const SocialProofSection = () => (
-  <section className="py-20 bg-background">
+  <section className="py-20 bg-neutral-light">
     <div className="container mx-auto px-4">
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
           O que nossos clientes dizem
         </h2>
-        <p className="text-lg text-muted-foreground">
-          Empresas que transformaram sua gestão de escalas com o GrowthScale
+        <p className="text-lg text-neutral-medium">
+          Empresas que confiam no GrowthScale
         </p>
       </div>
       
-      <div className="grid md:grid-cols-3 gap-8 mb-16">
-        {[
-          {
-            rating: 5,
-            text: "O GrowthScale revolucionou nossa gestão de escalas. Economizamos 15 horas por semana e eliminamos erros de CLT.",
-            name: "Maria Silva",
-            restaurant: "Restaurante Sabor & Arte",
-            savings: "15h/semana"
-          },
-          {
-            rating: 5,
-            text: "Interface intuitiva e suporte excepcional. Nossa produtividade aumentou 40% desde a implementação.",
-            name: "João Santos",
-            restaurant: "Café Central",
-            savings: "40% produtividade"
-          },
-          {
-            rating: 5,
-            text: "A IA realmente entende as regras da CLT. Nunca mais tivemos problemas com multas trabalhistas.",
-            name: "Ana Costa",
-            restaurant: "Pizzaria Bella Vista",
-            savings: "0 multas"
-          }
-        ].map((testimonial, index) => (
-          <Card key={index} className="border-0 shadow-lg bg-gradient-to-br from-background to-secondary/20">
-            <CardContent className="p-6">
-              <div className="flex items-center mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-warning text-warning" />
-                ))}
+      <div className="grid md:grid-cols-3 gap-8">
+        <Card className="border-0 shadow-soft bg-white">
+          <CardContent className="p-6">
+            <div className="flex items-center mb-4">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 text-accent fill-current" />
+              ))}
+            </div>
+            <p className="text-neutral-medium mb-4">
+              "Reduzimos 70% do tempo gasto com escalas e eliminamos completamente as multas CLT."
+            </p>
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-3">
+                <Users className="w-5 h-5 text-primary" />
               </div>
-              <p className="text-muted-foreground mb-4 italic">"{testimonial.text}"</p>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.restaurant}</p>
-                </div>
-                <Badge variant="secondary">{testimonial.savings}</Badge>
+              <div>
+                <p className="font-semibold text-foreground">João Silva</p>
+                <p className="text-sm text-neutral-medium">Restaurante ABC</p>
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      
-      <div className="text-center">
-        <div className="inline-flex items-center space-x-8 text-sm text-muted-foreground">
-          <div className="flex items-center space-x-2">
-            <Users className="h-4 w-4" />
-            <span>Estabelecimentos confiam no sistema</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <TrendingUp className="h-4 w-4" />
-            <span>Melhoria na gestão de escalas</span>
-          </div>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-0 shadow-soft bg-white">
+          <CardContent className="p-6">
+            <div className="flex items-center mb-4">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 text-accent fill-current" />
+              ))}
+            </div>
+            <p className="text-neutral-medium mb-4">
+              "A IA do GrowthScale é incrível. Sugestões perfeitas e economia real de 25% nos custos."
+            </p>
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center mr-3">
+                <TrendingUp className="w-5 h-5 text-secondary" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Maria Santos</p>
+                <p className="text-sm text-neutral-medium">Café Express</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-0 shadow-soft bg-white">
+          <CardContent className="p-6">
+            <div className="flex items-center mb-4">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 text-accent fill-current" />
+              ))}
+            </div>
+            <p className="text-neutral-medium mb-4">
+              "Implementação em 24h e funcionários adoram as notificações WhatsApp automáticas."
+            </p>
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center mr-3">
+                <MessageSquare className="w-5 h-5 text-accent" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Carlos Lima</p>
+                <p className="text-sm text-neutral-medium">Pizzaria Bella</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   </section>
 );
 
 const FeaturesSection = () => (
-  <section id="recursos" className="py-20 bg-secondary/30">
+  <section id="recursos" className="py-24 bg-white">
     <div className="container mx-auto px-4">
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Recursos Avançados
+        <Badge className="mb-4 bg-secondary/10 text-secondary border-secondary/20">
+          <Zap className="w-4 h-4 mr-2" />
+          Recursos Principais
+        </Badge>
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+          Tudo que você precisa em uma plataforma
         </h2>
-        <p className="text-lg text-muted-foreground">
-          Tudo que você precisa para uma gestão de escalas perfeita
+        <p className="text-lg text-neutral-medium">
+          Funcionalidades poderosas para transformar sua gestão
         </p>
       </div>
       
-      <div className="grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <div className="space-y-8">
-            {[
-              {
-                icon: "🤖",
-                title: "IA Especializada em CLT",
-                description: "Nossa inteligência artificial entende todas as regras da CLT e cria escalas automaticamente respeitando os direitos dos funcionários."
-              },
-              {
-                icon: "📊",
-                title: "Análise de Produtividade",
-                description: "Obtenha insights detalhados sobre produtividade, custos e otimização de recursos em tempo real."
-              },
-              {
-                icon: "⚡",
-                title: "Automação Inteligente",
-                description: "Reduza em 80% o tempo gasto na criação e gestão de escalas com nossa tecnologia avançada."
-              }
-            ].map((feature, index) => (
-              <div key={index} className="flex items-start space-x-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <span className="text-xl">{feature.icon}</span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground mb-2">{feature.description}</p>
-                  <Badge variant="outline" className="bg-success/10 text-success border-success/20">
-                    Benefício
-                  </Badge>
-                </div>
-              </div>
-            ))}
+      <div className="space-y-16">
+        {/* Feature 1 */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+              <Brain className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-2xl font-bold mb-4 text-foreground">IA Inteligente</h3>
+            <p className="text-lg text-neutral-medium mb-6">
+              Algoritmo que aprende com seus padrões e otimiza escalas automaticamente, reduzindo 90% do tempo de criação.
+            </p>
+            <ul className="space-y-3">
+              <li className="flex items-center text-neutral-medium">
+                <Check className="w-5 h-5 text-secondary mr-3" />
+                Otimização automática de custos
+              </li>
+              <li className="flex items-center text-neutral-medium">
+                <Check className="w-5 h-5 text-secondary mr-3" />
+                Previsão de demanda inteligente
+              </li>
+              <li className="flex items-center text-neutral-medium">
+                <Check className="w-5 h-5 text-secondary mr-3" />
+                Sugestões personalizadas
+              </li>
+            </ul>
           </div>
-        </div>
-        
-        <div className="relative">
-          <div className="rounded-2xl p-2 bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/20">
-            <div className="rounded-xl bg-background p-8 shadow-xl">
-              <div className="space-y-4">
-                <div className="h-4 bg-muted rounded w-3/4"></div>
-                <div className="h-4 bg-muted rounded w-1/2"></div>
-                <div className="h-4 bg-muted rounded w-5/6"></div>
-                <div className="h-4 bg-muted rounded w-2/3"></div>
+          <div className="relative">
+            <div className="bg-gradient-modern rounded-2xl p-8 text-white">
+              <div className="flex items-center justify-between mb-6">
+                <h4 className="text-xl font-semibold">Dashboard IA</h4>
+                <Brain className="w-6 h-6" />
               </div>
-              <div className="mt-8 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                <p className="text-sm text-primary font-medium">Interface intuitiva e fácil de usar</p>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span>Otimização de Custos</span>
+                  <span className="font-bold">-30%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>Tempo de Criação</span>
+                  <span className="font-bold">-90%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>Compliance CLT</span>
+                  <span className="font-bold">100%</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Feature 2 */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="order-2 lg:order-1">
+            <div className="bg-gradient-warm rounded-2xl p-8 text-white">
+              <div className="flex items-center justify-between mb-6">
+                <h4 className="text-xl font-semibold">Comunicação WhatsApp</h4>
+                <MessageSquare className="w-6 h-6" />
+              </div>
+              <div className="space-y-3">
+                <div className="bg-white/20 rounded-lg p-3">
+                  <p className="text-sm">Olá João! Você está escalado para amanhã às 8h.</p>
+                </div>
+                <div className="bg-white/20 rounded-lg p-3">
+                  <p className="text-sm">Confirme sua presença respondendo SIM ou NÃO</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="order-1 lg:order-2">
+            <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6">
+              <MessageSquare className="h-8 w-8 text-accent" />
+            </div>
+            <h3 className="text-2xl font-bold mb-4 text-foreground">Comunicação Automática</h3>
+            <p className="text-lg text-neutral-medium mb-6">
+              Notificações automáticas e confirmações via WhatsApp para toda a equipe, reduzindo 90% das ausências.
+            </p>
+            <ul className="space-y-3">
+              <li className="flex items-center text-neutral-medium">
+                <Check className="w-5 h-5 text-secondary mr-3" />
+                Confirmação automática
+              </li>
+              <li className="flex items-center text-neutral-medium">
+                <Check className="w-5 h-5 text-secondary mr-3" />
+                Histórico completo
+              </li>
+              <li className="flex items-center text-neutral-medium">
+                <Check className="w-5 h-5 text-secondary mr-3" />
+                Integração nativa
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 );
 
-const PricingSection = () => (
-  <section id="precos" className="py-20 bg-background">
-    <div className="container mx-auto px-4">
-      <div className="text-center max-w-3xl mx-auto mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">Planos adaptados para seu negócio</h2>
-        <p className="text-lg text-muted-foreground">
-          Escolha o plano ideal para o tamanho do seu estabelecimento
-        </p>
-      </div>
-      
-      <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        <Card className="flex flex-col border-2 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Free</CardTitle>
-            <CardDescription>Para estabelecimentos pequenos</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1 space-y-4">
-            <p className="text-4xl font-bold">R$0</p>
-            <ul className="space-y-3 text-muted-foreground">
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Até 5 funcionários
-              </li>
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Criação de escalas básica
-              </li>
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Suporte por email
-              </li>
-            </ul>
-          </CardContent>
-          <div className="p-6">
-            <Button asChild variant="outline" className="w-full">
-              <Link to="/auth">Começar de Graça</Link>
-            </Button>
-          </div>
-        </Card>
-        
-        <Card className="flex flex-col border-2 border-primary ring-2 ring-primary/20 relative hover:-translate-y-2 transition-all duration-300">
-          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-            <Badge className="bg-primary text-primary-foreground">Mais Popular</Badge>
-          </div>
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Business</CardTitle>
-            <CardDescription>Para operações que precisam de mais recursos</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1 space-y-4">
-            <p className="text-4xl font-bold">R$97<span className="text-sm font-normal text-muted-foreground">/mês</span></p>
-            <ul className="space-y-3 text-muted-foreground">
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Até 25 funcionários
-              </li>
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Sugestões de escala inteligentes
-              </li>
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Alertas de conformidade
-              </li>
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Relatórios detalhados
-              </li>
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Suporte prioritário
-              </li>
-            </ul>
-          </CardContent>
-          <div className="p-6">
-            <Button asChild className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
-              <Link to="/auth">Escolher Business</Link>
-            </Button>
-          </div>
-        </Card>
-        
-        <Card className="flex flex-col border-2 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Enterprise</CardTitle>
-            <CardDescription>Para redes e grandes operações</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1 space-y-4">
-            <p className="text-4xl font-bold">Sob consulta</p>
-            <ul className="space-y-3 text-muted-foreground">
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Funcionários ilimitados
-              </li>
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Múltiplas filiais
-              </li>
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                Suporte dedicado
-              </li>
-              <li className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-success" />
-                API personalizada
-              </li>
-            </ul>
-          </CardContent>
-          <div className="p-6">
-            <Button asChild variant="outline" className="w-full">
-              <Link to="/contato">Agendar Demonstração</Link>
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </div>
-  </section>
-);
-
-const CtaSection = () => (
-  <section className="py-20 bg-gradient-to-r from-primary to-primary/80">
+const CTASection = () => (
+  <section className="py-24 bg-gradient-modern text-white">
     <div className="container mx-auto px-4 text-center">
-      <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-        Comece a transformar sua gestão hoje mesmo
-      </h2>
-      <p className="text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
-        Junte-se a centenas de empresas que já economizam tempo e dinheiro com o GrowthScale
-      </p>
-      <Button asChild size="lg" className="text-lg px-8 py-6 bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-        <Link to="/auth">Começar Teste Gratuito</Link>
-      </Button>
-    </div>
-  </section>
-);
-
-const FaqSection = () => (
-  <section className="py-20 bg-background">
-    <div className="container mx-auto px-4 max-w-3xl">
-      <header className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">Perguntas frequentes</h2>
-        <p className="text-lg text-muted-foreground">Respostas para as principais dúvidas</p>
-      </header>
-      
-      <Accordion type="single" collapsible className="w-full space-y-4">
-        <AccordionItem value="item-1" className="border rounded-lg px-6">
-          <AccordionTrigger className="text-left">O GrowthScale substitui um advogado ou contador?</AccordionTrigger>
-          <AccordionContent className="text-muted-foreground">
-            Não. O GrowthScale é uma plataforma de gestão de escalas que ajuda a manter a conformidade trabalhista. 
-            Ele não substitui o aconselhamento jurídico ou contábil profissional.
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="item-2" className="border rounded-lg px-6">
-          <AccordionTrigger className="text-left">A implementação é demorada?</AccordionTrigger>
-          <AccordionContent className="text-muted-foreground">
-            Não. O sistema é intuitivo e permite configuração rápida. 
-            Nossa equipe oferece suporte durante todo o processo de implementação.
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="item-3" className="border rounded-lg px-6">
-          <AccordionTrigger className="text-left">Os meus dados estão seguros?</AccordionTrigger>
-          <AccordionContent className="text-muted-foreground">
-            Sim. Utilizamos as melhores práticas de segurança do mercado, 
-            incluindo criptografia e isolamento de dados por cliente.
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="item-4" className="border rounded-lg px-6">
-          <AccordionTrigger className="text-left">Posso cancelar a qualquer momento?</AccordionTrigger>
-          <AccordionContent className="text-muted-foreground">
-            Sim. Não há fidelidade e você pode cancelar sua assinatura a qualquer momento 
-            através do painel de controle.
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          Pronto para transformar sua gestão?
+        </h2>
+        <p className="text-xl mb-10 opacity-90">
+          Junte-se a centenas de empresas que já otimizaram suas escalas com o GrowthScale
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button asChild size="lg" className="text-lg px-8 py-6 bg-white text-primary hover:bg-neutral-light shadow-glow">
+            <Link to="/auth">
+              <Rocket className="mr-2 h-5 w-5" />
+              Começar Gratuitamente
+            </Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 border-white text-white hover:bg-white hover:text-primary">
+            <Link to="/contact">
+              <ArrowRight className="mr-2 h-5 w-5" />
+              Falar com Especialista
+            </Link>
+          </Button>
+        </div>
+      </div>
     </div>
   </section>
 );
 
 const Footer = () => (
-  <footer className="py-12 bg-secondary border-t">
+  <footer className="bg-neutral-dark text-white py-12">
     <div className="container mx-auto px-4">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+      <div className="grid md:grid-cols-4 gap-8">
         <div>
-          <h3 className="font-semibold text-foreground mb-4">Produto</h3>
-          <ul className="space-y-2">
-            <li><Link to="/#recursos" className="text-muted-foreground hover:text-foreground transition-colors">Recursos</Link></li>
-            <li><Link to="/#precos" className="text-muted-foreground hover:text-foreground transition-colors">Preços</Link></li>
-            <li><Link to="/auth" className="text-muted-foreground hover:text-foreground transition-colors">Login</Link></li>
+          <div className="flex items-center space-x-2 mb-4">
+            <div className="h-8 w-8 rounded-lg bg-gradient-modern flex items-center justify-center">
+              <Sparkles className="h-5 w-5 text-white" />
+            </div>
+            <span className="font-bold">GrowthScale</span>
+          </div>
+          <p className="text-neutral-medium">
+            Transformando a gestão de escalas com inteligência artificial.
+          </p>
+        </div>
+        <div>
+          <h4 className="font-semibold mb-4">Produto</h4>
+          <ul className="space-y-2 text-neutral-medium">
+            <li><Link to="/#recursos" className="hover:text-white transition-colors">Recursos</Link></li>
+            <li><Link to="/#precos" className="hover:text-white transition-colors">Preços</Link></li>
+            <li><Link to="/auth" className="hover:text-white transition-colors">Login</Link></li>
           </ul>
         </div>
-        
         <div>
-          <h3 className="font-semibold text-foreground mb-4">Empresa</h3>
-          <ul className="space-y-2">
-            <li><Link to="/sobre" className="text-muted-foreground hover:text-foreground transition-colors">Sobre Nós</Link></li>
-            <li><Link to="/contato" className="text-muted-foreground hover:text-foreground transition-colors">Contato</Link></li>
-            <li><Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
+          <h4 className="font-semibold mb-4">Suporte</h4>
+          <ul className="space-y-2 text-neutral-medium">
+            <li><Link to="/contact" className="hover:text-white transition-colors">Contato</Link></li>
+            <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
+            <li><Link to="/legal" className="hover:text-white transition-colors">Legal</Link></li>
           </ul>
         </div>
-        
         <div>
-          <h3 className="font-semibold text-foreground mb-4">Suporte</h3>
-          <ul className="space-y-2">
-            <li><Link to="/ajuda" className="text-muted-foreground hover:text-foreground transition-colors">Central de Ajuda</Link></li>
-            <li><Link to="/docs" className="text-muted-foreground hover:text-foreground transition-colors">Documentação</Link></li>
-            <li><Link to="/status" className="text-muted-foreground hover:text-foreground transition-colors">Status do Sistema</Link></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h3 className="font-semibold text-foreground mb-4">Legal</h3>
-          <ul className="space-y-2">
-            <li><Link to="/legal/termos" className="text-muted-foreground hover:text-foreground transition-colors">Termos de Uso</Link></li>
-            <li><Link to="/legal/privacidade" className="text-muted-foreground hover:text-foreground transition-colors">Política de Privacidade</Link></li>
-            <li><Link to="/legal/cookies" className="text-muted-foreground hover:text-foreground transition-colors">Política de Cookies</Link></li>
+          <h4 className="font-semibold mb-4">Empresa</h4>
+          <ul className="space-y-2 text-neutral-medium">
+            <li><Link to="/about" className="hover:text-white transition-colors">Sobre</Link></li>
+            <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+            <li><Link to="/careers" className="hover:text-white transition-colors">Carreiras</Link></li>
           </ul>
         </div>
       </div>
-      
-      <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-center">
-        <div className="flex items-center space-x-2 mb-4 md:mb-0">
-          <div className="h-6 w-6 rounded bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-            <Zap className="h-4 w-4 text-white" />
-          </div>
-          <span className="font-bold text-foreground">GrowthScale</span>
-        </div>
-        <p className="text-muted-foreground text-sm">
-          © {new Date().getFullYear()} GrowthScale. Sistema de gestão de escalas para food service.
-        </p>
+      <div className="border-t border-neutral-medium mt-8 pt-8 text-center text-neutral-medium">
+        <p>&copy; 2024 GrowthScale. Todos os direitos reservados.</p>
       </div>
     </div>
   </footer>
 );
 
-// --- A PÁGINA PRINCIPAL QUE JUNTA TUDO ---
 export default function Index() {
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <Header />
-      <main>
-        <HeroSection />
-        <BenefitsSection />
-        <SocialProofSection />
-        <FeaturesSection />
-        <PricingSection />
-        <CtaSection />
-        <FaqSection />
-      </main>
+      <HeroSection />
+      <BenefitsSection />
+      <SocialProofSection />
+      <FeaturesSection />
+      <CTASection />
       <Footer />
-    </>
+    </div>
   );
 }
