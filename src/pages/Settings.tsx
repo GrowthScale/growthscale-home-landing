@@ -22,7 +22,7 @@ import {
 import { toast } from '@/hooks/use-toast';
 import { DataManagement } from '@/components/settings/DataManagement';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteUserAccount } from '@/services/api';
+// import { deleteUserAccount } from '@/services/api';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 
@@ -43,26 +43,26 @@ export default function SettingsPage() {
     dataRetention: 30
   });
 
-  const deleteAccountMutation = useMutation({
-    mutationFn: deleteUserAccount,
-    onSuccess: async () => {
-      // Limpa a sessão e redireciona para a página inicial após a exclusão
-      await supabase.auth.signOut();
-      queryClient.clear();
-      navigate('/');
-      toast({ 
-        title: "Conta Eliminada", 
-        description: "A sua conta e todos os seus dados foram eliminados permanentemente." 
-      });
-    },
-    onError: (error: any) => {
-      toast({ 
-        title: "Erro ao Eliminar a Conta", 
-        description: error.message, 
-        variant: 'destructive' 
-      });
-    }
-  });
+  // const deleteAccountMutation = useMutation({
+  //   mutationFn: deleteUserAccount,
+  //   onSuccess: async () => {
+  //     // Limpa a sessão e redireciona para a página inicial após a exclusão
+  //     await supabase.auth.signOut();
+  //     queryClient.clear();
+  //     navigate('/');
+  //     toast({ 
+  //       title: "Conta Eliminada", 
+  //       description: "A sua conta e todos os seus dados foram eliminados permanentemente." 
+  //     });
+  //   },
+  //   onError: (error: any) => {
+  //     toast({ 
+  //       title: "Erro ao Eliminar a Conta", 
+  //       description: error.message, 
+  //       variant: 'destructive' 
+  //     });
+  //   }
+  // });
 
   const handleSave = () => {
     toast({
