@@ -1,30 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Loader2, CheckCircle, XCircle, Mail } from 'lucide-react';
 
-const AuthCallback = () => {
-  const [searchParams] = useSearchParams();
+export default function AuthCallback() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = useAuth();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
-  const [message, setMessage] = useState('Processando confirmação...');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
         // Extrair parâmetros da URL
-        const accessToken = searchParams.get('access_token');
-        const refreshToken = searchParams.get('refresh_token');
-        const error = searchParams.get('error');
-        const errorDescription = searchParams.get('error_description');
+        const urlParams = new URLSearchParams(location.search);
+        const accessToken = urlParams.get('access_token');
+        const refreshToken = urlParams.get('refresh_token');
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
 
+        // Se há erro na URL
         if (error) {
           setStatus('error');
-          setMessage(`Erro na confirmação: ${errorDescription || error}`);
+          setMessage(errorDescription || 'Erro na autenticação');
           return;
         }
 
+        // Se há tokens na URL, processar a sessão
         if (accessToken && refreshToken) {
-          // Definir a sessão manualmente
           const { data, error: sessionError } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken,
@@ -32,87 +39,111 @@ const AuthCallback = () => {
 
           if (sessionError) {
             setStatus('error');
-            setMessage(`Erro ao configurar sessão: ${sessionError.message}`);
+            setMessage('Erro ao processar a sessão de autenticação');
             return;
           }
 
           if (data.session) {
             setStatus('success');
-            setMessage('Email confirmado com sucesso! Redirecionando para login...');
+            setMessage('Email confirmado com sucesso! Redirecionando...');
             
-            // IMPORTANTE: Redirecionar para a página de login, não para o dashboard
+            // Aguardar um momento para mostrar a mensagem de sucesso
             setTimeout(() => {
-              navigate('/auth', { 
-                state: { 
-                  message: 'Email confirmado com sucesso! Faça login para continuar.',
-                  type: 'success'
-                }
-              });
+              navigate('/dashboard');
             }, 2000);
           } else {
             setStatus('error');
-            setMessage('Não foi possível confirmar o email. Tente novamente.');
+            setMessage('Sessão inválida');
           }
         } else {
-          setStatus('error');
-          setMessage('Link de confirmação inválido.');
+          // Se não há tokens, verificar se o usuário já está autenticado
+          if (user) {
+            setStatus('success');
+            setMessage('Você já está autenticado! Redirecionando...');
+            setTimeout(() => {
+              navigate('/dashboard');
+            }, 2000);
+          } else {
+            setStatus('error');
+            setMessage('Link de confirmação inválido ou expirado');
+          }
         }
       } catch (error) {
         console.error('Erro no callback de autenticação:', error);
         setStatus('error');
-        setMessage('Erro inesperado. Tente novamente.');
+        setMessage('Erro inesperado durante a autenticação');
       }
     };
 
     handleAuthCallback();
-  }, [searchParams, navigate]);
+  }, [location, navigate, user]);
+
+  const handleRetry = () => {
+    setStatus('loading');
+    setMessage('');
+    // Recarregar a página para tentar novamente
+    window.location.reload();
+  };
+
+  const handleGoToLogin = () => {
+    navigate('/auth');
+  };
+
+  const handleGoToDashboard = () => {
+    navigate('/dashboard');
+  };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-card py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <div className="text-center">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4">
             {status === 'loading' && (
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <Loader2 className="h-12 w-12 text-primary animate-spin" />
             )}
-            
             {status === 'success' && (
-              <div className="text-green-500 mb-4">
-                <svg className="h-12 w-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
+              <CheckCircle className="h-12 w-12 text-green-500" />
             )}
-            
             {status === 'error' && (
-              <div className="text-red-500 mb-4">
-                <svg className="h-12 w-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </div>
-            )}
-            
-            <h2 className="text-2xl font-bold text-foreground mb-4">
-              {status === 'loading' && 'Confirmando Email...'}
-              {status === 'success' && 'Email Confirmado!'}
-              {status === 'error' && 'Erro na Confirmação'}
-            </h2>
-            
-            <p className="text-muted-foreground mb-6">{message}</p>
-            
-            {status === 'error' && (
-              <button
-                onClick={() => navigate('/auth')}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-              >
-                Voltar para Login
-              </button>
+              <XCircle className="h-12 w-12 text-red-500" />
             )}
           </div>
-        </div>
-      </div>
+          <CardTitle>
+            {status === 'loading' && 'Processando...'}
+            {status === 'success' && 'Confirmação Realizada!'}
+            {status === 'error' && 'Erro na Confirmação'}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-center space-y-4">
+          <p className="text-muted-foreground">{message}</p>
+          
+          {status === 'loading' && (
+            <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+              <Mail className="h-4 w-4" />
+              <span>Verificando sua confirmação...</span>
+            </div>
+          )}
+
+          {status === 'error' && (
+            <div className="space-y-3">
+              <Button onClick={handleRetry} className="w-full">
+                Tentar Novamente
+              </Button>
+              <Button onClick={handleGoToLogin} variant="outline" className="w-full">
+                Ir para Login
+              </Button>
+            </div>
+          )}
+
+          {status === 'success' && (
+            <div className="space-y-3">
+              <Button onClick={handleGoToDashboard} className="w-full">
+                Ir para Dashboard
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
-};
-
-export default AuthCallback;
+}

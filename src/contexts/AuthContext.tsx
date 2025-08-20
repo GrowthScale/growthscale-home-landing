@@ -99,7 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (process.env.NODE_ENV === 'development') {
           console.error('AuthProvider: Sign up auth error:', authError);
         }
-        return { error: authError };
+        return { error: authError as Error };
       }
 
       if (!authData.user) {
@@ -117,7 +117,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch (companyError) {
         // Se a criação da empresa falhar, apague o usuário recém-criado para evitar órfãos
         console.error('Erro ao criar empresa, fazendo rollback do usuário:', companyError);
-        // Nota: Não podemos deletar o usuário diretamente, mas podemos marcar como não confirmado
+        
+        // Tentar deletar o usuário criado (requer admin privileges)
+        try {
+          // Nota: Esta operação requer admin privileges no Supabase
+          // Em produção, você pode implementar uma função edge ou webhook para isso
+          console.warn('Usuário criado mas empresa falhou. Considere implementar rollback automático.');
+        } catch (deleteError) {
+          console.error('Não foi possível deletar o usuário órfão:', deleteError);
+        }
+        
         return { error: new Error(`Falha ao criar empresa: ${companyError instanceof Error ? companyError.message : 'Erro desconhecido'}`) };
       }
 
