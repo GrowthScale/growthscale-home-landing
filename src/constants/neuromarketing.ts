@@ -1,199 +1,200 @@
-// GrowthScale Neuromarketing System
+// GrowthScale Neuromarketing System - Versão Credível
 // Gatilhos psicológicos e copy otimizado para conversão
+// Baseado em princípios reais de psicologia de vendas
 
 export const neuromarketingCopy = {
-  // URGÊNCIA E ESCASSEZ
+  // URGÊNCIA E ESCASSEZ (Realista)
   urgency: {
-    limited: "Oferta limitada - Apenas 50 vagas restantes",
-    countdown: "Termina em: {time}",
-    scarcity: "Apenas {count} restaurantes podem se inscrever",
-    deadline: "Última chance: Oferta expira hoje à meia-noite",
-    exclusive: "Acesso exclusivo por tempo limitado",
-    flash: "Flash sale: 50% OFF por apenas 24h",
+    limited: "Oferta especial por tempo limitado",
+    countdown: "Oferta válida até {date}",
+    scarcity: "Vagas limitadas para demonstração personalizada",
+    deadline: "Oferta especial termina em breve",
+    exclusive: "Acesso prioritário para novos clientes",
+    flash: "Oferta especial de lançamento",
   },
 
-  // PROVA SOCIAL
+  // PROVA SOCIAL (Realista)
   socialProof: {
-    testimonials: "500+ restaurantes já economizam R$2.500/mês",
-    ratings: "4.8/5 estrelas no Google",
-    logos: "Usado por restaurantes premiados",
-    numbers: "1.247 restaurantes confiam no GrowthScale",
-    recent: "João do Restaurante XYZ acabou de economizar R$3.200",
-    trust: "Recomendado por 98% dos usuários",
-    growth: "Crescimento de 300% em 6 meses",
+    testimonials: "Restaurantes que confiam no GrowthScale",
+    ratings: "Sistema bem avaliado pelos usuários",
+    logos: "Usado por estabelecimentos de food service",
+    numbers: "Sistema em uso por restaurantes",
+    recent: "Novos clientes aderindo ao sistema",
+    trust: "Sistema confiável para gestão de escalas",
+    growth: "Crescimento sustentável da base de clientes",
   },
 
-  // AUTORIDADE E CREDIBILIDADE
+  // AUTORIDADE E CREDIBILIDADE (Realista)
   authority: {
-    expert: "Desenvolvido por especialistas em CLT",
-    certified: "Certificado pela OAB",
-    trusted: "Recomendado por advogados trabalhistas",
-    experience: "10+ anos de experiência em food service",
-    awards: "Prêmio Melhor Software de Gestão 2024",
-    partnership: "Parceiro oficial da ABRASEL",
-    compliance: "100% em conformidade com a legislação",
+    expert: "Desenvolvido com foco em food service",
+    certified: "Sistema seguro e confiável",
+    trusted: "Recomendado para gestão de restaurantes",
+    experience: "Especializado em gestão de escalas",
+    awards: "Sistema reconhecido pela qualidade",
+    partnership: "Parceiro de estabelecimentos de food service",
+    compliance: "Foco em conformidade trabalhista",
   },
 
-  // BENEFÍCIOS EMOCIONAIS
+  // BENEFÍCIOS EMOCIONAIS (Realista)
   emotional: {
-    peace: "Sua paz de espírito custa menos que um processo trabalhista",
-    sleep: "Durma tranquilo sabendo que está 100% dentro da lei",
-    stress: "Acabe com o estresse das planilhas e processos trabalhistas",
-    confidence: "Tenha confiança total na gestão da sua equipe",
-    freedom: "Liberte-se das preocupações trabalhistas",
-    success: "Transforme seu restaurante em um sucesso garantido",
+    peace: "Tranquilidade na gestão de escalas",
+    sleep: "Gestão mais tranquila e organizada",
+    stress: "Redução do estresse na gestão de equipes",
+    confidence: "Mais confiança na gestão de escalas",
+    freedom: "Liberdade para focar no seu negócio",
+    success: "Suporte para o sucesso do seu restaurante",
   },
 
-  // BENEFÍCIOS PRÁTICOS
+  // BENEFÍCIOS PRÁTICOS (Realista)
   practical: {
-    time: "Economize 8 horas por semana na gestão de escalas",
-    money: "Reduza custos operacionais em até 30%",
-    efficiency: "Aumente a produtividade da sua equipe em 40%",
-    accuracy: "Elimine 100% dos erros de escala",
-    automation: "Automatize 90% das tarefas administrativas",
-    compliance: "Fique 100% em conformidade com a CLT",
+    time: "Economia de tempo na gestão de escalas",
+    money: "Otimização de custos operacionais",
+    efficiency: "Aumento da eficiência na gestão",
+    accuracy: "Maior precisão na gestão de escalas",
+    automation: "Automação de processos manuais",
+    compliance: "Melhor conformidade trabalhista",
   },
 
-  // GATILHOS DE PERDA
+  // GATILHOS DE PERDA (Realista)
   lossAversion: {
-    risk: "Não arrisque multas de até R$50.000 por infração trabalhista",
-    cost: "Um processo trabalhista pode custar mais que 1 ano de GrowthScale",
-    time: "Cada hora perdida com planilhas é dinheiro jogado fora",
-    stress: "O estresse de gestão manual pode afetar sua saúde",
-    reputation: "Problemas trabalhistas mancham a reputação do seu negócio",
-    opportunity: "Não perca a oportunidade de otimizar seus custos",
+    risk: "Evite problemas na gestão de escalas",
+    cost: "Otimize custos operacionais",
+    time: "Economize tempo na gestão",
+    stress: "Reduza o estresse na gestão",
+    reputation: "Mantenha a qualidade do seu serviço",
+    opportunity: "Não perca a oportunidade de otimizar",
   },
 
-  // GATILHOS DE RECIPROCIDADE
+  // GATILHOS DE RECIPROCIDADE (Realista)
   reciprocity: {
-    free: "Comece gratuitamente por 14 dias",
-    bonus: "Ganhe 30 dias extras de graça",
-    value: "Valor de R$2.500 em consultoria gratuita",
-    support: "Suporte especializado incluído",
-    training: "Treinamento completo da equipe",
-    migration: "Migração de dados gratuita",
+    free: "Teste gratuito por 14 dias",
+    bonus: "Período de teste estendido",
+    value: "Demonstração personalizada gratuita",
+    support: "Suporte durante o período de teste",
+    training: "Orientação para uso do sistema",
+    migration: "Apoio na implementação",
   },
 
-  // GATILHOS DE CONSISTÊNCIA
+  // GATILHOS DE CONSISTÊNCIA (Realista)
   consistency: {
-    commitment: "Comprometa-se com a excelência na gestão",
-    improvement: "Melhore continuamente seus processos",
-    growth: "Cresça de forma sustentável e responsável",
-    leadership: "Seja um líder exemplar na gestão de pessoas",
-    innovation: "Inove na forma de gerenciar seu restaurante",
-    excellence: "Busque a excelência em tudo que faz",
+    commitment: "Compromisso com a qualidade",
+    improvement: "Melhoria contínua dos processos",
+    growth: "Crescimento sustentável",
+    leadership: "Liderança na gestão de equipes",
+    innovation: "Inovação na gestão de restaurantes",
+    excellence: "Busca pela excelência",
   },
 
-  // GATILHOS DE AFINIDADE
+  // GATILHOS DE AFINIDADE (Realista)
   liking: {
-    understanding: "Entendemos os desafios do food service",
-    empathy: "Sabemos como é difícil gerenciar equipes",
-    partnership: "Somos parceiros do seu sucesso",
-    support: "Estamos aqui para apoiar você",
-    community: "Faça parte da comunidade de restaurantes de sucesso",
-    relationship: "Construa um relacionamento duradouro conosco",
+    understanding: "Entendemos o food service",
+    empathy: "Conhecemos os desafios do setor",
+    partnership: "Somos parceiros do seu negócio",
+    support: "Estamos aqui para apoiar",
+    community: "Faça parte da comunidade de restaurantes",
+    relationship: "Relacionamento duradouro",
   },
 };
 
-// Copy para diferentes personas
+// Copy para diferentes personas (Realista)
 export const personaCopy = {
   owner: {
-    pain: "Preocupado com custos e processos trabalhistas",
-    gain: "Economia garantida e tranquilidade jurídica",
-    trigger: "Sua paz de espírito custa menos que um processo trabalhista",
+    pain: "Preocupação com gestão de escalas e custos",
+    gain: "Gestão mais eficiente e economia",
+    trigger: "Otimize a gestão do seu restaurante",
   },
 
   manager: {
-    pain: "Perdendo tempo com planilhas e gestão manual",
-    gain: "Automação completa e foco no que importa",
-    trigger: "Economize 8 horas por semana na gestão",
+    pain: "Dificuldade na gestão manual de escalas",
+    gain: "Automação e organização",
+    trigger: "Simplifique a gestão de escalas",
   },
 
   hr: {
-    pain: "Dificuldade para manter compliance com CLT",
-    gain: "Validação automática e relatórios detalhados",
-    trigger: "Fique 100% em conformidade automaticamente",
+    pain: "Desafios na conformidade trabalhista",
+    gain: "Melhor controle e conformidade",
+    trigger: "Mantenha a conformidade trabalhista",
   },
 
   accountant: {
-    pain: "Custos trabalhistas imprevisíveis",
-    gain: "Controle total e otimização de custos",
-    trigger: "Reduza custos operacionais em até 30%",
+    pain: "Controle de custos trabalhistas",
+    gain: "Melhor controle e otimização",
+    trigger: "Otimize os custos trabalhistas",
   },
 };
 
-// Copy para diferentes estágios do funil
+// Copy para diferentes estágios do funil (Realista)
 export const funnelCopy = {
   awareness: {
     title: "Gestão de Escalas para Food Service",
-    subtitle: "Descubra como restaurantes estão economizando tempo e dinheiro",
+    subtitle: "Sistema especializado para restaurantes",
   },
 
   interest: {
-    title: "Como o GrowthScale resolve seus problemas",
-    subtitle: "Veja como outros restaurantes transformaram sua gestão",
+    title: "Como o GrowthScale pode ajudar",
+    subtitle: "Conheça as funcionalidades do sistema",
   },
 
   consideration: {
-    title: "Compare e escolha o melhor plano",
-    subtitle: "Planos flexíveis para cada tamanho de restaurante",
+    title: "Escolha o plano ideal",
+    subtitle: "Planos adaptados para diferentes tamanhos",
   },
 
   decision: {
-    title: "Comece sua transformação hoje",
-    subtitle: "14 dias grátis • Sem compromisso • Resultados garantidos",
+    title: "Comece a usar hoje",
+    subtitle: "Teste gratuito • Sem compromisso",
   },
 
   retention: {
-    title: "Continue otimizando sua gestão",
-    subtitle: "Novas funcionalidades e melhorias constantes",
+    title: "Continue otimizando",
+    subtitle: "Melhorias constantes do sistema",
   },
 };
 
-// 🧠 COPY NEUROCIENTÍFICO OTIMIZADO
+// 🧠 COPY NEUROCIENTÍFICO OTIMIZADO (Realista)
 export const landingPageCopy = {
   hero: {
-    h1: "🚨 Pare de perder dinheiro com escalas desorganizadas",
-    subtitle: "Sistema de gestão de escalas inteligente para food service. Otimize escalas, reduza custos e garanta compliance trabalhista automaticamente.",
-    ctaPrimary: "🚀 Começar gratuitamente",
-    ctaSecondary: "👀 Ver como funciona",
-    trustBadge: "⚡ Sistema confiável para gestão de escalas",
+    h1: "Gestão de escalas inteligente para restaurantes",
+    subtitle: "Sistema especializado para food service. Otimize escalas, reduza custos e garanta conformidade trabalhista de forma simples e eficiente.",
+    ctaPrimary: "Começar teste gratuito",
+    ctaSecondary: "Ver demonstração",
+    trustBadge: "Sistema confiável para gestão de escalas",
   },
 
   benefits: {
     title: "Por que escolher o GrowthScale?",
-    subtitle: "Benefícios que transformam a gestão do seu negócio",
+    subtitle: "Benefícios que fazem a diferença no seu negócio",
     items: [
       {
-        title: "💰 Economia de Custos",
-        description: "Otimize escalas para reduzir custos operacionais",
+        title: "Otimização de Custos",
+        description: "Reduza custos operacionais com escalas otimizadas",
         value: "Economia",
         icon: "💰",
       },
       {
-        title: "⏰ Economia de Tempo",
-        description: "Automatize a gestão de escalas e economize tempo",
+        title: "Economia de Tempo",
+        description: "Automatize processos e economize tempo",
         value: "Eficiência",
         icon: "⏰",
       },
       {
-        title: "🛡️ Compliance Trabalhista",
-        description: "Garanta conformidade com a legislação trabalhista",
+        title: "Conformidade Trabalhista",
+        description: "Mantenha a conformidade com a legislação",
         value: "Segurança",
         icon: "🛡️",
       },
       {
-        title: "📈 Produtividade",
-        description: "Aumente a eficiência da sua equipe",
-        value: "Resultados",
+        title: "Gestão Simplificada",
+        description: "Interface intuitiva e fácil de usar",
+        value: "Simplicidade",
         icon: "📈",
       },
     ],
   },
 
   socialProof: {
-    title: "Depoimentos de usuários",
-    subtitle: "Veja o que nossos usuários dizem sobre o GrowthScale",
+    title: "O que nossos usuários dizem",
+    subtitle: "Depoimentos de restaurantes que usam o GrowthScale",
     testimonials: [
       {
         name: "João Silva",
@@ -226,55 +227,59 @@ export const landingPageCopy = {
   },
 
   features: {
-    title: "Tudo que você precisa para gestão perfeita",
-    subtitle: "Funcionalidades desenvolvidas especificamente para food service",
+    title: "Funcionalidades essenciais para seu restaurante",
+    subtitle: "Tudo que você precisa para uma gestão eficiente",
     items: [
       {
-        title: "🧠 IA Inteligente",
-        description: "Algoritmo que aprende com seu negócio e otimiza escalas automaticamente",
-        benefit: "Escalas 40% mais eficientes",
+        title: "Gestão Inteligente",
+        description: "Sistema que otimiza escalas automaticamente",
+        benefit: "Escalas mais eficientes",
+        icon: "🧠",
       },
       {
-        title: "⚖️ Compliance Automático",
-        description: "Validação em tempo real de todas as regras da CLT",
-        benefit: "100% dentro da lei",
+        title: "Conformidade Automática",
+        description: "Validação das regras trabalhistas",
+        benefit: "Conformidade garantida",
+        icon: "⚖️",
       },
       {
-        title: "📱 WhatsApp Integrado",
-        description: "Confirmação automática de presença via WhatsApp",
-        benefit: "Redução de 90% em ausências",
+        title: "Integração WhatsApp",
+        description: "Confirmação de presença via WhatsApp",
+        benefit: "Redução de ausências",
+        icon: "📱",
       },
       {
-        title: "📊 Relatórios Inteligentes",
-        description: "Insights detalhados sobre custos e produtividade",
-        benefit: "Decisões baseadas em dados",
+        title: "Relatórios Detalhados",
+        description: "Insights sobre custos e produtividade",
+        benefit: "Decisões informadas",
+        icon: "📊",
       },
     ],
   },
 
   urgency: {
-    title: "⏰ Oferta por tempo limitado",
-    subtitle: "Primeiros 100 restaurantes ganham 30 dias grátis + consultoria personalizada",
-    cta: "🚀 Garantir minha vaga AGORA",
-    countdown: "Restam apenas 23 vagas",
+    title: "Oferta especial de lançamento",
+    subtitle: "Teste gratuito por 14 dias + demonstração personalizada",
+    cta: "Começar teste gratuito",
+    countdown: "Oferta por tempo limitado",
   },
 
   guarantee: {
-    title: "🛡️ Garantia de 30 dias ou seu dinheiro de volta",
-    subtitle: "Se em 30 dias você não economizar pelo menos R$1.000, devolvemos 100% do seu dinheiro",
+    title: "Teste sem compromisso",
+    subtitle: "14 dias grátis para conhecer o sistema",
     features: [
       "✅ Sem compromisso",
       "✅ Cancelamento a qualquer momento",
-      "✅ Suporte 24/7",
-      "✅ Migração gratuita",
+      "✅ Suporte durante o teste",
+      "✅ Demonstração personalizada",
     ],
   },
 };
 
-// Copy para micro-interações e feedback
+// Copy para micro-interações e feedback (Realista)
 export const microCopy = {
   success: {
-    scheduleCreated: "Escala criada com sucesso! 🎉",
+    scheduleCreated: "Escala criada com sucesso!",
     schedulePublished: "Escala publicada e enviada para a equipe",
     employeeAdded: "Funcionário adicionado com sucesso",
     settingsSaved: "Configurações salvas",

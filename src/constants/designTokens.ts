@@ -1,31 +1,68 @@
-// Design Tokens da GrowthScale
+// Design Tokens da GrowthScale - Sistema Vanguarda
 // Plataforma de Gestão de Escalas com IA + CLT para Food Service
+// Baseado em princípios de neurodesign e psicologia de cores
 
 export const designTokens = {
   colors: {
     primary: {
-      50: '#E6F0FF',
+      50: '#E6F0FF',   // Confiança e estabilidade
       100: '#CCE0FF',
       200: '#99C2FF',
       300: '#66A3FF',
       400: '#3385FF',
-      500: '#0066CC',
+      500: '#0066CC',  // Azul corporativo - transmite confiança
       600: '#004AAD',
       700: '#003380',
       800: '#001F52',
       900: '#001025'
     },
     secondary: {
-      50: '#FFF7ED',
+      50: '#FFF7ED',   // Energia e otimismo
       100: '#FFEDD5',
       200: '#FED7AA',
       300: '#FDBA74',
       400: '#FB923C',
-      500: '#FF6B00',
+      500: '#FF6B00',  // Laranja de ação - estimula conversão
       600: '#EA580C',
       700: '#C2410C',
       800: '#9A3412',
       900: '#7C2D12'
+    },
+    success: {
+      50: '#F0FDF4',   // Crescimento e prosperidade
+      100: '#DCFCE7',
+      200: '#BBF7D0',
+      300: '#86EFAC',
+      400: '#4ADE80',
+      500: '#22C55E',  // Verde de sucesso
+      600: '#16A34A',
+      700: '#15803D',
+      800: '#166534',
+      900: '#14532D'
+    },
+    warning: {
+      50: '#FFFBEB',   // Atenção e cuidado
+      100: '#FEF3C7',
+      200: '#FDE68A',
+      300: '#FCD34D',
+      400: '#FBBF24',
+      500: '#F59E0B',  // Aviso - chama atenção
+      600: '#D97706',
+      700: '#B45309',
+      800: '#92400E',
+      900: '#78350F'
+    },
+    error: {
+      50: '#FEF2F2',   // Perigo e urgência
+      100: '#FEE2E2',
+      200: '#FECACA',
+      300: '#FCA5A5',
+      400: '#F87171',
+      500: '#EF4444',  // Vermelho de erro
+      600: '#DC2626',
+      700: '#B91C1C',
+      800: '#991B1B',
+      900: '#7F1D1D'
     },
     neutral: {
       50: '#F9FAFB',
@@ -39,16 +76,11 @@ export const designTokens = {
       800: '#1F2937',
       900: '#111827'
     },
-    feedback: {
-      success: '#00B37E',
-      error: '#E63946',
-      warning: '#F59E0B',
-      info: '#2563EB'
-    },
     background: {
       primary: '#F5F6FA',
       secondary: '#FFFFFF',
-      tertiary: '#F9FAFB'
+      tertiary: '#F9FAFB',
+      dark: '#0F172A'  // Para seções escuras
     },
     text: {
       primary: '#2C2C2C',
@@ -64,24 +96,28 @@ export const designTokens = {
   },
   typography: {
     fontFamily: {
-      heading: 'Montserrat, sans-serif',
-      body: 'Inter, sans-serif'
+      heading: 'Inter, system-ui, sans-serif', // Moderno e confiável
+      body: 'Inter, system-ui, sans-serif',    // Legível e acessível
+      display: 'Inter, system-ui, sans-serif'  // Impacto visual
     },
     fontSize: {
-      xs: '12px',
-      sm: '14px',
-      base: '16px',
-      lg: '18px',
-      xl: '20px',
-      '2xl': '24px',
-      '3xl': '28px',
-      '4xl': '32px'
+      xs: '0.75rem',    // 12px - Micro texto
+      sm: '0.875rem',   // 14px - Texto pequeno
+      base: '1rem',     // 16px - Texto base
+      lg: '1.125rem',   // 18px - Texto grande
+      xl: '1.25rem',    // 20px - Títulos pequenos
+      '2xl': '1.5rem',  // 24px - Títulos médios
+      '3xl': '1.875rem', // 30px - Títulos grandes
+      '4xl': '2.25rem',  // 36px - Headlines
+      '5xl': '3rem',     // 48px - Hero titles
+      '6xl': '3.75rem'   // 60px - Display titles
     },
     fontWeight: {
       normal: '400',
       medium: '500',
       semibold: '600',
-      bold: '700'
+      bold: '700',
+      extrabold: '800'
     },
     lineHeight: {
       tight: '1.2',
@@ -103,7 +139,8 @@ export const designTokens = {
     xl: '24px',
     '2xl': '32px',
     '3xl': '48px',
-    '4xl': '64px'
+    '4xl': '64px',
+    '5xl': '80px'
   },
   borderRadius: {
     none: '0px',
@@ -111,6 +148,7 @@ export const designTokens = {
     md: '8px',
     lg: '12px',
     xl: '16px',
+    '2xl': '24px',
     full: '9999px'
   },
   shadows: {
@@ -118,7 +156,8 @@ export const designTokens = {
     sm: '0 1px 3px rgba(0, 0, 0, 0.1)',
     md: '0 4px 6px rgba(0, 0, 0, 0.1)',
     lg: '0 10px 15px rgba(0, 0, 0, 0.1)',
-    xl: '0 20px 25px rgba(0, 0, 0, 0.1)'
+    xl: '0 20px 25px rgba(0, 0, 0, 0.1)',
+    '2xl': '0 25px 50px rgba(0, 0, 0, 0.15)'
   },
   zIndex: {
     hide: -1,
@@ -149,128 +188,87 @@ export const designTokens = {
   }
 };
 
-// Componentes específicos para Food Service
-export const foodServiceComponents = {
+// Componentes baseados em neurodesign
+export const neurodesignComponents = {
   buttons: {
     primary: {
       backgroundColor: designTokens.colors.primary[600],
       color: designTokens.colors.text.inverse,
-      height: '44px',
-      padding: `${designTokens.spacing.sm} ${designTokens.spacing.xl}`,
-      borderRadius: designTokens.borderRadius.md,
-      fontSize: designTokens.typography.fontSize.base,
-      fontWeight: designTokens.typography.fontWeight.medium
-    },
-    cta: {
-      backgroundColor: designTokens.colors.secondary[500],
-      color: designTokens.colors.text.inverse,
       height: '48px',
       padding: `${designTokens.spacing.md} ${designTokens.spacing['2xl']}`,
-      borderRadius: designTokens.borderRadius.md,
+      borderRadius: designTokens.borderRadius.lg,
+      fontSize: designTokens.typography.fontSize.base,
+      fontWeight: designTokens.typography.fontWeight.semibold,
+      boxShadow: designTokens.shadows.md,
+      transition: designTokens.transitions.normal,
+      '&:hover': {
+        backgroundColor: designTokens.colors.primary[700],
+        transform: 'translateY(-1px)',
+        boxShadow: designTokens.shadows.lg
+      }
+    },
+    cta: {
+      background: `linear-gradient(135deg, ${designTokens.colors.primary[600]} 0%, ${designTokens.colors.secondary[500]} 100%)`,
+      color: designTokens.colors.text.inverse,
+      height: '56px',
+      padding: `${designTokens.spacing.lg} ${designTokens.spacing['3xl']}`,
+      borderRadius: designTokens.borderRadius.xl,
       fontSize: designTokens.typography.fontSize.lg,
-      fontWeight: designTokens.typography.fontWeight.semibold
+      fontWeight: designTokens.typography.fontWeight.bold,
+      boxShadow: designTokens.shadows.xl,
+      transition: designTokens.transitions.normal,
+      '&:hover': {
+        transform: 'translateY(-2px) scale(1.02)',
+        boxShadow: designTokens.shadows['2xl']
+      }
     },
     secondary: {
       backgroundColor: 'transparent',
       color: designTokens.colors.primary[600],
       border: `2px solid ${designTokens.colors.primary[600]}`,
-      height: '44px',
-      padding: `${designTokens.spacing.sm} ${designTokens.spacing.xl}`,
-      borderRadius: designTokens.borderRadius.md,
+      height: '48px',
+      padding: `${designTokens.spacing.md} ${designTokens.spacing['2xl']}`,
+      borderRadius: designTokens.borderRadius.lg,
       fontSize: designTokens.typography.fontSize.base,
-      fontWeight: designTokens.typography.fontWeight.medium
-    }
-  },
-  inputs: {
-    base: {
-      height: '44px',
-      padding: `${designTokens.spacing.sm} ${designTokens.spacing.md}`,
-      border: `1px solid ${designTokens.colors.border.primary}`,
-      borderRadius: designTokens.borderRadius.md,
-      fontSize: designTokens.typography.fontSize.base,
-      backgroundColor: designTokens.colors.background.secondary
-    },
-    focus: {
-      borderColor: designTokens.colors.border.focus,
-      boxShadow: `0 0 0 3px ${designTokens.colors.primary[50]}`
-    },
-    error: {
-      borderColor: designTokens.colors.feedback.error,
-      boxShadow: `0 0 0 3px ${designTokens.colors.feedback.error}20`
-    }
-  },
-  cards: {
-    base: {
-      backgroundColor: designTokens.colors.background.secondary,
-      borderRadius: designTokens.borderRadius.lg,
-      padding: designTokens.spacing.xl,
-      boxShadow: designTokens.shadows.sm,
-      border: `1px solid ${designTokens.colors.border.secondary}`
-    },
-    metric: {
-      backgroundColor: designTokens.colors.background.secondary,
-      borderRadius: designTokens.borderRadius.lg,
-      padding: designTokens.spacing.xl,
-      boxShadow: designTokens.shadows.sm,
-      textAlign: 'center' as const
-    },
-    alert: {
-      backgroundColor: `${designTokens.colors.feedback.warning}10`,
-      border: `1px solid ${designTokens.colors.feedback.warning}30`,
-      borderRadius: designTokens.borderRadius.lg,
-      padding: designTokens.spacing.xl
-    },
-    economy: {
-      backgroundColor: `${designTokens.colors.feedback.success}10`,
-      border: `1px solid ${designTokens.colors.feedback.success}30`,
-      borderRadius: designTokens.borderRadius.lg,
-      padding: designTokens.spacing.xl
-    }
-  },
-  tables: {
-    header: {
-      backgroundColor: designTokens.colors.background.tertiary,
-      borderBottom: `1px solid ${designTokens.colors.border.primary}`,
-      padding: designTokens.spacing.md,
       fontWeight: designTokens.typography.fontWeight.semibold,
-      fontSize: designTokens.typography.fontSize.sm,
-      color: designTokens.colors.text.secondary
-    },
-    cell: {
-      padding: designTokens.spacing.md,
-      borderBottom: `1px solid ${designTokens.colors.border.secondary}`,
-      fontSize: designTokens.typography.fontSize.base
-    },
-    row: {
+      transition: designTokens.transitions.normal,
       '&:hover': {
-        backgroundColor: designTokens.colors.background.tertiary
+        backgroundColor: designTokens.colors.primary[50],
+        transform: 'translateY(-1px)'
       }
     }
   },
-  badges: {
-    success: {
-      backgroundColor: `${designTokens.colors.feedback.success}20`,
-      color: designTokens.colors.feedback.success,
-      padding: `${designTokens.spacing.xs} ${designTokens.spacing.sm}`,
-      borderRadius: designTokens.borderRadius.full,
-      fontSize: designTokens.typography.fontSize.xs,
-      fontWeight: designTokens.typography.fontWeight.medium
+  cards: {
+    feature: {
+      backgroundColor: designTokens.colors.background.secondary,
+      borderRadius: designTokens.borderRadius.xl,
+      padding: designTokens.spacing['2xl'],
+      boxShadow: designTokens.shadows.lg,
+      border: `1px solid ${designTokens.colors.border.primary}`,
+      transition: designTokens.transitions.normal,
+      '&:hover': {
+        transform: 'translateY(-4px)',
+        boxShadow: designTokens.shadows.xl
+      }
     },
-    warning: {
-      backgroundColor: `${designTokens.colors.feedback.warning}20`,
-      color: designTokens.colors.feedback.warning,
-      padding: `${designTokens.spacing.xs} ${designTokens.spacing.sm}`,
-      borderRadius: designTokens.borderRadius.full,
-      fontSize: designTokens.typography.fontSize.xs,
-      fontWeight: designTokens.typography.fontWeight.medium
+    pricing: {
+      backgroundColor: designTokens.colors.background.secondary,
+      borderRadius: designTokens.borderRadius['2xl'],
+      padding: designTokens.spacing['3xl'],
+      boxShadow: designTokens.shadows.xl,
+      border: `2px solid ${designTokens.colors.primary[100]}`,
+      transition: designTokens.transitions.normal,
+      '&:hover': {
+        transform: 'translateY(-6px)',
+        boxShadow: designTokens.shadows['2xl']
+      }
     },
-    error: {
-      backgroundColor: `${designTokens.colors.feedback.error}20`,
-      color: designTokens.colors.feedback.error,
-      padding: `${designTokens.spacing.xs} ${designTokens.spacing.sm}`,
-      borderRadius: designTokens.borderRadius.full,
-      fontSize: designTokens.typography.fontSize.xs,
-      fontWeight: designTokens.typography.fontWeight.medium
+    testimonial: {
+      background: `linear-gradient(135deg, ${designTokens.colors.background.tertiary} 0%, ${designTokens.colors.background.secondary} 100%)`,
+      borderRadius: designTokens.borderRadius.xl,
+      padding: designTokens.spacing['2xl'],
+      boxShadow: designTokens.shadows.md,
+      borderLeft: `4px solid ${designTokens.colors.primary[500]}`
     }
   }
 };

@@ -1,453 +1,642 @@
-// =====================================================
-// ANALYTICS & MONITORING - GROWTHSCALE
-// Sistema de analytics e monitoramento
-// =====================================================
+// GrowthScale Analytics System - Foco em Conversão
+// Sistema de analytics baseado em neuromarketing e psicologia de vendas
 
-import React from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { logger } from './logger';
 
-// Tipos para eventos de analytics
+// ===== TIPOS E INTERFACES =====
 export interface AnalyticsEvent {
   event: string;
-  properties?: Record<string, unknown>;
-  userId?: string;
-  timestamp?: number;
-  sessionId?: string;
-}
-
-export interface UserProperties extends Record<string, unknown> {
-  userId: string;
-  email: string;
-  role: string;
-  companyId?: string;
-  plan?: string;
-  signupDate: string;
-}
-
-export interface PageView {
-  path: string;
-  title: string;
-  referrer?: string;
-  userId?: string;
+  category: string;
+  action: string;
+  label?: string;
+  value?: number;
+  properties?: Record<string, any>;
   timestamp: number;
+  sessionId: string;
+  userId?: string;
 }
 
-// Configuração do analytics
+export interface ConversionEvent extends AnalyticsEvent {
+  funnel: string;
+  step: number;
+  value?: number;
+  currency?: string;
+}
+
+export interface UserBehavior {
+  pageViews: number;
+  timeOnSite: number;
+  scrollDepth: number;
+  clicks: number;
+  conversions: number;
+}
+
+export interface FunnelStep {
+  name: string;
+  step: number;
+  visitors: number;
+  conversions: number;
+  conversionRate: number;
+}
+
+// ===== CONFIGURAÇÃO DO SISTEMA =====
 const ANALYTICS_CONFIG = {
+  // Eventos de conversão principais
+  conversionEvents: {
+    // Funnel de Awareness
+    PAGE_VIEW: 'page_view',
+    SCROLL_DEPTH: 'scroll_depth',
+    TIME_ON_PAGE: 'time_on_page',
+    
+    // Funnel de Interest
+    FEATURE_VIEW: 'feature_view',
+    BENEFIT_CLICK: 'benefit_click',
+    SOCIAL_PROOF_VIEW: 'social_proof_view',
+    
+    // Funnel de Consideration
+    PRICING_VIEW: 'pricing_view',
+    PLAN_COMPARISON: 'plan_comparison',
+    FAQ_VIEW: 'faq_view',
+    
+    // Funnel de Decision
+    CTA_CLICK: 'cta_click',
+    SIGNUP_START: 'signup_start',
+    TRIAL_START: 'trial_start',
+    
+    // Funnel de Conversion
+    SIGNUP_COMPLETE: 'signup_complete',
+    PAYMENT_START: 'payment_start',
+    PAYMENT_COMPLETE: 'payment_complete',
+    
+    // Funnel de Retention
+    LOGIN: 'login',
+    FEATURE_USAGE: 'feature_usage',
+    SUPPORT_CONTACT: 'support_contact'
+  },
+  
+  // Categorias de eventos
+  categories: {
+    ENGAGEMENT: 'engagement',
+    CONVERSION: 'conversion',
+    REVENUE: 'revenue',
+    RETENTION: 'retention',
+    SUPPORT: 'support'
+  },
+  
+  // Funnels de conversão
+  funnels: {
+    SIGNUP: 'signup_funnel',
+    TRIAL: 'trial_funnel',
+    UPGRADE: 'upgrade_funnel',
+    RETENTION: 'retention_funnel'
+  }
+};
+
+// ===== SISTEMA DE SESSÃO =====
+class SessionManager {
+  private sessionId: string;
+  private startTime: number;
+  private pageViews: number = 0;
+  private events: AnalyticsEvent[] = [];
+
+  constructor() {
+    this.sessionId = this.generateSessionId();
+    this.startTime = Date.now();
+    this.loadSession();
+  }
+
+  private generateSessionId(): string {
+    return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private loadSession(): void {
+    const savedSession = localStorage.getItem('growthscale_session');
+    if (savedSession) {
+      try {
+        const session = JSON.parse(savedSession);
+        this.sessionId = session.sessionId;
+        this.startTime = session.startTime;
+        this.pageViews = session.pageViews || 0;
+        this.events = session.events || [];
+      } catch (error) {
+        logger.error('Erro ao carregar sessão:', error);
+      }
+    }
+  }
+
+  private saveSession(): void {
+    try {
+      const session = {
+        sessionId: this.sessionId,
+        startTime: this.startTime,
+        pageViews: this.pageViews,
+        events: this.events.slice(-50) // Mantém apenas os últimos 50 eventos
+      };
+      localStorage.setItem('growthscale_session', JSON.stringify(session));
+    } catch (error) {
+      logger.error('Erro ao salvar sessão:', error);
+    }
+  }
+
+  getSessionId(): string {
+    return this.sessionId;
+  }
+
+  getSessionDuration(): number {
+    return Date.now() - this.startTime;
+  }
+
+  incrementPageViews(): void {
+    this.pageViews++;
+    this.saveSession();
+  }
+
+  addEvent(event: AnalyticsEvent): void {
+    this.events.push(event);
+    this.saveSession();
+  }
+
+  getEvents(): AnalyticsEvent[] {
+    return this.events;
+  }
+}
+
+// ===== SISTEMA DE FUNNEL =====
+class FunnelTracker {
+  private currentFunnel: string | null = null;
+  private funnelSteps: Map<string, number> = new Map();
+  private funnelStartTime: number | null = null;
+
+  startFunnel(funnelName: string): void {
+    this.currentFunnel = funnelName;
+    this.funnelStartTime = Date.now();
+    this.funnelSteps.clear();
+    this.trackFunnelStep(funnelName, 1, 'Funnel iniciado');
+  }
+
+  trackFunnelStep(funnelName: string, step: number, stepName: string): void {
+    if (this.currentFunnel === funnelName) {
+      this.funnelSteps.set(stepName, step);
+      
+      const event: ConversionEvent = {
+        event: 'funnel_step',
+        category: ANALYTICS_CONFIG.categories.CONVERSION,
+        action: stepName,
+        label: `Step ${step}`,
+        value: step,
+        properties: {
+          funnel: funnelName,
+          step: step,
+          stepName: stepName,
+          previousStep: this.getPreviousStep(step),
+          timeInFunnel: this.funnelStartTime ? Date.now() - this.funnelStartTime : 0
+        },
+        timestamp: Date.now(),
+        sessionId: sessionManager.getSessionId(),
+        funnel: funnelName,
+        step: step
+      };
+
+      trackEvent(event);
+    }
+  }
+
+  private getPreviousStep(currentStep: number): number | null {
+    const steps = Array.from(this.funnelSteps.values()).sort((a, b) => a - b);
+    const currentIndex = steps.indexOf(currentStep);
+    return currentIndex > 0 ? steps[currentIndex - 1] : null;
+  }
+
+  completeFunnel(funnelName: string, value?: number): void {
+    if (this.currentFunnel === funnelName) {
+      const event: ConversionEvent = {
+        event: 'funnel_complete',
+        category: ANALYTICS_CONFIG.categories.CONVERSION,
+        action: 'Funnel completado',
+        label: funnelName,
+        value: value || 0,
+        properties: {
+          funnel: funnelName,
+          totalSteps: this.funnelSteps.size,
+          timeToComplete: this.funnelStartTime ? Date.now() - this.funnelStartTime : 0,
+          steps: Array.from(this.funnelSteps.entries())
+        },
+        timestamp: Date.now(),
+        sessionId: sessionManager.getSessionId(),
+        funnel: funnelName,
+        step: this.funnelSteps.size + 1
+      };
+
+      trackEvent(event);
+      this.resetFunnel();
+    }
+  }
+
+  private resetFunnel(): void {
+    this.currentFunnel = null;
+    this.funnelStartTime = null;
+    this.funnelSteps.clear();
+  }
+}
+
+// ===== SISTEMA DE COMPORTAMENTO DO USUÁRIO =====
+class UserBehaviorTracker {
+  private scrollDepth: number = 0;
+  private timeOnPage: number = 0;
+  private pageStartTime: number = Date.now();
+  private clickCount: number = 0;
+  private lastActivity: number = Date.now();
+
+  constructor() {
+    this.setupScrollTracking();
+    this.setupClickTracking();
+    this.setupActivityTracking();
+  }
+
+  private setupScrollTracking(): void {
+    let maxScroll = 0;
+    
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = Math.round((scrollTop / docHeight) * 100);
+      
+      if (scrollPercent > maxScroll) {
+        maxScroll = scrollPercent;
+        this.scrollDepth = maxScroll;
+        
+        // Track scroll milestones
+        if (scrollPercent >= 25 && maxScroll < 50) {
+          this.trackScrollMilestone(25);
+        } else if (scrollPercent >= 50 && maxScroll < 75) {
+          this.trackScrollMilestone(50);
+        } else if (scrollPercent >= 75 && maxScroll < 100) {
+          this.trackScrollMilestone(75);
+        } else if (scrollPercent >= 100) {
+          this.trackScrollMilestone(100);
+        }
+      }
+    });
+  }
+
+  private setupClickTracking(): void {
+    document.addEventListener('click', (event) => {
+      this.clickCount++;
+      this.lastActivity = Date.now();
+      
+      const target = event.target as HTMLElement;
+      if (target) {
+        const tagName = target.tagName.toLowerCase();
+        const className = target.className || '';
+        const id = target.id || '';
+        
+        // Track important clicks
+        if (tagName === 'button' || tagName === 'a') {
+          this.trackClick(target.textContent || 'Unknown', className, id);
+        }
+      }
+    });
+  }
+
+  private setupActivityTracking(): void {
+    // Track time on page
+    setInterval(() => {
+      this.timeOnPage = Date.now() - this.pageStartTime;
+      
+      // Track time milestones
+      if (this.timeOnPage >= 30000 && this.timeOnPage < 60000) { // 30s
+        this.trackTimeMilestone(30);
+      } else if (this.timeOnPage >= 60000 && this.timeOnPage < 120000) { // 1min
+        this.trackTimeMilestone(60);
+      } else if (this.timeOnPage >= 120000 && this.timeOnPage < 300000) { // 2min
+        this.trackTimeMilestone(120);
+      } else if (this.timeOnPage >= 300000) { // 5min
+        this.trackTimeMilestone(300);
+      }
+    }, 1000);
+  }
+
+  private trackScrollMilestone(percent: number): void {
+    const event: AnalyticsEvent = {
+      event: ANALYTICS_CONFIG.conversionEvents.SCROLL_DEPTH,
+      category: ANALYTICS_CONFIG.categories.ENGAGEMENT,
+      action: 'Scroll milestone',
+      label: `${percent}%`,
+      value: percent,
+      properties: {
+        scrollDepth: percent,
+        timeOnPage: this.timeOnPage
+      },
+      timestamp: Date.now(),
+      sessionId: sessionManager.getSessionId()
+    };
+    
+    trackEvent(event);
+  }
+
+  private trackTimeMilestone(seconds: number): void {
+    const event: AnalyticsEvent = {
+      event: ANALYTICS_CONFIG.conversionEvents.TIME_ON_PAGE,
+      category: ANALYTICS_CONFIG.categories.ENGAGEMENT,
+      action: 'Time milestone',
+      label: `${seconds}s`,
+      value: seconds,
+      properties: {
+        timeOnPage: seconds,
+        scrollDepth: this.scrollDepth
+      },
+      timestamp: Date.now(),
+      sessionId: sessionManager.getSessionId()
+    };
+    
+    trackEvent(event);
+  }
+
+  private trackClick(elementText: string, className: string, id: string): void {
+    const event: AnalyticsEvent = {
+      event: 'click',
+      category: ANALYTICS_CONFIG.categories.ENGAGEMENT,
+      action: 'Element clicked',
+      label: elementText,
+      properties: {
+        elementText: elementText,
+        className: className,
+        id: id,
+        clickCount: this.clickCount
+      },
+      timestamp: Date.now(),
+      sessionId: sessionManager.getSessionId()
+    };
+    
+    trackEvent(event);
+  }
+
+  getUserBehavior(): UserBehavior {
+    return {
+      pageViews: sessionManager.getSessionDuration(),
+      timeOnSite: this.timeOnPage,
+      scrollDepth: this.scrollDepth,
+      clicks: this.clickCount,
+      conversions: 0 // Será calculado pelo sistema de conversão
+    };
+  }
+}
+
+// ===== INSTÂNCIAS GLOBAIS =====
+const sessionManager = new SessionManager();
+const funnelTracker = new FunnelTracker();
+const behaviorTracker = new UserBehaviorTracker();
+
+// ===== FUNÇÕES PRINCIPAIS DE TRACKING =====
+export function trackEvent(event: AnalyticsEvent): void {
+  try {
+    // Adiciona informações da sessão
+    event.sessionId = sessionManager.getSessionId();
+    event.timestamp = Date.now();
+    
+    // Salva o evento na sessão
+    sessionManager.addEvent(event);
+    
+    // Log do evento
+    logger.info('Analytics Event:', {
+      event: event.event,
+      category: event.category,
+      action: event.action,
+      label: event.label,
+      value: event.value
+    });
+    
+    // Envia para serviços externos (se configurados)
+    sendToAnalyticsServices(event);
+    
+  } catch (error) {
+    logger.error('Erro ao trackear evento:', error);
+  }
+}
+
+export function trackConversion(event: ConversionEvent): void {
+  try {
+    // Adiciona informações de conversão
+    event.category = ANALYTICS_CONFIG.categories.CONVERSION;
+    event.timestamp = Date.now();
+    event.sessionId = sessionManager.getSessionId();
+    
+    // Track do evento
+    trackEvent(event);
+    
+    // Atualiza funnels se aplicável
+    if (event.funnel) {
+      funnelTracker.trackFunnelStep(event.funnel, event.step, event.action);
+    }
+    
+    logger.info('Conversion Event:', {
+      event: event.event,
+      funnel: event.funnel,
+      step: event.step,
+      value: event.value
+    });
+    
+  } catch (error) {
+    logger.error('Erro ao trackear conversão:', error);
+  }
+}
+
+// ===== FUNÇÕES DE CONVERSÃO ESPECÍFICAS =====
+export function trackPageView(pageName: string, properties?: Record<string, any>): void {
+  sessionManager.incrementPageViews();
+  
+  const event: AnalyticsEvent = {
+    event: ANALYTICS_CONFIG.conversionEvents.PAGE_VIEW,
+    category: ANALYTICS_CONFIG.categories.ENGAGEMENT,
+    action: 'Page viewed',
+    label: pageName,
+    properties: {
+      pageName: pageName,
+      referrer: document.referrer,
+      userAgent: navigator.userAgent,
+      ...properties
+    },
+    timestamp: Date.now(),
+    sessionId: sessionManager.getSessionId()
+  };
+  
+  trackEvent(event);
+}
+
+export function trackCTAClick(ctaText: string, ctaLocation: string, properties?: Record<string, any>): void {
+  const event: AnalyticsEvent = {
+    event: ANALYTICS_CONFIG.conversionEvents.CTA_CLICK,
+    category: ANALYTICS_CONFIG.categories.CONVERSION,
+    action: 'CTA clicked',
+    label: ctaText,
+    properties: {
+      ctaText: ctaText,
+      ctaLocation: ctaLocation,
+      scrollDepth: behaviorTracker.getUserBehavior().scrollDepth,
+      timeOnPage: behaviorTracker.getUserBehavior().timeOnSite,
+      ...properties
+    },
+    timestamp: Date.now(),
+    sessionId: sessionManager.getSessionId()
+  };
+  
+  trackEvent(event);
+}
+
+export function trackSignupStart(plan?: string, properties?: Record<string, any>): void {
+  // Inicia o funnel de signup
+  funnelTracker.startFunnel(ANALYTICS_CONFIG.funnels.SIGNUP);
+  
+  const event: AnalyticsEvent = {
+    event: ANALYTICS_CONFIG.conversionEvents.SIGNUP_START,
+    category: ANALYTICS_CONFIG.categories.CONVERSION,
+    action: 'Signup started',
+    label: plan || 'No plan selected',
+    properties: {
+      plan: plan,
+      userBehavior: behaviorTracker.getUserBehavior(),
+      ...properties
+    },
+    timestamp: Date.now(),
+    sessionId: sessionManager.getSessionId()
+  };
+  
+  trackEvent(event);
+}
+
+export function trackSignupComplete(userId: string, plan: string, value?: number): void {
+  const event: ConversionEvent = {
+    event: ANALYTICS_CONFIG.conversionEvents.SIGNUP_COMPLETE,
+    category: ANALYTICS_CONFIG.categories.CONVERSION,
+    action: 'Signup completed',
+    label: plan,
+    value: value || 0,
+    properties: {
+      userId: userId,
+      plan: plan,
+      value: value || 0,
+      userBehavior: behaviorTracker.getUserBehavior()
+    },
+    timestamp: Date.now(),
+    sessionId: sessionManager.getSessionId(),
+    userId: userId,
+    funnel: ANALYTICS_CONFIG.funnels.SIGNUP,
+    step: 5,
+    currency: 'BRL'
+  };
+  
+  trackConversion(event);
+  funnelTracker.completeFunnel(ANALYTICS_CONFIG.funnels.SIGNUP, value);
+}
+
+export function trackTrialStart(userId: string, plan: string): void {
+  funnelTracker.startFunnel(ANALYTICS_CONFIG.funnels.TRIAL);
+  
+  const event: AnalyticsEvent = {
+    event: ANALYTICS_CONFIG.conversionEvents.TRIAL_START,
+    category: ANALYTICS_CONFIG.categories.CONVERSION,
+    action: 'Trial started',
+    label: plan,
+    properties: {
+      userId: userId,
+      plan: plan,
+      userBehavior: behaviorTracker.getUserBehavior()
+    },
+    timestamp: Date.now(),
+    sessionId: sessionManager.getSessionId(),
+    userId: userId
+  };
+  
+  trackEvent(event);
+}
+
+// ===== FUNÇÕES DE ANÁLISE =====
+export function getSessionData(): {
+  sessionId: string;
+  duration: number;
+  pageViews: number;
+  events: AnalyticsEvent[];
+  userBehavior: UserBehavior;
+} {
+  return {
+    sessionId: sessionManager.getSessionId(),
+    duration: sessionManager.getSessionDuration(),
+    pageViews: sessionManager.getSessionDuration(),
+    events: sessionManager.getEvents(),
+    userBehavior: behaviorTracker.getUserBehavior()
+  };
+}
+
+export function getConversionRate(funnelName: string, step: number): number {
+  const events = sessionManager.getEvents();
+  const funnelEvents = events.filter(e => 
+    e.properties?.funnel === funnelName && e.properties?.step === step
+  );
+  
+  if (funnelEvents.length === 0) return 0;
+  
+  const conversions = funnelEvents.filter(e => e.event === 'funnel_complete').length;
+  return (conversions / funnelEvents.length) * 100;
+}
+
+// ===== INTEGRAÇÃO COM SERVIÇOS EXTERNOS =====
+function sendToAnalyticsServices(event: AnalyticsEvent): void {
   // Google Analytics 4
-  GA4_MEASUREMENT_ID: import.meta.env.VITE_GA4_MEASUREMENT_ID,
+  if (typeof (window as any).gtag !== 'undefined') {
+    (window as any).gtag('event', event.event, {
+      event_category: event.category,
+      event_label: event.label,
+      value: event.value,
+      custom_parameters: event.properties
+    });
+  }
+  
+  // Facebook Pixel
+  if (typeof (window as any).fbq !== 'undefined') {
+    (window as any).fbq('track', event.event, {
+      content_name: event.label,
+      content_category: event.category,
+      value: event.value,
+      currency: 'BRL'
+    });
+  }
+  
+  // Hotjar
+  if (typeof (window as any).hj !== 'undefined') {
+    (window as any).hj('event', event.event);
+  }
   
   // Mixpanel
-  MIXPANEL_TOKEN: import.meta.env.VITE_MIXPANEL_TOKEN,
-  
-  // Sentry (Error tracking)
-  SENTRY_DSN: import.meta.env.VITE_SENTRY_DSN,
-  
-  // Hotjar (User behavior)
-  HOTJAR_ID: import.meta.env.VITE_HOTJAR_ID,
-  
-  // Amplitude
-  AMPLITUDE_API_KEY: import.meta.env.VITE_AMPLITUDE_API_KEY
-};
-
-class Analytics {
-  private static instance: Analytics;
-  private sessionId: string;
-  private userId?: string;
-  private isInitialized = false;
-
-  private constructor() {
-    this.sessionId = this.generateSessionId();
-  }
-
-  static getInstance(): Analytics {
-    if (!Analytics.instance) {
-      Analytics.instance = new Analytics();
-    }
-    return Analytics.instance;
-  }
-
-  // Inicializar analytics
-  async initialize(userId?: string): Promise<void> {
-    if (this.isInitialized) {return;}
-
-    this.userId = userId;
-    
-    // Inicializar Google Analytics 4
-    if (ANALYTICS_CONFIG.GA4_MEASUREMENT_ID) {
-      await this.initializeGA4();
-    }
-
-    // Inicializar Mixpanel
-    if (ANALYTICS_CONFIG.MIXPANEL_TOKEN) {
-      await this.initializeMixpanel();
-    }
-
-    // Inicializar Sentry (comentado até instalar a dependência)
-    // if (ANALYTICS_CONFIG.SENTRY_DSN) {
-    //   await this.initializeSentry();
-    // }
-
-    // Inicializar Hotjar
-    if (ANALYTICS_CONFIG.HOTJAR_ID) {
-      this.initializeHotjar();
-    }
-
-    // Inicializar Amplitude
-    if (ANALYTICS_CONFIG.AMPLITUDE_API_KEY) {
-      await this.initializeAmplitude();
-    }
-
-    this.isInitialized = true;
-    if (process.env.NODE_ENV === 'development') { console.log('✅ Analytics initialized'); }
-  }
-
-  // Track de eventos
-  track(event: string, properties?: Record<string, unknown>): void {
-    const analyticsEvent: AnalyticsEvent = {
-      event,
-      properties: {
-        ...properties,
-        sessionId: this.sessionId,
-        timestamp: Date.now()
-      },
-      userId: this.userId,
-      timestamp: Date.now(),
-      sessionId: this.sessionId
-    };
-
-    // Enviar para todos os serviços configurados
-    this.sendToGA4(analyticsEvent);
-    this.sendToMixpanel(analyticsEvent);
-    this.sendToAmplitude(analyticsEvent);
-    
-    // Log local em desenvolvimento
-    if (process.env.NODE_ENV === 'development') {
-      if (process.env.NODE_ENV === 'development') { console.log('📊 Analytics Event:', analyticsEvent); }
-    }
-  }
-
-  // Track de page views
-  trackPageView(path: string, title: string, referrer?: string): void {
-    const pageView: PageView = {
-      path,
-      title,
-      referrer,
-      userId: this.userId,
-      timestamp: Date.now()
-    };
-
-    // Google Analytics 4
-    if (window.gtag) {
-      window.gtag('config', ANALYTICS_CONFIG.GA4_MEASUREMENT_ID, {
-        page_path: path,
-        page_title: title
-      });
-    }
-
-    // Mixpanel
-    if (window.mixpanel && typeof window.mixpanel.track === 'function') {
-      window.mixpanel.track('Page View', {
-        path,
-        title,
-        referrer
-      });
-    }
-
-    // Amplitude
-    if (window.amplitude && typeof window.amplitude.getInstance === 'function') {
-      const amplitudeInstance = window.amplitude.getInstance();
-      if (amplitudeInstance && typeof amplitudeInstance.logEvent === 'function') {
-        amplitudeInstance.logEvent('Page View', {
-          path,
-          title,
-          referrer
-        });
-      }
-    }
-
-    // Log local
-    if (process.env.NODE_ENV === 'development') {
-      if (process.env.NODE_ENV === 'development') { console.log('📄 Page View:', pageView); }
-    }
-  }
-
-  // Track de erros
-  trackError(error: Error, context?: Record<string, unknown>): void {
-    const errorEvent = {
-      event: 'Error',
-      properties: {
-        message: error.message,
-        stack: error.stack,
-        context,
-        sessionId: this.sessionId,
-        timestamp: Date.now()
-      },
-      userId: this.userId
-    };
-
-    // Sentry (comentado até instalar a dependência)
-    // if (window.Sentry && typeof window.Sentry.captureException === 'function') {
-    //   window.Sentry.captureException(error, {
-    //     extra: context,
-    //     user: this.userId ? { id: this.userId } : undefined
-    //   });
-    // }
-
-    // Enviar para outros serviços
-    this.track('Error', errorEvent.properties);
-  }
-
-  // Track de performance
-  trackPerformance(metric: string, value: number, properties?: Record<string, unknown>): void {
-    const performanceEvent = {
-      event: 'Performance',
-      properties: {
-        metric,
-        value,
-        ...properties,
-        sessionId: this.sessionId,
-        timestamp: Date.now()
-      },
-      userId: this.userId
-    };
-
-    this.track('Performance', performanceEvent.properties);
-  }
-
-  // Identificar usuário
-  identify(userId: string, properties: UserProperties): void {
-    this.userId = userId;
-
-    // Google Analytics 4
-    if (window.gtag) {
-      window.gtag('config', ANALYTICS_CONFIG.GA4_MEASUREMENT_ID, {
-        user_id: userId
-      });
-    }
-
-    // Mixpanel
-    if (window.mixpanel) {
-      if (typeof window.mixpanel.identify === 'function') {
-        window.mixpanel.identify(userId);
-      }
-      if (window.mixpanel.people && typeof window.mixpanel.people.set === 'function') {
-        window.mixpanel.people.set(properties);
-      }
-    }
-
-    // Amplitude
-    if (window.amplitude && typeof window.amplitude.getInstance === 'function') {
-      const amplitudeInstance = window.amplitude.getInstance();
-      if (amplitudeInstance) {
-        if (typeof amplitudeInstance.setUserId === 'function') {
-          amplitudeInstance.setUserId(userId);
-        }
-        if (typeof amplitudeInstance.setUserProperties === 'function') {
-          amplitudeInstance.setUserProperties(properties);
-        }
-      }
-    }
-
-    // Sentry (comentado até instalar a dependência)
-    // if (window.Sentry && typeof window.Sentry.setUser === 'function') {
-    //   window.Sentry.setUser({ id: userId, email: properties.email });
-    // }
-  }
-
-  // Eventos específicos do GrowthScale
-  trackLogin(method: string, success: boolean): void {
-    this.track('User Login', {
-      method,
-      success,
-      timestamp: Date.now()
+  if (typeof (window as any).mixpanel !== 'undefined') {
+    (window as any).mixpanel.track(event.event, {
+      category: event.category,
+      action: event.action,
+      label: event.label,
+      value: event.value,
+      ...event.properties
     });
-  }
-
-  trackEmployeeCreated(employeeData: Record<string, unknown>): void {
-    this.track('Employee Created', {
-      employeeId: employeeData.id,
-      department: employeeData.department,
-      position: employeeData.position
-    });
-  }
-
-  trackScheduleCreated(scheduleData: Record<string, unknown>): void {
-    this.track('Schedule Created', {
-      scheduleId: scheduleData.id,
-      employeeCount: Array.isArray(scheduleData.employees) ? scheduleData.employees.length : 0,
-      weekStart: scheduleData.weekStart
-    });
-  }
-
-  trackComplianceViolation(violationData: Record<string, unknown>): void {
-    this.track('Compliance Violation', {
-      violationType: violationData.type,
-      severity: violationData.severity,
-      employeeId: violationData.employeeId
-    });
-  }
-
-  trackFeatureUsage(feature: string, action: string): void {
-    this.track('Feature Usage', {
-      feature,
-      action,
-      timestamp: Date.now()
-    });
-  }
-
-  // Métodos privados para inicialização
-  private async initializeGA4(): Promise<void> {
-    if (!ANALYTICS_CONFIG.GA4_MEASUREMENT_ID) {return;}
-
-    // Carregar script do GA4
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.GA4_MEASUREMENT_ID}`;
-    document.head.appendChild(script);
-
-    // Configurar gtag
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function(...args: unknown[]) {
-      window.dataLayer.push(args);
-    };
-    window.gtag('js', new Date());
-    window.gtag('config', ANALYTICS_CONFIG.GA4_MEASUREMENT_ID);
-  }
-
-  private async initializeMixpanel(): Promise<void> {
-    if (!ANALYTICS_CONFIG.MIXPANEL_TOKEN) {return;}
-
-    // Carregar script do Mixpanel
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://cdn.mxpnl.com/libs/mixpanel-2.2.0.min.js';
-    document.head.appendChild(script);
-
-    script.onload = () => {
-      if (window.mixpanel && typeof window.mixpanel.init === 'function') {
-        window.mixpanel.init(ANALYTICS_CONFIG.MIXPANEL_TOKEN);
-      }
-    };
-  }
-
-  // private async initializeSentry(): Promise<void> {
-  //   if (!ANALYTICS_CONFIG.SENTRY_DSN) return;
-  //   // Implementar quando instalar @sentry/react
-  // }
-
-  private initializeHotjar(): void {
-    if (!ANALYTICS_CONFIG.HOTJAR_ID) {return;}
-
-    // Carregar Hotjar
-    (function(h: Record<string, unknown>, o: Document, t: string, j: string, a?: HTMLElement, r?: HTMLScriptElement) {
-      h.hj = h.hj || function(...args: unknown[]) {
-        (h.hj as Record<string, unknown[]>).q = (h.hj as Record<string, unknown[]>).q || [];
-        (h.hj as Record<string, unknown[]>).q.push(args);
-      };
-      h._hjSettings = { hjid: ANALYTICS_CONFIG.HOTJAR_ID, hjsv: 6 };
-      a = o.getElementsByTagName('head')[0];
-      r = o.createElement('script');
-      r.async = true;
-      r.src = t + (h._hjSettings as Record<string, unknown>).hjid + j + (h._hjSettings as Record<string, unknown>).hjsv;
-      a.appendChild(r);
-    })(window as unknown as Record<string, unknown>, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-  }
-
-  private async initializeAmplitude(): Promise<void> {
-    if (!ANALYTICS_CONFIG.AMPLITUDE_API_KEY) {return;}
-
-    // Amplitude comentado até instalar a dependência
-    if (process.env.NODE_ENV === 'development') { console.log('Amplitude initialization skipped - dependency not installed'); }
-  }
-
-  // Métodos privados para envio de dados
-  private sendToGA4(event: AnalyticsEvent): void {
-    if (window.gtag && ANALYTICS_CONFIG.GA4_MEASUREMENT_ID) {
-      window.gtag('event', event.event, {
-        ...event.properties,
-        user_id: event.userId
-      });
-    }
-  }
-
-  private sendToMixpanel(event: AnalyticsEvent): void {
-    if (window.mixpanel && typeof window.mixpanel.track === 'function') {
-      window.mixpanel.track(event.event, {
-        ...event.properties,
-        distinct_id: event.userId
-      });
-    }
-  }
-
-  private sendToAmplitude(event: AnalyticsEvent): void {
-    if (window.amplitude && typeof window.amplitude.getInstance === 'function') {
-      const amplitudeInstance = window.amplitude.getInstance();
-      if (amplitudeInstance && typeof amplitudeInstance.logEvent === 'function') {
-        amplitudeInstance.logEvent(event.event, {
-          ...event.properties,
-          user_id: event.userId
-        });
-      }
-    }
-  }
-
-  // Gerar session ID
-  private generateSessionId(): string {
-    return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   }
 }
 
-// Hook para usar analytics
-export const useAnalytics = () => {
-  const { user } = useAuth();
-  const analytics = Analytics.getInstance();
-
-  // Inicializar quando usuário mudar
-  React.useEffect(() => {
-    if (user) {
-      analytics.initialize(user.id);
-      analytics.identify(user.id, {
-        userId: user.id,
-        email: user.email,
-        role: 'user', // Valor padrão
-        companyId: undefined,
-        plan: undefined,
-        signupDate: new Date().toISOString()
-      });
-    }
-  }, [user, analytics]);
-
-  return analytics;
-};
-
-// Export da instância
-export const analytics = Analytics.getInstance();
-
-// Tipos globais
-declare global {
-  interface Window {
-    gtag: (...args: unknown[]) => void;
-    dataLayer: unknown[];
-    mixpanel: {
-      init?: (token: string) => void;
-      track?: (event: string, properties?: Record<string, unknown>) => void;
-      identify?: (userId: string) => void;
-      people?: {
-        set?: (properties: Record<string, unknown>) => void;
-      };
-    };
-    Sentry?: {
-      captureException?: (error: Error, options?: Record<string, unknown>) => void;
-      setUser?: (user: Record<string, unknown>) => void;
-    };
-    amplitude?: {
-      getInstance?: () => {
-        init?: (apiKey: string) => void;
-        logEvent?: (event: string, properties?: Record<string, unknown>) => void;
-        setUserId?: (userId: string) => void;
-        setUserProperties?: (properties: Record<string, unknown>) => void;
-      };
-    };
+// ===== INICIALIZAÇÃO =====
+export function initializeAnalytics(): void {
+  try {
+    // Track da página inicial
+    trackPageView(window.location.pathname, {
+      title: document.title,
+      url: window.location.href
+    });
+    
+    logger.info('Analytics inicializado com sucesso');
+  } catch (error) {
+    logger.error('Erro ao inicializar analytics:', error);
   }
 }
+
+// ===== EXPORTAÇÕES =====
+export {
+  ANALYTICS_CONFIG,
+  sessionManager,
+  funnelTracker,
+  behaviorTracker
+};
