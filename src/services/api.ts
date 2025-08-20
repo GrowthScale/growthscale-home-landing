@@ -11,6 +11,28 @@ export interface CompanyData {
   fullName: string;
 }
 
+export interface SetupData {
+  companyName: string;
+  cnpj: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+  contact: {
+    phone: string;
+    website: string;
+    email?: string;
+  };
+  settings: {
+    timezone: string;
+    workDays: string[];
+    defaultShiftDuration: number;
+    setupCompleted: boolean;
+  };
+}
+
 export async function createCompanyForUser(userId: string, companyData: CompanyData) {
   try {
     // 1. Criar a empresa
@@ -58,6 +80,43 @@ export async function createCompanyForUser(userId: string, companyData: CompanyD
     return company;
   } catch (error) {
     console.error('Erro completo na criação da empresa:', error);
+    throw error;
+  }
+}
+
+export async function updateCompanySetup(companyId: string, setupData: SetupData) {
+  try {
+    const { data, error } = await supabase
+      .from('companies')
+      .update({
+        name: setupData.companyName,
+        cnpj: setupData.cnpj || `TEMP_${Date.now()}`,
+        trade_name: setupData.companyName,
+        address: setupData.address,
+        contact: {
+          ...setupData.contact,
+          // Manter o email existente se não foi fornecido
+          email: setupData.contact.email || undefined,
+        },
+        settings: {
+          timezone: setupData.settings.timezone,
+          work_days: setupData.settings.workDays,
+          default_shift_duration: setupData.settings.defaultShiftDuration,
+          setup_completed: setupData.settings.setupCompleted,
+        }
+      } as any)
+      .eq('id', companyId as any)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Erro ao atualizar configuração da empresa:', error);
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Erro completo na atualização da empresa:', error);
     throw error;
   }
 }
@@ -111,12 +170,7 @@ export async function getUserCompanies(userId: string) {
     .select(`
       company_id,
       role,
-      companies (
-        id,
-        name,
-        status,
-        created_at
-      )
+      companies (*)
     `)
     .eq('user_id', userId as any);
 

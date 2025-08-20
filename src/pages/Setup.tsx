@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTenant } from '@/contexts/TenantContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +23,7 @@ import {
   Clock
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { updateCompanySetup, type SetupData } from '@/services/api';
 
 interface SetupStep {
   id: string;
@@ -97,6 +99,35 @@ export default function SetupPage() {
     }
   ];
 
+  // Mutation para salvar os dados do setup
+  const updateCompanyMutation = useMutation({
+    mutationFn: (setupData: SetupData) => {
+      if (!currentTenant?.id) {
+        throw new Error('ID da empresa não encontrado');
+      }
+      return updateCompanySetup(currentTenant.id, setupData);
+    },
+    onSuccess: (data) => {
+      // Atualizar o contexto local
+      updateTenantSettings(data);
+      
+      toast({
+        title: "Configuração salva!",
+        description: "Sua empresa está pronta para começar.",
+      });
+      
+      // Redirecionar para o dashboard após o sucesso
+      navigate('/dashboard');
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Erro ao salvar configuração",
+        description: error.message || "Não foi possível salvar as configurações.",
+        variant: "destructive",
+      });
+    }
+  });
+
   useEffect(() => {
     // Se não há usuário autenticado, redirecionar para login
     if (!user) {
@@ -104,8 +135,8 @@ export default function SetupPage() {
       return;
     }
 
-    // Se já há tenant configurado, verificar se precisa de setup
-    if (currentTenant && currentTenant.settings?.setupCompleted) {
+    // Se já há tenant configurado e setup completado, redirecionar para dashboard
+    if (currentTenant && currentTenant.settings?.setup_completed) {
       navigate('/dashboard');
       return;
     }
@@ -123,39 +154,35 @@ export default function SetupPage() {
     }
   };
 
-  const handleSaveCompany = async () => {
-    setLoading(true);
-    try {
-      // Aqui você implementaria a lógica para salvar os dados da empresa
-      await updateTenantSettings({
-        ...currentTenant,
-        ...formData,
-        settings: {
-          ...currentTenant?.settings,
-          ...formData.settings,
-          setupCompleted: true
-        }
-      });
-
+  const handleFinishSetup = () => {
+    if (!currentTenant?.id) {
       toast({
-        title: "Configuração salva!",
-        description: "Suas informações foram atualizadas com sucesso.",
-      });
-
-      handleNext();
-    } catch (error) {
-      toast({
-        title: "Erro ao salvar",
-        description: "Não foi possível salvar as configurações.",
+        title: "Erro",
+        description: "Empresa não encontrada. Tente fazer login novamente.",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
+      return;
     }
-  };
 
-  const handleComplete = () => {
-    navigate('/dashboard');
+    // Preparar dados para salvar
+    const setupData: SetupData = {
+      companyName: formData.companyName,
+      cnpj: formData.cnpj,
+      address: formData.address,
+      contact: {
+        phone: formData.contact.phone,
+        website: formData.contact.website,
+      },
+      settings: {
+        timezone: formData.settings.timezone,
+        workDays: formData.settings.workDays,
+        defaultShiftDuration: formData.settings.defaultShiftDuration,
+        setupCompleted: true, // Marcar como completado
+      }
+    };
+
+    // Executar a mutation
+    updateCompanyMutation.mutate(setupData);
   };
 
   const renderStepContent = () => {
@@ -467,26 +494,28 @@ export default function SetupPage() {
 
                 <div className="flex space-x-2">
                   {currentStep === steps.length - 1 ? (
-                    <Button onClick={handleComplete} className="bg-green-600 hover:bg-green-700">
-                      <CheckCircle className="h-4 w-4 mr-2" />
-                      Finalizar Setup
-                    </Button>
-                  ) : currentStep === 1 ? (
-                    <Button onClick={handleSaveCompany} disabled={loading}>
-                      {loading ? (
+                    <Button 
+                      onClick={handleFinishSetup} 
+                      disabled={updateCompanyMutation.isPending || !formData.companyName.trim()}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
+                      {updateCompanyMutation.isPending ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                           Salvando...
                         </>
                       ) : (
                         <>
-                          Salvar e Continuar
-                          <ArrowRight className="h-4 w-4 ml-2" />
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          Concluir Configuração
                         </>
                       )}
                     </Button>
                   ) : (
-                    <Button onClick={handleNext}>
+                    <Button 
+                      onClick={handleNext}
+                      disabled={currentStep === 1 && !formData.companyName.trim()}
+                    >
                       Próximo
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
