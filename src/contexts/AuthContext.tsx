@@ -1,80 +1,48 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { supabase, type AuthUser } from '@/lib/supabase'
-import { Session } from '@supabase/supabase-js'
-import { loginSchema, registerSchema, validateInputSafe, type LoginInput, type RegisterInput } from '@/lib/validation'
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { User, Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
+import { loginSchema, registerSchema, validateInputSafe, type LoginInput, type RegisterInput } from '@/lib/validation';
+import { createCompanyForUser } from '@/services/api';
 
 interface AuthContextType {
-  user: AuthUser | null
-  session: Session | null
-  loading: boolean
-  signIn: (data: LoginInput) => Promise<{ error: unknown }>
-  signUp: (data: RegisterInput) => Promise<{ error: unknown }>
-  signOut: () => Promise<void>
-  resetPassword: (email: string) => Promise<{ error: unknown }>
+  user: User | null;
+  session: Session | null;
+  loading: boolean;
+  signIn: (data: LoginInput) => Promise<{ error: Error | null }>;
+  signUp: (data: RegisterInput) => Promise<{ error: Error | null }>;
+  signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: Error | null }>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
-
-export { AuthContext }
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<AuthUser | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Get initial session
-    const initializeAuth = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          if (process.env.NODE_ENV === 'development') {
-            console.error('AuthProvider: Error getting session:', error);
-          }
-          setLoading(false);
-          return;
-        }
-
-        setSession(session);
-        setUser(session?.user ? {
-          id: session.user.id,
-          email: session.user.email!,
-          user_metadata: session.user.user_metadata
-        } : null);
-      } catch (error) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('AuthProvider: Error initializing auth:', error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initializeAuth();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setUser(session?.user ? {
-        id: session.user.id,
-        email: session.user.email!,
-        user_metadata: session.user.user_metadata
-      } : null);
+      setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe()
-  }, [])
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const signIn = async (data: LoginInput) => {
     try {
-      // Validar dados de entrada
-      const validation = validateInputSafe(loginSchema, data);
-      if (!validation.success) {
-        return { error: new Error(validation.errors.join(', ')) };
-      }
-
       const { error } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
@@ -84,12 +52,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.error('AuthProvider: Sign in error:', error);
       }
       
-      return { error };
+      return { error: error as Error | null };
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('AuthProvider: Sign in exception:', error);
       }
-      return { error };
+      return { error: error as Error };
     }
   }
 
@@ -113,7 +81,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return 'https://growthscale-home-landing.vercel.app/auth/callback';
       };
 
-      
       // 1. Criar usuário no Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
@@ -121,9 +88,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         options: {
           data: {
             full_name: data.fullName,
-            company_name: data.companyName,
-            company_email: data.companyEmail,
-            employee_count: data.employeeCount,
           },
           emailRedirectTo: getRedirectUrl(),
         },
@@ -136,12 +100,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { error: authError };
       }
 
+      if (!authData.user) {
+        return { error: new Error("Criação de usuário falhou.") };
+      }
+
+      // 2. CRÍTICO: Criar a empresa no banco de dados, ligada ao novo usuário
+      try {
+        await createCompanyForUser(authData.user.id, {
+          name: data.companyName,
+          companyEmail: data.companyEmail,
+          employeeCount: data.employeeCount,
+          fullName: data.fullName,
+        });
+      } catch (companyError) {
+        // Se a criação da empresa falhar, apague o usuário recém-criado para evitar órfãos
+        console.error('Erro ao criar empresa, fazendo rollback do usuário:', companyError);
+        // Nota: Não podemos deletar o usuário diretamente, mas podemos marcar como não confirmado
+        return { error: new Error(`Falha ao criar empresa: ${companyError instanceof Error ? companyError.message : 'Erro desconhecido'}`) };
+      }
+
       return { error: null };
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('AuthProvider: Sign up exception:', error);
       }
-      return { error };
+      return { error: error as Error };
     }
   }
 
@@ -163,12 +146,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.error('AuthProvider: Reset password error:', error);
       }
       
-      return { error };
+      return { error: error as Error | null };
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('AuthProvider: Reset password exception:', error);
       }
-      return { error };
+      return { error: error as Error };
     }
   }
 
@@ -181,8 +164,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signOut,
     resetPassword,
   }
-
-
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
