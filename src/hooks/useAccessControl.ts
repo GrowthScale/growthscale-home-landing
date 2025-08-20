@@ -98,10 +98,10 @@ export function useAccessControl() {
   const [userCompanyId, setUserCompanyId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Obter informações do plano e trial
-  const plan = (currentTenant?.plan as Plan) || 'free';
-  const status = currentTenant?.subscription_status;
-  const trialEndsAt = currentTenant?.trial_ends_at ? new Date(currentTenant.trial_ends_at) : null;
+  // Obter informações do plano e trial das settings
+  const plan = (currentTenant?.settings?.plan as Plan) || 'free';
+  const status = currentTenant?.settings?.subscription_status;
+  const trialEndsAt = currentTenant?.settings?.trial_ends_at ? new Date(currentTenant.settings.trial_ends_at) : null;
   
   const isTrialActive = status === 'trialing' && trialEndsAt && trialEndsAt > new Date();
 

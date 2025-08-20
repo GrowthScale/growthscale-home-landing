@@ -35,10 +35,6 @@ export interface SetupData {
 
 export async function createCompanyForUser(userId: string, companyData: CompanyData) {
   try {
-    // Calcula a data de fim do trial (14 dias a partir de agora)
-    const trialEndDate = new Date();
-    trialEndDate.setDate(trialEndDate.getDate() + 14);
-
     // 1. Criar a empresa
     const { data: company, error: companyError } = await supabase
       .from('companies')
@@ -47,9 +43,6 @@ export async function createCompanyForUser(userId: string, companyData: CompanyD
         cnpj: `TEMP_${Date.now()}`, // CNPJ temporário, será atualizado no setup
         trade_name: companyData.name,
         status: 'active',
-        plan: 'free', // Começa no plano 'free'
-        subscription_status: 'trialing', // Mas com o status de 'trialing'
-        trial_ends_at: trialEndDate.toISOString(), // Define a data de fim
         address: {},
         contact: {
           email: companyData.companyEmail,
@@ -58,6 +51,9 @@ export async function createCompanyForUser(userId: string, companyData: CompanyD
         settings: {
           employee_count: companyData.employeeCount,
           owner_name: companyData.fullName,
+          plan: 'free', // Armazenar plano nas settings
+          subscription_status: 'trialing', // Armazenar status nas settings
+          trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 14 dias
         }
       } as any)
       .select()

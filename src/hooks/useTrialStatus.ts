@@ -34,9 +34,9 @@ export function useTrialStatus(): TrialStatus {
       };
     }
 
-    const plan = (currentTenant.plan as PlanType) || 'free';
-    const subscriptionStatus = (currentTenant.subscription_status as SubscriptionStatus) || 'expired';
-    const trialEndDate = currentTenant.trial_ends_at ? new Date(currentTenant.trial_ends_at) : null;
+    const plan = (currentTenant.settings?.plan as PlanType) || 'free';
+    const subscriptionStatus = (currentTenant.settings?.subscription_status as SubscriptionStatus) || 'expired';
+    const trialEndDate = currentTenant.settings?.trial_ends_at ? new Date(currentTenant.settings.trial_ends_at) : null;
     
     const now = new Date();
     const isTrialing = subscriptionStatus === 'trialing' && trialEndDate && trialEndDate > now;
