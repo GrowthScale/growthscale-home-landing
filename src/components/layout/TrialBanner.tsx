@@ -22,7 +22,7 @@ export function TrialBanner() {
     <div className="w-full bg-accent text-accent-foreground p-2 text-center text-sm">
       <span>{getMessage()}</span>
       <Button asChild variant="link" className="ml-2 h-auto p-0 text-accent-foreground font-bold underline">
-        <Link to="/billing">Fazer Upgrade Agora</Link>
+        <Link to="/dashboard/billing">Fazer Upgrade Agora</Link>
       </Button>
     </div>
   );
