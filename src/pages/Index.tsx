@@ -30,7 +30,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 // --- COMPONENTES DA PÁGINA ---
 
 const Header = () => (
-  <header className="sticky top-0 z-50 w-full border-b border-neutral-light bg-background/90 backdrop-blur-lg">
+  <header className="sticky top-0 z-50 w-full border-b border-neutral-light bg-background/95 backdrop-blur-lg">
     <div className="container flex h-16 items-center">
       <div className="mr-6 flex">
         <Link to="/" className="flex items-center space-x-2">
@@ -57,70 +57,65 @@ const Header = () => (
 );
 
 const HeroSection = () => (
-  <section className="relative w-full py-24 md:py-32 lg:py-40 text-center bg-gradient-to-br from-neutral-light to-white overflow-hidden">
-    <div className="absolute inset-0 z-0 bg-grid-modern opacity-5"></div>
+  <section className="relative w-full py-20 md:py-28 lg:py-32 bg-gradient-to-br from-white via-neutral-light/30 to-white overflow-hidden">
+    <div className="absolute inset-0 z-0 bg-grid-modern opacity-3"></div>
     <div className="container relative z-10 mx-auto px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Texto */}
-          <div className="text-left">
-            <Badge className="mb-6 bg-accent/10 text-accent border-accent/20">
-              <Sparkles className="w-4 h-4 mr-2" />
-              Plataforma Inovadora
-            </Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 animate-fade-in-up text-foreground">
-              Gestão de escalas <span className="bg-gradient-modern bg-clip-text text-transparent">simples e inteligente</span>
-            </h1>
-            <p className="text-lg md:text-xl text-neutral-medium max-w-2xl mb-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              Automatize escalas, reduza custos em 30% e garanta compliance CLT automaticamente com IA.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <Button asChild size="lg" className="text-lg px-8 py-6 bg-accent hover:bg-accent-light text-white shadow-glow-warm">
-                <Link to="/auth">
-                  <Rocket className="mr-2 h-5 w-5" />
-                  Começar Gratuitamente
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 border-primary text-primary hover:bg-primary hover:text-white">
-                <Link to="/#recursos">
-                  <PlayCircle className="mr-2 h-5 w-5" />
-                  Ver Demo
-                </Link>
-              </Button>
+      <div className="max-w-5xl mx-auto text-center">
+        <Badge className="mb-6 bg-accent/10 text-accent border-accent/20">
+          <Sparkles className="w-4 h-4 mr-2" />
+          Plataforma Inovadora
+        </Badge>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 animate-fade-in-up text-foreground">
+          Gestão de escalas <span className="bg-gradient-modern bg-clip-text text-transparent">simples e inteligente</span>
+        </h1>
+        <p className="text-lg md:text-xl text-neutral-medium max-w-3xl mx-auto mb-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          Automatize escalas, reduza custos em 30% e garanta compliance CLT automaticamente com IA.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <Button asChild size="lg" className="text-lg px-8 py-6 bg-accent hover:bg-accent-light text-white shadow-glow-warm">
+            <Link to="/auth">
+              <Rocket className="mr-2 h-5 w-5" />
+              Começar Gratuitamente
+            </Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 border-primary text-primary hover:bg-primary hover:text-white">
+            <Link to="/#recursos">
+              <PlayCircle className="mr-2 h-5 w-5" />
+              Ver Demo
+            </Link>
+          </Button>
+        </div>
+        
+        {/* Mockup simplificado */}
+        <div className="mt-16 relative animate-float-gentle">
+          <div className="relative bg-white rounded-2xl shadow-soft p-8 border border-neutral-light max-w-2xl mx-auto">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex space-x-2">
+                <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                <div className="w-3 h-3 rounded-full bg-green-400"></div>
+              </div>
+              <div className="text-sm text-neutral-medium">Dashboard GrowthScale</div>
+            </div>
+            <div className="space-y-4">
+              <div className="h-4 bg-gradient-modern rounded"></div>
+              <div className="h-4 bg-neutral-light rounded w-3/4 mx-auto"></div>
+              <div className="h-4 bg-neutral-light rounded w-1/2 mx-auto"></div>
+              <div className="grid grid-cols-3 gap-3 mt-6">
+                <div className="h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <Users className="w-5 h-5 text-primary" />
+                </div>
+                <div className="h-10 bg-secondary/20 rounded-lg flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-secondary" />
+                </div>
+                <div className="h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-accent" />
+                </div>
+              </div>
             </div>
           </div>
-          
-          {/* Mockup/Imagem */}
-          <div className="relative animate-float-gentle">
-            <div className="relative bg-white rounded-2xl shadow-soft p-6 border border-neutral-light">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <div className="text-sm text-neutral-medium">Dashboard GrowthScale</div>
-              </div>
-              <div className="space-y-3">
-                <div className="h-4 bg-gradient-modern rounded"></div>
-                <div className="h-4 bg-neutral-light rounded w-3/4"></div>
-                <div className="h-4 bg-neutral-light rounded w-1/2"></div>
-                <div className="grid grid-cols-3 gap-2 mt-4">
-                  <div className="h-8 bg-primary/20 rounded flex items-center justify-center">
-                    <Users className="w-4 h-4 text-primary" />
-                  </div>
-                  <div className="h-8 bg-secondary/20 rounded flex items-center justify-center">
-                    <Clock className="w-4 h-4 text-secondary" />
-                  </div>
-                  <div className="h-8 bg-accent/20 rounded flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-accent" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="absolute -top-4 -right-4 bg-accent text-white rounded-full p-3 shadow-glow-warm">
-              <Check className="w-6 h-6" />
-            </div>
+          <div className="absolute -top-4 -right-4 bg-accent text-white rounded-full p-3 shadow-glow-warm">
+            <Check className="w-6 h-6" />
           </div>
         </div>
       </div>
@@ -129,7 +124,7 @@ const HeroSection = () => (
 );
 
 const BenefitsSection = () => (
-  <section className="py-24 bg-white">
+  <section className="py-20 bg-white">
     <div className="container mx-auto px-4">
       <div className="text-center max-w-3xl mx-auto mb-16">
         <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
@@ -269,7 +264,7 @@ const SocialProofSection = () => (
 );
 
 const FeaturesSection = () => (
-  <section id="recursos" className="py-24 bg-white">
+  <section id="recursos" className="py-20 bg-white">
     <div className="container mx-auto px-4">
       <div className="text-center max-w-3xl mx-auto mb-16">
         <Badge className="mb-4 bg-secondary/10 text-secondary border-secondary/20">
@@ -382,7 +377,7 @@ const FeaturesSection = () => (
 );
 
 const CTASection = () => (
-  <section className="py-24 bg-gradient-modern text-white">
+  <section className="py-20 bg-gradient-modern text-white">
     <div className="container mx-auto px-4 text-center">
       <div className="max-w-3xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
