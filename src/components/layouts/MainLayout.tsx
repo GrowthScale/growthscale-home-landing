@@ -23,6 +23,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import RoleBasedNavigation from '@/components/RoleBasedNavigation';
 import { useAccessControl } from '@/hooks/useAccessControl';
+import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import {
   LayoutDashboard,
   Calendar,
@@ -51,10 +53,38 @@ export function MainLayout() {
   const { role } = useAccessControl();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  
+  // Hook para verificar status do onboarding
+  const { 
+    onboardingComplete, 
+    isLoading, 
+    shouldShowOnboarding, 
+    shouldShowAuth 
+  } = useOnboardingStatus();
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
+
+  // Se estiver carregando, mostrar spinner
+  if (isLoading) {
+    return <LoadingSpinner message="Carregando sua empresa..." />;
+  }
+
+  // Se deve mostrar onboarding, não renderizar o layout (o hook já redirecionou)
+  if (shouldShowOnboarding) {
+    return <LoadingSpinner message="Redirecionando para configuração..." />;
+  }
+
+  // Se deve mostrar auth, não renderizar o layout (o hook já redirecionou)
+  if (shouldShowAuth) {
+    return <LoadingSpinner message="Redirecionando para autenticação..." />;
+  }
+
+  // Se onboarding não está completo, não renderizar o layout
+  if (!onboardingComplete) {
+    return <LoadingSpinner message="Configurando sua empresa..." />;
+  }
 
   const navigationItems = [
     {

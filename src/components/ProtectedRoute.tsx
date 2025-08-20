@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTenant } from '@/contexts/TenantContext';
-import { LoadingSpinner } from '@/components/ui/loading';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { Navigate, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/constants';
 import { useAccessControl } from '@/hooks/useAccessControl';
-import { Permission } from '@/hooks/useAccessControl';
+import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredPermission?: Permission;
+  requiredPermission?: string;
   requiredRoles?: ('owner' | 'manager' | 'employee')[];
 }
 
@@ -19,35 +18,60 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requiredRoles 
 }) => {
   const { user, loading } = useAuth();
-  const { tenants, loading: isLoadingTenants } = useTenant();
   const { can, hasAnyRole, getRole } = useAccessControl();
   const location = useLocation();
-  const navigate = useNavigate();
+  
+  // Hook para verificar status do onboarding
+  const { 
+    onboardingComplete, 
+    isLoading: isLoadingOnboarding, 
+    shouldShowOnboarding, 
+    shouldShowAuth 
+  } = useOnboardingStatus();
 
-  // Verificação de setup de empresa
-  useEffect(() => {
-    // Espera o carregamento do usuário e dos tenants
-    if (isLoadingTenants || !user) {
-      return;
-    }
-
-    // Se o usuário está logado e a lista de tenants está vazia, redireciona para setup
-    // Mas apenas se não estiver já na página de setup para evitar redirecionamento infinito
-    if (user && !isLoadingTenants && tenants.length === 0 && location.pathname !== ROUTES.SETUP) {
-      navigate(ROUTES.SETUP);
-    }
-  }, [user, tenants, isLoadingTenants, navigate, location.pathname]);
-
-  if (loading || isLoadingTenants) {
+  // Se estiver carregando autenticação ou onboarding
+  if (loading || isLoadingOnboarding) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" text="Verificando autenticação..." />
-      </div>
+      <LoadingSpinner 
+        message="Verificando autenticação..." 
+        size="lg" 
+      />
     );
   }
 
+  // Se não há usuário autenticado
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/auth" state={{ from: location }} replace />;
+  }
+
+  // Se deve mostrar auth (usuário autenticado mas sem tenant)
+  if (shouldShowAuth) {
+    return (
+      <LoadingSpinner 
+        message="Redirecionando para autenticação..." 
+        size="lg" 
+      />
+    );
+  }
+
+  // Se deve mostrar onboarding (usuário autenticado com tenant mas setup incompleto)
+  if (shouldShowOnboarding) {
+    return (
+      <LoadingSpinner 
+        message="Redirecionando para configuração..." 
+        size="lg" 
+      />
+    );
+  }
+
+  // Se onboarding não está completo
+  if (!onboardingComplete) {
+    return (
+      <LoadingSpinner 
+        message="Configurando sua empresa..." 
+        size="lg" 
+      />
+    );
   }
 
   // Verificação de permissão específica
