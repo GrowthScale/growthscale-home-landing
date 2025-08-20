@@ -6,42 +6,32 @@
  
 @layer base {
   :root {
-    /* Nova Paleta Moderna e Inovadora */
-    --background: 0 0% 100%; /* Branco */
-    --foreground: 222 84% 5%; /* Preto suave */
+    /* Paleta de Cores "Equilíbrio Sofisticado" */
+    --background: 0 0% 100%; /* Fundo principal claro */
+    --foreground: 222.2 84% 4.9%; /* Texto principal escuro */
     
-    /* Base fria (confiança/tecnologia) */
-    --primary: 217 91% 60%; /* Azul primário #2563EB */
-    --primary-light: 217 91% 67%; /* Azul claro #60A5FA */
-    --primary-dark: 217 91% 53%; /* Azul escuro #1D4ED8 */
-    --primary-foreground: 0 0% 100%; /* Branco */
+    --background-dark: 224 71% 4%; /* Apenas para seções de alto impacto */
+    --foreground-dark: 210 40% 98%; /* Texto sobre fundo escuro */
     
-    --secondary: 160 84% 39%; /* Verde #10B981 */
-    --secondary-light: 160 84% 46%; /* Verde claro #34D399 */
-    --secondary-dark: 160 84% 32%; /* Verde escuro #059669 */
-    --secondary-foreground: 0 0% 100%; /* Branco */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
     
-    /* Acento quente (ação/proximidade) */
-    --accent: 25 95% 53%; /* Laranja vibrante #F97316 */
-    --accent-light: 346 77% 70%; /* Coral suave #FB7185 */
-    --accent-warm: 48 96% 53%; /* Amarelo #FACC15 */
-    --accent-foreground: 0 0% 100%; /* Branco */
+    --primary: 221.2 83.2% 53.3%; /* Azul forte e confiável para AÇÃO */
+    --primary-foreground: 210 40% 98%;
     
-    /* Neutros */
-    --neutral-light: 220 14% 96%; /* Cinza claro #F3F4F6 */
-    --neutral-medium: 220 9% 46%; /* Cinza médio #9CA3AF */
-    --neutral-dark: 222 84% 5%; /* Preto suave #111827 */
+    --secondary: 210 40% 98%; /* Cinza muito claro para fundos de seções */
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 38 92% 50%; /* Laranja/Dourado para VALIDAÇÃO e SUCESSO */
+    --accent-foreground: 24 9.8% 10%;
     
-    --muted: 220 14% 96%; /* Cinza claro */
-    --muted-foreground: 220 9% 46%; /* Cinza médio */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
     
-    --card: 0 0% 100%; /* Branco */
-    --card-foreground: 222 84% 5%; /* Preto suave */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
     
-    --border: 220 13% 91%; /* Cinza claro #E5E7EB */
-    --destructive: 0 84% 60%; /* Vermelho #EF4444 */
-    --destructive-foreground: 0 0% 100%; /* Branco */
-    
+    --border: 214.3 31.8% 91.4%;
     --radius: 0.75rem;
   }
 }
@@ -58,38 +48,6 @@
 }
 
 @layer utilities {
-  @keyframes fade-in-up { 
-    from { opacity: 0; transform: translateY(20px); } 
-    to { opacity: 1; transform: translateY(0); } 
-  }
+  @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
-  
-  @keyframes float-gentle {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-  .animate-float-gentle { animation: float-gentle 3s ease-in-out infinite; }
-  
-  .bg-grid-modern {
-    background-image: 
-      linear-gradient(rgba(37, 99, 235, 0.1) 1px, transparent 1px), 
-      linear-gradient(to right, rgba(37, 99, 235, 0.1) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-  
-  .bg-gradient-modern {
-    background: linear-gradient(135deg, #2563EB 0%, #10B981 50%, #F97316 100%);
-  }
-  
-  .bg-gradient-warm {
-    background: linear-gradient(135deg, #F97316 0%, #FB7185 100%);
-  }
-  
-  .shadow-glow {
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
-  }
-  
-  .shadow-glow-warm {
-    box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
-  }
 }
