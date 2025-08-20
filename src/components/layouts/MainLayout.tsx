@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -51,9 +51,10 @@ import {
 export function MainLayout() {
   const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
-  const { role } = useAccessControl();
+  const { role, isTrialActive, plan } = useAccessControl();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   
   // Hook para verificar status do onboarding
   const { 
@@ -62,6 +63,14 @@ export function MainLayout() {
     shouldShowOnboarding, 
     shouldShowAuth 
   } = useOnboardingStatus();
+
+  // Redirecionamento forçado quando o trial acabar
+  useEffect(() => {
+    // Se o trial não está ativo E o plano é free E o utilizador não está já a ir para a página de billing
+    if (!isTrialActive && plan === 'free' && location.pathname !== '/billing' && location.pathname !== '/dashboard/billing') {
+      navigate('/billing', { replace: true });
+    }
+  }, [isTrialActive, plan, location.pathname, navigate]);
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
