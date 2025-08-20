@@ -6,6 +6,14 @@ import type { Database } from './types';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://placeholder.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "placeholder-key";
 
+// Determine the redirect URL based on environment
+const getRedirectUrl = () => {
+  if (import.meta.env.DEV) {
+    return 'http://localhost:3000/auth/callback';
+  }
+  return 'https://growthscale-home-landing.vercel.app/auth/callback';
+};
+
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
@@ -14,5 +22,8 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
+    flowType: 'pkce',
+    detectSessionInUrl: true,
+    redirectTo: getRedirectUrl(),
   }
 });

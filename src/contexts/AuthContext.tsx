@@ -101,6 +101,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { error: new Error(validation.errors.join(', ')) };
       }
 
+      // Determine the redirect URL based on environment
+      const getRedirectUrl = () => {
+        if (import.meta.env.DEV) {
+          return 'http://localhost:3000/auth/callback';
+        }
+        return 'https://growthscale-home-landing.vercel.app/auth/callback';
+      };
 
       
       // 1. Criar usuário no Supabase Auth
@@ -114,6 +121,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             company_email: data.companyEmail,
             employee_count: data.employeeCount,
           },
+          emailRedirectTo: getRedirectUrl(),
         },
       });
 
