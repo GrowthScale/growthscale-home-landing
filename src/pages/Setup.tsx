@@ -474,7 +474,7 @@ export default function SetupPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <steps[currentStep].icon className="h-5 w-5" />
+                {React.createElement(steps[currentStep].icon, { className: "h-5 w-5" })}
                 <span>{steps[currentStep].title}</span>
               </CardTitle>
             </CardHeader>
