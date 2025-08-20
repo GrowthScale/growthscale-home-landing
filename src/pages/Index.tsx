@@ -2,87 +2,37 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { PlayCircle, ShieldCheck, Clock, BarChart3, Check, X, Star, Zap, Users, TrendingUp, Award } from 'lucide-react';
+import { PlayCircle, ShieldCheck, Clock, BarChart3, Check, Star, X } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { landingPageCopy } from '@/constants/neuromarketing';
 
 // --- COMPONENTES DA PÁGINA ---
 
 const Header = () => (
-  <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-lg">
-    <div className="container flex h-16 items-center justify-between">
-      <div className="flex items-center space-x-2">
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-            <Zap className="h-5 w-5 text-white" />
-          </div>
-          <span className="font-bold text-xl text-foreground">GrowthScale</span>
-        </Link>
-      </div>
-      
-      <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
-        <Link to="/#recursos" className="text-muted-foreground transition-colors hover:text-foreground">Recursos</Link>
-        <Link to="/#precos" className="text-muted-foreground transition-colors hover:text-foreground">Preços</Link>
-        <Link to="/#sobre" className="text-muted-foreground transition-colors hover:text-foreground">Sobre</Link>
-      </nav>
-      
-      <div className="flex items-center space-x-4">
-        <Button asChild variant="ghost" size="sm">
-          <Link to="/auth">Entrar</Link>
-        </Button>
-        <Button asChild size="sm" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
-          <Link to="/auth">Começar Agora</Link>
-        </Button>
-      </div>
+  <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/90 backdrop-blur-lg">
+    <div className="container flex h-16 items-center">
+      <div className="mr-6 flex"><Link to="/" className="flex items-center space-x-2"><svg className="h-6 w-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg><span className="font-bold text-foreground">GrowthScale</span></Link></div>
+      <nav className="hidden md:flex items-center space-x-6 text-sm font-medium"><Link to="/#recursos" className="text-muted-foreground transition-colors hover:text-foreground">Recursos</Link><Link to="/#precos" className="text-muted-foreground transition-colors hover:text-foreground">Preços</Link></nav>
+      <div className="flex flex-1 items-center justify-end space-x-2"><Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button><Button asChild><Link to="/auth">Começar Agora</Link></Button></div>
     </div>
   </header>
 );
 
 const HeroSection = () => (
-  <section className="relative w-full py-20 md:py-28 lg:py-32 bg-gradient-to-br from-background via-background to-primary/5 overflow-hidden">
-    <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+  <section className="relative w-full py-24 md:py-32 lg:py-40 text-center text-foreground-dark bg-[hsl(var(--background-dark))] overflow-hidden">
+    <div className="absolute inset-0 z-0 bg-grid-dark opacity-5 [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"></div>
     <div className="container relative z-10 mx-auto px-4">
-      <div className="max-w-4xl mx-auto text-center">
-        <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-          <Award className="h-3 w-3 mr-1" />
-          Sistema especializado para food service
-        </Badge>
-        
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
-          {landingPageCopy.hero.h1}
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 animate-fade-in-up">
+          Onde a gestão de escalas encontra a paz de espírito.
         </h1>
-        
-        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed">
-          {landingPageCopy.hero.subtitle}
+        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          O GrowthScale é a plataforma de inteligência operacional que transforma o caos das escalas em controlo absoluto. Automatize, preveja custos e opere com clareza sobre as regras da CLT.
         </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <Button asChild size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <Link to="/auth">{landingPageCopy.hero.ctaPrimary}</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 border-2 hover:bg-primary/5 transition-all duration-300 hover:-translate-y-1">
-            <Link to="/#recursos">
-              <PlayCircle className="mr-2 h-5 w-5" />
-              {landingPageCopy.hero.ctaSecondary}
-            </Link>
-          </Button>
-        </div>
-        
-        <div className="flex items-center justify-center space-x-8 text-sm text-muted-foreground">
-          <div className="flex items-center space-x-2">
-            <Check className="h-4 w-4 text-success" />
-            <span>Teste gratuito por 14 dias</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Check className="h-4 w-4 text-success" />
-            <span>Sem compromisso</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Check className="h-4 w-4 text-success" />
-            <span>Suporte especializado</span>
-          </div>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <Button asChild size="lg" className="text-lg px-8 py-6"><Link to="/auth">Começar a Simplificar Agora</Link></Button>
+          <Button asChild size="lg" variant="secondary" className="text-lg px-8 py-6 bg-secondary/10 text-secondary-foreground hover:bg-secondary/20"><Link to="/#recursos"><PlayCircle className="mr-2 h-5 w-5" />Ver Recursos</Link></Button>
         </div>
       </div>
     </div>
@@ -90,29 +40,53 @@ const HeroSection = () => (
 );
 
 const BenefitsSection = () => (
-  <section className="py-20 bg-secondary/30">
+  <section className="py-24 bg-background">
     <div className="container mx-auto px-4">
       <div className="text-center max-w-3xl mx-auto mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          {landingPageCopy.benefits.title}
+          Por que escolher o GrowthScale?
         </h2>
         <p className="text-lg text-muted-foreground">
-          {landingPageCopy.benefits.subtitle}
+          Uma plataforma completa que resolve todos os desafios da gestão de escalas
         </p>
       </div>
       
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {landingPageCopy.benefits.items.map((item, index) => (
-          <Card key={index} className="text-center border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-white">
-            <CardContent className="p-8">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-2xl">{item.icon}</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{item.description}</p>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+          <CardHeader>
+            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+              <ShieldCheck className="h-6 w-6 text-primary" />
+            </div>
+            <CardTitle className="text-xl">Conformidade CLT</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">Automatize a criação de escalas respeitando todas as regras da CLT, evitando multas e processos trabalhistas.</p>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+          <CardHeader>
+            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+              <Clock className="h-6 w-6 text-primary" />
+            </div>
+            <CardTitle className="text-xl">Economia de Tempo</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">Reduza em 80% o tempo gasto na criação e gestão de escalas com nossa IA especializada.</p>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+          <CardHeader>
+            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+              <BarChart3 className="h-6 w-6 text-primary" />
+            </div>
+            <CardTitle className="text-xl">Análise Inteligente</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">Obtenha insights valiosos sobre produtividade, custos e otimização de recursos.</p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   </section>
