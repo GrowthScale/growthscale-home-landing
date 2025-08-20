@@ -46,6 +46,33 @@ const Auth = () => {
           alert('Erro no login: ' + error)
         }
       } else {
+        // Validação para campos obrigatórios no cadastro
+        if (!fullName.trim()) {
+          alert('Por favor, preencha o nome completo')
+          setLoading(false)
+          return
+        }
+        if (!companyName.trim()) {
+          alert('Por favor, preencha o nome da empresa')
+          setLoading(false)
+          return
+        }
+        if (!companyEmail.trim()) {
+          alert('Por favor, preencha o email da empresa')
+          setLoading(false)
+          return
+        }
+        if (!employeeCount || employeeCount < 1) {
+          alert('Por favor, preencha o número de funcionários (mínimo 1)')
+          setLoading(false)
+          return
+        }
+        if (!acceptedTerms) {
+          alert('Por favor, aceite os termos de uso')
+          setLoading(false)
+          return
+        }
+
         const registerData: RegisterInput = {
           email,
           password,
@@ -71,8 +98,6 @@ const Auth = () => {
     }
   }
 
-  const employeeOptions = [5, 10, 25, 50, 100, 250, 500, 1000]
-
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -94,7 +119,7 @@ const Auth = () => {
               <>
                 <div>
                   <label htmlFor="fullName" className="block text-sm font-medium text-gray-900">
-                    Nome Completo
+                    Nome Completo <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="fullName"
@@ -110,7 +135,7 @@ const Auth = () => {
 
                 <div>
                   <label htmlFor="companyName" className="block text-sm font-medium text-gray-900">
-                    Nome da Empresa
+                    Nome da Empresa <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="companyName"
@@ -126,7 +151,7 @@ const Auth = () => {
 
                 <div>
                   <label htmlFor="companyEmail" className="block text-sm font-medium text-gray-900">
-                    Email da Empresa
+                    Email da Empresa <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="companyEmail"
@@ -141,27 +166,23 @@ const Auth = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-3">
-                    Número de Funcionários
+                  <label htmlFor="employeeCount" className="block text-sm font-medium text-gray-900">
+                    Número de Funcionários <span className="text-red-500">*</span>
                   </label>
-                  <div className="grid grid-cols-4 gap-2">
-                    {employeeOptions.map((option) => (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() => setEmployeeCount(option)}
-                        className={`px-3 py-2 text-sm font-medium rounded-md border transition-colors ${
-                          employeeCount === option
-                            ? 'bg-blue-600 text-white border-blue-600'
-                            : 'bg-white text-gray-900 border-gray-300 hover:bg-gray-50'
-                        }`}
-                      >
-                        {option === 1000 ? '1000+' : option}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="mt-2 text-xs text-gray-600">
-                    Selecionado: {employeeCount} funcionários
+                  <input
+                    id="employeeCount"
+                    name="employeeCount"
+                    type="number"
+                    min="1"
+                    max="9999"
+                    required
+                    value={employeeCount}
+                    onChange={(e) => setEmployeeCount(parseInt(e.target.value) || 0)}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Digite o número de funcionários"
+                  />
+                  <div className="mt-1 text-xs text-gray-600">
+                    Digite um número entre 1 e 9999
                   </div>
                 </div>
               </>
@@ -169,7 +190,7 @@ const Auth = () => {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-900">
-                Email
+                Email <span className="text-red-500">*</span>
               </label>
               <input
                 id="email"
@@ -186,7 +207,7 @@ const Auth = () => {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-900">
-                Senha
+                Senha <span className="text-red-500">*</span>
               </label>
               <input
                 id="password"
