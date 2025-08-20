@@ -1,3 +1,7 @@
+// TEMPORARILY COMMENTED OUT - cltAssistantService was removed during refactoring
+// This file will be restored when the CLT assistant functionality is reimplemented
+
+/*
 import { useState, useCallback } from 'react';
 import { cltAssistantService } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
@@ -108,5 +112,23 @@ export const useCLTAssistant = (options: UseCLTAssistantOptions = {}) => {
     askQuestion,
     clearConversation,
     getConversationSummary,
+  };
+};
+*/
+
+// Temporary placeholder export
+export const useCLTAssistant = () => {
+  return {
+    isLoading: false,
+    currentAnswer: null,
+    conversationHistory: [],
+    askQuestion: async () => null,
+    clearConversation: () => {},
+    getConversationSummary: () => ({
+      totalQuestions: 0,
+      lastQuestion: null,
+      lastAnswer: null,
+      lastTimestamp: null,
+    }),
   };
 };
