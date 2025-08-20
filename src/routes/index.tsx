@@ -13,6 +13,7 @@ const LazyCompanies = React.lazy(() => import('@/pages/Companies'));
 const LazyTemplates = React.lazy(() => import('@/pages/Templates'));
 const LazySettings = React.lazy(() => import('@/pages/Settings'));
 const LazyAuth = React.lazy(() => import('@/pages/Auth'));
+const LazyAuthCallback = React.lazy(() => import('@/pages/AuthCallback'));
 const LazySetup = React.lazy(() => import('@/pages/Setup'));
 const LazyContact = React.lazy(() => import('@/pages/Contact'));
 const LazyFAQ = React.lazy(() => import('@/pages/FAQ'));
@@ -33,6 +34,7 @@ export default function AppRoutes() {
         {/* Public Routes */}
         <Route path="/" element={<LazyIndex />} />
         <Route path="/auth" element={<LazyAuth />} />
+        <Route path="/auth/callback" element={<LazyAuthCallback />} />
         <Route path="/contact" element={<LazyContact />} />
         <Route path="/faq" element={<LazyFAQ />} />
         <Route path="/legal" element={<LazyLegal />} />
