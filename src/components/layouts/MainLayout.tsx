@@ -25,6 +25,7 @@ import RoleBasedNavigation from '@/components/RoleBasedNavigation';
 import { useAccessControl } from '@/hooks/useAccessControl';
 import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { TrialBanner } from '@/components/layout/TrialBanner';
 import {
   LayoutDashboard,
   Calendar,
@@ -169,6 +170,9 @@ export function MainLayout() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* Trial Banner */}
+      <TrialBanner />
+      
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
