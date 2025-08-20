@@ -6,32 +6,29 @@
  
 @layer base {
   :root {
-    /* Paleta de Cores "Equilíbrio Sofisticado" */
-    --background: 0 0% 100%; /* Fundo principal claro */
-    --foreground: 222.2 84% 4.9%; /* Texto principal escuro */
+    /* Paleta "Aurora Digital" */
+    --background: 236 65% 11%;    /* Índigo Profundo */
+    --foreground: 220 13% 91%;   /* Cinza claro para texto */
     
-    --background-dark: 224 71% 4%; /* Apenas para seções de alto impacto */
-    --foreground-dark: 210 40% 98%; /* Texto sobre fundo escuro */
+    --card: 236 65% 11% / 0.6; /* Vidro fosco */
+    --card-foreground: 210 40% 98%;
     
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --primary: 190 81% 52%; /* Ciano Vibrante para AÇÃO */
+    --primary-foreground: 236 65% 11%;
     
-    --primary: 221.2 83.2% 53.3%; /* Azul forte e confiável para AÇÃO */
-    --primary-foreground: 210 40% 98%;
-    
-    --secondary: 210 40% 98%; /* Cinza muito claro para fundos de seções */
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 236 65% 16%; /* Índigo um pouco mais claro para fundos */
+    --secondary-foreground: 210 40% 98%;
 
-    --accent: 38 92% 50%; /* Laranja/Dourado para VALIDAÇÃO e SUCESSO */
-    --accent-foreground: 24 9.8% 10%;
+    --accent: 326 81% 60%; /* Magenta Quente para VALIDAÇÃO */
+    --accent-foreground: 210 40% 98%;
     
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 236 65% 16%;
+    --muted-foreground: 220 14% 71%;
     
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 214.3 31.8% 91.4%;
+    --border: 236 65% 21%;
     --radius: 0.75rem;
   }
 }

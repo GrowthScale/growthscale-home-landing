@@ -14,9 +14,7 @@ export default {
       colors: {
         border: "hsl(var(--border))",
         background: "hsl(var(--background))",
-        "background-dark": "hsl(var(--background-dark))",
         foreground: "hsl(var(--foreground))",
-        "foreground-dark": "hsl(var(--foreground-dark))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
