@@ -1,36 +1,20 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import { companyService } from '@/services/api';
+import { getUserCompanies, getCompanyDetails } from '@/services/api';
 
 export interface Tenant {
   id: string;
   name: string;
   cnpj: string;
-  tradeName?: string;
+  trade_name?: string;
   description?: string;
   logo?: string;
   status: 'active' | 'inactive' | 'pending';
-  address: {
-    street: string;
-    number: string;
-    complement?: string;
-    district: string;
-    city: string;
-    state: string;
-    zipCode: string;
-  };
-  contact: {
-    email: string;
-    phone: string;
-    website?: string;
-  };
-  settings: {
-    timeZone: string;
-    currency: string;
-    language: string;
-  };
-  createdAt: string;
-  updatedAt: string;
+  address: any;
+  contact: any;
+  settings: any;
+  created_at: string;
+  updated_at: string;
 }
 
 interface TenantContextType {
@@ -77,97 +61,81 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const response = await companyService.getCompanies();
+      const userCompanies = await getUserCompanies(user.id);
       
-      if (response.error) {
-        setError(response.error);
-        return;
-      }
-
-      if (response.data) {
-        setTenants(response.data);
+      if (userCompanies && userCompanies.length > 0) {
+        // Extrair as empresas dos relacionamentos
+        const companies = userCompanies.map(uc => uc.companies).filter(Boolean);
+        setTenants(companies);
         
         // Set current tenant from localStorage or first available
         const savedTenantId = localStorage.getItem('currentTenantId');
-        const savedTenant = response.data.find(t => t.id === savedTenantId);
+        const savedTenant = companies.find(t => t.id === savedTenantId);
         
         if (savedTenant && savedTenant.status === 'active') {
           setCurrentTenant(savedTenant);
-        } else if (response.data.length > 0) {
-          const firstActiveTenant = response.data.find(t => t.status === 'active');
+        } else if (companies.length > 0) {
+          const firstActiveTenant = companies.find(t => t.status === 'active');
           if (firstActiveTenant) {
             setCurrentTenant(firstActiveTenant);
             localStorage.setItem('currentTenantId', firstActiveTenant.id);
           }
         }
+      } else {
+        setTenants([]);
+        setCurrentTenant(null);
       }
     } catch (err) {
+      console.error('Error loading tenants:', err);
       setError(err instanceof Error ? err.message : 'Erro ao carregar empresas');
+      setTenants([]);
+      setCurrentTenant(null);
     } finally {
       setLoading(false);
     }
   }, [user]);
 
   // Switch to a different tenant
-  const switchTenant = async (tenantId: string) => {
-    const tenant = tenants.find(t => t.id === tenantId);
-    if (!tenant) {
-      setError('Empresa não encontrada');
-      return;
-    }
-
-    if (tenant.status !== 'active') {
-      setError('Empresa inativa');
-      return;
-    }
-
-    setCurrentTenant(tenant);
-    localStorage.setItem('currentTenantId', tenantId);
-    
-    // Update user preferences
-    if (tenant.settings.language) {
-      localStorage.setItem('language', tenant.settings.language);
-    }
-    
-    if (tenant.settings.timeZone) {
-      localStorage.setItem('timeZone', tenant.settings.timeZone);
-    }
-  };
-
-  // Refresh tenants list
-  const refreshTenants = async () => {
-    await loadTenants();
-  };
-
-  // Update tenant settings
-  const updateTenantSettings = async (settings: Partial<Tenant['settings']>) => {
-    if (!currentTenant) {return;}
-
+  const switchTenant = useCallback(async (tenantId: string) => {
     try {
-      const response = await companyService.updateCompany(currentTenant.id, {
-        settings: { ...currentTenant.settings, ...settings }
-      });
-
-      if (response.error) {
-        setError(response.error);
-        return;
-      }
-
-      if (response.data) {
-        setCurrentTenant(response.data);
-        setTenants(prev => prev.map(t => 
-          t.id === response.data.id ? response.data : t
-        ));
+      const tenant = tenants.find(t => t.id === tenantId);
+      if (tenant && tenant.status === 'active') {
+        setCurrentTenant(tenant);
+        localStorage.setItem('currentTenantId', tenantId);
+      } else {
+        throw new Error('Empresa não encontrada ou inativa');
       }
     } catch (err) {
+      console.error('Error switching tenant:', err);
+      setError(err instanceof Error ? err.message : 'Erro ao trocar empresa');
+    }
+  }, [tenants]);
+
+  // Refresh tenants list
+  const refreshTenants = useCallback(async () => {
+    await loadTenants();
+  }, [loadTenants]);
+
+  // Update tenant settings
+  const updateTenantSettings = useCallback(async (settings: Partial<Tenant['settings']>) => {
+    if (!currentTenant) {
+      throw new Error('Nenhuma empresa selecionada');
+    }
+
+    try {
+      // Aqui você implementaria a atualização das configurações
+      // Por enquanto, apenas atualizamos o estado local
+      setCurrentTenant(prev => prev ? { ...prev, settings: { ...prev.settings, ...settings } } : null);
+    } catch (err) {
+      console.error('Error updating tenant settings:', err);
       setError(err instanceof Error ? err.message : 'Erro ao atualizar configurações');
     }
-  };
+  }, [currentTenant]);
 
   // Load tenants when user changes
   useEffect(() => {
     loadTenants();
-  }, [user, loadTenants]);
+  }, [loadTenants]);
 
   const value: TenantContextType = {
     currentTenant,
@@ -184,6 +152,4 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
       {children}
     </TenantContext.Provider>
   );
-};
-
-export default TenantProvider; 
+}; 
