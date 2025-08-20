@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,34 +13,20 @@ import {
 } from '@/components/ui/dropdown-menu';
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import RoleBasedNavigation from '@/components/RoleBasedNavigation';
 import { useAccessControl } from '@/hooks/useAccessControl';
 import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { TrialBanner } from '@/components/layout/TrialBanner';
 import {
-  LayoutDashboard,
-  Calendar,
-  Users,
-  Building2,
-  Settings,
-  FileText,
-  MessageSquare,
-  Shield,
-  Brain,
-  BarChart3,
   Zap,
   Menu,
   X,
-  ChevronDown,
   User,
   LogOut,
   Moon,
