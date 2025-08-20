@@ -38,11 +38,16 @@ const AuthCallback = () => {
 
           if (data.session) {
             setStatus('success');
-            setMessage('Email confirmado com sucesso! Redirecionando...');
+            setMessage('Email confirmado com sucesso! Redirecionando para login...');
             
-            // Redirecionar para o dashboard após 2 segundos
+            // IMPORTANTE: Redirecionar para a página de login, não para o dashboard
             setTimeout(() => {
-              navigate('/dashboard');
+              navigate('/auth', { 
+                state: { 
+                  message: 'Email confirmado com sucesso! Faça login para continuar.',
+                  type: 'success'
+                }
+              });
             }, 2000);
           } else {
             setStatus('error');

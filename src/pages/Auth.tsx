@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { Checkbox } from '@/components/ui/checkbox'
 import { loginSchema, registerSchema, validateInputSafe, type LoginInput, type RegisterInput } from '@/lib/validation'
@@ -8,6 +8,7 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(true)
   const [loading, setLoading] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   
   // Form states
   const [email, setEmail] = useState('')
@@ -19,10 +20,21 @@ const Auth = () => {
 
   const { signIn, signUp } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  // Capturar mensagem de sucesso do estado de navegação
+  useEffect(() => {
+    if (location.state?.message && location.state?.type === 'success') {
+      setSuccessMessage(location.state.message)
+      // Limpar o estado para evitar que a mensagem apareça novamente
+      navigate(location.pathname, { replace: true })
+    }
+  }, [location, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setSuccessMessage(null) // Limpar mensagem ao submeter
     
     try {
       if (isLogin) {
@@ -69,6 +81,12 @@ const Auth = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {successMessage && (
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+              <strong className="font-bold">Sucesso!</strong>
+              <span className="block sm:inline"> {successMessage}</span>
+            </div>
+          )}
           <form className="space-y-6" onSubmit={handleSubmit}>
             {!isLogin && (
               <>
