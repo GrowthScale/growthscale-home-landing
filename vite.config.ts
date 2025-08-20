@@ -68,6 +68,9 @@ export default defineConfig({
     hmr: {
       overlay: false,
     },
+    watch: {
+      usePolling: false,
+    },
   },
   preview: {
     port: 4173,
@@ -78,5 +81,8 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', '@supabase/supabase-js'],
+    force: true,
   },
+  clearScreen: false,
+  logLevel: 'info',
 })
