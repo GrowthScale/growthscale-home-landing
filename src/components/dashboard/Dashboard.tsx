@@ -1,38 +1,29 @@
-import { useContext, useEffect } from 'react';
-import DashboardHeader from "./DashboardHeader";
-import KPICard from "./KPICard";
-import ChartSection from "./ChartSection";
-import NotificationsPanel from "./NotificationsPanel";
-import ActivityFeed from "./ActivityFeed";
-import PendingDraftCard from "./PendingDraftCard";
-import EquityScore from "./EquityScore";
-import { useAccessControl } from "@/hooks/useAccessControl";
-import { useQuery } from '@tanstack/react-query';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { 
-  Users, 
-  Clock, 
-  Shield, 
-  TrendingUp, 
+import { useQuery } from '@tanstack/react-query';
+import { useAccessControl } from '@/hooks/useAccessControl';
+import DashboardHeader from './DashboardHeader';
+import KPICard from './KPICard';
+import QuickActions from './QuickActions';
+import RecentActivity from './RecentActivity';
+import ProactiveCard from './ProactiveCard';
+import {
+  Users,
+  Clock,
+  Shield,
   DollarSign,
+  TrendingUp,
   Calendar,
-  AlertTriangle,
-  CheckCircle,
-  BarChart3,
-  FileText,
   ArrowRight,
   Sparkles
 } from 'lucide-react';
-import { scheduleDraftService } from '@/services/api';
 import { useTenant } from '@/contexts/TenantContext';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Dashboard = () => {
   const { can } = useAccessControl();
   const navigate = useNavigate();
-  const { tenant, isLoading: isLoadingTenant } = useTenant();
+  const { currentTenant: tenant, loading: isLoadingTenant } = useTenant();
   const { user } = useAuth();
 
   // LÓGICA CRÍTICA: Verificar se o utilizador já configurou a sua empresa
@@ -49,14 +40,13 @@ const Dashboard = () => {
     }
   }, [user, tenant, isLoadingTenant, navigate]);
 
-  // Buscar rascunho pendente para o card proativo
+  // Buscar rascunho pendente para o card proativo (simplificado)
   const { data: pendingDraft, isLoading: isLoadingDraft } = useQuery({
     queryKey: ['pendingDraft', tenant?.id],
     queryFn: async () => {
       if (!tenant?.id) {return null;}
-      const response = await scheduleDraftService.getPendingDraft(tenant.id);
-      if (response.error) {throw new Error(response.error);}
-      return response.data;
+      // Por enquanto, retornamos null - implementaremos depois
+      return null;
     },
     enabled: !!tenant?.id,
     refetchInterval: 30000, // Refetch a cada 30 segundos
