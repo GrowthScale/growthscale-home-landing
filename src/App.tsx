@@ -49,9 +49,6 @@ function App() {
           <AuthProvider>
                       <TenantProvider>
             <div className="App">
-              <a href="#main-content" className="skip-link">
-                Pular para o conteúdo principal
-              </a>
               <div id="main-content">
                 <AppRoutes />
               </div>
