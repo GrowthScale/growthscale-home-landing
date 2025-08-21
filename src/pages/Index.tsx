@@ -43,10 +43,10 @@ const HeroSection = () => (
             loop
             muted
             playsInline
-            poster="/placeholder-dashboard-dark.png" // Mantém a imagem como capa enquanto o vídeo carrega
+            poster="/placeholder-dashboard-dark.png"
           >
             <source src="/assets/hero-video.mp4" type="video/mp4" />
-            O seu browser não suporta o vídeo.
+            Seu navegador não suporta o vídeo.
           </video>
         </div>
       </div>
