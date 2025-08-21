@@ -5,6 +5,9 @@ import { PlayCircle, ShieldCheck, Clock, Star } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { ComparisonSection } from '@/components/ComparisonSection';
 import { PricingSection } from '@/components/PricingSection';
+import { TestimonialsSection } from '@/components/TestimonialsSection';
+import { FaqSection } from '@/components/FAQSection';
+import { FinalCtaSection } from '@/components/FinalCtaSection';
 
 // --- COMPONENTES DA PÁGINA ---
 
@@ -100,7 +103,10 @@ export default function Index() {
         <SocialProofSection />
         <NarrativeSection />
         <ComparisonSection />
+        <TestimonialsSection />
         <PricingSection />
+        <FaqSection />
+        <FinalCtaSection />
       </main>
       <Footer />
     </>
