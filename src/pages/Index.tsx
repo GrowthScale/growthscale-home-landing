@@ -54,13 +54,12 @@ const SocialProofSection = () => (
     <section className="py-20 bg-background">
         <div className="container mx-auto px-4 text-center">
             <p className="text-muted-foreground mb-12">A ferramenta de confiança para gestores de restaurantes que valorizam o seu tempo e a sua tranquilidade</p>
-            {/* ANOTAÇÃO: No futuro, substitua por logos reais de clientes */}
-            <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-4">
-                <span className="font-medium text-muted-foreground/50">Restaurante Modelo</span>
-                <span className="font-medium text-muted-foreground/50">Bistrô Fictício</span>
-                <span className="font-medium text-muted-foreground/50">Grupo Sabor</span>
-                <span className="font-medium text-muted-foreground/50">Café Central</span>
-                <span className="font-medium text-muted-foreground/50">Rede de Pizzarias</span>
+            <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 opacity-60">
+                <img src="/assets/logo-bistro.png" alt="Logo do Bistrô Sabor & Arte" className="h-8" />
+                <img src="/assets/logo-sabores.png" alt="Logo do Grupo Sabores do Brasil" className="h-9" />
+                <img src="/assets/logo-pizzaria.png" alt="Logo da Pizzaria Napolitana" className="h-10" />
+                <img src="/assets/logo-cafe.png" alt="Logo do Café Central" className="h-8" />
+                <img src="/assets/logo-hamburgueria.png" alt="Logo da Rede de Hamburguerias" className="h-9" />
             </div>
         </div>
     </section>
