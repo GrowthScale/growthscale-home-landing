@@ -75,7 +75,7 @@ const NarrativeSection = () => (
         <div className="rounded-xl p-2 bg-background border shadow-lg"><img src="/assets/img-solution-security.png" alt="Demonstração do GrowthScale a analisar as regras da CLT e a garantir a segurança jurídica da escala" className="rounded-lg shadow-2xl" /></div>
       </div>
       <div className="grid md:grid-cols-2 gap-12 items-center">
-        <div className="rounded-xl p-2 bg-background border shadow-lg md:order-last"><img src="/assets/img-ai-suggestion.png" alt="Demonstração da Inteligência Artificial do GrowthScale a preencher uma escala de trabalho automaticamente" className="rounded-lg" /></div>
+        <div className="rounded-xl p-2 bg-background border shadow-lg md:order-last"><img src="/assets/img-solution-efficiency.png" alt="Demonstração da Inteligência Artificial do GrowthScale a preencher uma escala de trabalho automaticamente" className="rounded-lg shadow-2xl" /></div>
         <div><div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4"><Clock className="h-4 w-4" /> Eficiência Máxima</div><h3 className="text-2xl font-bold mb-3">Recupere as suas horas.</h3><p className="text-muted-foreground">O que levava horas, agora leva segundos. Deixe a IA criar a escala otimizada com um clique. Mais tempo para si, para a sua equipa e para os seus clientes.</p></div>
       </div>
     </div>
