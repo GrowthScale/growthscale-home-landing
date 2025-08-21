@@ -1,9 +1,10 @@
 // src/pages/Index.tsx
 import { Button } from "@/components/ui/button";
-import { Link, useLocation } from 'react-router-dom';
-import { PlayCircle, ShieldCheck, Clock, Star, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { PlayCircle, ShieldCheck, Clock, Star } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { useEffect, useState } from 'react';
+import { ComparisonSection } from '@/components/ComparisonSection';
+import { PricingSection } from '@/components/PricingSection';
 
 // --- COMPONENTES DA PÁGINA ---
 
@@ -15,25 +16,6 @@ const Header = () => (
       <div className="flex flex-1 items-center justify-end space-x-2"><Button asChild variant="ghost" className="text-foreground"><Link to="/auth">Entrar</Link></Button><Button asChild><Link to="/auth">Começar Agora</Link></Button></div>
     </div>
   </header>
-);
-
-const SuccessSection = () => (
-  <section className="py-8 bg-green-50 border-b border-green-200">
-    <div className="container mx-auto px-4">
-      <div className="max-w-4xl mx-auto text-center">
-        <div className="flex items-center justify-center mb-4">
-          <CheckCircle className="h-8 w-8 text-green-600 mr-3" />
-          <h2 className="text-2xl font-bold text-green-800">Conta Confirmada com Sucesso!</h2>
-        </div>
-        <p className="text-green-700 mb-6">
-          Sua empresa foi criada e está pronta para uso. Faça login para começar a usar o GrowthScale!
-        </p>
-        <Button asChild size="lg" className="bg-green-600 hover:bg-green-700">
-          <Link to="/auth">Fazer Login</Link>
-        </Button>
-      </div>
-    </div>
-  </section>
 );
 
 const HeroSection = () => (
@@ -64,7 +46,7 @@ const HeroSection = () => (
   </section>
 );
 
-const TestimonialsSection = () => (
+const SocialProofSection = () => (
   <section className="py-20 md:py-28 bg-secondary">
     <div className="container mx-auto px-4 max-w-4xl text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">Não acredite apenas na nossa palavra.</h2>
@@ -77,7 +59,7 @@ const TestimonialsSection = () => (
   </section>
 );
 
-const SolutionSection = () => (
+const NarrativeSection = () => (
   <section id="recursos" className="py-20 md:py-28 bg-background" aria-labelledby="solution-title">
     <div className="container mx-auto px-4 space-y-24">
       <header className="text-center max-w-3xl mx-auto"><h2 id="solution-title" className="text-3xl md:text-4xl font-bold text-foreground">A sua operação, finalmente sob controlo.</h2></header>
@@ -99,6 +81,7 @@ const SolutionSection = () => (
   </section>
 );
 
+
 const Footer = () => (
   <footer className="py-12 bg-secondary border-t">
     <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
@@ -109,30 +92,15 @@ const Footer = () => (
 
 // --- A PÁGINA PRINCIPAL QUE JUNTA TUDO ---
 export default function Index() {
-  const location = useLocation();
-  const [showSuccess, setShowSuccess] = useState(false);
-
-  useEffect(() => {
-    // Verificar se veio da confirmação de email
-    const urlParams = new URLSearchParams(location.search);
-    const confirmed = urlParams.get('confirmed');
-    
-    if (confirmed === 'true') {
-      setShowSuccess(true);
-      // Remover o parâmetro da URL
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, [location]);
-
   return (
     <>
       <Header />
-      {showSuccess && <SuccessSection />}
       <main>
         <HeroSection />
-        <TestimonialsSection />
-        <SolutionSection />
-        {/* Adicione aqui as seções de Preços e FAQ com este mesmo padrão visual */}
+        <SocialProofSection />
+        <NarrativeSection />
+        <ComparisonSection />
+        <PricingSection />
       </main>
       <Footer />
     </>

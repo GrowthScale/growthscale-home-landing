@@ -5,7 +5,6 @@ const comparisonData = [
     { feature: "Validação da CLT em tempo real", growthscale: true, old_way: false },
     { feature: "Simulador de custo instantâneo", growthscale: true, old_way: false },
     { feature: "Sugestão de escala com IA", growthscale: true, old_way: false },
-    { feature: "Biblioteca de modelos (12x36, 6x1...)", growthscale: true, old_way: false },
     { feature: "Notificação integrada à equipe", growthscale: true, old_way: false },
     { feature: "Risco oculto de processos trabalhistas", growthscale: false, old_way: true },
     { feature: "Gestão baseada em 'achismo'", growthscale: false, old_way: true },
@@ -13,20 +12,22 @@ const comparisonData = [
 
 export function ComparisonSection() {
     return (
-        <section className="py-20 md:py-28 bg-muted/30" aria-labelledby="comparison-title">
+        <section className="py-20 md:py-28 bg-background" aria-labelledby="comparison-title">
             <div className="container mx-auto px-4 max-w-4xl">
                 <header className="text-center mb-12">
                     <h2 id="comparison-title" className="text-3xl md:text-4xl font-bold text-foreground">
                         Chega de operar no escuro.
                     </h2>
-                    <p className="text-lg text-muted-foreground mt-4">Veja por que planilhas e sistemas antigos são o maior risco para o seu negócio.</p>
+                    <p className="text-lg text-muted-foreground mt-4">
+                        Veja porque planilhas e sistemas antigos são o maior risco para o seu negócio.
+                    </p>
                 </header>
-                <div className="border border-border rounded-lg shadow-sm overflow-hidden">
+                <div className="border border-border rounded-lg shadow-sm overflow-hidden bg-card">
                     <table className="w-full">
-                        <thead className="bg-background">
+                        <thead className="bg-muted/50">
                             <tr>
                                 <th className="p-4 text-left font-semibold text-foreground">A capacidade de...</th>
-                                <th className="p-4 w-40 text-center font-semibold text-foreground">O Jeito Antigo<br/><span className="text-xs font-normal text-muted-foreground">(Planilhas)</span></th>
+                                <th className="p-4 w-40 text-center font-semibold text-muted-foreground">O Jeito Antigo<br/><span className="text-xs font-normal">(Planilhas)</span></th>
                                 <th className="p-4 w-40 text-center font-semibold text-primary">GrowthScale</th>
                             </tr>
                         </thead>
