@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { createCompanyForUser } from '@/services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, CheckCircle, XCircle, Mail } from 'lucide-react';
@@ -44,8 +45,33 @@ export default function AuthCallback() {
           }
 
           if (data.session) {
-            setStatus('success');
-            setMessage('Email confirmado com sucesso! Redirecionando...');
+            // Verificar se é um novo usuário que precisa criar empresa
+            const pendingCompany = data.session.user.user_metadata?.pending_company;
+            
+            if (pendingCompany) {
+              setMessage('Criando sua empresa...');
+              
+              try {
+                // Criar a empresa para o usuário confirmado
+                await createCompanyForUser(data.session.user.id, pendingCompany);
+                
+                // Limpar os dados pendentes dos metadados
+                await supabase.auth.updateUser({
+                  data: { pending_company: null }
+                });
+                
+                setStatus('success');
+                setMessage('Email confirmado e empresa criada com sucesso! Redirecionando...');
+              } catch (companyError) {
+                console.error('Erro ao criar empresa:', companyError);
+                setStatus('error');
+                setMessage('Email confirmado, mas houve um erro ao criar sua empresa. Entre em contato com o suporte.');
+                return;
+              }
+            } else {
+              setStatus('success');
+              setMessage('Email confirmado com sucesso! Redirecionando...');
+            }
             
             // Aguardar um momento para mostrar a mensagem de sucesso
             setTimeout(() => {

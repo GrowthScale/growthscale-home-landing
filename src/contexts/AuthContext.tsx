@@ -73,32 +73,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Determine the redirect URL based on environment
       const getRedirectUrl = () => {
-        // Sempre usar produção para evitar problemas de redirecionamento
-        // Se estiver em localhost, usar localhost, senão usar produção
         if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
           return 'http://localhost:3000/auth/callback';
         }
-        
-        // Para todos os outros casos (produção, preview, etc.), usar a URL de produção
-        return 'https://growthscale-home-landing.vercel.app/auth/callback';
+        return 'https://growthscale-home-landing-low1jc6uk.vercel.app/auth/callback';
       };
 
-      // 1. Criar usuário no Supabase Auth
+      // 1. Criar usuário no Supabase Auth (SEM criar empresa ainda)
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
           data: {
             full_name: data.fullName,
+            // Armazenar dados da empresa temporariamente nos metadados
+            pending_company: {
+              name: data.companyName,
+              companyEmail: data.companyEmail,
+              employeeCount: data.employeeCount,
+              fullName: data.fullName,
+            }
           },
           emailRedirectTo: getRedirectUrl(),
         },
       });
 
       if (authError) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('AuthProvider: Sign up auth error:', authError);
-        }
+        console.error('AuthProvider: Sign up auth error:', authError);
         return { error: authError as Error };
       }
 
@@ -106,30 +107,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { error: new Error("Criação de usuário falhou.") };
       }
 
-      // 2. CRÍTICO: Criar a empresa no banco de dados, ligada ao novo usuário
-      try {
-        await createCompanyForUser(authData.user.id, {
-          name: data.companyName,
-          companyEmail: data.companyEmail,
-          employeeCount: data.employeeCount,
-          fullName: data.fullName,
-        });
-      } catch (companyError) {
-        // Se a criação da empresa falhar, apague o usuário recém-criado para evitar órfãos
-        console.error('Erro ao criar empresa, fazendo rollback do usuário:', companyError);
-        
-        // Tentar deletar o usuário criado (requer admin privileges)
-        try {
-          // Nota: Esta operação requer admin privileges no Supabase
-          // Em produção, você pode implementar uma função edge ou webhook para isso
-          console.warn('Usuário criado mas empresa falhou. Considere implementar rollback automático.');
-        } catch (deleteError) {
-          console.error('Não foi possível deletar o usuário órfão:', deleteError);
-        }
-        
-        return { error: new Error(`Falha ao criar empresa: ${companyError instanceof Error ? companyError.message : 'Erro desconhecido'}`) };
-      }
-
+      // 2. IMPORTANTE: NÃO criar empresa aqui - aguardar confirmação de email
+      // A empresa será criada no AuthCallback após confirmação
+      console.log('✅ Usuário criado com sucesso. Aguardando confirmação de email...');
+      
       return { error: null };
     } catch (error) {
       console.error('AuthProvider: Sign up exception:', error);

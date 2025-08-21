@@ -85,7 +85,7 @@ const Auth = () => {
         }
         const { error } = await signUp(registerData)
         if (!error) {
-          alert('Cadastro realizado! Verifique seu email.')
+          alert('Cadastro realizado com sucesso! Verifique seu email para confirmar a conta e criar sua empresa.')
           setIsLogin(true)
         } else {
           alert('Erro no cadastro: ' + error)
