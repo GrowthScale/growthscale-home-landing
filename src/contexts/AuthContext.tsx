@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
           return 'http://localhost:3000/auth/callback';
         }
-        return 'https://growthscale-home-landing-low1jc6uk.vercel.app/auth/callback';
+        return 'https://growthscale-home-landing-an1013bp6.vercel.app/auth/callback';
       };
 
       // 1. Criar usuário no Supabase Auth (SEM criar empresa ainda)

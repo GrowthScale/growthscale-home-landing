@@ -61,7 +61,7 @@ export default function AuthCallback() {
                 });
                 
                 setStatus('success');
-                setMessage('Email confirmado e empresa criada com sucesso! Redirecionando...');
+                setMessage('Email confirmado e empresa criada com sucesso! Redirecionando para a página inicial...');
               } catch (companyError) {
                 console.error('Erro ao criar empresa:', companyError);
                 setStatus('error');
@@ -70,12 +70,12 @@ export default function AuthCallback() {
               }
             } else {
               setStatus('success');
-              setMessage('Email confirmado com sucesso! Redirecionando...');
+              setMessage('Email confirmado com sucesso! Redirecionando para a página inicial...');
             }
             
             // Aguardar um momento para mostrar a mensagem de sucesso
             setTimeout(() => {
-              navigate('/dashboard');
+              navigate('/?confirmed=true');
             }, 2000);
           } else {
             setStatus('error');
@@ -85,9 +85,9 @@ export default function AuthCallback() {
           // Se não há tokens, verificar se o usuário já está autenticado
           if (user) {
             setStatus('success');
-            setMessage('Você já está autenticado! Redirecionando...');
+            setMessage('Você já está autenticado! Redirecionando para a página inicial...');
             setTimeout(() => {
-              navigate('/dashboard');
+              navigate('/?confirmed=true');
             }, 2000);
           } else {
             setStatus('error');
@@ -116,7 +116,7 @@ export default function AuthCallback() {
   };
 
   const handleGoToDashboard = () => {
-    navigate('/dashboard');
+    navigate('/?confirmed=true');
   };
 
   return (
@@ -164,7 +164,7 @@ export default function AuthCallback() {
           {status === 'success' && (
             <div className="space-y-3">
               <Button onClick={handleGoToDashboard} className="w-full">
-                Ir para Dashboard
+                Ir para Página Inicial
               </Button>
             </div>
           )}
