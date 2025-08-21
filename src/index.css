@@ -6,29 +6,29 @@
  
 @layer base {
   :root {
-    /* Paleta "Aurora Digital" */
-    --background: 236 65% 11%;    /* Índigo Profundo */
-    --foreground: 220 13% 91%;   /* Cinza claro para texto */
+    /* Paleta para Fundos */
+    --background: 0 0% 100%; /* Fundo principal claro */
+    --background-dark: 224 71% 4%; /* Azul quase preto para seções de impacto */
+    --foreground: 222.2 84% 4.9%; /* Texto principal escuro */
+    --foreground-dark: 210 40% 98%; /* Texto principal claro */
     
-    --card: 236 65% 11% / 0.6; /* Vidro fosco */
-    --card-foreground: 210 40% 98%;
+    /* Cores Semânticas */
+    --primary: 221.2 83.2% 53.3%; /* Azul forte e confiável */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%; /* Cinza muito claro para fundos e cards claros */
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --accent: 38 92% 50%; /* Laranja/Dourado para acentos de confiança */
+    --accent-foreground: 24 9.8% 10%;
     
-    --primary: 190 81% 52%; /* Ciano Vibrante para AÇÃO */
-    --primary-foreground: 236 65% 11%;
-    
-    --secondary: 236 65% 16%; /* Índigo um pouco mais claro para fundos */
-    --secondary-foreground: 210 40% 98%;
-
-    --accent: 326 81% 60%; /* Magenta Quente para VALIDAÇÃO */
-    --accent-foreground: 210 40% 98%;
-    
-    --muted: 236 65% 16%;
-    --muted-foreground: 220 14% 71%;
-    
-    --destructive: 0 84% 60%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 236 65% 21%;
+    --border: 214.3 31.8% 91.4%;
+    --border-dark: 217.2 32.6% 17.5%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
     --radius: 0.75rem;
   }
 }
@@ -47,4 +47,8 @@
 @layer utilities {
   @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+  .bg-grid-dark {
+    background-image: linear-gradient(hsl(var(--foreground-dark)) 1px, transparent 1px), linear-gradient(to right, hsl(var(--foreground-dark)) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
 }
