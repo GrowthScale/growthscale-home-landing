@@ -1,7 +1,7 @@
 // src/pages/Index.tsx
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { PlayCircle, ShieldCheck, Clock, Check, X } from 'lucide-react';
+import { PlayCircle, ShieldCheck, Clock, Check, X, BarChart3 } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -77,6 +77,21 @@ const NarrativeSection = () => (
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <div className="rounded-xl p-2 bg-background border shadow-lg md:order-last"><img src="/assets/img-solution-efficiency.png" alt="Demonstração da Inteligência Artificial do GrowthScale a preencher uma escala de trabalho automaticamente" className="rounded-lg shadow-2xl" /></div>
         <div><div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4"><Clock className="h-4 w-4" /> Eficiência Máxima</div><h3 className="text-2xl font-bold mb-3">Recupere as suas horas.</h3><p className="text-muted-foreground">O que levava horas, agora leva segundos. Deixe a IA criar a escala otimizada com um clique. Mais tempo para si, para a sua equipa e para os seus clientes.</p></div>
+      </div>
+      {/* Bloco 4: O Poder do Controle Financeiro */}
+      <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="rounded-xl p-2 bg-background/10 border border-border/20 shadow-lg">
+          <img src="/assets/img-solution-costs.png" alt="Demonstração do simulador de custos do GrowthScale" className="rounded-lg" />
+        </div>
+        <div>
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4">
+            <BarChart3 className="h-4 w-4" /> Controle Financeiro
+          </div>
+          <h3 className="text-2xl font-bold mb-3">Decisões baseadas em dados, não em achismo.</h3>
+          <p className="text-muted-foreground">
+            Saiba o custo exato de cada escala antes mesmo de a publicar. O nosso simulador em tempo real mostra o impacto de cada decisão nas suas horas extras e no seu orçamento, dando-lhe o poder de otimizar a sua lucratividade.
+          </p>
+        </div>
       </div>
     </div>
   </section>
