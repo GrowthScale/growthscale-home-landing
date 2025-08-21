@@ -37,7 +37,17 @@ const HeroSection = () => (
       <div className="mt-20 max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
         <div className="relative rounded-xl p-2 bg-[hsl(var(--card-dark))] border border-[hsl(var(--border-dark))] shadow-2xl shadow-primary/10">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-xl blur-xl opacity-20"></div>
-          <img src="/placeholder-dashboard-dark.png" alt="Interface do GrowthScale" className="relative rounded-lg" />
+          <video
+            className="relative rounded-lg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/placeholder-dashboard-dark.png" // Mantém a imagem como capa enquanto o vídeo carrega
+          >
+            <source src="/assets/hero-video.mp4" type="video/mp4" />
+            O seu browser não suporta o vídeo.
+          </video>
         </div>
       </div>
     </div>
