@@ -37,17 +37,13 @@ const HeroSection = () => (
       <div className="mt-20 max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
         <div className="relative rounded-xl p-2 bg-[hsl(var(--card-dark))] border border-[hsl(var(--border-dark))] shadow-2xl shadow-primary/10">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-xl blur-xl opacity-20"></div>
-          <video
-            className="relative rounded-lg"
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster="/placeholder-dashboard-dark.png"
-          >
-            <source src="/assets/hero-video.mp4" type="video/mp4" />
-            Seu navegador não suporta o vídeo.
-          </video>
+          <img
+            src="/assets/hero-chaos-to-control.png"
+            alt="Uma imagem dividida mostrando a transformação de uma mesa de trabalho caótica com planilhas para uma mesa organizada com a interface do GrowthScale a resolver os problemas."
+            className="relative rounded-lg shadow-2xl"
+            width={1200}
+            height={675}
+          />
         </div>
       </div>
     </div>
