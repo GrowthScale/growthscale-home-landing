@@ -76,7 +76,7 @@ const NarrativeSection = () => (
       <div className="text-center max-w-3xl mx-auto"><h2 className="text-3xl md:text-4xl font-bold text-foreground">De um quebra-cabeças stressante a uma decisão de 5 minutos.</h2><p className="text-lg text-muted-foreground mt-4">Você sabe o quão caótico é: planilhas, grupos de WhatsApp, trocas de última hora e a preocupação constante com as regras da CLT. O GrowthScale foi desenhado para eliminar este caos.</p></div>
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <div><div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4"><ShieldCheck className="h-4 w-4" /> Segurança Jurídica</div><h3 className="text-2xl font-bold mb-3">O seu Co-Piloto CLT, 24/7.</h3><p className="text-muted-foreground">Enquanto você arrasta e solta, a nossa IA audita cada turno, alertando-o para potenciais riscos de intervalos e excesso de jornada. Opere com a clareza de quem toma decisões informadas.</p></div>
-        <div className="rounded-xl p-2 bg-background border shadow-lg"><img src="/placeholder-gif-1.png" alt="Demonstração do alerta de compliance" className="rounded-lg" /></div>
+        <div className="rounded-xl p-2 bg-background border shadow-lg"><img src="/assets/gif-clt-alert.gif" alt="Demonstração do alerta de compliance da CLT em tempo real" className="rounded-lg" /></div>
       </div>
       <div className="grid md:grid-cols-2 gap-12 items-center">
         <div className="rounded-xl p-2 bg-background border shadow-lg md:order-last"><img src="/placeholder-gif-2.png" alt="Demonstração da sugestão de IA" className="rounded-lg" /></div>
