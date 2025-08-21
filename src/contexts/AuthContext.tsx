@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { loginSchema, registerSchema, validateInputSafe, type LoginInput, type RegisterInput } from '@/lib/validation';
+import { registerSchema, validateInputSafe, type LoginInput, type RegisterInput } from '@/lib/validation';
 import { createCompanyForUser } from '@/services/api';
 
 interface AuthContextType {
@@ -132,9 +132,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return { error: null };
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('AuthProvider: Sign up exception:', error);
+      console.error('AuthProvider: Sign up exception:', error);
+      
+      // Verificar se é um erro de conectividade/timeout
+      if (error instanceof Error && error.message.includes('Failed to fetch')) {
+        console.log('⚠️ Erro de conectividade detectado, verificando se o cadastro foi realizado...');
+        
+        try {
+          // Tentar buscar a sessão atual para verificar se o usuário foi criado
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user) {
+            console.log('✅ Usuário encontrado na sessão, cadastro pode ter sido realizado com sucesso');
+            return { error: null };
+          }
+        } catch (sessionError) {
+          console.error('Erro ao verificar sessão:', sessionError);
+        }
       }
+      
       return { error: error as Error };
     }
   }
