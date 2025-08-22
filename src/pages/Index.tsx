@@ -19,7 +19,7 @@ import {
   Utensils,
   Coffee,
   Wine,
-  Hamburger,
+  Pizza,
   Brain,
   CheckCircle,
   MessageCircle,
@@ -213,7 +213,7 @@ const EstablishmentTypes = () => (
         <div className="group bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-orange-500/50 transition-all duration-300 hover:scale-105">
           <div className="flex items-center justify-center mb-6">
             <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-pink-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Hamburger className="h-10 w-10 text-white" />
+              <Pizza className="h-10 w-10 text-white" />
             </div>
           </div>
           <h3 className="text-xl font-bold text-white text-center mb-4">Fast Food</h3>
