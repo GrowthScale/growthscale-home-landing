@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { getUserCompanies, getCompanyDetails } from '@/services/api';
+import { useSetupWizard } from '@/utils/setupWizard';
 
 export interface Tenant {
   id: string;
@@ -22,9 +23,11 @@ interface TenantContextType {
   tenants: Tenant[];
   loading: boolean;
   error: string | null;
+  needsSetup: boolean;
   switchTenant: (tenantId: string) => Promise<void>;
   refreshTenants: () => Promise<void>;
   updateTenantSettings: (settings: Partial<Tenant['settings']>) => Promise<void>;
+  createTenant: (name: string, cnpj?: string) => Promise<void>;
 }
 
 const TenantContext = createContext<TenantContextType | null>(null);
@@ -43,10 +46,12 @@ interface TenantProviderProps {
 
 export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
   const { user } = useAuth();
+  const { setupUser, checkSetup } = useSetupWizard();
   const [currentTenant, setCurrentTenant] = useState<Tenant | null>(null);
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [needsSetup, setNeedsSetup] = useState(false);
 
   // Load user's tenants
   const loadTenants = useCallback(async () => {
@@ -84,6 +89,7 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
       } else {
         setTenants([]);
         setCurrentTenant(null);
+        setNeedsSetup(true);
       }
     } catch (err) {
       console.error('Error loading tenants:', err);
@@ -132,6 +138,36 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
     }
   }, [currentTenant]);
 
+  // Create new tenant with setup wizard
+  const createTenant = useCallback(async (name: string, cnpj?: string) => {
+    if (!user) {
+      throw new Error('Usuário não autenticado');
+    }
+
+    try {
+      setLoading(true);
+      const result = await setupUser(user, {
+        companyName: name,
+        cnpj,
+        userRole: 'owner',
+        setupCompleted: true
+      });
+
+      if (result.success) {
+        setNeedsSetup(false);
+        await loadTenants(); // Recarregar lista de empresas
+      } else {
+        throw new Error(result.error || 'Erro ao criar empresa');
+      }
+    } catch (err) {
+      console.error('Error creating tenant:', err);
+      setError(err instanceof Error ? err.message : 'Erro ao criar empresa');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [user, setupUser, loadTenants]);
+
   // Load tenants when user changes
   useEffect(() => {
     loadTenants();
@@ -142,9 +178,11 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
     tenants,
     loading,
     error,
+    needsSetup,
     switchTenant,
     refreshTenants,
     updateTenantSettings,
+    createTenant,
   };
 
   return (
