@@ -136,34 +136,27 @@ const Dashboard = () => {
         <div className="lg:col-span-2">
           <div className="bg-card border rounded-lg p-6">
             <h3 className="text-lg font-semibold mb-4">Ações Rápidas</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <button 
                 className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                onClick={() => navigate('/schedules')}
+                onClick={() => navigate('/dashboard/schedules')}
               >
                 <Calendar className="h-6 w-6 text-primary" />
                 <span className="text-sm font-medium">Nova Escala</span>
               </button>
               <button 
                 className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                onClick={() => navigate('/employees')}
+                onClick={() => navigate('/dashboard/employees')}
               >
                 <Users className="h-6 w-6 text-primary" />
                 <span className="text-sm font-medium">Adicionar Funcionário</span>
               </button>
               <button 
                 className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                onClick={() => navigate('/analytics')}
-              >
-                <TrendingUp className="h-6 w-6 text-primary" />
-                <span className="text-sm font-medium">Ver Relatórios</span>
-              </button>
-              <button 
-                className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                onClick={() => navigate('/settings')}
+                onClick={() => navigate('/dashboard/compliance')}
               >
                 <Shield className="h-6 w-6 text-primary" />
-                <span className="text-sm font-medium">Configurações</span>
+                <span className="text-sm font-medium">Ver Compliance</span>
               </button>
             </div>
           </div>
@@ -173,51 +166,32 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Feature Gates - Demonstrando funcionalidades premium */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <FeatureGate feature="ai_suggestions">
-          <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                <Brain className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">Sugestões de IA</h3>
-                <p className="text-sm text-muted-foreground">Otimize suas escalas automaticamente</p>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground mb-4">
-              Nossa IA analisa padrões e sugere melhorias para suas escalas, 
-              economizando tempo e reduzindo custos.
-            </p>
-            <button className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-              <Zap className="h-4 w-4 mr-2" />
-              Gerar Sugestões
-            </button>
+      {/* Seção de Status da Versão 1.0 */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border p-6">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+            <CheckCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           </div>
-        </FeatureGate>
-
-        <FeatureGate feature="advanced_analytics">
-          <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-950/20 dark:to-emerald-950/20 rounded-lg border">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">Analytics Avançados</h3>
-                <p className="text-sm text-muted-foreground">Insights detalhados da sua operação</p>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground mb-4">
-              Relatórios avançados com métricas de produtividade, 
-              análise de custos e previsões inteligentes.
-            </p>
-            <button className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
-              <ArrowRight className="h-4 w-4 mr-2" />
-              Ver Relatórios
-            </button>
+          <div>
+            <h3 className="font-semibold text-lg">Versão 1.0 - Funcionalidades Essenciais</h3>
+            <p className="text-sm text-muted-foreground">Foco na experiência do usuário</p>
           </div>
-        </FeatureGate>
+        </div>
+        <p className="text-sm text-muted-foreground mb-4">
+          Esta versão inclui as funcionalidades essenciais para gestão de escalas: 
+          Dashboard, Escalas, Funcionários e Compliance. Todas as funcionalidades estão 
+          conectadas ao backend e prontas para uso em produção.
+        </p>
+        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>Dashboard funcional</span>
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>Gestão de escalas ativa</span>
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>CRUD de funcionários</span>
+          <CheckCircle className="h-4 w-4 text-green-500" />
+          <span>Relatórios de compliance</span>
+        </div>
       </div>
     </div>
   );

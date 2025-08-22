@@ -17,20 +17,17 @@ const DashboardHeader = memo(() => {
   const [notifications] = useState(3);
   const navigate = useNavigate();
 
+  // CORREÇÃO: Rotas corrigidas para usar prefixo /dashboard
   const navigateToSchedules = useCallback(() => {
-    navigate('/escalas');
+    navigate('/dashboard/schedules');
   }, [navigate]);
 
   const navigateToEmployees = useCallback(() => {
-    navigate('/funcionarios');
+    navigate('/dashboard/employees');
   }, [navigate]);
 
   const navigateToCompliance = useCallback(() => {
-    navigate('/compliance');
-  }, [navigate]);
-
-  const navigateToSettings = useCallback(() => {
-    navigate('/configuracoes');
+    navigate('/dashboard/compliance');
   }, [navigate]);
 
   return (
@@ -89,16 +86,6 @@ const DashboardHeader = memo(() => {
               >
                 <Shield className="h-4 w-4 mr-2" aria-hidden="true" />
                 Compliance
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-foreground hover:text-primary hover-scale"
-                onClick={navigateToSettings}
-                aria-label="Ir para configurações"
-              >
-                <Settings className="h-4 w-4 mr-2" aria-hidden="true" />
-                Configurações
               </Button>
             </nav>
           </div>

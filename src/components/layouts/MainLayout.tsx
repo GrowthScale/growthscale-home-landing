@@ -82,6 +82,7 @@ export function MainLayout() {
     return <LoadingSpinner message="Configurando sua empresa..." />;
   }
 
+  // Navegação simplificada para Versão 1.0 - Apenas funcionalidades essenciais
   const navigationItems = [
     {
       label: 'Dashboard',
@@ -102,63 +103,9 @@ export function MainLayout() {
       roles: ['owner', 'admin', 'manager'],
     },
     {
-      label: 'Empresas',
-      href: '/companies',
-      icon: 'Building2',
-      roles: ['owner', 'admin'],
-    },
-    {
-      label: 'Assistente CLT',
-      href: '/clt-assistant',
-      icon: 'MessageSquare',
-      roles: ['owner', 'admin', 'manager'],
-    },
-    {
-      label: 'Templates',
-      href: '/templates',
-      icon: 'FileText',
-      roles: ['owner', 'admin', 'manager'],
-    },
-    {
-      label: 'Integrações',
-      href: '/integrations',
-      icon: 'Zap',
-      roles: ['owner', 'admin'],
-    },
-    {
       label: 'Compliance',
       href: '/compliance',
-      icon: 'Shield',
-      roles: ['owner', 'admin', 'manager'],
-    },
-    {
-      label: 'Analytics',
-      href: '/analytics',
-      icon: 'BarChart3',
-      roles: ['owner', 'admin'],
-    },
-    {
-      label: 'Security',
-      href: '/security',
-      icon: 'Shield',
-      roles: ['owner', 'admin'],
-    },
-    {
-      label: 'AI Intelligence',
-      href: '/ai',
-      icon: 'Brain',
-      roles: ['owner', 'admin', 'manager'],
-    },
-    {
-      label: 'Enterprise',
-      href: '/enterprise',
-      icon: 'Building2',
-      roles: ['owner', 'admin'],
-    },
-    {
-      label: 'Configurações',
-      href: '/settings',
-      icon: 'Settings',
+      icon: 'ShieldCheck',
       roles: ['owner', 'admin', 'manager'],
     },
   ];
