@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useTenant } from '@/contexts/TenantContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,7 +10,7 @@ import { ScheduleFilters } from '@/components/schedules/ScheduleFilters';
 import { ScheduleList } from '@/components/schedules/ScheduleList';
 import { CostSimulator } from '@/components/schedules/CostSimulator';
 import { WhatsAppNotificationManager } from '@/components/WhatsAppNotificationManager';
-import { mockEmployeesForCost, mockShiftsForCost } from '@/constants/mockData';
+import { getSchedules } from '@/services/api';
 import { 
   Calendar,
   HelpCircle,
@@ -18,7 +20,8 @@ import {
   Users,
   Clock,
   AlertTriangle,
-  MessageCircle
+  MessageCircle,
+  Loader2
 } from 'lucide-react';
 import {
   Tooltip,
@@ -28,7 +31,40 @@ import {
 } from '@/components/ui/tooltip';
 
 export default function Schedules() {
+  const { currentTenant: tenant } = useTenant();
   const [activeTab, setActiveTab] = useState('calendar');
+
+  // Buscar escalas
+  const { data: schedules, isLoading, error } = useQuery({
+    queryKey: ['schedules', tenant?.id],
+    queryFn: async () => {
+      if (!tenant?.id) throw new Error('Empresa não configurada');
+      const result = await getSchedules(tenant.id);
+      if (result.error) throw new Error(result.error);
+      return result.data || [];
+    },
+    enabled: !!tenant?.id,
+  });
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-destructive mb-4">Erro ao carregar escalas</h2>
+          <p className="text-muted-foreground mb-4">{error.message}</p>
+          <Button onClick={() => window.location.reload()}>Tentar novamente</Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Calcular estatísticas
+  const stats = {
+    active: schedules?.filter(s => s.status === 'active').length || 0,
+    optimized: schedules?.filter(s => s.status === 'optimized').length || 0,
+    totalCost: schedules?.reduce((sum, s) => sum + (s.total_cost || 0), 0) || 0,
+    totalHours: schedules?.reduce((sum, s) => sum + (s.total_hours || 0), 0) || 0,
+  };
 
   return (
     <TooltipProvider>
@@ -84,7 +120,7 @@ export default function Schedules() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Escalas Ativas</p>
-                    <p className="text-2xl font-bold text-foreground">24</p>
+                    <p className="text-2xl font-bold text-foreground">{stats.active}</p>
                   </div>
                 </div>
               </CardContent>
@@ -98,7 +134,7 @@ export default function Schedules() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Otimizadas com IA</p>
-                    <p className="text-2xl font-bold text-foreground">18</p>
+                    <p className="text-2xl font-bold text-foreground">{stats.optimized}</p>
                   </div>
                 </div>
               </CardContent>
@@ -111,8 +147,10 @@ export default function Schedules() {
                     <TrendingUp className="h-5 w-5 text-secondary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Eficiência</p>
-                    <p className="text-2xl font-bold text-foreground">94%</p>
+                    <p className="text-sm text-muted-foreground">Custo Total</p>
+                    <p className="text-2xl font-bold text-foreground">
+                      R$ {stats.totalCost.toLocaleString('pt-BR')}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -122,11 +160,11 @@ export default function Schedules() {
               <CardContent className="p-4">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-accent/10 rounded-lg">
-                    <AlertTriangle className="h-5 w-5 text-accent" />
+                    <Clock className="h-5 w-5 text-accent" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Pendências</p>
-                    <p className="text-2xl font-bold text-foreground">3</p>
+                    <p className="text-sm text-muted-foreground">Horas Totais</p>
+                    <p className="text-2xl font-bold text-foreground">{stats.totalHours}h</p>
                   </div>
                 </div>
               </CardContent>
@@ -138,67 +176,46 @@ export default function Schedules() {
             {/* Filters */}
             <ScheduleFilters />
 
-            {/* Content Tabs */}
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-4 lg:w-fit">
-                <TabsTrigger value="calendar" className="flex items-center space-x-2">
-                  <Calendar className="h-4 w-4" />
-                  <span>Calendário</span>
-                </TabsTrigger>
-                <TabsTrigger value="list" className="flex items-center space-x-2">
-                  <Users className="h-4 w-4" />
-                  <span>Lista</span>
-                </TabsTrigger>
-                <TabsTrigger value="costs" className="flex items-center space-x-2">
-                  <TrendingUp className="h-4 w-4" />
-                  <span>Custos</span>
-                </TabsTrigger>
-                <TabsTrigger value="notifications" className="flex items-center space-x-2">
-                  <MessageCircle className="h-4 w-4" />
-                  <span>Notificações</span>
-                </TabsTrigger>
+            {/* Tabs */}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="calendar">Calendário</TabsTrigger>
+                <TabsTrigger value="list">Lista</TabsTrigger>
+                <TabsTrigger value="simulator">Simulador</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="calendar" className="mt-6">
-                <ScheduleCalendar />
-              </TabsContent>
-
-              <TabsContent value="list" className="mt-6">
-                <ScheduleList />
-              </TabsContent>
-
-              <TabsContent value="costs" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <CostSimulator 
-                    shifts={mockShiftsForCost} 
-                    employees={mockEmployeesForCost}
-                    onCostUpdate={(cost) => {
-                      // Custos atualizados
-                    }}
-                  />
+              <TabsContent value="calendar" className="space-y-4">
+                {isLoading ? (
                   <Card>
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-semibold mb-4">Informações sobre Custos</h3>
-                      <div className="space-y-3 text-sm text-muted-foreground">
-                        <p>• O simulador calcula custos em tempo real baseado nos turnos</p>
-                        <p>• Inclui horas extras e adicional noturno automaticamente</p>
-                        <p>• Atualiza automaticamente quando a escala é modificada</p>
-                        <p>• Use para otimizar custos e planejar orçamentos</p>
+                    <CardContent className="p-8">
+                      <div className="flex items-center justify-center">
+                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                        <span className="ml-2 text-muted-foreground">Carregando escalas...</span>
                       </div>
                     </CardContent>
                   </Card>
-                </div>
+                ) : (
+                  <ScheduleCalendar schedules={schedules || []} />
+                )}
               </TabsContent>
 
-              <TabsContent value="notifications" className="mt-6">
-                <WhatsAppNotificationManager
-                  employeeIds={[]} // Será preenchido dinamicamente
-                  scheduleId="" // Será preenchido dinamicamente
-                  tenantId="tenant-001" // Será obtido do contexto
-                  onNotificationSent={() => {
-                    // Notificações enviadas com sucesso!
-                  }}
-                />
+              <TabsContent value="list" className="space-y-4">
+                {isLoading ? (
+                  <Card>
+                    <CardContent className="p-8">
+                      <div className="flex items-center justify-center">
+                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                        <span className="ml-2 text-muted-foreground">Carregando escalas...</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <ScheduleList schedules={schedules || []} />
+                )}
+              </TabsContent>
+
+              <TabsContent value="simulator" className="space-y-4">
+                <CostSimulator />
               </TabsContent>
             </Tabs>
           </div>
@@ -211,17 +228,17 @@ export default function Schedules() {
               <div className="flex items-center space-x-6 text-sm text-muted-foreground">
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4" />
-                  <span>Última atualização: há 2 minutos</span>
+                  <span>Última sincronização: há 1 minuto</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Sparkles className="h-4 w-4" />
-                  <span>IA executou 5 otimizações hoje</span>
+                  <Calendar className="h-4 w-4" />
+                  <span>{schedules?.length || 0} escalas cadastradas</span>
                 </div>
               </div>
               
               <div className="flex items-center space-x-4">
                 <Button variant="ghost" size="sm">
-                  Documentação
+                  Central de Ajuda
                 </Button>
                 <Button variant="ghost" size="sm">
                   FAQs

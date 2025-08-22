@@ -1,7 +1,6 @@
-// TEMPORARIO: Comentado para permitir build
-/*
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTenant } from '@/contexts/TenantContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,321 +8,437 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { useTenant } from '@/contexts/TenantContext';
-import { useAuth } from '@/contexts/AuthContext';
-import { useAccessControl } from '@/hooks/useAccessControl';
+import { getEmployees, createScheduleWithShifts, validateSchedule, calculateScheduleCost } from '@/services/api';
 import { 
   Calendar, 
-  Clock, 
   Users, 
   Plus, 
   Trash2, 
-  Edit, 
   Save, 
   X, 
   AlertTriangle,
   CheckCircle,
   BarChart3,
-  FileText,
-  Sparkles,
-  ArrowRight
+  Loader2
 } from 'lucide-react';
-import { scheduleService, scheduleTemplateService, costCalculationService, type Shift, type EmployeeForValidation, type ScheduleSuggestionRequest, type ScheduleSuggestionResponse, type ScheduleTemplate } from '@/services/api';
-import { ScheduleCalendar } from './ScheduleCalendar';
-import { ScheduleTemplateManager } from './ScheduleTemplateManager';
-import { ScheduleValidation } from './ScheduleValidation';
-import { ScheduleCostAnalysis } from './ScheduleCostAnalysis';
-import { ScheduleSuggestion, ScheduleSuggestionSkeleton } from './ScheduleSuggestion';
-import { useScheduleSuggestion } from '@/hooks/useScheduleSuggestion';
-import { useScheduleValidation } from '@/hooks/useScheduleValidation';
+
+interface ScheduleFormData {
+  name: string;
+  date: string;
+  description: string;
+  notes: string;
+}
+
+interface ShiftData {
+  employee_id: string;
+  start_time: string;
+  end_time: string;
+  notes?: string;
+}
 
 export const ScheduleEditor: React.FC = () => {
-  const { can } = useAccessControl();
   const { currentTenant: tenant } = useTenant();
-  const { user } = useAuth();
   const { toast } = useToast();
   const { trackEvent } = useAnalytics();
   const queryClient = useQueryClient();
 
   // Estados
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<ScheduleTemplate | null>(null);
-  const [scheduleData, setScheduleData] = useState({
+  const [isOpen, setIsOpen] = useState(false);
+  const [scheduleData, setScheduleData] = useState<ScheduleFormData>({
     name: '',
-    description: '',
     date: new Date().toISOString().split('T')[0],
+    description: '',
     notes: ''
   });
-
-  // Buscar templates disponíveis
-  const { data: templates } = useQuery({
-    queryKey: ['schedule-templates', tenant?.id],
-    queryFn: async () => {
-      const response = await scheduleTemplateService.getTemplates();
-      if (response.error) {
-        throw new Error(response.error);
-      }
-      return response.data || [];
-    },
-    enabled: !!tenant?.id,
-  });
+  const [shifts, setShifts] = useState<ShiftData[]>([]);
+  const [selectedEmployee, setSelectedEmployee] = useState<string>('');
+  const [shiftStartTime, setShiftStartTime] = useState('08:00');
+  const [shiftEndTime, setShiftEndTime] = useState('17:00');
 
   // Buscar funcionários
   const { data: employees } = useQuery({
     queryKey: ['employees', tenant?.id],
     queryFn: async () => {
-      // Implementar busca de funcionários
-      return [];
+      if (!tenant?.id) throw new Error('Empresa não configurada');
+      const result = await getEmployees(tenant.id);
+      if (result.error) throw new Error(result.error);
+      return result.data || [];
     },
-    enabled: !!tenant?.id,
+    enabled: !!tenant?.id && isOpen,
   });
 
-  // Hooks customizados
-  const { generateSuggestion, isGenerating: isGeneratingSuggestion } = useScheduleSuggestion();
-  const { validateSchedule, isValidating, validationResult } = useScheduleValidation();
+  // Mutation para criar escala
+  const createScheduleMutation = useMutation({
+    mutationFn: async (data: { schedule: ScheduleFormData; shifts: ShiftData[] }) => {
+      if (!tenant?.id) throw new Error('Empresa não configurada');
+      const result = await createScheduleWithShifts({
+        name: data.schedule.name,
+        date: data.schedule.date,
+        description: data.schedule.description,
+        notes: data.schedule.notes,
+        shifts: data.shifts
+      }, tenant.id);
+      if (result.error) throw new Error(result.error);
+      return result.data;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Escala criada com sucesso!",
+        description: "A escala foi salva e está disponível no calendário.",
+      });
+      setIsOpen(false);
+      resetForm();
+      queryClient.invalidateQueries({ queryKey: ['schedules', tenant?.id] });
+      trackEvent('schedule_created', {
+        schedule_name: scheduleData.name,
+        shifts_count: shifts.length,
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Erro ao criar escala",
+        description: error.message || "Ocorreu um erro ao criar a escala.",
+        variant: "destructive"
+      });
+    }
+  });
+
+  // Validar escala
+  const { data: validationResult, refetch: validateScheduleData } = useQuery({
+    queryKey: ['validate-schedule', shifts],
+    queryFn: async () => {
+      if (shifts.length === 0 || !employees) return null;
+      const result = await validateSchedule(shifts, employees);
+      if (result.error) throw new Error(result.error);
+      return result.data;
+    },
+    enabled: Boolean(shifts.length > 0 && employees && employees.length > 0),
+  });
+
+  // Calcular custo da escala
+  const { data: costResult, refetch: calculateCost } = useQuery({
+    queryKey: ['calculate-cost', shifts],
+    queryFn: async () => {
+      if (shifts.length === 0 || !employees) return null;
+      const result = await calculateScheduleCost(shifts, employees);
+      if (result.error) throw new Error(result.error);
+      return result.data;
+    },
+    enabled: Boolean(shifts.length > 0 && employees && employees.length > 0),
+  });
 
   // Handlers
-  const handleTemplateSelect = useCallback((template: ScheduleTemplate) => {
-    setSelectedTemplate(template);
-    setIsTemplateModalOpen(false);
-    
-    trackEvent('schedule_template_selected', {
-      template_id: template.id,
-      template_name: template.name,
-    });
-
-    toast({
-      title: "Modelo aplicado",
-      description: `O modelo "${template.name}" foi carregado com sucesso.`,
-    });
-  }, [trackEvent, toast]);
-
-  const handleSaveSchedule = useCallback(async () => {
-    if (!tenant?.id) {
+  const handleAddShift = () => {
+    if (!selectedEmployee || !shiftStartTime || !shiftEndTime) {
       toast({
-        title: "Erro",
-        description: "Empresa não encontrada.",
-        variant: "destructive",
+        title: "Dados incompletos",
+        description: "Preencha todos os campos do turno.",
+        variant: "destructive"
       });
       return;
     }
 
-    try {
-      // Implementar salvamento da escala
-      trackEvent('schedule_saved', {
-        tenant_id: tenant.id,
-        schedule_name: scheduleData.name,
-      });
-
-      toast({
-        title: "Escala salva",
-        description: "A escala foi salva com sucesso.",
-      });
-    } catch (error) {
-      console.error('Erro ao salvar escala:', error);
-      toast({
-        title: "Erro ao salvar",
-        description: "Não foi possível salvar a escala.",
-        variant: "destructive",
-      });
-    }
-  }, [tenant?.id, scheduleData.name, trackEvent, toast]);
-
-  const handleGenerateSuggestion = useCallback(async () => {
-    if (!employees || employees.length === 0) {
-      toast({
-        title: "Funcionários necessários",
-        description: "Adicione funcionários antes de gerar sugestões.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const suggestionData: ScheduleSuggestionRequest = {
-      employees: employees.map(emp => ({
-        id: emp.id,
-        name: emp.name,
-        workload: emp.workload_hours || 40,
-      })),
-      shiftsToFill: [], // Implementar lógica de turnos
-      rules: [
-        "Respeitar carga horária semanal",
-        "Evitar turnos consecutivos",
-        "Distribuir carga de trabalho equitativamente"
-      ]
+    const newShift: ShiftData = {
+      employee_id: selectedEmployee,
+      start_time: `${scheduleData.date}T${shiftStartTime}`,
+      end_time: `${scheduleData.date}T${shiftEndTime}`,
+      notes: ''
     };
 
-    try {
-      await generateSuggestion(suggestionData);
-    } catch (error) {
-      console.error('Erro ao gerar sugestão:', error);
-    }
-  }, [employees, generateSuggestion, toast]);
+    setShifts(prev => [...prev, newShift]);
+    setSelectedEmployee('');
+    setShiftStartTime('08:00');
+    setShiftEndTime('17:00');
 
-  const handleValidateSchedule = useCallback(async () => {
-    if (!employees || employees.length === 0) {
+    // Revalidar e recalcular custos
+    validateScheduleData();
+    calculateCost();
+  };
+
+  const handleRemoveShift = (index: number) => {
+    setShifts(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSaveSchedule = () => {
+    if (!scheduleData.name.trim()) {
       toast({
-        title: "Dados insuficientes",
-        description: "Adicione funcionários e turnos antes de validar.",
-        variant: "destructive",
+        title: "Nome obrigatório",
+        description: "Digite um nome para a escala.",
+        variant: "destructive"
       });
       return;
     }
 
-    const shifts: Shift[] = []; // Implementar lógica de turnos
-    const employeesForValidation: EmployeeForValidation[] = employees.map(emp => ({
-      id: emp.id,
-      workload: emp.workload_hours || 40,
-    }));
+    if (shifts.length === 0) {
+      toast({
+        title: "Turnos obrigatórios",
+        description: "Adicione pelo menos um turno à escala.",
+        variant: "destructive"
+      });
+      return;
+    }
 
-    await validateSchedule(shifts, employeesForValidation);
-  }, [employees, validateSchedule, toast]);
+    createScheduleMutation.mutate({
+      schedule: scheduleData,
+      shifts: shifts
+    });
+  };
 
-  if (!can('schedule:create')) {
-    return (
-      <div className="p-8 text-center">
-        <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold mb-2">Acesso Restrito</h2>
-        <p className="text-gray-600">Você não tem permissão para criar escalas.</p>
-      </div>
-    );
-  }
+  const resetForm = () => {
+    setScheduleData({
+      name: '',
+      date: new Date().toISOString().split('T')[0],
+      description: '',
+      notes: ''
+    });
+    setShifts([]);
+    setSelectedEmployee('');
+    setShiftStartTime('08:00');
+    setShiftEndTime('17:00');
+  };
+
+  const handleCancel = () => {
+    setIsOpen(false);
+    resetForm();
+  };
+
+  const getEmployeeName = (employeeId: string) => {
+    return employees?.find(emp => emp.id === employeeId)?.name || 'Funcionário não encontrado';
+  };
+
+  const formatTime = (timeString: string) => {
+    return timeString.split('T')[1]?.substring(0, 5) || timeString;
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Editor de Escalas</h1>
-          <p className="text-gray-600">Crie e gerencie escalas de trabalho</p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setIsTemplateModalOpen(true)}>
-            <FileText className="w-4 h-4 mr-2" />
-            Modelos
-          </Button>
-          <Button onClick={handleSaveSchedule}>
-            <Save className="w-4 h-4 mr-2" />
-            Salvar Escala
-          </Button>
-        </div>
-      </div>
-
-      <Tabs defaultValue="editor" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="editor">Editor</TabsTrigger>
-          <TabsTrigger value="validation">Validação</TabsTrigger>
-          <TabsTrigger value="costs">Custos</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="editor" className="space-y-6">
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-primary hover:bg-primary/90">
+          <Plus className="mr-2 h-4 w-4" />
+          Nova Escala
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Calendar className="h-5 w-5" />
+            Criar Nova Escala
+          </DialogTitle>
+        </DialogHeader>
+        
+        <div className="space-y-6">
+          {/* Informações da Escala */}
           <Card>
             <CardHeader>
               <CardTitle>Informações da Escala</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="name">Nome da Escala</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="schedule-name">Nome da Escala *</Label>
                   <Input
-                    id="name"
+                    id="schedule-name"
                     value={scheduleData.name}
                     onChange={(e) => setScheduleData(prev => ({ ...prev, name: e.target.value }))}
-                    placeholder="Ex: Escala Semanal - Setembro"
+                    placeholder="Ex: Escala Semanal - Loja Centro"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="date">Data</Label>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="schedule-date">Data *</Label>
                   <Input
-                    id="date"
+                    id="schedule-date"
                     type="date"
                     value={scheduleData.date}
                     onChange={(e) => setScheduleData(prev => ({ ...prev, date: e.target.value }))}
                   />
                 </div>
               </div>
-              <div>
-                <Label htmlFor="description">Descrição</Label>
-                <Textarea
-                  id="description"
+
+              <div className="space-y-2">
+                <Label htmlFor="schedule-description">Descrição</Label>
+                <Input
+                  id="schedule-description"
                   value={scheduleData.description}
                   onChange={(e) => setScheduleData(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Descreva a escala..."
+                  placeholder="Breve descrição da escala"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="schedule-notes">Observações</Label>
+                <Textarea
+                  id="schedule-notes"
+                  value={scheduleData.notes}
+                  onChange={(e) => setScheduleData(prev => ({ ...prev, notes: e.target.value }))}
+                  placeholder="Observações adicionais sobre a escala"
+                  rows={3}
                 />
               </div>
             </CardContent>
           </Card>
 
+          {/* Adicionar Turnos */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span>Calendário de Turnos</span>
-                <Button onClick={handleGenerateSuggestion} disabled={isGeneratingSuggestion}>
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  {isGeneratingSuggestion ? 'Gerando...' : 'Gerar com IA'}
-                </Button>
-              </CardTitle>
+              <CardTitle>Adicionar Turnos</CardTitle>
             </CardHeader>
-            <CardContent>
-              <ScheduleCalendar
-                selectedDate={selectedDate}
-                onDateSelect={setSelectedDate}
-                employees={employees || []}
-              />
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="employee-select">Funcionário *</Label>
+                  <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione um funcionário" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {employees?.map((employee) => (
+                        <SelectItem key={employee.id} value={employee.id}>
+                          {employee.name} - {employee.position}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="start-time">Início *</Label>
+                  <Input
+                    id="start-time"
+                    type="time"
+                    value={shiftStartTime}
+                    onChange={(e) => setShiftStartTime(e.target.value)}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="end-time">Fim *</Label>
+                  <Input
+                    id="end-time"
+                    type="time"
+                    value={shiftEndTime}
+                    onChange={(e) => setShiftEndTime(e.target.value)}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>&nbsp;</Label>
+                  <Button onClick={handleAddShift} className="w-full">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Adicionar
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Sugestões de IA</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {isGeneratingSuggestion ? (
-                <ScheduleSuggestionSkeleton />
-              ) : (
-                <ScheduleSuggestion />
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
+          {/* Lista de Turnos */}
+          {shifts.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Turnos Adicionados ({shifts.length})</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {shifts.map((shift, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center space-x-4">
+                        <Users className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="font-medium">{getEmployeeName(shift.employee_id)}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {formatTime(shift.start_time)} - {formatTime(shift.end_time)}
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleRemoveShift(index)}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-        <TabsContent value="validation" className="space-y-6">
-          <ScheduleValidation
-            validationResult={validationResult}
-            isValidating={isValidating}
-            onValidate={handleValidateSchedule}
-          />
-        </TabsContent>
+          {/* Validação e Custos */}
+          {(validationResult || costResult) && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Análise da Escala</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                                 {validationResult && (
+                   <div className="space-y-2">
+                     <div className="flex items-center space-x-2">
+                       <CheckCircle className="h-4 w-4 text-success" />
+                       <span className="font-medium">Validação CLT</span>
+                     </div>
+                     <div className="pl-6 space-y-1">
+                       {(validationResult as any)?.violations?.length > 0 ? (
+                         (validationResult as any).violations.map((violation: any, index: number) => (
+                           <div key={index} className="flex items-center space-x-2 text-sm text-destructive">
+                             <AlertTriangle className="h-3 w-3" />
+                             <span>{violation.message}</span>
+                           </div>
+                         ))
+                       ) : (
+                         <p className="text-sm text-success">Nenhuma violação encontrada</p>
+                       )}
+                     </div>
+                   </div>
+                 )}
 
-        <TabsContent value="costs" className="space-y-6">
-          <ScheduleCostAnalysis />
-        </TabsContent>
-      </Tabs>
+                 {costResult && (
+                   <div className="space-y-2">
+                     <div className="flex items-center space-x-2">
+                       <BarChart3 className="h-4 w-4 text-primary" />
+                       <span className="font-medium">Custos Estimados</span>
+                     </div>
+                     <div className="pl-6 space-y-1 text-sm">
+                       <p>Custo Total: R$ {(costResult as any)?.totalCost?.toLocaleString('pt-BR') || '0'}</p>
+                       <p>Custo Base: R$ {(costResult as any)?.breakdown?.baseCost?.toLocaleString('pt-BR') || '0'}</p>
+                       <p>Horas Extras: R$ {(costResult as any)?.breakdown?.overtimeCost?.toLocaleString('pt-BR') || '0'}</p>
+                     </div>
+                   </div>
+                 )}
+              </CardContent>
+            </Card>
+          )}
+        </div>
 
-      <Dialog open={isTemplateModalOpen} onOpenChange={setIsTemplateModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Selecionar Modelo</DialogTitle>
-          </DialogHeader>
-          <ScheduleTemplateManager onTemplateSelect={handleTemplateSelect} />
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-};
-*/
-
-// Placeholder temporário
-export const ScheduleEditor: React.FC = () => {
-  return (
-    <div className="p-8 text-center">
-      <h2 className="text-2xl font-bold mb-4">Editor de Escalas</h2>
-      <p className="text-gray-600">Funcionalidade temporariamente indisponível</p>
-    </div>
+        {/* Actions */}
+        <div className="flex justify-end space-x-2 pt-6">
+          <Button variant="outline" onClick={handleCancel} disabled={createScheduleMutation.isPending}>
+            <X className="mr-2 h-4 w-4" />
+            Cancelar
+          </Button>
+          <Button 
+            onClick={handleSaveSchedule} 
+            disabled={createScheduleMutation.isPending || shifts.length === 0}
+            className="bg-primary hover:bg-primary/90"
+          >
+            {createScheduleMutation.isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Salvando...
+              </>
+            ) : (
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Salvar Escala
+              </>
+            )}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };

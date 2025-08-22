@@ -1,9 +1,10 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
+import { type Employee } from '@/services/api';
 import { 
   User,
   Mail,
@@ -14,263 +15,282 @@ import {
   Calendar,
   DollarSign,
   Clock,
-  Edit,
-  MoreHorizontal,
   CheckCircle,
   XCircle,
-  FileText,
-  Award,
-  TrendingUp,
-  Users
+  Edit,
+  Trash2,
+  ArrowLeft
 } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-
-interface Employee {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  position: string;
-  department: string;
-  status: 'active' | 'inactive' | 'vacation';
-  startDate: string;
-  lastUpdate: string;
-  address: string;
-  salary: string;
-  skills: string[];
-}
 
 interface EmployeeDetailsProps {
   employee: Employee;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 export function EmployeeDetails({ employee, onClose }: EmployeeDetailsProps) {
-  const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'active':
+        return <Badge className="bg-success/10 text-success hover:bg-success/20">Ativo</Badge>;
+      case 'inactive':
+        return <Badge className="bg-destructive/10 text-destructive hover:bg-destructive/20">Inativo</Badge>;
+      case 'vacation':
+        return <Badge className="bg-warning/10 text-warning hover:bg-warning/20">Férias</Badge>;
+      default:
+        return <Badge variant="secondary">{status}</Badge>;
+    }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'active': return <CheckCircle className="h-4 w-4 text-success" />;
-      case 'vacation': return <Clock className="h-4 w-4 text-accent" />;
-      case 'inactive': return <XCircle className="h-4 w-4 text-destructive" />;
-      default: return null;
+      case 'active':
+        return <CheckCircle className="h-4 w-4 text-success" />;
+      case 'inactive':
+        return <XCircle className="h-4 w-4 text-destructive" />;
+      case 'vacation':
+        return <Clock className="h-4 w-4 text-warning" />;
+      default:
+        return <Clock className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'active': return 'Ativo';
-      case 'vacation': return 'Férias';
-      case 'inactive': return 'Inativo';
-      default: return status;
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString('pt-BR');
+    } catch {
+      return dateString;
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-success text-success-foreground';
-      case 'vacation': return 'bg-accent text-accent-foreground';
-      case 'inactive': return 'bg-destructive text-destructive-foreground';
-              default: return 'bg-muted text-foreground/80';
-    }
+  const formatSalary = (salary?: number) => {
+    if (!salary) return 'Não informado';
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(salary);
   };
 
-  // Mock data for performance metrics
-  const performanceData = {
-    shiftsCompleted: 142,
-    punctualityRate: 96,
-    performanceScore: 4.7,
-    lastSchedule: '15/08/2024 - Manhã'
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
-  const recentActivities = [
-    { date: '15/08/2024', activity: 'Completou turno da manhã', type: 'shift' },
-    { date: '14/08/2024', activity: 'Treinamento de atendimento', type: 'training' },
-    { date: '12/08/2024', activity: 'Avaliação de desempenho', type: 'evaluation' },
-    { date: '10/08/2024', activity: 'Completou turno da tarde', type: 'shift' }
-  ];
+  const getAddressText = (address?: any) => {
+    if (!address) return 'Não informado';
+    if (typeof address === 'string') return address;
+    if (typeof address === 'object' && address.full) return address.full;
+    return 'Endereço não disponível';
+  };
 
   return (
     <div className="space-y-6">
-      {/* Header with employee basic info */}
-      <Card className="border-primary/20">
-        <CardContent className="p-6">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center space-x-4">
-              <Avatar className="h-16 w-16">
-                <AvatarFallback className="bg-primary text-primary-foreground text-lg">
-                  {getInitials(employee.name)}
-                </AvatarFallback>
-              </Avatar>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <Button variant="ghost" size="sm" onClick={onClose}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Voltar
+        </Button>
+        <div className="flex space-x-2">
+          <Button variant="outline" size="sm">
+            <Edit className="mr-2 h-4 w-4" />
+            Editar
+          </Button>
+          <Button variant="outline" size="sm" className="text-destructive">
+            <Trash2 className="mr-2 h-4 w-4" />
+            Remover
+          </Button>
+        </div>
+      </div>
+
+      {/* Employee Header */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center space-x-4">
+            <Avatar className="h-16 w-16">
+              <AvatarFallback className="text-lg">
+                {getInitials(employee.name)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold">{employee.name}</h2>
+              <p className="text-muted-foreground">{employee.position}</p>
+              <div className="flex items-center space-x-2 mt-2">
+                {getStatusIcon(employee.status || 'active')}
+                {getStatusBadge(employee.status || 'active')}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Contact Information */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <User className="h-5 w-5" />
+            Informações de Contato
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center space-x-3">
+              <Mail className="h-4 w-4 text-muted-foreground" />
               <div>
-                <h2 className="text-2xl font-bold text-foreground">{employee.name}</h2>
-                <p className="text-lg text-foreground/80">{employee.position}</p>
-                <div className="flex items-center space-x-2 mt-1">
-                  {getStatusIcon(employee.status)}
-                  <Badge className={getStatusColor(employee.status)}>
-                    {getStatusLabel(employee.status)}
-                  </Badge>
-                </div>
+                <p className="text-sm font-medium">Email</p>
+                <p className="text-sm text-muted-foreground">{employee.email}</p>
               </div>
             </div>
             
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Edit className="h-4 w-4 mr-2" />
-                  Editar Funcionário
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <FileText className="h-4 w-4 mr-2" />
-                  Gerar Relatório
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive">
-                  <XCircle className="h-4 w-4 mr-2" />
-                  Desativar
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex items-center space-x-3">
+              <Phone className="h-4 w-4 text-muted-foreground" />
+              <div>
+                <p className="text-sm font-medium">Telefone</p>
+                <p className="text-sm text-muted-foreground">
+                  {employee.phone_number || 'Não informado'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-3">
+            <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
+            <div>
+              <p className="text-sm font-medium">Endereço</p>
+              <p className="text-sm text-muted-foreground">
+                {getAddressText(employee.address)}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Professional Information */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Briefcase className="h-5 w-5" />
+            Informações Profissionais
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center space-x-3">
+              <Briefcase className="h-4 w-4 text-muted-foreground" />
+              <div>
+                <p className="text-sm font-medium">Cargo</p>
+                <p className="text-sm text-muted-foreground">{employee.position}</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-3">
+              <Building2 className="h-4 w-4 text-muted-foreground" />
+              <div>
+                <p className="text-sm font-medium">Departamento</p>
+                <p className="text-sm text-muted-foreground">
+                  {employee.department || 'Não informado'}
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <Mail className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{employee.email}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{employee.phone}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{employee.address}</span>
+            <div className="flex items-center space-x-3">
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <div>
+                <p className="text-sm font-medium">Data de Início</p>
+                <p className="text-sm text-muted-foreground">
+                  {formatDate(employee.start_date)}
+                </p>
               </div>
             </div>
             
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <Building2 className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{employee.department}</span>
+            <div className="flex items-center space-x-3">
+              <Clock className="h-4 w-4 text-muted-foreground" />
+              <div>
+                <p className="text-sm font-medium">Carga Horária</p>
+                <p className="text-sm text-muted-foreground">
+                  {employee.workload_hours ? `${employee.workload_hours}h/dia` : 'Não informado'}
+                </p>
               </div>
-              <div className="flex items-center space-x-3">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Desde {employee.startDate}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{employee.salary}</span>
-              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <div>
+              <p className="text-sm font-medium">Salário</p>
+              <p className="text-sm text-muted-foreground">
+                {formatSalary(employee.salary)}
+              </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Skills and competencies */}
+      {/* Skills */}
+      {employee.skills && employee.skills.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Briefcase className="h-5 w-5" />
+              Habilidades
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {employee.skills.map((skill, index) => (
+                <Badge key={index} variant="outline">
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Additional Information */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Award className="h-5 w-5 text-primary" />
-            <span>Habilidades e Competências</span>
+          <CardTitle className="flex items-center gap-2">
+            <User className="h-5 w-5" />
+            Informações Adicionais
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {employee.skills.map((skill, index) => (
-              <Badge key={index} variant="secondary">
-                {skill}
-              </Badge>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Performance metrics */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <TrendingUp className="h-5 w-5 text-primary" />
-            <span>Métricas de Desempenho</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <p className="text-2xl font-bold text-primary">{performanceData.shiftsCompleted}</p>
-              <p className="text-sm text-muted-foreground">Turnos Completos</p>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm font-medium">ID do Funcionário</p>
+              <p className="text-sm text-muted-foreground font-mono">
+                {employee.id}
+              </p>
             </div>
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <p className="text-2xl font-bold text-success">{performanceData.punctualityRate}%</p>
-              <p className="text-sm text-muted-foreground">Pontualidade</p>
-            </div>
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <p className="text-2xl font-bold text-accent">{performanceData.performanceScore}</p>
-              <p className="text-sm text-muted-foreground">Avaliação</p>
-            </div>
-            <div className="text-center p-3 bg-muted/50 rounded-lg">
-              <p className="text-sm font-medium text-foreground">{performanceData.lastSchedule}</p>
-              <p className="text-sm text-muted-foreground">Última Escala</p>
+            
+            <div>
+              <p className="text-sm font-medium">Empresa</p>
+              <p className="text-sm text-muted-foreground">
+                ID: {employee.company_id}
+              </p>
             </div>
           </div>
+
+          {employee.created_at && (
+            <div>
+              <p className="text-sm font-medium">Data de Cadastro</p>
+              <p className="text-sm text-muted-foreground">
+                {formatDate(employee.created_at)}
+              </p>
+            </div>
+          )}
+
+          {employee.updated_at && (
+            <div>
+              <p className="text-sm font-medium">Última Atualização</p>
+              <p className="text-sm text-muted-foreground">
+                {formatDate(employee.updated_at)}
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
-
-      {/* Recent activities */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Clock className="h-5 w-5 text-primary" />
-            <span>Atividades Recentes</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {recentActivities.map((activity, index) => (
-              <div key={index} className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg">
-                <div className={`w-2 h-2 rounded-full ${
-                  activity.type === 'shift' ? 'bg-primary' :
-                  activity.type === 'training' ? 'bg-secondary' :
-                  'bg-accent'
-                }`} />
-                <div className="flex-1">
-                  <p className="text-sm font-medium">{activity.activity}</p>
-                  <p className="text-xs text-muted-foreground">{activity.date}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Action buttons */}
-      <div className="flex space-x-3">
-        <Button variant="outline" className="flex-1">
-          <FileText className="h-4 w-4 mr-2" />
-          Gerar Relatório
-        </Button>
-        <Button variant="outline" className="flex-1">
-          <Users className="h-4 w-4 mr-2" />
-          Ver Escalas
-        </Button>
-        <Button className="flex-1">
-          <Edit className="h-4 w-4 mr-2" />
-          Editar Dados
-        </Button>
-      </div>
     </div>
   );
 }

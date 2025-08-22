@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTenant } from '@/contexts/TenantContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -6,6 +8,8 @@ import { EmployeeFilters } from '@/components/employees/EmployeeFilters';
 import { EmployeeTable } from '@/components/employees/EmployeeTable';
 import { EmployeeForm } from '@/components/employees/EmployeeForm';
 import { EmployeeDetails } from '@/components/employees/EmployeeDetails';
+import { getEmployees, deleteEmployee, type Employee } from '@/services/api';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Users,
   HelpCircle,
@@ -23,24 +27,44 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-interface Employee {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  position: string;
-  department: string;
-  status: 'active' | 'inactive' | 'vacation';
-  startDate: string;
-  lastUpdate: string;
-  address: string;
-  salary: string;
-  skills: string[];
-}
-
 export default function Employees() {
+  const { currentTenant: tenant } = useTenant();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+  // Buscar funcionários
+  const { data: employees, isLoading, error } = useQuery({
+    queryKey: ['employees', tenant?.id],
+    queryFn: async () => {
+      if (!tenant?.id) throw new Error('Empresa não configurada');
+      const result = await getEmployees(tenant.id);
+      if (result.error) throw new Error(result.error);
+      return result.data || [];
+    },
+    enabled: !!tenant?.id,
+  });
+
+  // Mutation para deletar funcionário
+  const deleteEmployeeMutation = useMutation({
+    mutationFn: deleteEmployee,
+    onSuccess: () => {
+      toast({
+        title: "Funcionário removido",
+        description: "O funcionário foi removido com sucesso.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['employees', tenant?.id] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Erro ao remover funcionário",
+        description: error.message || "Ocorreu um erro ao remover o funcionário.",
+        variant: "destructive"
+      });
+    }
+  });
 
   const handleEmployeeSelect = (employee: Employee) => {
     setSelectedEmployee(employee);
@@ -51,6 +75,36 @@ export default function Employees() {
     setIsDetailsOpen(false);
     setSelectedEmployee(null);
   };
+
+  const handleDeleteEmployee = (employeeId: string) => {
+    if (confirm('Tem certeza que deseja remover este funcionário?')) {
+      deleteEmployeeMutation.mutate(employeeId);
+    }
+  };
+
+  // Calcular estatísticas
+  const stats = {
+    active: employees?.filter(emp => emp.status === 'active').length || 0,
+    newThisMonth: employees?.filter(emp => {
+      const startDate = new Date(emp.start_date);
+      const now = new Date();
+      return startDate.getMonth() === now.getMonth() && startDate.getFullYear() === now.getFullYear();
+    }).length || 0,
+    performance: 4.6, // Mock data
+    vacation: employees?.filter(emp => emp.status === 'vacation').length || 0,
+  };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-destructive mb-4">Erro ao carregar funcionários</h2>
+          <p className="text-muted-foreground mb-4">{error.message}</p>
+          <Button onClick={() => window.location.reload()}>Tentar novamente</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <TooltipProvider>
@@ -107,7 +161,7 @@ export default function Employees() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Funcionários Ativos</p>
-                    <p className="text-2xl font-bold text-foreground">48</p>
+                    <p className="text-2xl font-bold text-foreground">{stats.active}</p>
                   </div>
                 </div>
               </CardContent>
@@ -121,7 +175,7 @@ export default function Employees() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Novos este Mês</p>
-                    <p className="text-2xl font-bold text-foreground">7</p>
+                    <p className="text-2xl font-bold text-foreground">{stats.newThisMonth}</p>
                   </div>
                 </div>
               </CardContent>
@@ -135,7 +189,7 @@ export default function Employees() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Desempenho Médio</p>
-                    <p className="text-2xl font-bold text-foreground">4.6</p>
+                    <p className="text-2xl font-bold text-foreground">{stats.performance}</p>
                   </div>
                 </div>
               </CardContent>
@@ -149,7 +203,7 @@ export default function Employees() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Em Férias</p>
-                    <p className="text-2xl font-bold text-foreground">3</p>
+                    <p className="text-2xl font-bold text-foreground">{stats.vacation}</p>
                   </div>
                 </div>
               </CardContent>
@@ -163,7 +217,10 @@ export default function Employees() {
 
             {/* Employee Table */}
             <EmployeeTable 
+              employees={employees || []}
+              isLoading={isLoading}
               onEmployeeSelect={handleEmployeeSelect}
+              onDeleteEmployee={handleDeleteEmployee}
               selectedEmployee={selectedEmployee}
             />
           </div>
@@ -211,7 +268,7 @@ export default function Employees() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Users className="h-4 w-4" />
-                  <span>51 funcionários cadastrados</span>
+                  <span>{employees?.length || 0} funcionários cadastrados</span>
                 </div>
               </div>
               
