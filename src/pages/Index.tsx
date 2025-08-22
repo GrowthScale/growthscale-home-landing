@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { PlayCircle, ShieldCheck, Clock, Check, Star } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { ComparisonSection } from '@/components/ComparisonSection';
+import { FaqSection } from '@/components/FAQSection';
 
 // --- COMPONENTES DA PÁGINA ---
 
@@ -45,7 +47,6 @@ const SocialProofSection = () => (
     <section className="py-20 bg-secondary">
         <div className="container mx-auto px-4 text-center">
             <p className="text-muted-foreground mb-12">A ferramenta de confiança para gestores de restaurantes que valorizam o seu tempo e a sua tranquilidade</p>
-            {/* ANOTAÇÃO: No futuro, substitua por logos reais de clientes */}
             <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-4">
                 <span className="font-medium text-muted-foreground/50">Restaurante Modelo</span>
                 <span className="font-medium text-muted-foreground/50">Bistrô Fictício</span>
@@ -55,7 +56,6 @@ const SocialProofSection = () => (
     </section>
 );
 
-// --- SECÇÃO DE SOLUÇÃO (MODO CINEMA - ESCURO) ---
 const SolutionSection = () => (
   <section id="recursos" className="py-20 md:py-28 bg-[hsl(var(--background-dark))] text-foreground-dark" aria-labelledby="solution-title">
     <div className="container mx-auto px-4 space-y-24">
@@ -109,7 +109,6 @@ const PricingSection = () => (
     </section>
 );
 
-
 const Footer = () => (
   <footer className="py-12 bg-secondary border-t">
     <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -121,7 +120,6 @@ const Footer = () => (
   </footer>
 );
 
-// --- A PÁGINA PRINCIPAL QUE JUNTA TUDO ---
 export default function Index() {
   return (
     <>
@@ -130,9 +128,10 @@ export default function Index() {
         <HeroSection />
         <SocialProofSection />
         <SolutionSection />
+        <ComparisonSection />
         <TestimonialsSection />
         <PricingSection />
-        {/* Adicione aqui a Tabela Comparativa e o FAQ quando necessário */}
+        <FaqSection />
       </main>
       <Footer />
     </>
