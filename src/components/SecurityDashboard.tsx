@@ -188,7 +188,7 @@ export function SecurityDashboard() {
               <div>
                 <h3 className="font-semibold mb-4">Threat Protection</h3>
                 <div className="space-y-3">
-                  {Object.entries(securityStatus.threats).map(([threat, status]) => (
+                  {securityStatus?.threats && Object.entries(securityStatus.threats).map(([threat, status]) => (
                     <div key={threat} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <div className="flex items-center gap-2">
                         <Lock className="w-4 h-4" />
@@ -207,7 +207,7 @@ export function SecurityDashboard() {
               <div>
                 <h3 className="font-semibold mb-4">Security Headers</h3>
                 <div className="space-y-3">
-                  {Object.entries(securityStatus.headers).map(([header, status]) => (
+                  {securityStatus?.headers && Object.entries(securityStatus.headers).map(([header, status]) => (
                     <div key={header} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <div className="flex items-center gap-2">
                         <Settings className="w-4 h-4" />
@@ -224,7 +224,7 @@ export function SecurityDashboard() {
             </div>
 
             {/* Recommendations */}
-            {securityStatus.recommendations.length > 0 && (
+            {securityStatus?.recommendations && securityStatus.recommendations.length > 0 && (
               <div className="mt-6">
                 <h3 className="font-semibold mb-3">Recommendations</h3>
                 <div className="space-y-2">
@@ -253,22 +253,22 @@ export function SecurityDashboard() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
               <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">{auditData.compliance_summary.gdpr_article_6}</div>
+                <div className="text-2xl font-bold text-green-600">{auditData?.compliance_summary?.gdpr_article_6 || 0}</div>
                 <div className="text-sm text-green-600">Article 6 (Legal Basis)</div>
               </div>
               
               <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">{auditData.compliance_summary.gdpr_article_7}</div>
+                <div className="text-2xl font-bold text-blue-600">{auditData?.compliance_summary?.gdpr_article_7 || 0}</div>
                 <div className="text-sm text-blue-600">Article 7 (Consent)</div>
               </div>
               
               <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                <div className="text-2xl font-bold text-yellow-600">{auditData.compliance_summary.gdpr_article_17}</div>
+                <div className="text-2xl font-bold text-yellow-600">{auditData?.compliance_summary?.gdpr_article_17 || 0}</div>
                 <div className="text-sm text-yellow-600">Article 17 (Right to be Forgotten)</div>
               </div>
               
               <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                <div className="text-2xl font-bold text-purple-600">{auditData.total_events}</div>
+                <div className="text-2xl font-bold text-purple-600">{auditData?.total_events || 0}</div>
                 <div className="text-sm text-purple-600">Total Audit Events</div>
               </div>
             </div>
@@ -314,7 +314,7 @@ export function SecurityDashboard() {
               <div>
                 <h3 className="font-semibold mb-3">Events by Category</h3>
                 <div className="space-y-2">
-                  {Object.entries(auditData.events_by_category).map(([category, count]) => (
+                  {auditData?.events_by_category && Object.entries(auditData.events_by_category).map(([category, count]) => (
                     <div key={category} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
                       <span className="text-sm capitalize">{category.replace('_', ' ')}</span>
                       <Badge variant="secondary">{count}</Badge>
@@ -327,7 +327,7 @@ export function SecurityDashboard() {
               <div>
                 <h3 className="font-semibold mb-3">Events by Severity</h3>
                 <div className="space-y-2">
-                  {Object.entries(auditData.events_by_severity).map(([severity, count]) => (
+                  {auditData?.events_by_severity && Object.entries(auditData.events_by_severity).map(([severity, count]) => (
                     <div key={severity} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
                       <span className="text-sm capitalize">{severity}</span>
                       <Badge variant="secondary">{count}</Badge>
@@ -339,7 +339,7 @@ export function SecurityDashboard() {
 
             {/* Recent Events List */}
             <div className="space-y-2 max-h-64 overflow-y-auto">
-              {auditData.recent_events.slice(0, 10).map((event, index) => (
+              {auditData?.recent_events && auditData.recent_events.slice(0, 10).map((event, index) => (
                 <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
