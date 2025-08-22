@@ -6,28 +6,32 @@
 
 @layer base {
   :root {
-    /* PALETA PERFEITA NEUROCIENTÍFICA */
+    /* PALETA PERFEITA NEUROCIENTÍFICA - CORRIGIDA */
     
     /* AZUL PROFISSIONAL - Confiança e Estabilidade */
     --primary: 221.2 83.2% 53.3%; /* #3B82F6 */
     --primary-dark: 221.2 83.2% 43.3%; /* #2563EB */
+    --primary-foreground: 210 40% 98%;
     
     /* VERDE SUCESSO - Crescimento e Eficiência */
     --success: 142 76% 36%; /* #059669 */
     --success-light: 142 76% 46%; /* #10B981 */
+    --success-foreground: 0 0% 98%;
     
     /* LARANJA AÇÃO - Urgência e Conversão */
     --accent: 38 92% 50%; /* #F59E0B */
     --accent-dark: 38 92% 40%; /* #D97706 */
+    --accent-foreground: 24 9.8% 10%;
     
     /* CINZA SOFISTICADO - Profissionalismo */
     --neutral: 215 25% 27%; /* #374151 */
     --neutral-light: 210 40% 98%; /* #F8FAFC */
+    --neutral-foreground: 222.2 84% 4.9%;
     
     /* BRANCO LIMPO - Clareza */
     --white: 0 0% 100%; /* #FFFFFF */
     
-    /* CORES DE FUNDO */
+    /* CORES DE FUNDO PADRONIZADAS */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -76,7 +80,7 @@
     animation: fade-in-up 0.8s ease-out forwards;
   }
   
-  /* UTILITÁRIOS PARA A PALETA PERFEITA */
+  /* UTILITÁRIOS PARA A PALETA PERFEITA - CORRIGIDOS */
   .bg-primary-gradient {
     background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
   }
@@ -101,5 +105,42 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+  
+  /* CORES SEMÂNTICAS CORRIGIDAS */
+  .text-primary {
+    color: hsl(var(--primary));
+  }
+  
+  .text-success {
+    color: hsl(var(--success));
+  }
+  
+  .text-accent {
+    color: hsl(var(--accent));
+  }
+  
+  .text-neutral {
+    color: hsl(var(--neutral));
+  }
+  
+  .bg-primary {
+    background-color: hsl(var(--primary));
+  }
+  
+  .bg-success {
+    background-color: hsl(var(--success));
+  }
+  
+  .bg-accent {
+    background-color: hsl(var(--accent));
+  }
+  
+  .bg-neutral {
+    background-color: hsl(var(--neutral));
+  }
+  
+  .bg-neutral-light {
+    background-color: hsl(var(--neutral-light));
   }
 }

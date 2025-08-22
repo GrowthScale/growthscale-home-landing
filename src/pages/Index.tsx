@@ -31,6 +31,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
+// ===== HEADER =====
 const Header = () => (
   <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/90 backdrop-blur-lg">
     <div className="container flex h-16 items-center">
@@ -56,6 +57,7 @@ const Header = () => (
   </header>
 );
 
+// ===== BANNER DE URGÊNCIA =====
 const UrgencyBanner = () => (
   <div className="bg-accent/10 border-b border-accent/20">
     <div className="container mx-auto px-4 py-2">
@@ -69,9 +71,12 @@ const UrgencyBanner = () => (
   </div>
 );
 
+// ===== HERO SECTION =====
 const HeroSection = () => (
   <section className="relative min-h-screen bg-gradient-to-br from-primary via-primary-dark to-success overflow-hidden">
+    {/* Background Elements */}
     <div className="absolute inset-0">
+      {/* Floating Icons */}
       <div className="absolute top-20 left-10 animate-bounce">
         <ChefHat className="h-16 w-16 text-white/20" />
       </div>
@@ -81,31 +86,39 @@ const HeroSection = () => (
       <div className="absolute bottom-20 left-1/4 animate-bounce delay-1000">
         <Coffee className="h-14 w-14 text-white/20" />
       </div>
+      
+      {/* Geometric Shapes */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-success/20 rounded-full blur-3xl" />
     </div>
 
+    {/* Main Content */}
     <div className="relative z-10 container mx-auto px-4 py-32">
       <div className="max-w-6xl mx-auto text-center">
+        
+        {/* Trust Badge */}
         <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-6 py-3 mb-8 animate-fade-in-up">
           <ShieldCheck className="h-5 w-5 text-white" />
           <span className="text-white font-medium">+500 restaurantes já confiam</span>
           <Star className="h-4 w-4 text-accent fill-accent" />
         </div>
 
+        {/* Main Headline */}
         <h1 className="text-5xl md:text-7xl font-black text-white mb-8 leading-tight animate-fade-in-up">
           <span className="block">Transforme o caos das</span>
-          <span className="block bg-gradient-to-r from-accent to-accent-dark bg-clip-text text-transparent">
+          <span className="block text-gradient-accent">
             escalas em harmonia
           </span>
           <span className="block">com IA inteligente</span>
         </h1>
 
+        {/* Subheadline */}
         <p className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto mb-12 animate-fade-in-up delay-200">
           Economize 15 horas por semana. Elimine multas CLT. 
           <span className="font-bold text-accent"> IA que entende o ritmo da sua cozinha.</span>
         </p>
 
+        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 animate-fade-in-up delay-400">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
             <div className="flex items-center justify-center mb-4">
@@ -132,6 +145,7 @@ const HeroSection = () => (
           </div>
         </div>
 
+        {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up delay-600">
           <Button className="bg-accent hover:bg-accent-dark text-white px-12 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-accent/25 transition-all duration-300 hover:scale-105">
             <ChefHat className="mr-2 h-6 w-6" />
@@ -143,6 +157,7 @@ const HeroSection = () => (
           </Button>
         </div>
 
+        {/* Guarantee */}
         <div className="mt-12 text-white/80 animate-fade-in-up delay-800">
           <ShieldCheck className="inline h-5 w-5 mr-2" />
           Teste grátis por 14 dias • Cancele quando quiser • Sem compromisso
@@ -150,16 +165,18 @@ const HeroSection = () => (
       </div>
     </div>
 
+    {/* Demo Preview */}
     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 animate-fade-in-up delay-1000">
       <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 shadow-2xl">
-        <img src="/placeholder-dashboard-dark.png" alt="Interface do GrowthScale" className="w-96 h-64 object-cover rounded-xl" />
+        <img src="/placeholder-dashboard.png" alt="Interface do GrowthScale" className="w-96 h-64 object-cover rounded-xl" />
       </div>
     </div>
   </section>
 );
 
+// ===== SEÇÃO DE SOLUÇÃO =====
 const SolutionSection = () => (
-  <section id="solucao" className="py-24 bg-gradient-to-br from-neutral-light to-white">
+  <section id="solucao" className="py-24 bg-white">
     <div className="container mx-auto px-4">
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-neutral mb-6">
@@ -170,10 +187,11 @@ const SolutionSection = () => (
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Restaurantes */}
         <div className="group bg-white rounded-2xl p-8 shadow-xl border border-neutral/10 hover:shadow-2xl transition-all duration-300 hover:scale-105">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-primary-gradient rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Utensils className="h-8 w-8 text-white" />
             </div>
           </div>
@@ -183,9 +201,10 @@ const SolutionSection = () => (
           </p>
         </div>
 
+        {/* Bares */}
         <div className="group bg-white rounded-2xl p-8 shadow-xl border border-neutral/10 hover:shadow-2xl transition-all duration-300 hover:scale-105">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-success to-success-light rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-success-gradient rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Wine className="h-8 w-8 text-white" />
             </div>
           </div>
@@ -195,9 +214,10 @@ const SolutionSection = () => (
           </p>
         </div>
 
+        {/* Cafés */}
         <div className="group bg-white rounded-2xl p-8 shadow-xl border border-neutral/10 hover:shadow-2xl transition-all duration-300 hover:scale-105">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-accent to-accent-dark rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-accent-gradient rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Coffee className="h-8 w-8 text-white" />
             </div>
           </div>
@@ -207,9 +227,10 @@ const SolutionSection = () => (
           </p>
         </div>
 
+        {/* Fast Food */}
         <div className="group bg-white rounded-2xl p-8 shadow-xl border border-neutral/10 hover:shadow-2xl transition-all duration-300 hover:scale-105">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary-dark to-neutral rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-neutral rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <Pizza className="h-8 w-8 text-white" />
             </div>
           </div>
@@ -223,64 +244,68 @@ const SolutionSection = () => (
   </section>
 );
 
+// ===== SEÇÃO DE BENEFÍCIOS =====
 const BenefitsSection = () => (
-  <section className="py-24 bg-gradient-to-br from-neutral to-neutral-light">
+  <section className="py-24 bg-neutral-light">
     <div className="container mx-auto px-4">
       <div className="text-center mb-16">
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+        <h2 className="text-4xl md:text-5xl font-bold text-neutral mb-6">
           Benefícios que transformam sua operação
         </h2>
-        <p className="text-xl text-white/80 max-w-3xl mx-auto">
+        <p className="text-xl text-neutral/70 max-w-3xl mx-auto">
           Cada funcionalidade resolve um problema real do food service
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:shadow-2xl transition-all duration-300 hover:scale-105">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Economia de Tempo */}
+        <div className="bg-white rounded-2xl p-8 shadow-xl border border-neutral/10 hover:shadow-2xl transition-all duration-300 hover:scale-105">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-accent to-accent-dark rounded-2xl flex items-center justify-center">
+            <div className="w-16 h-16 bg-accent-gradient rounded-2xl flex items-center justify-center">
               <Clock className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h3 className="text-xl font-bold text-white mb-4 text-center">Economia de Tempo</h3>
-          <p className="text-white/80 text-center mb-6">
+          <h3 className="text-xl font-bold text-neutral mb-4 text-center">Economia de Tempo</h3>
+          <p className="text-neutral/70 text-center mb-6">
             Transforme 4 horas de trabalho em 5 minutos com IA inteligente
           </p>
           <div className="flex items-center justify-center">
             <div className="text-3xl font-bold text-accent">90%</div>
-            <div className="text-white/60 ml-2">menos tempo</div>
+            <div className="text-neutral/60 ml-2">menos tempo</div>
           </div>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:shadow-2xl transition-all duration-300 hover:scale-105">
+        {/* Compliance CLT */}
+        <div className="bg-white rounded-2xl p-8 shadow-xl border border-neutral/10 hover:shadow-2xl transition-all duration-300 hover:scale-105">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-success to-success-light rounded-2xl flex items-center justify-center">
+            <div className="w-16 h-16 bg-success-gradient rounded-2xl flex items-center justify-center">
               <Shield className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h3 className="text-xl font-bold text-white mb-4 text-center">Compliance CLT</h3>
-          <p className="text-white/80 text-center mb-6">
+          <h3 className="text-xl font-bold text-neutral mb-4 text-center">Compliance CLT</h3>
+          <p className="text-neutral/70 text-center mb-6">
             Validação automática de todas as regras trabalhistas
           </p>
           <div className="flex items-center justify-center">
             <div className="text-3xl font-bold text-success">100%</div>
-            <div className="text-white/60 ml-2">conformidade</div>
+            <div className="text-neutral/60 ml-2">conformidade</div>
           </div>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:shadow-2xl transition-all duration-300 hover:scale-105">
+        {/* Economia de Dinheiro */}
+        <div className="bg-white rounded-2xl p-8 shadow-xl border border-neutral/10 hover:shadow-2xl transition-all duration-300 hover:scale-105">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center">
+            <div className="w-16 h-16 bg-primary-gradient rounded-2xl flex items-center justify-center">
               <DollarSign className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h3 className="text-xl font-bold text-white mb-4 text-center">Economia de Dinheiro</h3>
-          <p className="text-white/80 text-center mb-6">
+          <h3 className="text-xl font-bold text-neutral mb-4 text-center">Economia de Dinheiro</h3>
+          <p className="text-neutral/70 text-center mb-6">
             Reduza custos operacionais e evite multas trabalhistas
           </p>
           <div className="flex items-center justify-center">
             <div className="text-3xl font-bold text-primary">R$ 2.5k</div>
-            <div className="text-white/60 ml-2">economia/mês</div>
+            <div className="text-neutral/60 ml-2">economia/mês</div>
           </div>
         </div>
       </div>
@@ -288,6 +313,7 @@ const BenefitsSection = () => (
   </section>
 );
 
+// ===== SEÇÃO DE PROVA SOCIAL =====
 const SocialProofSection = () => (
   <section className="py-20 bg-white">
     <div className="container mx-auto px-4 text-center">
@@ -304,7 +330,7 @@ const SocialProofSection = () => (
       <div className="max-w-3xl mx-auto">
         <div className="bg-neutral-light rounded-2xl p-8 shadow-xl border border-neutral/10">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary-gradient rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-lg">M</span>
             </div>
             <div>
@@ -328,6 +354,7 @@ const SocialProofSection = () => (
   </section>
 );
 
+// ===== SEÇÃO DE PREÇOS =====
 const PricingSection = () => (
   <section id="precos" className="py-20 md:py-28 bg-neutral-light" aria-labelledby="pricing-title">
     <div className="container mx-auto px-4">
@@ -335,7 +362,8 @@ const PricingSection = () => (
         <h2 id="pricing-title" className="text-3xl md:text-4xl font-bold text-neutral">Um plano para cada tamanho de ambição.</h2>
         <p className="text-lg text-neutral/70 mt-4">Comece de graça e cresça sem medo. Sem taxas escondidas, sem surpresas.</p>
       </header>
-      <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {/* Free Plan */}
         <Card className="flex flex-col">
           <CardHeader>
             <CardTitle>Free</CardTitle>
@@ -354,6 +382,7 @@ const PricingSection = () => (
           </Button>
         </Card>
         
+        {/* Business Plan */}
         <Card className="flex flex-col border-primary ring-2 ring-primary relative">
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
             <Badge className="bg-accent text-white">Mais Popular</Badge>
@@ -377,6 +406,7 @@ const PricingSection = () => (
           </Button>
         </Card>
         
+        {/* Enterprise Plan */}
         <Card className="flex flex-col">
           <CardHeader>
             <CardTitle>Enterprise</CardTitle>
@@ -397,6 +427,7 @@ const PricingSection = () => (
         </Card>
       </div>
       
+      {/* Guarantee */}
       <div className="text-center mt-12">
         <div className="inline-flex items-center gap-2 bg-success/10 rounded-full px-6 py-3 border border-success/20">
           <ShieldCheck className="h-5 w-5 text-success" />
@@ -407,17 +438,43 @@ const PricingSection = () => (
   </section>
 );
 
+// ===== FOOTER =====
 const Footer = () => (
   <footer className="py-12 bg-neutral border-t border-neutral/20">
     <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
-      <div><h3 className="font-semibold text-white mb-4">Produto</h3><ul className="space-y-2"><li><Link to="/#solucao" className="text-white/60 hover:text-white">Solução</Link></li><li><Link to="/#precos" className="text-white/60 hover:text-white">Preços</Link></li></ul></div>
-      <div><h3 className="font-semibold text-white mb-4">Empresa</h3><ul className="space-y-2"><li><Link to="/sobre" className="text-white/60 hover:text-white">Sobre Nós</Link></li><li><Link to="/contato" className="text-white/60 hover:text-white">Contato</Link></li></ul></div>
-      <div><h3 className="font-semibold text-white mb-4">Legal</h3><ul className="space-y-2"><li><Link to="/legal/termos" className="text-white/60 hover:text-white">Termos de Uso</Link></li><li><Link to="/legal/privacidade" className="text-white/60 hover:text-white">Política de Privacidade</Link></li></ul></div>
-      <div className="col-span-2 md:col-span-1 text-right md:text-left"><Link to="/" className="flex items-center justify-end md:justify-start space-x-2 mb-4"><ChefHat className="h-6 w-6 text-accent" /><span className="font-bold text-white">GrowthScale</span></Link><p className="text-white/60 text-sm">© {new Date().getFullYear()} GrowthScale. A tranquilidade de uma operação sob controlo.</p></div>
+      <div>
+        <h3 className="font-semibold text-white mb-4">Produto</h3>
+        <ul className="space-y-2">
+          <li><Link to="/#solucao" className="text-white/60 hover:text-white">Solução</Link></li>
+          <li><Link to="/#precos" className="text-white/60 hover:text-white">Preços</Link></li>
+        </ul>
+      </div>
+      <div>
+        <h3 className="font-semibold text-white mb-4">Empresa</h3>
+        <ul className="space-y-2">
+          <li><Link to="/sobre" className="text-white/60 hover:text-white">Sobre Nós</Link></li>
+          <li><Link to="/contato" className="text-white/60 hover:text-white">Contato</Link></li>
+        </ul>
+      </div>
+      <div>
+        <h3 className="font-semibold text-white mb-4">Legal</h3>
+        <ul className="space-y-2">
+          <li><Link to="/legal/termos" className="text-white/60 hover:text-white">Termos de Uso</Link></li>
+          <li><Link to="/legal/privacidade" className="text-white/60 hover:text-white">Política de Privacidade</Link></li>
+        </ul>
+      </div>
+      <div className="col-span-2 md:col-span-1 text-right md:text-left">
+        <Link to="/" className="flex items-center justify-end md:justify-start space-x-2 mb-4">
+          <ChefHat className="h-6 w-6 text-accent" />
+          <span className="font-bold text-white">GrowthScale</span>
+        </Link>
+        <p className="text-white/60 text-sm">© {new Date().getFullYear()} GrowthScale. A tranquilidade de uma operação sob controlo.</p>
+      </div>
     </div>
   </footer>
 );
 
+// ===== COMPONENTE PRINCIPAL =====
 export default function Index() {
   return (
     <>
