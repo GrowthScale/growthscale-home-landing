@@ -59,7 +59,7 @@ const Header = () => (
 
 // ===== HERO SECTION =====
 const HeroSection = () => (
-  <section className="relative min-h-screen bg-gradient-to-br from-primary via-primary-dark to-success overflow-hidden">
+  <section className="relative min-h-screen bg-primary overflow-hidden">
     {/* Background Elements */}
     <div className="absolute inset-0">
       {/* Floating Icons */}
@@ -73,9 +73,8 @@ const HeroSection = () => (
         <Coffee className="h-14 w-14 text-white/30" />
       </div>
       
-      {/* Geometric Shapes */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-success/20 rounded-full blur-3xl" />
+      {/* Subtle Pattern Overlay */}
+      <div className="absolute inset-0 bg-black/10" />
     </div>
 
     {/* Main Content */}
