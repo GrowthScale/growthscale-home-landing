@@ -57,20 +57,6 @@ const Header = () => (
   </header>
 );
 
-// ===== BANNER DE URGÊNCIA =====
-const UrgencyBanner = () => (
-  <div className="bg-accent/10 border-b border-accent/20">
-    <div className="container mx-auto px-4 py-2">
-      <div className="flex items-center justify-center gap-2 text-sm font-medium text-accent">
-        <AlertTriangle className="h-4 w-4" />
-        <span>⚠️ Últimas 23 vagas para demonstração gratuita</span>
-        <span className="hidden sm:inline">•</span>
-        <span className="hidden sm:inline">⏰ Oferta expira em 2h 47min</span>
-      </div>
-    </div>
-  </div>
-);
-
 // ===== HERO SECTION =====
 const HeroSection = () => (
   <section className="relative min-h-screen bg-gradient-to-br from-primary via-primary-dark to-success overflow-hidden">
@@ -78,13 +64,13 @@ const HeroSection = () => (
     <div className="absolute inset-0">
       {/* Floating Icons */}
       <div className="absolute top-20 left-10 animate-bounce">
-        <ChefHat className="h-16 w-16 text-white/20" />
+        <ChefHat className="h-16 w-16 text-white/30" />
       </div>
       <div className="absolute top-40 right-20 animate-pulse">
-        <Utensils className="h-12 w-12 text-white/20" />
+        <Utensils className="h-12 w-12 text-white/30" />
       </div>
       <div className="absolute bottom-20 left-1/4 animate-bounce delay-1000">
-        <Coffee className="h-14 w-14 text-white/20" />
+        <Coffee className="h-14 w-14 text-white/30" />
       </div>
       
       {/* Geometric Shapes */}
@@ -97,51 +83,51 @@ const HeroSection = () => (
       <div className="max-w-6xl mx-auto text-center">
         
         {/* Trust Badge */}
-        <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-6 py-3 mb-8 animate-fade-in-up">
+        <div className="inline-flex items-center gap-3 bg-white/25 backdrop-blur-sm border border-white/40 rounded-full px-6 py-3 mb-8 animate-fade-in-up">
           <ShieldCheck className="h-5 w-5 text-white" />
           <span className="text-white font-medium">+500 restaurantes já confiam</span>
           <Star className="h-4 w-4 text-accent fill-accent" />
         </div>
 
         {/* Main Headline */}
-        <h1 className="text-5xl md:text-7xl font-black text-white mb-8 leading-tight animate-fade-in-up">
+        <h1 className="text-5xl md:text-7xl font-black text-white mb-8 leading-tight animate-fade-in-up drop-shadow-lg">
           <span className="block">Transforme o caos das</span>
-          <span className="block text-gradient-accent">
+          <span className="block text-gradient-accent drop-shadow-lg">
             escalas em harmonia
           </span>
           <span className="block">com IA inteligente</span>
         </h1>
 
         {/* Subheadline */}
-        <p className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto mb-12 animate-fade-in-up delay-200">
+        <p className="text-xl md:text-2xl text-white max-w-4xl mx-auto mb-12 animate-fade-in-up delay-200 drop-shadow-md">
           Economize 15 horas por semana. Elimine multas CLT. 
-          <span className="font-bold text-accent"> IA que entende o ritmo da sua cozinha.</span>
+          <span className="font-bold text-accent drop-shadow-lg"> IA que entende o ritmo da sua cozinha.</span>
         </p>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 animate-fade-in-up delay-400">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+          <div className="bg-white/25 backdrop-blur-sm rounded-2xl p-6 border border-white/40 shadow-xl">
             <div className="flex items-center justify-center mb-4">
-              <Clock className="h-12 w-12 text-accent" />
+              <Clock className="h-12 w-12 text-accent drop-shadow-lg" />
             </div>
-            <div className="text-3xl md:text-4xl font-bold text-white mb-2">15h</div>
-            <div className="text-white/80">Economizadas por semana</div>
+            <div className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">15h</div>
+            <div className="text-white drop-shadow-md">Economizadas por semana</div>
           </div>
           
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+          <div className="bg-white/25 backdrop-blur-sm rounded-2xl p-6 border border-white/40 shadow-xl">
             <div className="flex items-center justify-center mb-4">
-              <Shield className="h-12 w-12 text-success" />
+              <Shield className="h-12 w-12 text-success drop-shadow-lg" />
             </div>
-            <div className="text-3xl md:text-4xl font-bold text-white mb-2">100%</div>
-            <div className="text-white/80">Compliance CLT</div>
+            <div className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">100%</div>
+            <div className="text-white drop-shadow-md">Compliance CLT</div>
           </div>
           
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+          <div className="bg-white/25 backdrop-blur-sm rounded-2xl p-6 border border-white/40 shadow-xl">
             <div className="flex items-center justify-center mb-4">
-              <DollarSign className="h-12 w-12 text-accent" />
+              <DollarSign className="h-12 w-12 text-accent drop-shadow-lg" />
             </div>
-            <div className="text-3xl md:text-4xl font-bold text-white mb-2">R$ 2.5k</div>
-            <div className="text-white/80">Economia mensal</div>
+            <div className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">R$ 2.5k</div>
+            <div className="text-white drop-shadow-md">Economia mensal</div>
           </div>
         </div>
 
@@ -151,24 +137,17 @@ const HeroSection = () => (
             <ChefHat className="mr-2 h-6 w-6" />
             Começar Gratuitamente
           </Button>
-          <Button variant="outline" className="border-2 border-white/30 text-white hover:bg-white/10 px-12 py-6 text-xl font-bold rounded-2xl backdrop-blur-sm transition-all duration-300 hover:scale-105">
+          <Button variant="outline" className="border-2 border-white/50 text-white hover:bg-white/20 px-12 py-6 text-xl font-bold rounded-2xl backdrop-blur-sm transition-all duration-300 hover:scale-105">
             <PlayCircle className="mr-2 h-6 w-6" />
             Ver Demonstração
           </Button>
         </div>
 
         {/* Guarantee */}
-        <div className="mt-12 text-white/80 animate-fade-in-up delay-800">
+        <div className="mt-12 text-white animate-fade-in-up delay-800 drop-shadow-md">
           <ShieldCheck className="inline h-5 w-5 mr-2" />
           Teste grátis por 14 dias • Cancele quando quiser • Sem compromisso
         </div>
-      </div>
-    </div>
-
-    {/* Demo Preview */}
-    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 animate-fade-in-up delay-1000">
-      <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 shadow-2xl">
-        <img src="/placeholder-dashboard.png" alt="Interface do GrowthScale" className="w-96 h-64 object-cover rounded-xl" />
       </div>
     </div>
   </section>
@@ -468,7 +447,7 @@ const Footer = () => (
           <ChefHat className="h-6 w-6 text-accent" />
           <span className="font-bold text-white">GrowthScale</span>
         </Link>
-        <p className="text-white/60 text-sm">© {new Date().getFullYear()} GrowthScale. A tranquilidade de uma operação sob controlo.</p>
+        <p className="text-white/60 text-sm">© {new Date().getFullYear()} GrowthScale. A tranquilidade de uma operação sob controle.</p>
       </div>
     </div>
   </footer>
@@ -479,7 +458,6 @@ export default function Index() {
   return (
     <>
       <Header />
-      <UrgencyBanner />
       <main>
         <HeroSection />
         <SolutionSection />
