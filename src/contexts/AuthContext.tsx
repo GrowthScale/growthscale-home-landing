@@ -71,12 +71,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { error: new Error(validation.errors.join(', ')) };
       }
 
-      // Determine the redirect URL based on environment
+      // CORREÇÃO: Usar porta dinâmica em desenvolvimento
       const getRedirectUrl = () => {
         if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-          return 'http://localhost:3000/auth/callback';
+          const currentPort = window.location.port || '3000';
+          return `http://localhost:${currentPort}/auth/callback`;
         }
-        return 'https://growthscale-home-landing-an1013bp6.vercel.app/auth/callback';
+        return 'https://growthscale-home-landing-luupvsd9h.vercel.app/auth/callback';
       };
 
       // 1. Criar usuário no Supabase Auth (SEM criar empresa ainda)

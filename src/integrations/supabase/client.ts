@@ -8,14 +8,14 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "plac
 
 // Determine the redirect URL based on environment
 const getRedirectUrl = () => {
-  // Sempre usar produção para evitar problemas de redirecionamento
-  // Se estiver em localhost, usar localhost, senão usar produção
+  // CORREÇÃO: Usar porta dinâmica em desenvolvimento
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-    return 'http://localhost:3000/auth/callback';
+    const currentPort = window.location.port || '3000';
+    return `http://localhost:${currentPort}/auth/callback`;
   }
   
   // Para todos os outros casos (produção, preview, etc.), usar a URL de produção
-  return 'https://growthscale-home-landing.vercel.app/auth/callback';
+  return 'https://growthscale-home-landing-luupvsd9h.vercel.app/auth/callback';
 };
 
 // Import the supabase client like this:

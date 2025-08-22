@@ -61,7 +61,12 @@ export default function AuthCallback() {
                 });
                 
                 setStatus('success');
-                setMessage('Email confirmado e empresa criada com sucesso! Redirecionando para a página inicial...');
+                setMessage('Email confirmado e empresa criada com sucesso! Redirecionando para o dashboard...');
+                
+                // MELHORIA: Redirecionamento inteligente
+                setTimeout(() => {
+                  navigate('/dashboard');
+                }, 2000);
               } catch (companyError) {
                 console.error('Erro ao criar empresa:', companyError);
                 setStatus('error');
@@ -70,13 +75,13 @@ export default function AuthCallback() {
               }
             } else {
               setStatus('success');
-              setMessage('Email confirmado com sucesso! Redirecionando para a página inicial...');
+              setMessage('Email confirmado com sucesso! Redirecionando para o dashboard...');
+              
+              // MELHORIA: Redirecionamento inteligente
+              setTimeout(() => {
+                navigate('/dashboard');
+              }, 2000);
             }
-            
-            // Aguardar um momento para mostrar a mensagem de sucesso
-            setTimeout(() => {
-              navigate('/?confirmed=true');
-            }, 2000);
           } else {
             setStatus('error');
             setMessage('Sessão inválida');
@@ -85,9 +90,9 @@ export default function AuthCallback() {
           // Se não há tokens, verificar se o usuário já está autenticado
           if (user) {
             setStatus('success');
-            setMessage('Você já está autenticado! Redirecionando para a página inicial...');
+            setMessage('Você já está autenticado! Redirecionando para o dashboard...');
             setTimeout(() => {
-              navigate('/?confirmed=true');
+              navigate('/dashboard');
             }, 2000);
           } else {
             setStatus('error');
