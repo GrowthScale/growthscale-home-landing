@@ -1,33 +1,20 @@
 // src/pages/Index.tsx
-import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { 
   PlayCircle, 
   ShieldCheck, 
   Clock, 
-  BarChart3, 
   Check, 
-  X, 
   Star, 
-  AlertTriangle, 
-  Users, 
-  Zap, 
-  ArrowRight, 
-  Sparkles,
   ChefHat,
   Utensils,
   Coffee,
   Wine,
   Pizza,
-  Brain,
-  CheckCircle,
-  MessageCircle,
-  Headphones,
   DollarSign,
   Shield
 } from 'lucide-react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
