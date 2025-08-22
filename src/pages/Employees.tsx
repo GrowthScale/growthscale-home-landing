@@ -15,7 +15,6 @@ import {
   HelpCircle,
   UserCheck,
   UserX,
-  TrendingUp,
   Calendar,
   Clock,
   X
@@ -82,7 +81,7 @@ export default function Employees() {
     }
   };
 
-  // Calcular estatísticas
+  // Calcular estatísticas (apenas dados reais)
   const stats = {
     active: employees?.filter(emp => emp.status === 'active').length || 0,
     newThisMonth: employees?.filter(emp => {
@@ -90,7 +89,6 @@ export default function Employees() {
       const now = new Date();
       return startDate.getMonth() === now.getMonth() && startDate.getFullYear() === now.getFullYear();
     }).length || 0,
-    performance: 4.6, // Mock data
     vacation: employees?.filter(emp => emp.status === 'vacation').length || 0,
   };
 
@@ -151,7 +149,7 @@ export default function Employees() {
 
         {/* Quick Stats */}
         <main className="container mx-auto px-6 py-xl">
-          <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6" aria-labelledby="stats-section">
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6" aria-labelledby="stats-section">
             <h2 id="stats-section" className="sr-only">Estatísticas rápidas da equipe</h2>
             <Card className="hover:shadow-card transition-smooth">
               <CardContent className="p-4">
@@ -181,19 +179,7 @@ export default function Employees() {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-soft transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-secondary/10 rounded-lg">
-                    <TrendingUp className="h-5 w-5 text-secondary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Desempenho Médio</p>
-                    <p className="text-2xl font-bold text-foreground">{stats.performance}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+
 
             <Card className="hover:shadow-soft transition-shadow">
               <CardContent className="p-4">

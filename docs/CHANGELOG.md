@@ -11,10 +11,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### 🔧 **Melhorias**
 - **Ativação da Página de Compliance:** A página de Relatório de Compliance foi conectada ao backend. Todos os dados "mock" foram removidos e substituídos por uma análise em tempo real das escalas dos usuários, exibindo alertas críticos e violações frequentes com base nos dados reais da operação.
+- **Simplificação Estratégica da Navegação (Foco na V1.0):** O menu principal da aplicação foi simplificado para focar nas funcionalidades essenciais e 100% operacionais. As seções de Analytics, AI, Enterprise e Gamification foram temporariamente ocultadas para garantir uma jornada de usuário sem "becos sem saída" e perfeitamente funcional para o lançamento.
+- **Remoção de Dados Mock Finais:** Eliminados todos os dados mock restantes da aplicação, incluindo a métrica de "performance" na página de funcionários, garantindo que apenas dados reais sejam exibidos aos usuários.
 
 ### 🚀 **Deploy**
 - **Vercel**: Deploy automático com build limpo
-- **URL Ativa**: https://growthscale-home-landing-luupvsd9h.vercel.app
+- **URL Ativa**: https://growthscale-home-landing-7riltn0n5.vercel.app
 
 ---
 
