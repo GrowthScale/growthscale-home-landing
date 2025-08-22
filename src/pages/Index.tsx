@@ -19,77 +19,258 @@ const Header = () => (
 );
 
 const HeroSection = () => (
-  <section className="relative w-full py-24 md:py-32 lg:py-40 text-center text-foreground-dark bg-[hsl(var(--background-dark))] overflow-hidden">
-    <div className="absolute inset-0 z-0 bg-grid-dark opacity-5 [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"></div>
-    <div className="container relative z-10 mx-auto px-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 animate-fade-in-up">
-          Onde a gestão de escalas encontra a paz de espírito.
+  <section className="relative w-full h-screen flex items-center justify-center text-center overflow-hidden">
+    {/* Vídeo de Fundo com Fallback */}
+    <div className="absolute top-0 left-0 w-full h-full z-0">
+      {/* Gradiente animado como fallback */}
+      <div className="w-full h-full bg-gradient-to-br from-[hsl(var(--background-dark))] via-[hsl(var(--primary))] to-[hsl(var(--accent))] animate-pulse"></div>
+      
+      {/* Overlay para contraste */}
+      <div className="absolute inset-0 bg-[hsl(var(--background-dark))] opacity-70"></div>
+      
+      {/* Padrão de fundo sutil */}
+      <div className="absolute inset-0 bg-grid-dark opacity-10 [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"></div>
+    </div>
+    
+    {/* Conteúdo Principal */}
+    <div className="container relative z-10 mx-auto px-4 text-foreground-dark">
+      <div className="max-w-5xl mx-auto">
+        {/* Badge de Destaque */}
+        <div className="inline-flex items-center gap-2 rounded-full bg-[hsl(var(--accent))]/20 border border-[hsl(var(--accent))]/30 px-4 py-2 text-sm font-medium text-[hsl(var(--accent))] mb-8 animate-fade-in-up">
+          <div className="w-2 h-2 bg-[hsl(var(--accent))] rounded-full animate-pulse"></div>
+          Plataforma de Inteligência Operacional
+        </div>
+        
+        {/* Título Principal */}
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter mb-8 animate-fade-in-up leading-tight">
+          <span className="bg-gradient-to-r from-[hsl(var(--foreground-dark))] via-[hsl(var(--accent))] to-[hsl(var(--primary))] bg-clip-text text-transparent">
+            Onde a gestão de escalas
+          </span>
+          <br />
+          <span className="text-[hsl(var(--foreground-dark))]">
+            encontra a paz de espírito
+          </span>
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          O GrowthScale é a plataforma de inteligência operacional que transforma o caos das escalas em controlo absoluto. Automatize, preveja custos e opere com clareza sobre as regras da CLT.
+        
+        {/* Subtítulo */}
+        <p className="text-xl md:text-2xl text-[hsl(var(--muted-foreground))] max-w-3xl mx-auto mb-12 animate-fade-in-up leading-relaxed" style={{ animationDelay: '0.2s' }}>
+          O GrowthScale é a plataforma que transforma o 
+          <span className="text-[hsl(var(--accent))] font-semibold"> caos das escalas </span>
+          em 
+          <span className="text-[hsl(var(--primary))] font-semibold"> controlo absoluto</span>. 
+          Automatize, preveja custos e opere com clareza sobre as regras da CLT.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-          <Button asChild size="lg" className="text-lg px-8 py-6"><Link to="/auth">Começar a Simplificar Agora</Link></Button>
-          <Button asChild size="lg" variant="secondary" className="text-lg px-8 py-6 bg-secondary text-secondary-foreground hover:bg-secondary/80"><Link to="/#recursos"><PlayCircle className="mr-2 h-5 w-5" />Ver a Magia</Link></Button>
+        
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <Button asChild size="lg" className="text-lg px-10 py-6 bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-[hsl(var(--primary-foreground))] font-semibold shadow-2xl shadow-[hsl(var(--primary))]/25 transition-all duration-300 hover:scale-105">
+            <Link to="/auth">Começar a Simplificar Agora</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="text-lg px-10 py-6 border-2 border-[hsl(var(--accent))] text-[hsl(var(--accent))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] font-semibold transition-all duration-300 hover:scale-105">
+            <Link to="/#recursos">
+              <PlayCircle className="mr-2 h-5 w-5" />
+              Ver a Magia
+            </Link>
+          </Button>
+        </div>
+        
+        {/* Estatísticas de Confiança */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-[hsl(var(--accent))] mb-2">98%</div>
+            <div className="text-sm text-[hsl(var(--muted-foreground))]">Redução de Stress</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-[hsl(var(--primary))] mb-2">5min</div>
+            <div className="text-sm text-[hsl(var(--muted-foreground))]">Para Criar Escalas</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-[hsl(var(--accent))] mb-2">100%</div>
+            <div className="text-sm text-[hsl(var(--muted-foreground))]">Conformidade CLT</div>
+          </div>
         </div>
       </div>
-      <div className="mt-20 max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-        <div className="relative rounded-xl p-2 bg-[hsl(var(--card-dark))] border border-[hsl(var(--border-dark))] shadow-2xl shadow-primary/10">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-xl blur-xl opacity-20"></div>
-          <img
-            src="/assets/hero-chaos-to-control.png"
-            alt="Uma imagem dividida mostrando a transformação de uma mesa de trabalho caótica com planilhas para uma mesa organizada com a interface do GrowthScale a resolver os problemas."
-            className="relative rounded-lg shadow-2xl"
-            width={1200}
-            height={675}
-          />
-        </div>
+    </div>
+    
+    {/* Scroll Indicator */}
+    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="w-6 h-10 border-2 border-[hsl(var(--accent))] rounded-full flex justify-center">
+        <div className="w-1 h-3 bg-[hsl(var(--accent))] rounded-full mt-2 animate-pulse"></div>
       </div>
     </div>
   </section>
 );
 
 const SocialProofSection = () => (
-    <section className="py-20 bg-background">
-        <div className="container mx-auto px-4 text-center">
-            <p className="text-muted-foreground mb-12">A ferramenta de confiança para gestores de restaurantes que valorizam o seu tempo e a sua tranquilidade</p>
-            <div className="flex flex-wrap justify-center items-center gap-x-24 gap-y-12 opacity-60">
-                <img src="/assets/logo-bistro.png" alt="Logo do Bistrô Sabor & Arte" className="h-96" />
-                <img src="/assets/logo-sabores.png" alt="Logo do Grupo Sabores do Brasil" className="h-96" />
-                <img src="/assets/logo-pizzaria.png" alt="Logo da Pizzaria Napolitana" className="h-96" />
-                <img src="/assets/logo-cafe.png" alt="Logo do Café Central" className="h-96" />
-                <img src="/assets/logo-hamburgueria.png" alt="Logo da Rede de Hamburguerias" className="h-96" />
+    <section className="py-24 bg-[hsl(var(--secondary))] relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--accent))]/5 to-[hsl(var(--primary))]/5"></div>
+        
+        <div className="container mx-auto px-4 text-center relative z-10">
+            {/* Badge de Confiança */}
+            <div className="inline-flex items-center gap-2 rounded-full bg-[hsl(var(--primary))]/10 border border-[hsl(var(--primary))]/20 px-4 py-2 text-sm font-medium text-[hsl(var(--primary))] mb-8">
+                <ShieldCheck className="h-4 w-4" />
+                Confiado por +500 Restaurantes
+            </div>
+            
+            <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--foreground))] mb-4">
+                A ferramenta de confiança para gestores que valorizam o seu tempo
+            </h2>
+            
+            <p className="text-lg text-[hsl(var(--muted-foreground))] mb-16 max-w-2xl mx-auto">
+                Junte-se aos restaurantes que já transformaram a gestão de escalas com o GrowthScale
+            </p>
+            
+            {/* Logos com efeito hover */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center max-w-4xl mx-auto">
+                <div className="group p-6 rounded-xl bg-white/50 backdrop-blur-sm border border-[hsl(var(--border))] hover:bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <img src="/assets/logo-bistro.png" alt="Logo do Bistrô Sabor & Arte" className="h-16 w-auto mx-auto opacity-70 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <div className="group p-6 rounded-xl bg-white/50 backdrop-blur-sm border border-[hsl(var(--border))] hover:bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <img src="/assets/logo-sabores.png" alt="Logo do Grupo Sabores do Brasil" className="h-16 w-auto mx-auto opacity-70 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <div className="group p-6 rounded-xl bg-white/50 backdrop-blur-sm border border-[hsl(var(--border))] hover:bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <img src="/assets/logo-pizzaria.png" alt="Logo da Pizzaria Napolitana" className="h-16 w-auto mx-auto opacity-70 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <div className="group p-6 rounded-xl bg-white/50 backdrop-blur-sm border border-[hsl(var(--border))] hover:bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <img src="/assets/logo-cafe.png" alt="Logo do Café Central" className="h-16 w-auto mx-auto opacity-70 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <div className="group p-6 rounded-xl bg-white/50 backdrop-blur-sm border border-[hsl(var(--border))] hover:bg-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <img src="/assets/logo-hamburgueria.png" alt="Logo da Rede de Hamburguerias" className="h-16 w-auto mx-auto opacity-70 group-hover:opacity-100 transition-opacity" />
+                </div>
+            </div>
+            
+            {/* Testimonial */}
+            <div className="mt-16 max-w-3xl mx-auto">
+                <div className="bg-white rounded-2xl p-8 shadow-xl border border-[hsl(var(--border))]">
+                    <div className="flex items-center gap-4 mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] rounded-full flex items-center justify-center">
+                            <span className="text-white font-bold text-lg">M</span>
+                        </div>
+                        <div>
+                            <div className="font-semibold text-[hsl(var(--foreground))]">Maria Silva</div>
+                            <div className="text-sm text-[hsl(var(--muted-foreground))]">Gestora do Bistrô Sabor & Arte</div>
+                        </div>
+                    </div>
+                    <p className="text-[hsl(var(--muted-foreground))] italic">
+                        "O GrowthScale transformou completamente a nossa gestão. O que antes levava horas, agora leva minutos. E a tranquilidade de saber que estamos sempre em conformidade com a CLT é inestimável."
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 );
 
 const NarrativeSection = () => (
-  <section id="recursos" className="py-20 md:py-28 bg-secondary" aria-labelledby="solution-title">
-    <div className="container mx-auto px-4 space-y-24">
-      <div className="text-center max-w-3xl mx-auto"><h2 className="text-3xl md:text-4xl font-bold text-foreground">De um quebra-cabeças stressante a uma decisão de 5 minutos.</h2><p className="text-lg text-muted-foreground mt-4">Você sabe o quão caótico é: planilhas, grupos de WhatsApp, trocas de última hora e a preocupação constante com as regras da CLT. O GrowthScale foi desenhado para eliminar este caos.</p></div>
-      <div className="grid md:grid-cols-2 gap-12 items-center">
-        <div><div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4"><ShieldCheck className="h-4 w-4" /> Segurança Jurídica</div><h3 className="text-2xl font-bold mb-3">O seu Co-Piloto CLT, 24/7.</h3><p className="text-muted-foreground">Enquanto você arrasta e solta, a nossa IA audita cada turno, alertando-o para potenciais riscos de intervalos e excesso de jornada. Opere com a clareza de quem toma decisões informadas.</p></div>
-        <div className="rounded-xl p-2 bg-background border shadow-lg"><img src="/assets/img-solution-security.png" alt="Demonstração do GrowthScale a analisar as regras da CLT e a garantir a segurança jurídica da escala" className="rounded-lg shadow-2xl" /></div>
-      </div>
-      <div className="grid md:grid-cols-2 gap-12 items-center">
-        <div className="rounded-xl p-2 bg-background border shadow-lg md:order-last"><img src="/assets/img-solution-efficiency.png" alt="Demonstração da Inteligência Artificial do GrowthScale a preencher uma escala de trabalho automaticamente" className="rounded-lg shadow-2xl" /></div>
-        <div><div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4"><Clock className="h-4 w-4" /> Eficiência Máxima</div><h3 className="text-2xl font-bold mb-3">Recupere as suas horas.</h3><p className="text-muted-foreground">O que levava horas, agora leva segundos. Deixe a IA criar a escala otimizada com um clique. Mais tempo para si, para a sua equipa e para os seus clientes.</p></div>
-      </div>
-      {/* Bloco 4: O Poder do Controle Financeiro */}
-      <div className="grid md:grid-cols-2 gap-12 items-center">
-        <div className="rounded-xl p-2 bg-background/10 border border-border/20 shadow-lg">
-          <img src="/assets/img-solution-costs.png" alt="Demonstração do simulador de custos do GrowthScale" className="rounded-lg" />
+  <section id="recursos" className="py-24 md:py-32 bg-white relative overflow-hidden" aria-labelledby="solution-title">
+    {/* Background Pattern */}
+    <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--secondary))] via-white to-[hsl(var(--accent))]/5"></div>
+    
+    <div className="container mx-auto px-4 space-y-32 relative z-10">
+      {/* Header da Seção */}
+      <div className="text-center max-w-4xl mx-auto">
+        <div className="inline-flex items-center gap-2 rounded-full bg-[hsl(var(--accent))]/10 border border-[hsl(var(--accent))]/20 px-4 py-2 text-sm font-medium text-[hsl(var(--accent))] mb-6">
+          <Clock className="h-4 w-4" />
+          Transformação Digital
         </div>
-        <div>
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-4">
+        <h2 className="text-4xl md:text-5xl font-bold text-[hsl(var(--foreground))] mb-6">
+          De um quebra-cabeças stressante a uma decisão de 5 minutos.
+        </h2>
+        <p className="text-xl text-[hsl(var(--muted-foreground))] leading-relaxed">
+          Você sabe o quão caótico é: planilhas, grupos de WhatsApp, trocas de última hora e a preocupação constante com as regras da CLT. O GrowthScale foi desenhado para eliminar este caos.
+        </p>
+      </div>
+      
+      {/* Bloco 1: Segurança Jurídica */}
+      <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[hsl(var(--primary))]/10 border border-[hsl(var(--primary))]/20 px-4 py-2 text-sm font-medium text-[hsl(var(--primary))]">
+            <ShieldCheck className="h-4 w-4" /> Segurança Jurídica
+          </div>
+          <h3 className="text-3xl md:text-4xl font-bold text-[hsl(var(--foreground))] leading-tight">
+            O seu Co-Piloto CLT, 24/7.
+          </h3>
+          <p className="text-lg text-[hsl(var(--muted-foreground))] leading-relaxed">
+            Enquanto você arrasta e solta, a nossa IA audita cada turno, alertando-o para potenciais riscos de intervalos e excesso de jornada. Opere com a clareza de quem toma decisões informadas.
+          </p>
+          <div className="flex items-center gap-4 pt-4">
+            <div className="flex items-center gap-2 text-[hsl(var(--accent))]">
+              <Check className="h-5 w-5" />
+              <span className="font-medium">Validação automática</span>
+            </div>
+            <div className="flex items-center gap-2 text-[hsl(var(--accent))]">
+              <Check className="h-5 w-5" />
+              <span className="font-medium">Alertas em tempo real</span>
+            </div>
+          </div>
+        </div>
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--accent))]/20 rounded-2xl blur-xl"></div>
+          <div className="relative rounded-2xl p-4 bg-white border border-[hsl(var(--border))] shadow-2xl">
+            <img src="/assets/img-solution-security.png" alt="Demonstração do GrowthScale a analisar as regras da CLT e a garantir a segurança jurídica da escala" className="rounded-xl shadow-xl" />
+          </div>
+        </div>
+      </div>
+      
+      {/* Bloco 2: Eficiência Máxima */}
+      <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="relative md:order-last">
+          <div className="absolute -inset-4 bg-gradient-to-r from-[hsl(var(--accent))]/20 to-[hsl(var(--primary))]/20 rounded-2xl blur-xl"></div>
+          <div className="relative rounded-2xl p-4 bg-white border border-[hsl(var(--border))] shadow-2xl">
+            <img src="/assets/img-solution-efficiency.png" alt="Demonstração da Inteligência Artificial do GrowthScale a preencher uma escala de trabalho automaticamente" className="rounded-xl shadow-xl" />
+          </div>
+        </div>
+        <div className="space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[hsl(var(--accent))]/10 border border-[hsl(var(--accent))]/20 px-4 py-2 text-sm font-medium text-[hsl(var(--accent))]">
+            <Clock className="h-4 w-4" /> Eficiência Máxima
+          </div>
+          <h3 className="text-3xl md:text-4xl font-bold text-[hsl(var(--foreground))] leading-tight">
+            Recupere as suas horas.
+          </h3>
+          <p className="text-lg text-[hsl(var(--muted-foreground))] leading-relaxed">
+            O que levava horas, agora leva segundos. Deixe a IA criar a escala otimizada com um clique. Mais tempo para si, para a sua equipa e para os seus clientes.
+          </p>
+          <div className="flex items-center gap-4 pt-4">
+            <div className="flex items-center gap-2 text-[hsl(var(--primary))]">
+              <Check className="h-5 w-5" />
+              <span className="font-medium">IA inteligente</span>
+            </div>
+            <div className="flex items-center gap-2 text-[hsl(var(--primary))]">
+              <Check className="h-5 w-5" />
+              <span className="font-medium">Otimização automática</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Bloco 3: Controle Financeiro */}
+      <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-[hsl(var(--primary))]/20 to-[hsl(var(--accent))]/20 rounded-2xl blur-xl"></div>
+          <div className="relative rounded-2xl p-4 bg-white border border-[hsl(var(--border))] shadow-2xl">
+            <img src="/assets/img-solution-costs.png" alt="Demonstração do simulador de custos do GrowthScale" className="rounded-xl shadow-xl" />
+          </div>
+        </div>
+        <div className="space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[hsl(var(--primary))]/10 border border-[hsl(var(--primary))]/20 px-4 py-2 text-sm font-medium text-[hsl(var(--primary))]">
             <BarChart3 className="h-4 w-4" /> Controle Financeiro
           </div>
-          <h3 className="text-2xl font-bold mb-3">Decisões baseadas em dados, não em achismo.</h3>
-          <p className="text-muted-foreground">
+          <h3 className="text-3xl md:text-4xl font-bold text-[hsl(var(--foreground))] leading-tight">
+            Decisões baseadas em dados, não em achismo.
+          </h3>
+          <p className="text-lg text-[hsl(var(--muted-foreground))] leading-relaxed">
             Saiba o custo exato de cada escala antes mesmo de a publicar. O nosso simulador em tempo real mostra o impacto de cada decisão nas suas horas extras e no seu orçamento, dando-lhe o poder de otimizar a sua lucratividade.
           </p>
+          <div className="flex items-center gap-4 pt-4">
+            <div className="flex items-center gap-2 text-[hsl(var(--accent))]">
+              <Check className="h-5 w-5" />
+              <span className="font-medium">Simulador em tempo real</span>
+            </div>
+            <div className="flex items-center gap-2 text-[hsl(var(--accent))]">
+              <Check className="h-5 w-5" />
+              <span className="font-medium">Otimização de custos</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
