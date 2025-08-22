@@ -1,242 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind base;
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind components;
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind utilities;
-
+ 
 @layer base {
   :root {
-    /* PALETA PERFEITA NEUROCIENTÍFICA - CORRIGIDA */
+    /* Paleta de Cores "Equilíbrio Sofisticado" */
+    --background: 0 0% 100%; /* Fundo principal claro */
+    --foreground: 222.2 84% 4.9%; /* Texto principal escuro */
     
-    /* AZUL PROFISSIONAL - Confiança e Estabilidade */
-    --primary: 221.2 83.2% 53.3%; /* #3B82F6 */
-    --primary-dark: 221.2 83.2% 43.3%; /* #2563EB */
-    --primary-foreground: 210 40% 98%;
+    --background-dark: 224 71% 4%; /* Apenas para seções de alto impacto */
+    --foreground-dark: 210 40% 98%; /* Texto sobre fundo escuro */
     
-    /* VERDE SUCESSO - Crescimento e Eficiência */
-    --success: 142 76% 36%; /* #059669 */
-    --success-light: 142 76% 46%; /* #10B981 */
-    --success-foreground: 0 0% 98%;
-    
-    /* LARANJA AÇÃO - Urgência e Conversão */
-    --accent: 38 92% 50%; /* #F59E0B */
-    --accent-dark: 38 92% 40%; /* #D97706 */
-    --accent-foreground: 24 9.8% 10%;
-    
-    /* CINZA SOFISTICADO - Profissionalismo */
-    --neutral: 215 25% 27%; /* #374151 */
-    --neutral-light: 210 40% 98%; /* #F8FAFC */
-    --neutral-foreground: 222.2 84% 4.9%;
-    
-    /* BRANCO LIMPO - Clareza */
-    --white: 0 0% 100%; /* #FFFFFF */
-    
-    /* CORES DE FUNDO PADRONIZADAS */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    --secondary: 210 40% 98%;
+    
+    --primary: 221.2 83.2% 53.3%; /* Azul forte e confiável para AÇÃO */
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 210 40% 98%; /* Cinza muito claro para fundos de seções */
     --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 38 92% 50%; /* Laranja/Dourado para VALIDAÇÃO e SUCESSO */
+    --accent-foreground: 24 9.8% 10%;
+    
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
+    
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
+    
     --border: 214.3 31.8% 91.4%;
+    --border-dark: 214.3 31.8% 20%; /* Borda escura para fundos escuros */
     --radius: 0.75rem;
   }
 }
-
+ 
 @layer base {
-  * {
-    @apply border-border;
+  * { 
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply border-border; 
   }
-  
   body {
+    /* stylelint-disable-next-line at-rule-no-unknown */
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth; }
 }
 
 @layer utilities {
-  /* ANIMAÇÕES */
-  @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .animate-fade-in-up {
-    animation: fade-in-up 0.8s ease-out forwards;
-  }
-  
-  /* UTILITÁRIOS PARA A PALETA PERFEITA - CORRIGIDOS */
-  .bg-primary-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
-  }
-  
-  .bg-success-gradient {
-    background: linear-gradient(135deg, hsl(var(--success)) 0%, hsl(var(--success-light)) 100%);
-  }
-  
-  .bg-accent-gradient {
-    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-dark)) 100%);
-  }
-  
-  .text-gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .text-gradient-accent {
-    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-dark)) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  /* CORES SEMÂNTICAS CORRIGIDAS */
-  .text-primary {
-    color: hsl(var(--primary));
-  }
-  
-  .text-success {
-    color: hsl(var(--success));
-  }
-  
-  .text-accent {
-    color: hsl(var(--accent));
-  }
-  
-  .text-neutral {
-    color: hsl(var(--neutral));
-  }
-  
-  .bg-primary {
-    background-color: hsl(var(--primary));
-  }
-  
-  .bg-success {
-    background-color: hsl(var(--success));
-  }
-  
-  .bg-accent {
-    background-color: hsl(var(--accent));
-  }
-  
-  .bg-neutral {
-    background-color: hsl(var(--neutral));
-  }
-  
-  .bg-neutral-light {
-    background-color: hsl(var(--neutral-light));
-  }
-  
-  /* DROP SHADOWS PARA MELHOR CONTRASTE */
-  .drop-shadow-lg {
-    filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
-  }
-  
-  .drop-shadow-md {
-    filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
-  }
-  
-  .drop-shadow-sm {
-    filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.05)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.03));
-  }
-  
-  /* BACKDROP BLUR MELHORADO */
-  .backdrop-blur-sm {
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-  }
-  
-  .backdrop-blur-md {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-  
-  .backdrop-blur-lg {
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-  
-  /* GLASSMORPHISM */
-  .glass {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-  }
-  
-  .glass-dark {
-    background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-  }
-  
-  /* HOVER EFFECTS MELHORADOS */
-  .hover-lift {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
-  }
-  
-  /* FOCUS STATES PARA ACESSIBILIDADE */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
-  }
-  
-  /* TYPOGRAPHY UTILITIES */
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  .text-pretty {
-    text-wrap: pretty;
-  }
-  
-  /* SPACING SYSTEM */
-  .space-y-8 > * + * {
-    margin-top: 2rem;
-  }
-  
-  .space-y-6 > * + * {
-    margin-top: 1.5rem;
-  }
-  
-  .space-y-4 > * + * {
-    margin-top: 1rem;
-  }
-  
-  /* RESPONSIVE UTILITIES */
-  .container-responsive {
-    @apply container mx-auto px-4 sm:px-6 lg:px-8;
-  }
-  
-  /* GRID SYSTEM */
-  .grid-auto-fit {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
-  
-  .grid-auto-fill {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
+  @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
 }

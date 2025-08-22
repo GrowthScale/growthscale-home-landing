@@ -9,7 +9,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [3.8.1] - 2025-08-18
 
-### 🔧 **Melhorias**
+### �� **Melhorias**
+- **Finalização do Editor de Escalas:** O componente `ScheduleEditor` foi completamente refatorado com tipagem de dados correta (TypeScript) e a lógica de salvamento foi implementada. A criação, edição e salvamento de escalas estão agora 100% funcionais, conectando a interface ao backend de forma robusta.
 - **Ativação da Página de Compliance:** A página de Relatório de Compliance foi conectada ao backend. Todos os dados "mock" foram removidos e substituídos por uma análise em tempo real das escalas dos usuários, exibindo alertas críticos e violações frequentes com base nos dados reais da operação.
 - **Simplificação Estratégica da Navegação (Foco na V1.0):** O menu principal da aplicação foi simplificado para focar nas funcionalidades essenciais e 100% operacionais. As seções de Analytics, AI, Enterprise e Gamification foram temporariamente ocultadas para garantir uma jornada de usuário sem "becos sem saída" e perfeitamente funcional para o lançamento.
 - **Remoção de Dados Mock Finais:** Eliminados todos os dados mock restantes da aplicação, incluindo a métrica de "performance" na página de funcionários, garantindo que apenas dados reais sejam exibidos aos usuários.

@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+// src/components/schedules/ScheduleEditor.tsx
+import React, { useState, useCallback } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { createScheduleWithShifts, type ScheduleData, type ShiftData } from '@/services/api';
 import { useTenant } from '@/contexts/TenantContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { getEmployees, createScheduleWithShifts, validateSchedule, calculateScheduleCost } from '@/services/api';
+import { getEmployees, type EmployeeData } from '@/services/api';
+import { useQuery } from '@tanstack/react-query';
 import { 
   Calendar, 
   Users, 
@@ -18,44 +21,46 @@ import {
   Trash2, 
   Save, 
   X, 
-  AlertTriangle,
-  CheckCircle,
-  BarChart3,
   Loader2
 } from 'lucide-react';
 
+// Defina os tipos aqui se ainda não estiverem num arquivo global
+interface EditorShiftData {
+  id?: string;
+  schedule_id?: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  employeeId: string;
+  employeeName?: string;
+  employeePosition?: string;
+}
+
 interface ScheduleFormData {
   name: string;
-  date: string;
-  description: string;
-  notes: string;
+  start_date: string;
+  end_date: string;
+  status: 'draft' | 'published' | 'archived';
 }
 
-interface ShiftData {
-  employee_id: string;
-  start_time: string;
-  end_time: string;
-  notes?: string;
-}
-
-export const ScheduleEditor: React.FC = () => {
+export function ScheduleEditor() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { currentTenant: tenant } = useTenant();
   const { toast } = useToast();
   const { trackEvent } = useAnalytics();
-  const queryClient = useQueryClient();
 
-  // Estados
+  // Estados com a tipagem correta
   const [isOpen, setIsOpen] = useState(false);
-  const [scheduleData, setScheduleData] = useState<ScheduleFormData>({
-    name: '',
-    date: new Date().toISOString().split('T')[0],
-    description: '',
-    notes: ''
-  });
-  const [shifts, setShifts] = useState<ShiftData[]>([]);
+  const [scheduleName, setScheduleName] = useState('Escala Semanal');
+  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
+  const [status, setStatus] = useState<'draft' | 'published' | 'archived'>('draft');
+  const [shifts, setShifts] = useState<EditorShiftData[]>([]);
   const [selectedEmployee, setSelectedEmployee] = useState<string>('');
   const [shiftStartTime, setShiftStartTime] = useState('08:00');
   const [shiftEndTime, setShiftEndTime] = useState('17:00');
+  const [shiftDate, setShiftDate] = useState(new Date().toISOString().split('T')[0]);
 
   // Buscar funcionários
   const { data: employees } = useQuery({
@@ -69,147 +74,142 @@ export const ScheduleEditor: React.FC = () => {
     enabled: !!tenant?.id && isOpen,
   });
 
-  // Mutation para criar escala
   const createScheduleMutation = useMutation({
-    mutationFn: async (data: { schedule: ScheduleFormData; shifts: ShiftData[] }) => {
+    mutationFn: async (data: { 
+      schedule: Omit<ScheduleData, 'id' | 'created_at' | 'updated_at'>; 
+      shifts: Omit<ShiftData, 'id' | 'schedule_id' | 'created_at'>[] 
+    }) => {
       if (!tenant?.id) throw new Error('Empresa não configurada');
-      const result = await createScheduleWithShifts({
-        name: data.schedule.name,
-        date: data.schedule.date,
-        description: data.schedule.description,
-        notes: data.schedule.notes,
-        shifts: data.shifts
-      }, tenant.id);
+      const result = await createScheduleWithShifts(data.schedule, data.shifts);
       if (result.error) throw new Error(result.error);
       return result.data;
     },
     onSuccess: () => {
       toast({
-        title: "Escala criada com sucesso!",
-        description: "A escala foi salva e está disponível no calendário.",
+        title: "✅ Sucesso!",
+        description: "A sua nova escala foi salva e publicada.",
       });
+      queryClient.invalidateQueries({ queryKey: ['schedules', tenant?.id] });
       setIsOpen(false);
       resetForm();
-      queryClient.invalidateQueries({ queryKey: ['schedules', tenant?.id] });
+      navigate('/schedules');
       trackEvent('schedule_created', {
-        schedule_name: scheduleData.name,
+        schedule_name: scheduleName,
         shifts_count: shifts.length,
       });
     },
     onError: (error: any) => {
       toast({
-        title: "Erro ao criar escala",
-        description: error.message || "Ocorreu um erro ao criar a escala.",
-        variant: "destructive"
+        title: "❌ Erro ao Salvar",
+        description: error.message || "Não foi possível salvar a escala. Tente novamente.",
+        variant: 'destructive',
       });
     }
   });
 
-  // Validar escala
-  const { data: validationResult, refetch: validateScheduleData } = useQuery({
-    queryKey: ['validate-schedule', shifts],
-    queryFn: async () => {
-      if (shifts.length === 0 || !employees) return null;
-      const result = await validateSchedule(shifts, employees);
-      if (result.error) throw new Error(result.error);
-      return result.data;
-    },
-    enabled: Boolean(shifts.length > 0 && employees && employees.length > 0),
-  });
-
-  // Calcular custo da escala
-  const { data: costResult, refetch: calculateCost } = useQuery({
-    queryKey: ['calculate-cost', shifts],
-    queryFn: async () => {
-      if (shifts.length === 0 || !employees) return null;
-      const result = await calculateScheduleCost(shifts, employees);
-      if (result.error) throw new Error(result.error);
-      return result.data;
-    },
-    enabled: Boolean(shifts.length > 0 && employees && employees.length > 0),
-  });
-
-  // Handlers
-  const handleAddShift = () => {
-    if (!selectedEmployee || !shiftStartTime || !shiftEndTime) {
-      toast({
-        title: "Dados incompletos",
-        description: "Preencha todos os campos do turno.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const newShift: ShiftData = {
-      employee_id: selectedEmployee,
-      start_time: `${scheduleData.date}T${shiftStartTime}`,
-      end_time: `${scheduleData.date}T${shiftEndTime}`,
-      notes: ''
-    };
-
-    setShifts(prev => [...prev, newShift]);
-    setSelectedEmployee('');
-    setShiftStartTime('08:00');
-    setShiftEndTime('17:00');
-
-    // Revalidar e recalcular custos
-    validateScheduleData();
-    calculateCost();
-  };
-
-  const handleRemoveShift = (index: number) => {
-    setShifts(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const handleSaveSchedule = () => {
-    if (!scheduleData.name.trim()) {
-      toast({
-        title: "Nome obrigatório",
-        description: "Digite um nome para a escala.",
-        variant: "destructive"
+  const handleSaveSchedule = useCallback(() => {
+    if (!tenant?.id || !startDate || !endDate) {
+      toast({ 
+        title: "Dados incompletos", 
+        description: "Por favor, preencha todos os campos da escala.", 
+        variant: 'destructive' 
       });
       return;
     }
 
     if (shifts.length === 0) {
       toast({
-        title: "Turnos obrigatórios",
+        title: "Nenhum turno adicionado",
         description: "Adicione pelo menos um turno à escala.",
         variant: "destructive"
       });
       return;
     }
 
-    createScheduleMutation.mutate({
-      schedule: scheduleData,
-      shifts: shifts
-    });
-  };
+    // Formata os dados para a estrutura exata que o backend espera
+    const scheduleToSave: Omit<ScheduleData, 'id' | 'created_at' | 'updated_at'> = {
+      name: scheduleName,
+      start_date: startDate,
+      end_date: endDate,
+      company_id: tenant.id,
+      status: status
+    };
 
-  const resetForm = () => {
-    setScheduleData({
-      name: '',
-      date: new Date().toISOString().split('T')[0],
-      description: '',
-      notes: ''
+    // Converter shifts para o formato da API
+    const shiftsPayload: Omit<ShiftData, 'id' | 'schedule_id' | 'created_at'>[] = shifts.map(shift => ({
+      employee_id: shift.employeeId,
+      start_time: shift.startTime,
+      end_time: shift.endTime,
+      date: shift.date,
+      position: shift.employeePosition || '',
+      hourly_rate: employees?.find(emp => emp.id === shift.employeeId)?.hourly_rate || 0
+    }));
+
+    createScheduleMutation.mutate({
+      schedule: scheduleToSave,
+      shifts: shiftsPayload
     });
-    setShifts([]);
+  }, [tenant, startDate, endDate, scheduleName, status, shifts, employees, createScheduleMutation, navigate, queryClient, toast, trackEvent]);
+
+  const handleAddShift = () => {
+    if (!selectedEmployee || !shiftStartTime || !shiftEndTime || !shiftDate) {
+      toast({
+        title: "Dados incompletos",
+        description: "Por favor, preencha todos os campos do turno.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validar se o funcionário já tem turno nesta data
+    const existingShift = shifts.find(
+      shift => shift.employeeId === selectedEmployee && shift.date === shiftDate
+    );
+
+    if (existingShift) {
+      toast({
+        title: "Funcionário já tem turno",
+        description: "Este funcionário já possui um turno nesta data.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const selectedEmp = employees?.find(emp => emp.id === selectedEmployee);
+    const newShift: EditorShiftData = {
+      date: shiftDate,
+      startTime: shiftStartTime,
+      endTime: shiftEndTime,
+      employeeId: selectedEmployee,
+      employeeName: selectedEmp?.name || 'Funcionário não encontrado',
+      employeePosition: selectedEmp?.position || 'Cargo não definido'
+    };
+
+    setShifts(prev => [...prev, newShift]);
     setSelectedEmployee('');
     setShiftStartTime('08:00');
     setShiftEndTime('17:00');
   };
 
+  const handleRemoveShift = (index: number) => {
+    setShifts(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const resetForm = () => {
+    setScheduleName('Escala Semanal');
+    setStartDate(new Date().toISOString().split('T')[0]);
+    setEndDate(new Date().toISOString().split('T')[0]);
+    setStatus('draft');
+    setShifts([]);
+    setSelectedEmployee('');
+    setShiftStartTime('08:00');
+    setShiftEndTime('17:00');
+    setShiftDate(new Date().toISOString().split('T')[0]);
+  };
+
   const handleCancel = () => {
     setIsOpen(false);
     resetForm();
-  };
-
-  const getEmployeeName = (employeeId: string) => {
-    return employees?.find(emp => emp.id === employeeId)?.name || 'Funcionário não encontrado';
-  };
-
-  const formatTime = (timeString: string) => {
-    return timeString.split('T')[1]?.substring(0, 5) || timeString;
   };
 
   return (
@@ -222,12 +222,12 @@ export const ScheduleEditor: React.FC = () => {
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
-            Criar Nova Escala
+          <DialogTitle className="flex items-center space-x-2">
+            <Calendar className="h-5 w-5 text-primary" />
+            <span>Criar Nova Escala</span>
           </DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-6">
           {/* Informações da Escala */}
           <Card>
@@ -235,47 +235,50 @@ export const ScheduleEditor: React.FC = () => {
               <CardTitle>Informações da Escala</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="schedule-name">Nome da Escala *</Label>
+                <Input
+                  id="schedule-name"
+                  value={scheduleName}
+                  onChange={(e) => setScheduleName(e.target.value)}
+                  placeholder="Ex: Escala Semanal - Janeiro 2024"
+                />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="schedule-name">Nome da Escala *</Label>
+                  <Label htmlFor="start-date">Data de Início *</Label>
                   <Input
-                    id="schedule-name"
-                    value={scheduleData.name}
-                    onChange={(e) => setScheduleData(prev => ({ ...prev, name: e.target.value }))}
-                    placeholder="Ex: Escala Semanal - Loja Centro"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="schedule-date">Data *</Label>
-                  <Input
-                    id="schedule-date"
+                    id="start-date"
                     type="date"
-                    value={scheduleData.date}
-                    onChange={(e) => setScheduleData(prev => ({ ...prev, date: e.target.value }))}
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="end-date">Data de Fim *</Label>
+                  <Input
+                    id="end-date"
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="schedule-description">Descrição</Label>
-                <Input
-                  id="schedule-description"
-                  value={scheduleData.description}
-                  onChange={(e) => setScheduleData(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Breve descrição da escala"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="schedule-notes">Observações</Label>
-                <Textarea
-                  id="schedule-notes"
-                  value={scheduleData.notes}
-                  onChange={(e) => setScheduleData(prev => ({ ...prev, notes: e.target.value }))}
-                  placeholder="Observações adicionais sobre a escala"
-                  rows={3}
-                />
+                <Label htmlFor="status">Status</Label>
+                <Select value={status} onValueChange={(value) => setStatus(value as 'draft' | 'published' | 'archived')}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione o status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="draft">Rascunho</SelectItem>
+                    <SelectItem value="published">Publicada</SelectItem>
+                    <SelectItem value="archived">Arquivada</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
           </Card>
@@ -286,7 +289,7 @@ export const ScheduleEditor: React.FC = () => {
               <CardTitle>Adicionar Turnos</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="employee-select">Funcionário *</Label>
                   <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
@@ -295,12 +298,22 @@ export const ScheduleEditor: React.FC = () => {
                     </SelectTrigger>
                     <SelectContent>
                       {employees?.map((employee) => (
-                        <SelectItem key={employee.id} value={employee.id}>
+                        <SelectItem key={employee.id} value={employee.id || ''}>
                           {employee.name} - {employee.position}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="shift-date">Data *</Label>
+                  <Input
+                    id="shift-date"
+                    type="date"
+                    value={shiftDate}
+                    onChange={(e) => setShiftDate(e.target.value)}
+                  />
                 </div>
                 
                 <div className="space-y-2">
@@ -347,9 +360,9 @@ export const ScheduleEditor: React.FC = () => {
                       <div className="flex items-center space-x-4">
                         <Users className="h-4 w-4 text-muted-foreground" />
                         <div>
-                          <p className="font-medium">{getEmployeeName(shift.employee_id)}</p>
+                          <p className="font-medium">{shift.employeeName}</p>
                           <p className="text-sm text-muted-foreground">
-                            {formatTime(shift.start_time)} - {formatTime(shift.end_time)}
+                            {shift.date} • {shift.startTime} - {shift.endTime}
                           </p>
                         </div>
                       </div>
@@ -367,51 +380,6 @@ export const ScheduleEditor: React.FC = () => {
               </CardContent>
             </Card>
           )}
-
-          {/* Validação e Custos */}
-          {(validationResult || costResult) && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Análise da Escala</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                                 {validationResult && (
-                   <div className="space-y-2">
-                     <div className="flex items-center space-x-2">
-                       <CheckCircle className="h-4 w-4 text-success" />
-                       <span className="font-medium">Validação CLT</span>
-                     </div>
-                     <div className="pl-6 space-y-1">
-                       {(validationResult as any)?.violations?.length > 0 ? (
-                         (validationResult as any).violations.map((violation: any, index: number) => (
-                           <div key={index} className="flex items-center space-x-2 text-sm text-destructive">
-                             <AlertTriangle className="h-3 w-3" />
-                             <span>{violation.message}</span>
-                           </div>
-                         ))
-                       ) : (
-                         <p className="text-sm text-success">Nenhuma violação encontrada</p>
-                       )}
-                     </div>
-                   </div>
-                 )}
-
-                 {costResult && (
-                   <div className="space-y-2">
-                     <div className="flex items-center space-x-2">
-                       <BarChart3 className="h-4 w-4 text-primary" />
-                       <span className="font-medium">Custos Estimados</span>
-                     </div>
-                     <div className="pl-6 space-y-1 text-sm">
-                       <p>Custo Total: R$ {(costResult as any)?.totalCost?.toLocaleString('pt-BR') || '0'}</p>
-                       <p>Custo Base: R$ {(costResult as any)?.breakdown?.baseCost?.toLocaleString('pt-BR') || '0'}</p>
-                       <p>Horas Extras: R$ {(costResult as any)?.breakdown?.overtimeCost?.toLocaleString('pt-BR') || '0'}</p>
-                     </div>
-                   </div>
-                 )}
-              </CardContent>
-            </Card>
-          )}
         </div>
 
         {/* Actions */}
@@ -424,6 +392,7 @@ export const ScheduleEditor: React.FC = () => {
             onClick={handleSaveSchedule} 
             disabled={createScheduleMutation.isPending || shifts.length === 0}
             className="bg-primary hover:bg-primary/90"
+            size="lg"
           >
             {createScheduleMutation.isPending ? (
               <>
@@ -433,7 +402,7 @@ export const ScheduleEditor: React.FC = () => {
             ) : (
               <>
                 <Save className="mr-2 h-4 w-4" />
-                Salvar Escala
+                Salvar e Publicar Escala
               </>
             )}
           </Button>
@@ -441,4 +410,4 @@ export const ScheduleEditor: React.FC = () => {
       </DialogContent>
     </Dialog>
   );
-};
+}

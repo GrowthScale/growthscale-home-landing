@@ -9,8 +9,7 @@ import { ScheduleEditor } from '@/components/schedules/ScheduleEditor';
 import { ScheduleFilters } from '@/components/schedules/ScheduleFilters';
 import { ScheduleList } from '@/components/schedules/ScheduleList';
 import { CostSimulator } from '@/components/schedules/CostSimulator';
-import { WhatsAppNotificationManager } from '@/components/WhatsAppNotificationManager';
-import { getSchedules } from '@/services/api';
+import { getSchedules, type ScheduleData } from '@/services/api';
 import { 
   Calendar,
   HelpCircle,
@@ -60,10 +59,10 @@ export default function Schedules() {
 
   // Calcular estatísticas
   const stats = {
-    active: schedules?.filter(s => s.status === 'active').length || 0,
-    optimized: schedules?.filter(s => s.status === 'optimized').length || 0,
-    totalCost: schedules?.reduce((sum, s) => sum + (s.total_cost || 0), 0) || 0,
-    totalHours: schedules?.reduce((sum, s) => sum + (s.total_hours || 0), 0) || 0,
+    published: schedules?.filter(s => s.status === 'published').length || 0,
+    draft: schedules?.filter(s => s.status === 'draft').length || 0,
+    archived: schedules?.filter(s => s.status === 'archived').length || 0,
+    total: schedules?.length || 0,
   };
 
   return (

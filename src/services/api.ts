@@ -243,47 +243,23 @@ export async function updateCompanySetup(companyId: string, setupData: SetupData
 // SERVIÇOS DE FUNCIONÁRIOS
 // =====================================================
 
-export interface Employee {
-  id: string;
+export interface EmployeeData {
+  id?: string;
   name: string;
   email: string;
-  phone_number?: string;
+  phone?: string;
   position: string;
-  department?: string;
-  status?: string;
+  hourly_rate: number;
   start_date: string;
-  end_date?: string;
-  salary?: number;
-  skills?: string[];
-  avatar?: string;
-  address?: any;
-  workload_hours?: number;
-  company_id: string;
+  status: 'active' | 'inactive';
+  company_id?: string;
   branch_id?: string;
   created_at?: string;
   updated_at?: string;
 }
 
-export interface CreateEmployeeData {
-  name: string;
-  email: string;
-  phone_number?: string;
-  position: string;
-  department?: string;
-  status?: string;
-  start_date: string;
-  salary?: number;
-  skills?: string[];
-  address?: any;
-  workload_hours?: number;
-}
-
-export interface UpdateEmployeeData extends Partial<CreateEmployeeData> {
-  id: string;
-}
-
 // Buscar todos os funcionários da empresa
-export async function getEmployees(companyId: string): Promise<{ data: Employee[] | null; error: string | null }> {
+export async function getEmployees(companyId: string): Promise<{ data: EmployeeData[] | null; error: string | null }> {
   try {
     const { data, error } = await supabase
       .from('employees')
@@ -296,7 +272,7 @@ export async function getEmployees(companyId: string): Promise<{ data: Employee[
       return { data: null, error: error.message };
     }
 
-    return { data: data as any, error: null };
+    return { data: data as unknown as EmployeeData[], error: null };
   } catch (error) {
     console.error('Erro inesperado ao buscar funcionários:', error);
     return { data: null, error: 'Erro interno do servidor' };
@@ -304,14 +280,12 @@ export async function getEmployees(companyId: string): Promise<{ data: Employee[
 }
 
 // Criar novo funcionário
-export async function createEmployee(employeeData: CreateEmployeeData, companyId: string): Promise<{ data: Employee | null; error: string | null }> {
+export async function createEmployee(employeeData: Omit<EmployeeData, 'id' | 'created_at' | 'updated_at'>): Promise<{ data: EmployeeData | null; error: string | null }> {
   try {
     const { data, error } = await supabase
       .from('employees')
       .insert({
         ...employeeData,
-        company_id: companyId,
-        status: employeeData.status || 'active',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       } as any)
@@ -323,7 +297,7 @@ export async function createEmployee(employeeData: CreateEmployeeData, companyId
       return { data: null, error: error.message };
     }
 
-    return { data: data as any, error: null };
+    return { data: data as unknown as EmployeeData, error: null };
   } catch (error) {
     console.error('Erro inesperado ao criar funcionário:', error);
     return { data: null, error: 'Erro interno do servidor' };
@@ -331,17 +305,15 @@ export async function createEmployee(employeeData: CreateEmployeeData, companyId
 }
 
 // Atualizar funcionário
-export async function updateEmployee(employeeData: UpdateEmployeeData): Promise<{ data: Employee | null; error: string | null }> {
+export async function updateEmployee(employeeId: string, employeeData: Partial<EmployeeData>): Promise<{ data: EmployeeData | null; error: string | null }> {
   try {
-    const { id, ...updateData } = employeeData;
-    
     const { data, error } = await supabase
       .from('employees')
       .update({
-        ...updateData,
+        ...employeeData,
         updated_at: new Date().toISOString()
       } as any)
-      .eq('id', id as any)
+      .eq('id', employeeId as any)
       .select()
       .single();
 
@@ -350,7 +322,7 @@ export async function updateEmployee(employeeData: UpdateEmployeeData): Promise<
       return { data: null, error: error.message };
     }
 
-    return { data: data as any, error: null };
+    return { data: data as unknown as EmployeeData, error: null };
   } catch (error) {
     console.error('Erro inesperado ao atualizar funcionário:', error);
     return { data: null, error: 'Erro interno do servidor' };
@@ -429,65 +401,44 @@ export async function getCompanyDetails(companyId: string) {
 // SERVIÇOS DE ESCALAS
 // =====================================================
 
-export interface Schedule {
-  id: string;
+export interface ScheduleData {
+  id?: string;
   name: string;
-  date: string;
-  description?: string;
-  notes?: string;
-  status?: string;
-  total_cost?: number;
-  total_hours?: number;
+  start_date: string;
+  end_date: string;
   company_id: string;
-  branch_id?: string;
+  status: 'draft' | 'published' | 'archived';
   created_at?: string;
   updated_at?: string;
 }
 
-export interface Shift {
-  id: string;
-  employee_id: string;
+export interface ShiftData {
+  id?: string;
   schedule_id: string;
+  employee_id: string;
   start_time: string;
   end_time: string;
-  hours_worked?: number;
-  cost?: number;
-  notes?: string;
-  status?: string;
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface CreateScheduleData {
-  name: string;
   date: string;
-  description?: string;
-  notes?: string;
-  shifts: Omit<Shift, 'id' | 'schedule_id' | 'created_at' | 'updated_at'>[];
-}
-
-export interface ScheduleWithShifts extends Schedule {
-  shifts: Shift[];
+  position?: string;
+  hourly_rate?: number;
+  created_at?: string;
 }
 
 // Buscar todas as escalas da empresa
-export async function getSchedules(companyId: string): Promise<{ data: ScheduleWithShifts[] | null; error: string | null }> {
+export async function getSchedules(companyId: string): Promise<{ data: ScheduleData[] | null; error: string | null }> {
   try {
     const { data, error } = await supabase
       .from('schedules')
-      .select(`
-        *,
-        shifts (*)
-      `)
+      .select('*')
       .eq('company_id', companyId as any)
-      .order('date', { ascending: false });
+      .order('created_at', { ascending: false });
 
     if (error) {
       console.error('Erro ao buscar escalas:', error);
       return { data: null, error: error.message };
     }
 
-    return { data: data as any, error: null };
+    return { data: data as unknown as ScheduleData[], error: null };
   } catch (error) {
     console.error('Erro inesperado ao buscar escalas:', error);
     return { data: null, error: 'Erro interno do servidor' };
@@ -495,18 +446,13 @@ export async function getSchedules(companyId: string): Promise<{ data: ScheduleW
 }
 
 // Criar escala com turnos
-export async function createScheduleWithShifts(scheduleData: CreateScheduleData, companyId: string): Promise<{ data: ScheduleWithShifts | null; error: string | null }> {
+export async function createScheduleWithShifts(scheduleData: Omit<ScheduleData, 'id' | 'created_at' | 'updated_at'>, shifts: Omit<ShiftData, 'id' | 'schedule_id' | 'created_at'>[]): Promise<{ data: ScheduleData | null; error: string | null }> {
   try {
-    // Primeiro, criar a escala
+    // Criar a escala
     const { data: schedule, error: scheduleError } = await supabase
       .from('schedules')
       .insert({
-        name: scheduleData.name,
-        date: scheduleData.date,
-        description: scheduleData.description,
-        notes: scheduleData.notes,
-        status: 'draft',
-        company_id: companyId,
+        ...scheduleData,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       } as any)
@@ -518,103 +464,51 @@ export async function createScheduleWithShifts(scheduleData: CreateScheduleData,
       return { data: null, error: scheduleError.message };
     }
 
-    // Depois, criar os turnos
-    if (scheduleData.shifts.length > 0) {
-      const shiftsToInsert = scheduleData.shifts.map(shift => ({
+    // Criar os turnos
+    if (shifts.length > 0) {
+      const shiftsWithScheduleId = shifts.map(shift => ({
         ...shift,
         schedule_id: (schedule as any).id,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        created_at: new Date().toISOString()
       }));
 
       const { error: shiftsError } = await supabase
         .from('shifts')
-        .insert(shiftsToInsert as any);
+        .insert(shiftsWithScheduleId as any);
 
       if (shiftsError) {
         console.error('Erro ao criar turnos:', shiftsError);
-        // Rollback: deletar a escala se falhar ao criar turnos
-        await supabase.from('schedules').delete().eq('id', (schedule as any).id as any);
+        // Rollback: deletar escala se falhar
+        await supabase.from('schedules').delete().eq('id', (schedule as any).id);
         return { data: null, error: shiftsError.message };
       }
     }
 
-    // Buscar a escala completa com turnos
-    const { data: completeSchedule, error: fetchError } = await supabase
-      .from('schedules')
-      .select(`
-        *,
-        shifts (*)
-      `)
-      .eq('id', (schedule as any).id as any)
-      .single();
-
-    if (fetchError) {
-      console.error('Erro ao buscar escala criada:', fetchError);
-      return { data: null, error: fetchError.message };
-    }
-
-    return { data: completeSchedule as any, error: null };
+    return { data: schedule as unknown as ScheduleData, error: null };
   } catch (error) {
-    console.error('Erro inesperado ao criar escala:', error);
+    console.error('Erro inesperado ao criar escala com turnos:', error);
     return { data: null, error: 'Erro interno do servidor' };
   }
 }
 
-// Atualizar escala
-export async function updateSchedule(scheduleId: string, updateData: Partial<Schedule>): Promise<{ data: Schedule | null; error: string | null }> {
+// Buscar turnos de uma escala
+export async function getShiftsBySchedule(scheduleId: string): Promise<{ data: ShiftData[] | null; error: string | null }> {
   try {
     const { data, error } = await supabase
-      .from('schedules')
-      .update({
-        ...updateData,
-        updated_at: new Date().toISOString()
-      } as any)
-      .eq('id', scheduleId as any)
-      .select()
-      .single();
+      .from('shifts')
+      .select('*')
+      .eq('schedule_id', scheduleId as any)
+      .order('date, start_time');
 
     if (error) {
-      console.error('Erro ao atualizar escala:', error);
+      console.error('Erro ao buscar turnos:', error);
       return { data: null, error: error.message };
     }
 
-    return { data: data as any, error: null };
+    return { data: data as unknown as ShiftData[], error: null };
   } catch (error) {
-    console.error('Erro inesperado ao atualizar escala:', error);
+    console.error('Erro inesperado ao buscar turnos:', error);
     return { data: null, error: 'Erro interno do servidor' };
-  }
-}
-
-// Deletar escala
-export async function deleteSchedule(scheduleId: string): Promise<{ error: string | null }> {
-  try {
-    // Primeiro deletar os turnos
-    const { error: shiftsError } = await supabase
-      .from('shifts')
-      .delete()
-      .eq('schedule_id', scheduleId as any);
-
-    if (shiftsError) {
-      console.error('Erro ao deletar turnos:', shiftsError);
-      return { error: shiftsError.message };
-    }
-
-    // Depois deletar a escala
-    const { error: scheduleError } = await supabase
-      .from('schedules')
-      .delete()
-      .eq('id', scheduleId as any);
-
-    if (scheduleError) {
-      console.error('Erro ao deletar escala:', scheduleError);
-      return { error: scheduleError.message };
-    }
-
-    return { error: null };
-  } catch (error) {
-    console.error('Erro inesperado ao deletar escala:', error);
-    return { error: 'Erro interno do servidor' };
   }
 }
 

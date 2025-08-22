@@ -8,7 +8,7 @@ import { EmployeeFilters } from '@/components/employees/EmployeeFilters';
 import { EmployeeTable } from '@/components/employees/EmployeeTable';
 import { EmployeeForm } from '@/components/employees/EmployeeForm';
 import { EmployeeDetails } from '@/components/employees/EmployeeDetails';
-import { getEmployees, deleteEmployee, type Employee } from '@/services/api';
+import { getEmployees, deleteEmployee, type EmployeeData } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Users,
@@ -31,7 +31,7 @@ export default function Employees() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   // Buscar funcionários
@@ -65,7 +65,7 @@ export default function Employees() {
     }
   });
 
-  const handleEmployeeSelect = (employee: Employee) => {
+  const handleEmployeeSelect = (employee: EmployeeData) => {
     setSelectedEmployee(employee);
     setIsDetailsOpen(true);
   };
@@ -89,7 +89,7 @@ export default function Employees() {
       const now = new Date();
       return startDate.getMonth() === now.getMonth() && startDate.getFullYear() === now.getFullYear();
     }).length || 0,
-    vacation: employees?.filter(emp => emp.status === 'vacation').length || 0,
+    inactive: employees?.filter(emp => emp.status === 'inactive').length || 0,
   };
 
   if (error) {
@@ -179,17 +179,15 @@ export default function Employees() {
               </CardContent>
             </Card>
 
-
-
             <Card className="hover:shadow-soft transition-shadow">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-accent/10 rounded-lg">
-                    <Clock className="h-5 w-5 text-accent" />
+                    <UserX className="h-5 w-5 text-accent" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Em Férias</p>
-                    <p className="text-2xl font-bold text-foreground">{stats.vacation}</p>
+                    <p className="text-sm text-muted-foreground">Inativos</p>
+                    <p className="text-2xl font-bold text-foreground">{stats.inactive}</p>
                   </div>
                 </div>
               </CardContent>

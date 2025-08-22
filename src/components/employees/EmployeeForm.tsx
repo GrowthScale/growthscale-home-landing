@@ -12,7 +12,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { createEmployee, type CreateEmployeeData } from '@/services/api';
+import { createEmployee, type EmployeeData } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Plus, 
@@ -33,17 +33,11 @@ import { cn } from '@/lib/utils';
 interface EmployeeFormData {
   name: string;
   email: string;
-  phone_number: string;
+  phone: string;
   position: string;
-  department: string;
-  salary: string;
+  hourly_rate: string;
   start_date: Date | undefined;
-  address: string;
-  status: string;
-  notes: string;
-  contractType: string;
-  preferredShift: string;
-  workload_hours: string;
+  status: 'active' | 'inactive';
 }
 
 export function EmployeeForm() {
@@ -55,24 +49,21 @@ export function EmployeeForm() {
   const [form, setForm] = useState<EmployeeFormData>({
     name: '',
     email: '',
-    phone_number: '',
+    phone: '',
     position: '',
-    department: '',
-    salary: '',
+    hourly_rate: '',
     start_date: undefined,
-    address: '',
-    status: 'active',
-    notes: '',
-    contractType: '',
-    preferredShift: '',
-    workload_hours: '8'
+    status: 'active'
   });
 
   // Mutation para criar funcionário
   const createEmployeeMutation = useMutation({
-    mutationFn: async (employeeData: CreateEmployeeData) => {
+    mutationFn: async (employeeData: Omit<EmployeeData, 'id' | 'created_at' | 'updated_at'>) => {
       if (!tenant?.id) throw new Error('Empresa não configurada');
-      const result = await createEmployee(employeeData, tenant.id);
+      const result = await createEmployee({
+        ...employeeData,
+        company_id: tenant.id
+      });
       if (result.error) throw new Error(result.error);
       return result.data;
     },
@@ -101,30 +92,18 @@ export function EmployeeForm() {
 
   const handleSave = () => {
     // Validate required fields
-    const requiredFields = ['name', 'email', 'phone_number', 'position', 'department'];
+    const requiredFields = ['name', 'email', 'phone', 'position'];
     const missingFields = requiredFields.filter(field => !form[field as keyof EmployeeFormData]);
     
     if (missingFields.length > 0) {
       toast({
         title: "Campos obrigatórios",
-        description: "Preencha todos os campos obrigatórios: " + missingFields.join(', '),
+        description: `Por favor, preencha: ${missingFields.join(', ')}`,
         variant: "destructive"
       });
       return;
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email)) {
-      toast({
-        title: "Email inválido",
-        description: "Por favor, insira um email válido.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Validate start date
     if (!form.start_date) {
       toast({
         title: "Data de início obrigatória",
@@ -135,18 +114,14 @@ export function EmployeeForm() {
     }
 
     // Prepare data for API
-    const employeeData: CreateEmployeeData = {
+    const employeeData: Omit<EmployeeData, 'id' | 'created_at' | 'updated_at'> = {
       name: form.name,
       email: form.email,
-      phone_number: form.phone_number,
+      phone: form.phone,
       position: form.position,
-      department: form.department,
-      status: form.status,
+      hourly_rate: form.hourly_rate ? parseFloat(form.hourly_rate.replace(/[^\d,]/g, '').replace(',', '.')) : 0,
       start_date: form.start_date.toISOString().split('T')[0],
-      salary: form.salary ? parseFloat(form.salary.replace(/[^\d,]/g, '').replace(',', '.')) : undefined,
-      skills: [], // TODO: Implement skills input
-      address: form.address ? { full: form.address } : undefined,
-      workload_hours: form.workload_hours ? parseInt(form.workload_hours) : undefined,
+      status: form.status,
     };
 
     createEmployeeMutation.mutate(employeeData);
@@ -156,17 +131,11 @@ export function EmployeeForm() {
     setForm({
       name: '',
       email: '',
-      phone_number: '',
+      phone: '',
       position: '',
-      department: '',
-      salary: '',
+      hourly_rate: '',
       start_date: undefined,
-      address: '',
-      status: 'active',
-      notes: '',
-      contractType: '',
-      preferredShift: '',
-      workload_hours: '8'
+      status: 'active'
     });
   };
 
@@ -236,8 +205,8 @@ export function EmployeeForm() {
                     <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="phone"
-                      value={form.phone_number}
-                      onChange={(e) => handleInputChange('phone_number', e.target.value)}
+                      value={form.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
                       placeholder="(11) 99999-9999"
                       className="pl-10"
                     />
@@ -296,106 +265,35 @@ export function EmployeeForm() {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="department">Departamento *</Label>
-                  <div className="relative">
-                    <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="department"
-                      value={form.department}
-                      onChange={(e) => handleInputChange('department', e.target.value)}
-                      placeholder="Ex: Vendas, Administração"
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="salary">Salário</Label>
+                  <Label htmlFor="hourly_rate">Taxa Horária</Label>
                   <div className="relative">
                     <DollarSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
-                      id="salary"
-                      value={form.salary}
-                      onChange={(e) => handleInputChange('salary', e.target.value)}
+                      id="hourly_rate"
+                      value={form.hourly_rate}
+                      onChange={(e) => handleInputChange('hourly_rate', e.target.value)}
                       placeholder="R$ 0,00"
                       className="pl-10"
                     />
                   </div>
                 </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="workload_hours">Carga Horária (horas/dia)</Label>
-                  <Input
-                    id="workload_hours"
-                    type="number"
-                    value={form.workload_hours}
-                    onChange={(e) => handleInputChange('workload_hours', e.target.value)}
-                    placeholder="8"
-                    min="1"
-                    max="24"
-                  />
-                </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
-                <Select value={form.status} onValueChange={(value) => handleInputChange('status', value)}>
+                <Select value={form.status} onValueChange={(value) => handleInputChange('status', value as 'active' | 'inactive')}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione o status" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="active">Ativo</SelectItem>
                     <SelectItem value="inactive">Inativo</SelectItem>
-                    <SelectItem value="vacation">Férias</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </CardContent>
           </Card>
 
-          {/* Endereço */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Endereço</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <Label htmlFor="address">Endereço Completo</Label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Textarea
-                    id="address"
-                    value={form.address}
-                    onChange={(e) => handleInputChange('address', e.target.value)}
-                    placeholder="Rua, número, bairro, cidade - estado, CEP"
-                    className="pl-10"
-                    rows={3}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Observações */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Observações</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <Label htmlFor="notes">Observações Adicionais</Label>
-                <Textarea
-                  id="notes"
-                  value={form.notes}
-                  onChange={(e) => handleInputChange('notes', e.target.value)}
-                  placeholder="Informações adicionais sobre o funcionário..."
-                  rows={3}
-                />
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Actions */}

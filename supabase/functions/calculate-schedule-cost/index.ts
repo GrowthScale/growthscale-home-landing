@@ -121,7 +121,7 @@ function calculateScheduleCost(shifts: Shift[], employees: Employee[]): CostCalc
   let totalBaseCost = 0
   let totalOvertimeCost = 0
   let totalNightShiftCost = 0
-  let totalHolidayCost = 0
+  const totalHolidayCost = 0
   let totalHours = 0
   let totalRegularHours = 0
   let totalOvertimeHours = 0
