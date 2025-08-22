@@ -15,7 +15,7 @@ const Header = () => (
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-lg opacity-20 blur-sm"></div>
           <div className="relative bg-gradient-to-r from-primary to-accent p-2 rounded-lg">
-            <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="h-6 w-6 text-foreground-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
             </svg>
           </div>
@@ -42,7 +42,7 @@ const Header = () => (
         <Button asChild variant="ghost" className="font-medium">
           <Link to="/auth">Entrar</Link>
         </Button>
-        <Button asChild className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+        <Button asChild className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-foreground-dark shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
           <Link to="/auth" className="flex items-center space-x-2">
             <span>Começar Agora</span>
             <ArrowRight className="h-4 w-4" />
@@ -94,7 +94,7 @@ const HeroSection = () => (
           
           {/* CTAs com psicologia de urgência e escassez */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-16 animate-fade-in-up">
-            <Button asChild size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+            <Button asChild size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-foreground-dark shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
               <Link to="/auth" className="flex items-center space-x-3">
                 <span>Começar Gratuitamente</span>
                 <ArrowRight className="h-5 w-5" />
@@ -120,43 +120,43 @@ const HeroSection = () => (
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-3xl blur-3xl"></div>
           
           {/* Mockup principal */}
-          <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 border border-border/20 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+          <div className="relative bg-gradient-to-br from-background-dark to-background-dark rounded-3xl p-6 border border-border/20 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
             {/* Header do mockup */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-destructive rounded-full"></div>
+                <div className="w-3 h-3 bg-accent rounded-full"></div>
+                <div className="w-3 h-3 bg-primary rounded-full"></div>
               </div>
-              <div className="text-white text-sm font-medium">GrowthScale Dashboard</div>
+              <div className="text-foreground-dark text-sm font-medium">GrowthScale Dashboard</div>
             </div>
             
             {/* Conteúdo do mockup */}
             <div className="space-y-4">
               {/* Barra de status */}
-              <div className="flex items-center justify-between bg-slate-800 rounded-lg p-3">
+              <div className="flex items-center justify-between bg-muted rounded-lg p-3">
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-400" />
-                  <span className="text-white text-sm">Escala validada</span>
+                  <CheckCircle className="h-4 w-4 text-primary" />
+                  <span className="text-foreground-dark text-sm">Escala validada</span>
                 </div>
-                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Sem riscos</Badge>
+                <Badge className="bg-primary/20 text-primary border-primary/30">Sem riscos</Badge>
               </div>
               
               {/* Cards de métricas */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-slate-800 rounded-lg p-3">
-                  <div className="text-white text-xs text-muted-foreground">Funcionários</div>
-                  <div className="text-white text-lg font-bold">12</div>
+                <div className="bg-muted rounded-lg p-3">
+                  <div className="text-foreground-dark text-xs text-muted-foreground">Funcionários</div>
+                  <div className="text-foreground-dark text-lg font-bold">12</div>
                 </div>
-                <div className="bg-slate-800 rounded-lg p-3">
-                  <div className="text-white text-xs text-muted-foreground">Horas economizadas</div>
-                  <div className="text-white text-lg font-bold">8h</div>
+                <div className="bg-muted rounded-lg p-3">
+                  <div className="text-foreground-dark text-xs text-muted-foreground">Horas economizadas</div>
+                  <div className="text-foreground-dark text-lg font-bold">8h</div>
                 </div>
               </div>
               
               {/* Gráfico simplificado */}
-              <div className="bg-slate-800 rounded-lg p-3">
-                <div className="text-white text-xs text-muted-foreground mb-2">Produtividade</div>
+              <div className="bg-muted rounded-lg p-3">
+                <div className="text-foreground-dark text-xs text-muted-foreground mb-2">Produtividade</div>
                 <div className="flex items-end space-x-1 h-8">
                   <div className="w-2 bg-primary rounded-t h-4"></div>
                   <div className="w-2 bg-primary rounded-t h-6"></div>
@@ -275,7 +275,7 @@ const SolutionSection = () => (
           ].map((item, index) => (
             <div key={index} className="flex gap-4 p-6 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10 hover:border-primary/20 transition-all duration-300">
               <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-r from-primary to-accent flex items-center justify-center">
-                <item.icon className="h-6 w-6 text-white" />
+                <item.icon className="h-6 w-6 text-foreground-dark" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
@@ -290,14 +290,14 @@ const SolutionSection = () => (
         {/* Mockup da interface principal */}
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl blur-3xl"></div>
-          <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 border border-border/20 shadow-2xl">
+          <div className="relative bg-gradient-to-br from-background-dark to-background-dark rounded-2xl p-6 border border-border/20 shadow-2xl">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-2">
                 <Calendar className="h-5 w-5 text-primary" />
-                <span className="text-white font-medium">Escala Semanal</span>
+                <span className="text-foreground-dark font-medium">Escala Semanal</span>
               </div>
-              <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Validada</Badge>
+              <Badge className="bg-primary/20 text-primary border-primary/30">Validada</Badge>
             </div>
             
             {/* Tabela de escala */}
@@ -307,20 +307,20 @@ const SolutionSection = () => (
                 { nome: "Maria Santos", cargo: "Cozinheira", seg: "06-14", ter: "06-14", qua: "06-14", qui: "Folga", sex: "06-14" },
                 { nome: "Pedro Costa", cargo: "Auxiliar", seg: "Folga", ter: "12-20", qua: "12-20", qui: "12-20", sex: "Folga" }
               ].map((funcionario, index) => (
-                <div key={index} className="bg-slate-800 rounded-lg p-3">
+                <div key={index} className="bg-muted rounded-lg p-3">
                   <div className="flex items-center justify-between mb-2">
                     <div>
-                      <div className="text-white font-medium">{funcionario.nome}</div>
-                      <div className="text-slate-400 text-sm">{funcionario.cargo}</div>
+                      <div className="text-foreground-dark font-medium">{funcionario.nome}</div>
+                      <div className="text-muted-foreground text-sm">{funcionario.cargo}</div>
                     </div>
-                    <CheckCircle className="h-4 w-4 text-green-400" />
+                    <CheckCircle className="h-4 w-4 text-primary" />
                   </div>
                   <div className="grid grid-cols-5 gap-2 text-xs">
-                    <div className="text-center p-1 bg-slate-700 rounded text-white">{funcionario.seg}</div>
-                    <div className="text-center p-1 bg-slate-700 rounded text-white">{funcionario.ter}</div>
+                    <div className="text-center p-1 bg-background rounded text-foreground-dark">{funcionario.seg}</div>
+                    <div className="text-center p-1 bg-background rounded text-foreground-dark">{funcionario.ter}</div>
                     <div className="text-center p-1 bg-accent/20 rounded text-accent">{funcionario.qua}</div>
-                    <div className="text-center p-1 bg-slate-700 rounded text-white">{funcionario.qui}</div>
-                    <div className="text-center p-1 bg-slate-700 rounded text-white">{funcionario.sex}</div>
+                    <div className="text-center p-1 bg-background rounded text-foreground-dark">{funcionario.qui}</div>
+                    <div className="text-center p-1 bg-background rounded text-foreground-dark">{funcionario.sex}</div>
                   </div>
                 </div>
               ))}
@@ -328,17 +328,17 @@ const SolutionSection = () => (
             
             {/* Métricas */}
             <div className="mt-6 grid grid-cols-3 gap-3">
-              <div className="bg-slate-800 rounded-lg p-3 text-center">
-                <div className="text-white text-lg font-bold">3</div>
-                <div className="text-slate-400 text-xs">Funcionários</div>
+              <div className="bg-muted rounded-lg p-3 text-center">
+                <div className="text-foreground-dark text-lg font-bold">3</div>
+                <div className="text-muted-foreground text-xs">Funcionários</div>
               </div>
-              <div className="bg-slate-800 rounded-lg p-3 text-center">
-                <div className="text-white text-lg font-bold">40h</div>
-                <div className="text-slate-400 text-xs">Total</div>
+              <div className="bg-muted rounded-lg p-3 text-center">
+                <div className="text-foreground-dark text-lg font-bold">40h</div>
+                <div className="text-muted-foreground text-xs">Total</div>
               </div>
-              <div className="bg-green-500/20 rounded-lg p-3 text-center">
-                <div className="text-green-400 text-lg font-bold">100%</div>
-                <div className="text-green-400 text-xs">Compliance</div>
+              <div className="bg-primary/20 rounded-lg p-3 text-center">
+                <div className="text-primary text-lg font-bold">100%</div>
+                <div className="text-primary text-xs">Compliance</div>
               </div>
             </div>
           </div>
@@ -448,7 +448,7 @@ const PricingSection = () => (
         {/* Business - Plano Principal */}
         <Card className="flex flex-col relative border-2 border-primary shadow-xl transform scale-105">
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-            <Badge className="bg-gradient-to-r from-primary to-accent text-white px-4 py-2">
+            <Badge className="bg-gradient-to-r from-primary to-accent text-foreground-dark px-4 py-2">
               Mais Popular
             </Badge>
           </div>
@@ -482,7 +482,7 @@ const PricingSection = () => (
             </ul>
           </CardContent>
           <div className="p-6 pt-0">
-            <Button asChild className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-lg">
+            <Button asChild className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-foreground-dark shadow-lg">
               <Link to="/auth">Escolher Business</Link>
             </Button>
           </div>
@@ -555,7 +555,7 @@ const Footer = () => (
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-lg opacity-20 blur-sm"></div>
             <div className="relative bg-gradient-to-r from-primary to-accent p-2 rounded-lg">
-              <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="h-6 w-6 text-foreground-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
               </svg>
             </div>
