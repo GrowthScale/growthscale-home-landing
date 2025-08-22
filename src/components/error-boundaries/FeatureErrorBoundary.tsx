@@ -133,13 +133,13 @@ export class FeatureErrorBoundary extends Component<Props, State> {
       return (
         <Card className="w-full max-w-md mx-auto">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
-              <ExclamationTriangleIcon className="h-6 w-6 text-red-600" />
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
+              <ExclamationTriangleIcon className="h-6 w-6 text-destructive" />
             </div>
-            <CardTitle className="text-lg font-semibold text-gray-900">
+            <CardTitle className="text-lg font-semibold text-muted-foreground">
               Erro no {this.props.feature}
             </CardTitle>
-            <CardDescription className="text-sm text-gray-600">
+            <CardDescription className="text-sm text-muted-foreground">
               Algo deu errado ao carregar esta funcionalidade
             </CardDescription>
           </CardHeader>
@@ -184,10 +184,10 @@ export class FeatureErrorBoundary extends Component<Props, State> {
 
             {process.env.NODE_ENV === 'development' && this.state.errorInfo && (
               <details className="mt-4">
-                <summary className="cursor-pointer text-sm font-medium text-gray-700">
+                <summary className="cursor-pointer text-sm font-medium text-muted-foreground">
                   Detalhes do Erro (Desenvolvimento)
                 </summary>
-                <pre className="mt-2 text-xs text-gray-600 bg-gray-50 p-2 rounded overflow-auto">
+                <pre className="mt-2 text-xs text-muted-foreground bg-muted p-2 rounded overflow-auto">
                   {this.state.errorInfo.componentStack}
                 </pre>
               </details>

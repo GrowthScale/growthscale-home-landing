@@ -48,7 +48,7 @@ export function Footer() {
   ];
 
   return (
-    <footer id="contato" className="w-full bg-slate-900 text-white">
+    <footer id="contato" className="w-full bg-background-dark text-foreground-dark">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Logo e descrição */}
@@ -59,22 +59,22 @@ export function Footer() {
               </div>
               <span className="text-xl font-bold text-white">GrowthScale</span>
             </div>
-            <p className="text-slate-300 mb-6 max-w-md">
+            <p className="text-muted-foreground mb-6 max-w-md">
               Transformando a gestão de escalas com IA. Reduza custos, aumente produtividade 
               e garanta compliance CLT de forma simples e eficiente.
             </p>
             
             {/* Contato */}
             <div className="space-y-3">
-              <div className="flex items-center space-x-3 text-slate-300">
+              <div className="flex items-center space-x-3 text-muted-foreground">
                 <Mail className="w-4 h-4" />
                 <span className="text-sm">contato@growthscale.com</span>
               </div>
-              <div className="flex items-center space-x-3 text-slate-300">
+              <div className="flex items-center space-x-3 text-muted-foreground">
                 <Phone className="w-4 h-4" />
                 <span className="text-sm">+55 (11) 99999-9999</span>
               </div>
-              <div className="flex items-center space-x-3 text-slate-300">
+              <div className="flex items-center space-x-3 text-muted-foreground">
                 <MapPin className="w-4 h-4" />
                 <span className="text-sm">São Paulo, SP - Brasil</span>
               </div>
@@ -83,13 +83,13 @@ export function Footer() {
 
           {/* Links do produto */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Produto</h3>
+            <h3 className="text-foreground-dark font-semibold mb-4">Produto</h3>
                          <ul className="space-y-2">
                {footerLinks.produto.map((link) => (
                  <li key={link.name}>
                    <Link 
                      to={link.href}
-                     className="text-slate-300 hover:text-white transition-colors duration-200 text-sm"
+                     className="text-muted-foreground hover:text-foreground-dark transition-colors duration-200 text-sm"
                    >
                      {link.name}
                    </Link>
@@ -100,13 +100,13 @@ export function Footer() {
 
           {/* Links de recursos */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Recursos</h3>
+            <h3 className="text-foreground-dark font-semibold mb-4">Recursos</h3>
                          <ul className="space-y-2">
                {footerLinks.recursos.map((link) => (
                  <li key={link.name}>
                    <Link 
                      to={link.href}
-                     className="text-slate-300 hover:text-white transition-colors duration-200 text-sm"
+                     className="text-muted-foreground hover:text-foreground-dark transition-colors duration-200 text-sm"
                    >
                      {link.name}
                    </Link>
@@ -117,13 +117,13 @@ export function Footer() {
 
           {/* Links da empresa */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Empresa</h3>
+            <h3 className="text-foreground-dark font-semibold mb-4">Empresa</h3>
                          <ul className="space-y-2">
                {footerLinks.empresa.map((link) => (
                  <li key={link.name}>
                    <Link 
                      to={link.href}
-                     className="text-slate-300 hover:text-white transition-colors duration-200 text-sm"
+                     className="text-muted-foreground hover:text-foreground-dark transition-colors duration-200 text-sm"
                    >
                      {link.name}
                    </Link>
@@ -134,10 +134,10 @@ export function Footer() {
         </div>
 
         {/* Separador */}
-                 <div className="border-t border-slate-700 mt-12 pt-8">
+                 <div className="border-t border-border-dark mt-12 pt-8">
                        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
              {/* Copyright */}
-             <div className="text-slate-400 text-sm">
+             <div className="text-muted-foreground text-sm">
                © {currentYear} GrowthScale. Todos os direitos reservados. Conforme LGPD.
              </div>
 
@@ -147,7 +147,7 @@ export function Footer() {
                  <Link 
                    key={link.name}
                    to={link.href}
-                   className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                   className="text-muted-foreground hover:text-foreground-dark transition-colors duration-200 text-sm"
                  >
                    {link.name}
                  </Link>
@@ -160,7 +160,7 @@ export function Footer() {
                  <a
                    key={social.label}
                    href={social.href}
-                   className="text-slate-400 hover:text-white transition-colors duration-200"
+                   className="text-muted-foreground hover:text-foreground-dark transition-colors duration-200"
                    aria-label={social.label}
                  >
                    <social.icon className="w-5 h-5" />

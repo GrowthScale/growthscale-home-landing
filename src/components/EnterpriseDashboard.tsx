@@ -189,10 +189,10 @@ export function EnterpriseDashboard() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'healthy': return 'text-green-600 bg-green-100 dark:bg-green-900';
-      case 'degraded': return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900';
-      case 'unhealthy': return 'text-red-600 bg-red-100 dark:bg-red-900';
-      default: return 'text-gray-600 bg-gray-100 dark:bg-gray-900';
+      case 'healthy': return 'text-accent bg-accent/10 dark:bg-accent';
+      case 'degraded': return 'text-accent bg-accent/10 dark:bg-accent';
+      case 'unhealthy': return 'text-destructive bg-destructive/10 dark:bg-destructive';
+      default: return 'text-muted-foreground bg-muted dark:bg-muted';
     }
   };
 
@@ -213,7 +213,7 @@ export function EnterpriseDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Enterprise Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground dark:text-muted-foreground">
             Configuração e monitoramento de recursos enterprise
           </p>
         </div>
@@ -317,7 +317,7 @@ export function EnterpriseDashboard() {
 
                     <div className="space-y-3">
                       {Object.entries(enterpriseHealth.services).map(([service, data]: [string, any]) => (
-                        <div key={service} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div key={service} className="flex items-center justify-between p-3 bg-muted dark:bg-muted rounded-lg">
                           <div className="flex items-center gap-2">
                             <Globe className="w-4 h-4" />
                             <span className="text-sm capitalize">{service}</span>
@@ -327,7 +327,7 @@ export function EnterpriseDashboard() {
                               {getStatusIcon(data.status)}
                               {data.status}
                             </Badge>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-muted-foreground">
                               {data.latency ? `${data.latency.toFixed(0)}ms` : ''}
                               {data.rateLimit ? `${data.rateLimit.toFixed(0)}/h` : ''}
                               {data.success ? `${data.success.toFixed(1)}%` : ''}
@@ -352,20 +352,20 @@ export function EnterpriseDashboard() {
               <CardContent>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {auditLogs.slice(0, 10).map((log, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted dark:bg-muted rounded">
                       <div className="flex items-center gap-2">
                         <div className={`w-2 h-2 rounded-full ${
-                          log.result === 'success' ? 'bg-green-500' : 
-                          log.result === 'blocked' ? 'bg-red-500' : 'bg-yellow-500'
+                          log.result === 'success' ? 'bg-accent' : 
+                          log.result === 'blocked' ? 'bg-destructive' : 'bg-accent'
                         }`}></div>
                         <span className="text-sm font-medium">{log.action}</span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-muted-foreground">
                           {log.timestamp.toLocaleTimeString()}
                         </span>
                       </div>
                       <Badge variant="outline" className={
-                        log.result === 'success' ? 'text-green-600' : 
-                        log.result === 'blocked' ? 'text-red-600' : 'text-yellow-600'
+                        log.result === 'success' ? 'text-accent' : 
+                        log.result === 'blocked' ? 'text-destructive' : 'text-accent'
                       }>
                         {log.result}
                       </Badge>
@@ -629,7 +629,7 @@ export function EnterpriseDashboard() {
                       </div>
                       
                       <div className="flex items-center gap-2">
-                        <code className="text-xs bg-gray-100 dark:bg-gray-800 p-1 rounded">
+                        <code className="text-xs bg-muted dark:bg-muted p-1 rounded">
                           {showApiKey === key.id ? key.key : '••••••••••••••••••••••••••••••••••••'}
                         </code>
                         <Button
@@ -648,7 +648,7 @@ export function EnterpriseDashboard() {
                         </Button>
                       </div>
                       
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-muted-foreground">
                         Rate Limit: {key.rateLimit.requests}/hora
                         {key.expiresAt && ` • Expira: ${new Date(key.expiresAt).toLocaleDateString()}`}
                       </div>
@@ -656,7 +656,7 @@ export function EnterpriseDashboard() {
                   ))}
                   
                   {apiKeys.length === 0 && (
-                    <p className="text-gray-500 text-center py-4">Nenhuma API key criada ainda</p>
+                    <p className="text-muted-foreground text-center py-4">Nenhuma API key criada ainda</p>
                   )}
                 </div>
               </CardContent>
@@ -688,19 +688,19 @@ export function EnterpriseDashboard() {
                   </thead>
                   <tbody>
                     {permissionMatrix.permissions.slice(0, 20).map((permission, permIndex) => (
-                      <tr key={permission.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                      <tr key={permission.id} className="hover:bg-muted dark:hover:bg-muted">
                         <td className="p-2 border-b">
                           <div>
                             <div className="font-medium">{permission.name}</div>
-                            <div className="text-gray-500">{permission.description}</div>
+                            <div className="text-muted-foreground">{permission.description}</div>
                           </div>
                         </td>
                         {permissionMatrix.roles.map((role, roleIndex) => (
                           <td key={`${role.id}-${permission.id}`} className="text-center p-2 border-b">
                             {permissionMatrix.matrix[roleIndex][permIndex] ? (
-                              <CheckCircle className="w-4 h-4 text-green-500 mx-auto" />
+                              <CheckCircle className="w-4 h-4 text-accent mx-auto" />
                             ) : (
-                              <XCircle className="w-4 h-4 text-gray-300 mx-auto" />
+                              <XCircle className="w-4 h-4 text-muted-foreground mx-auto" />
                             )}
                           </td>
                         ))}
@@ -712,7 +712,7 @@ export function EnterpriseDashboard() {
               
               {permissionMatrix.permissions.length > 20 && (
                 <div className="text-center mt-4">
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted-foreground">
                     Mostrando 20 de {permissionMatrix.permissions.length} permissões
                   </p>
                 </div>
@@ -737,26 +737,26 @@ export function EnterpriseDashboard() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className={`w-3 h-3 rounded-full ${
-                          log.result === 'success' ? 'bg-green-500' : 
-                          log.result === 'blocked' ? 'bg-red-500' : 'bg-yellow-500'
+                          log.result === 'success' ? 'bg-accent' : 
+                          log.result === 'blocked' ? 'bg-destructive' : 'bg-accent'
                         }`}></div>
                         <span className="font-medium">{log.action}</span>
                         <Badge variant="outline">{log.resource}</Badge>
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="outline" className={
-                          log.result === 'success' ? 'text-green-600' : 
-                          log.result === 'blocked' ? 'text-red-600' : 'text-yellow-600'
+                          log.result === 'success' ? 'text-accent' : 
+                          log.result === 'blocked' ? 'text-destructive' : 'text-accent'
                         }>
                           {log.result}
                         </Badge>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-muted-foreground">
                           {log.timestamp.toLocaleString()}
                         </span>
                       </div>
                     </div>
                     
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       <div>Usuário: {log.userId}</div>
                       <div>IP: {log.ipAddress}</div>
                       {log.reason && <div>Motivo: {log.reason}</div>}

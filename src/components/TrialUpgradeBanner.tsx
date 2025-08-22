@@ -50,7 +50,7 @@ export function TrialUpgradeBanner({
       return {
         title: "Trial Expirado",
         description: "Seu período de teste acabou. Faça upgrade para continuar usando todas as funcionalidades.",
-        icon: <AlertTriangle className="h-5 w-5 text-red-500" />,
+        icon: <AlertTriangle className="h-5 w-5 text-destructive" />,
         variant: "destructive" as const,
         features: [
           { icon: <Zap className="h-4 w-4" />, text: "IA para otimização de escalas" },
@@ -78,7 +78,7 @@ export function TrialUpgradeBanner({
       return {
         title: `Trial Ativo - ${daysLeftInTrial} dias restantes`,
         description: "Aproveite ao máximo seu período de teste. Descubra todas as funcionalidades premium.",
-        icon: <Star className="h-5 w-5 text-yellow-500" />,
+        icon: <Star className="h-5 w-5 text-accent" />,
         variant: "default" as const,
         features: [
           { icon: <Zap className="h-4 w-4" />, text: "IA para otimização" },
@@ -92,7 +92,7 @@ export function TrialUpgradeBanner({
     return {
       title: "Desbloqueie o Potencial Completo",
       description: "Faça upgrade para acessar funcionalidades avançadas e escalar sua operação.",
-      icon: <Zap className="h-5 w-5 text-blue-500" />,
+      icon: <Zap className="h-5 w-5 text-primary" />,
       variant: "default" as const,
       features: [
         { icon: <Star className="h-4 w-4" />, text: "Funcionalidades premium" },

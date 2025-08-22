@@ -368,19 +368,19 @@ export default function SetupPage() {
                 <h3 className="font-semibold mb-2">Funcionalidades Recomendadas</h3>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <CheckCircle className="h-4 w-4 text-accent" />
                     <span>IA para otimização de escalas</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <CheckCircle className="h-4 w-4 text-accent" />
                     <span>Validação automática de CLT</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <CheckCircle className="h-4 w-4 text-accent" />
                     <span>Notificações via WhatsApp</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <CheckCircle className="h-4 w-4 text-accent" />
                     <span>Relatórios de produtividade</span>
                   </div>
                 </div>
@@ -401,8 +401,8 @@ export default function SetupPage() {
       case 4: // Complete
         return (
           <div className="text-center space-y-6">
-            <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-              <CheckCircle className="h-8 w-8 text-green-600" />
+            <div className="mx-auto w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-8 w-8 text-accent" />
             </div>
             <div>
               <h2 className="text-2xl font-bold mb-2">Tudo Pronto!</h2>
@@ -497,7 +497,7 @@ export default function SetupPage() {
                     <Button 
                       onClick={handleFinishSetup} 
                       disabled={updateCompanyMutation.isPending || !formData.companyName.trim()}
-                      className="bg-green-600 hover:bg-green-700"
+                      className="bg-accent hover:bg-accent"
                     >
                       {updateCompanyMutation.isPending ? (
                         <>

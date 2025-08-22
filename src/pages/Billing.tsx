@@ -245,7 +245,7 @@ export default function BillingPage() {
                   )}
                   
                   {plan.recommended && (
-                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-green-600 text-white">
+                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-white">
                       Recomendado
                     </Badge>
                   )}
@@ -261,7 +261,7 @@ export default function BillingPage() {
                     <p className="text-sm text-muted-foreground">{plan.description}</p>
                     
                     {plan.savings && (
-                      <Badge variant="outline" className="mt-2 text-green-600 border-green-600">
+                      <Badge variant="outline" className="mt-2 text-accent border-green-600">
                         {plan.savings}
                       </Badge>
                     )}
@@ -271,7 +271,7 @@ export default function BillingPage() {
                     <ul className="space-y-3 mb-6">
                       {plan.features.map((feature, index) => (
                         <li key={index} className="flex items-center space-x-2 text-sm">
-                          <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <Check className="h-4 w-4 text-accent flex-shrink-0" />
                           <span>{feature}</span>
                         </li>
                       ))}
@@ -314,7 +314,7 @@ export default function BillingPage() {
                     <ul className="space-y-2">
                       {plans.find(p => p.id === selectedPlan)?.features.map((feature, index) => (
                         <li key={index} className="flex items-center space-x-2 text-sm">
-                          <Check className="h-4 w-4 text-green-500" />
+                          <Check className="h-4 w-4 text-accent" />
                           <span>{feature}</span>
                         </li>
                       ))}

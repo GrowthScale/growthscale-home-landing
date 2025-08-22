@@ -34,16 +34,16 @@ export function CLTSources({
   };
 
   const getSourceColor = (relevance: number) => {
-    if (relevance >= 0.8) {return 'bg-green-100 text-green-800';}
-    if (relevance >= 0.6) {return 'bg-blue-100 text-blue-800';}
-    if (relevance >= 0.4) {return 'bg-yellow-100 text-yellow-800';}
-    return 'bg-gray-100 text-gray-800';
+    if (relevance >= 0.8) {return 'bg-accent/10 text-accent';}
+    if (relevance >= 0.6) {return 'bg-primary/10 text-primary';}
+    if (relevance >= 0.4) {return 'bg-accent/10 text-accent';}
+    return 'bg-muted text-muted-foreground';
   };
 
   return (
     <div className={cn("space-y-3", className)}>
-      <div className="flex items-center gap-2 text-sm text-gray-600">
-        <FileText className="w-4 h-4 text-blue-500" />
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <FileText className="w-4 h-4 text-primary" />
         <span className="font-medium">Fontes de referência:</span>
       </div>
       
@@ -53,16 +53,16 @@ export function CLTSources({
           return (
             <div
               key={index}
-              className="p-3 border rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="p-3 border rounded-lg bg-muted hover:bg-muted transition-colors"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3 flex-1">
-                  <Icon className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <Icon className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-sm text-gray-900 truncate">
+                    <h4 className="font-medium text-sm text-muted-foreground truncate">
                       {source.title}
                     </h4>
-                    <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                       {source.content}
                     </p>
                   </div>
@@ -102,7 +102,7 @@ export function CLTSources({
               // Implementar lógica para mostrar mais fontes
               if (process.env.NODE_ENV === 'development') { console.log('Mostrar mais fontes'); }
             }}
-            className="text-blue-600 hover:text-blue-700"
+            className="text-primary hover:text-primary"
           >
             Ver mais {sources.length - maxSources} fontes
           </Button>

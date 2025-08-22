@@ -96,18 +96,18 @@ export function WhatsAppNotificationManager({
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'SUCCESS':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
+        return <CheckCircle className="h-4 w-4 text-accent" />;
       case 'FAILED':
-        return <XCircle className="h-4 w-4 text-red-500" />;
+        return <XCircle className="h-4 w-4 text-destructive" />;
       default:
-        return <Clock className="h-4 w-4 text-yellow-500" />;
+        return <Clock className="h-4 w-4 text-accent" />;
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'SUCCESS':
-        return <Badge variant="default" className="bg-green-100 text-green-800">Enviado</Badge>;
+        return <Badge variant="default" className="bg-accent/10 text-accent">Enviado</Badge>;
       case 'FAILED':
         return <Badge variant="destructive">Falhou</Badge>;
       default:
@@ -141,7 +141,7 @@ export function WhatsAppNotificationManager({
               value={webhookUrl}
               onChange={(e) => setWebhookUrl(e.target.value)}
             />
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               Configure a URL do webhook do WhatsApp Business API
             </p>
           </div>
@@ -187,12 +187,12 @@ export function WhatsAppNotificationManager({
                     {getStatusIcon(log.status)}
                     <div>
                       <p className="font-medium">{log.employeeName}</p>
-                      <p className="text-sm text-gray-500">{log.message}</p>
+                      <p className="text-sm text-muted-foreground">{log.message}</p>
                     </div>
                   </div>
                   <div className="text-right">
                     {getStatusBadge(log.status)}
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {formatDate(log.createdAt)}
                     </p>
                   </div>
@@ -200,8 +200,8 @@ export function WhatsAppNotificationManager({
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-500">
-              <MessageCircle className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+            <div className="text-center py-8 text-muted-foreground">
+              <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <p>Nenhum log de comunicação encontrado</p>
             </div>
           )}
@@ -217,7 +217,7 @@ export function WhatsAppNotificationManager() {
   return (
     <div className="p-8 text-center">
       <h2 className="text-2xl font-bold mb-4">Gerenciador de Notificações WhatsApp</h2>
-      <p className="text-gray-600">Funcionalidade temporariamente indisponível</p>
+      <p className="text-muted-foreground">Funcionalidade temporariamente indisponível</p>
     </div>
   );
 }

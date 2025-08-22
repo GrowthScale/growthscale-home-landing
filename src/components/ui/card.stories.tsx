@@ -94,7 +94,7 @@ export const WithStats: Story = {
             <div className="text-sm text-muted-foreground">Efficiency</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">92%</div>
+            <div className="text-2xl font-bold text-accent">92%</div>
             <div className="text-sm text-muted-foreground">Satisfaction</div>
           </div>
         </div>
@@ -116,15 +116,15 @@ export const WithActions: Story = {
       <CardContent>
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <div className="w-2 h-2 bg-accent rounded-full"></div>
             <span>Design Phase - Complete</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+            <div className="w-2 h-2 bg-primary rounded-full"></div>
             <span>Development - In Progress</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+            <div className="w-2 h-2 bg-muted rounded-full"></div>
             <span>Testing - Pending</span>
           </div>
         </div>

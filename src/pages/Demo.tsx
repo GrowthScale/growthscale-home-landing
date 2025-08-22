@@ -44,22 +44,22 @@ const Demo = () => {
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6">
               Veja o GrowthScale em Ação
             </h1>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Descubra como nossa IA transforma a gestão de escalas em apenas 3 minutos
             </p>
           </div>
 
           {/* Demo Video */}
           <div className="max-w-4xl mx-auto mb-16">
-            <div className="bg-slate-900 rounded-2xl p-8 text-center">
-              <div className="w-full h-96 bg-slate-800 rounded-xl flex items-center justify-center mb-6">
+            <div className="bg-background-dark rounded-2xl p-8 text-center">
+              <div className="w-full h-96 bg-muted rounded-xl flex items-center justify-center mb-6">
                 <div className="text-center">
-                  <Play className="h-16 w-16 text-white mx-auto mb-4" />
-                  <p className="text-white text-lg">Demonstração Interativa</p>
-                  <p className="text-slate-400 text-sm">3 minutos • Funcionalidades principais</p>
+                  <Play className="h-16 w-16 text-foreground-dark mx-auto mb-4" />
+                  <p className="text-foreground-dark text-lg">Demonstração Interativa</p>
+                  <p className="text-muted-foreground text-sm">3 minutos • Funcionalidades principais</p>
                 </div>
               </div>
               <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -71,37 +71,37 @@ const Demo = () => {
 
           {/* Features Demo */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="h-8 w-8 text-blue-600" />
+            <div className="text-center p-6 bg-card rounded-xl shadow-lg border border-border">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Criação de Escalas</h3>
-              <p className="text-slate-600">Veja como criar escalas perfeitas em segundos com nossa IA</p>
+              <h3 className="text-xl font-bold text-foreground mb-2">Criação de Escalas</h3>
+              <p className="text-muted-foreground">Veja como criar escalas perfeitas em segundos com nossa IA</p>
             </div>
             
-            <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="h-8 w-8 text-green-600" />
+            <div className="text-center p-6 bg-card rounded-xl shadow-lg border border-border">
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="h-8 w-8 text-accent" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Compliance CLT</h3>
-              <p className="text-slate-600">Descubra como ficar 100% em conformidade automaticamente</p>
+              <h3 className="text-xl font-bold text-foreground mb-2">Compliance CLT</h3>
+              <p className="text-muted-foreground">Descubra como ficar 100% em conformidade automaticamente</p>
             </div>
             
-            <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="h-8 w-8 text-orange-600" />
+            <div className="text-center p-6 bg-card rounded-xl shadow-lg border border-border">
+              <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="h-8 w-8 text-secondary-foreground" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">WhatsApp Integrado</h3>
-              <p className="text-slate-600">Veja como automatizar a comunicação com sua equipe</p>
+              <h3 className="text-xl font-bold text-foreground mb-2">WhatsApp Integrado</h3>
+              <p className="text-muted-foreground">Veja como automatizar a comunicação com sua equipe</p>
             </div>
           </div>
 
           {/* CTA */}
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
               Pronto para transformar sua gestão?
             </h2>
-            <p className="text-lg text-slate-600 mb-8">
+            <p className="text-lg text-muted-foreground mb-8">
               Comece gratuitamente e veja a diferença em 14 dias
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -91,8 +91,8 @@ export function CLTSuggestions({
 
   return (
     <div className={cn("space-y-4", className)}>
-      <div className="flex items-center gap-2 text-sm text-gray-600">
-        <Lightbulb className="w-4 h-4 text-yellow-500" />
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Lightbulb className="w-4 h-4 text-accent" />
         <span className="font-medium">Sugestões de perguntas:</span>
       </div>
       
@@ -105,10 +105,10 @@ export function CLTSuggestions({
               variant="outline"
               size="sm"
               onClick={() => handleSuggestionClick(suggestion.text)}
-              className="h-auto p-3 text-left justify-start hover:bg-blue-50 hover:border-blue-200 transition-colors"
+              className="h-auto p-3 text-left justify-start hover:bg-primary hover:border-blue-200 transition-colors"
             >
               <div className="flex items-start gap-3 w-full">
-                <Icon className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                <Icon className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                 <span className="text-sm leading-relaxed">
                   {suggestion.text}
                 </span>
@@ -127,7 +127,7 @@ export function CLTSuggestions({
               // Aqui você pode implementar lógica para mostrar mais sugestões
               if (process.env.NODE_ENV === 'development') { console.log('Mostrar mais sugestões'); }
             }}
-            className="text-blue-600 hover:text-blue-700"
+            className="text-primary hover:text-primary"
           >
             Ver mais sugestões
           </Button>

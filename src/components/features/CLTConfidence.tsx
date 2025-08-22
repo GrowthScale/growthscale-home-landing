@@ -18,11 +18,11 @@ export function CLTConfidence({
   showIcon = true 
 }: CLTConfidenceProps) {
   const getConfidenceLevel = (value: number) => {
-    if (value >= 0.9) {return { level: 'Muito Alta', color: 'text-green-600', bgColor: 'bg-green-100' };}
-    if (value >= 0.7) {return { level: 'Alta', color: 'text-blue-600', bgColor: 'bg-blue-100' };}
-    if (value >= 0.5) {return { level: 'Média', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };}
+    if (value >= 0.9) {return { level: 'Muito Alta', color: 'text-accent', bgColor: 'bg-accent/10' };}
+    if (value >= 0.7) {return { level: 'Alta', color: 'text-primary', bgColor: 'bg-primary/10' };}
+    if (value >= 0.5) {return { level: 'Média', color: 'text-accent', bgColor: 'bg-accent/10' };}
     if (value >= 0.3) {return { level: 'Baixa', color: 'text-orange-600', bgColor: 'bg-orange-100' };}
-    return { level: 'Muito Baixa', color: 'text-red-600', bgColor: 'bg-red-100' };
+    return { level: 'Muito Baixa', color: 'text-destructive', bgColor: 'bg-destructive/10' };
   };
 
   const getConfidenceIcon = (value: number) => {
@@ -45,7 +45,7 @@ export function CLTConfidence({
       
       <div className="flex-1">
         <div className="flex items-center justify-between mb-1">
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium text-muted-foreground">
             Confiança da resposta
           </span>
           <Badge 
@@ -62,7 +62,7 @@ export function CLTConfidence({
               value={confidence * 100} 
               className="h-2"
             />
-            <div className="flex justify-between text-xs text-gray-500">
+            <div className="flex justify-between text-xs text-muted-foreground">
               <span>0%</span>
               <span>{Math.round(confidence * 100)}%</span>
               <span>100%</span>

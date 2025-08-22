@@ -12,9 +12,9 @@ interface EquityScoreProps {
 
 export function EquityScore({ value, message, className = '' }: EquityScoreProps) {
   const getEquityColor = (score: number) => {
-    if (score >= 75) {return 'text-green-600';}
-    if (score >= 50) {return 'text-yellow-600';}
-    return 'text-red-600';
+    if (score >= 75) {return 'text-accent';}
+    if (score >= 50) {return 'text-accent';}
+    return 'text-destructive';
   };
 
   const getEquityBadgeVariant = (score: number) => {
@@ -71,15 +71,15 @@ export function EquityScore({ value, message, className = '' }: EquityScoreProps
 
         <div className="grid grid-cols-3 gap-2 text-xs">
           <div className="text-center">
-            <div className="font-semibold text-green-600">75-100</div>
+            <div className="font-semibold text-accent">75-100</div>
             <div className="text-muted-foreground">Excelente</div>
           </div>
           <div className="text-center">
-            <div className="font-semibold text-yellow-600">50-74</div>
+            <div className="font-semibold text-accent">50-74</div>
             <div className="text-muted-foreground">Regular</div>
           </div>
           <div className="text-center">
-            <div className="font-semibold text-red-600">0-49</div>
+            <div className="font-semibold text-destructive">0-49</div>
             <div className="text-muted-foreground">Crítico</div>
           </div>
         </div>

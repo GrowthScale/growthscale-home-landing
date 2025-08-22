@@ -61,7 +61,7 @@ export const WithBothIcons: Story = {
       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
       <Input className="pl-10 pr-10" placeholder="Email" type="email" />
       <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+        <div className="w-2 h-2 bg-accent rounded-full"></div>
       </div>
     </div>
   ),
@@ -171,7 +171,7 @@ export const WithValidation: Story = {
         className="border-green-500 focus:border-green-500" 
         placeholder="Campo válido" 
       />
-      <p className="text-sm text-green-600">✓ Campo válido</p>
+      <p className="text-sm text-accent">✓ Campo válido</p>
     </div>
   ),
 };

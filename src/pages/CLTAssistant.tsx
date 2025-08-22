@@ -103,19 +103,19 @@ const CLTAssistantPage: React.FC = () => {
               </p>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-accent" />
                   <span className="text-sm">Explicações claras e objetivas</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-accent" />
                   <span className="text-sm">Foco em prevenção de problemas</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-accent" />
                   <span className="text-sm">Linguagem acessível</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-accent" />
                   <span className="text-sm">Atualizado com a legislação vigente</span>
                 </div>
               </div>
@@ -153,17 +153,17 @@ const CLTAssistantPage: React.FC = () => {
         </div>
 
         {/* Disclaimer */}
-        <Card className="mt-8 border-yellow-200 bg-yellow-50">
+        <Card className="mt-8 border-accent/20 bg-accent/5">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Shield className="h-4 w-4 text-yellow-600" />
+              <div className="w-8 h-8 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Shield className="h-4 w-4 text-accent" />
               </div>
               <div>
-                <h3 className="font-medium text-yellow-800 mb-2">
+                <h3 className="font-medium text-accent-foreground mb-2">
                   Aviso Legal Importante
                 </h3>
-                <p className="text-sm text-yellow-700">
+                <p className="text-sm text-accent-foreground">
                   Este assistente fornece orientações informativas sobre a CLT e não substitui 
                   a consulta a um profissional de direito ou contabilidade. Para questões 
                   específicas ou conselhos jurídicos, sempre consulte um especialista qualificado.

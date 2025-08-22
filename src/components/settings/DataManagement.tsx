@@ -158,7 +158,7 @@ export function DataManagement() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex items-center space-x-3 p-3 border rounded-lg">
-              <Building className="h-5 w-5 text-blue-600" />
+              <Building className="h-5 w-5 text-primary" />
               <div>
                 <p className="font-medium">Empresas</p>
                 <p className="text-sm text-muted-foreground">
@@ -171,7 +171,7 @@ export function DataManagement() {
             </div>
 
             <div className="flex items-center space-x-3 p-3 border rounded-lg">
-              <Users className="h-5 w-5 text-green-600" />
+              <Users className="h-5 w-5 text-accent" />
               <div>
                 <p className="font-medium">Funcionários</p>
                 <p className="text-sm text-muted-foreground">
@@ -314,20 +314,20 @@ export function DataManagement() {
       <Separator />
 
       {/* Seção de Exclusão de Conta */}
-      <Card className="border-red-200 bg-red-50">
+      <Card className="border-red-200 bg-destructive">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-red-700">
-            <Trash2 className="h-5 w-5 text-red-600" />
+          <CardTitle className="flex items-center space-x-2 text-destructive">
+            <Trash2 className="h-5 w-5 text-destructive" />
             <span>Excluir Conta Permanentemente</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
-              <AlertTriangle className="h-5 w-5 text-red-500 mt-0.5" />
+              <AlertTriangle className="h-5 w-5 text-destructive mt-0.5" />
               <div>
-                <p className="font-medium text-red-700">⚠️ Ação Irreversível</p>
-                <ul className="text-sm text-red-600 mt-1 space-y-1">
+                <p className="font-medium text-destructive">⚠️ Ação Irreversível</p>
+                <ul className="text-sm text-destructive mt-1 space-y-1">
                   <li>• Todos os seus dados serão excluídos permanentemente</li>
                   <li>• Suas empresas e funcionários serão removidos</li>
                   <li>• Todas as escalas e configurações serão perdidas</li>
@@ -363,12 +363,12 @@ export function DataManagement() {
                     />
                   </div>
                   
-                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="p-4 bg-destructive border border-red-200 rounded-lg">
                     <div className="flex items-center space-x-2">
-                      <AlertTriangle className="h-4 w-4 text-red-600" />
-                      <p className="text-sm font-medium text-red-700">Última chance</p>
+                      <AlertTriangle className="h-4 w-4 text-destructive" />
+                      <p className="text-sm font-medium text-destructive">Última chance</p>
                     </div>
-                    <p className="text-sm text-red-600 mt-1">
+                    <p className="text-sm text-destructive mt-1">
                       Após confirmar, todos os seus dados serão perdidos para sempre.
                     </p>
                   </div>

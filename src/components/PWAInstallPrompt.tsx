@@ -64,15 +64,15 @@ export function PWAInstallPrompt() {
 
   return (
     <div className="fixed bottom-4 right-4 z-50 max-w-sm">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4">
+      <div className="bg-white dark:bg-muted rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             {showInstallPrompt && (
               <>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                <h3 className="text-sm font-semibold text-muted-foreground dark:text-white mb-1">
                   Instalar GrowthScale
                 </h3>
-                <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
+                <p className="text-xs text-muted-foreground dark:text-muted-foreground mb-3">
                   Instale o app para acesso rápido e funcionalidades offline
                 </p>
                 <div className="flex gap-2">
@@ -97,10 +97,10 @@ export function PWAInstallPrompt() {
 
             {needRefresh && (
               <>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                <h3 className="text-sm font-semibold text-muted-foreground dark:text-white mb-1">
                   Nova versão disponível
                 </h3>
-                <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
+                <p className="text-xs text-muted-foreground dark:text-muted-foreground mb-3">
                   Uma nova versão do app está disponível
                 </p>
                 <div className="flex gap-2">
@@ -125,10 +125,10 @@ export function PWAInstallPrompt() {
 
             {offlineReady && (
               <>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                <h3 className="text-sm font-semibold text-muted-foreground dark:text-white mb-1">
                   App pronto offline
                 </h3>
-                <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
+                <p className="text-xs text-muted-foreground dark:text-muted-foreground mb-3">
                   O app agora funciona offline
                 </p>
                 <Button
@@ -143,7 +143,7 @@ export function PWAInstallPrompt() {
           
           <button
             onClick={handleClose}
-            className="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+            className="ml-2 text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground"
           >
             <X className="w-4 h-4" />
           </button>

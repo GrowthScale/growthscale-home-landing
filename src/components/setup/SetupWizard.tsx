@@ -103,12 +103,12 @@ export function SetupWizard({ isOpen, onClose }: SetupWizardProps) {
                 />
               </div>
 
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-primary p-4 rounded-lg">
                 <div className="flex items-start space-x-3">
-                  <CheckCircle className="h-5 w-5 text-blue-600 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-blue-900">O que você terá acesso:</h4>
-                    <ul className="text-sm text-blue-800 mt-1 space-y-1">
+                    <h4 className="font-semibold text-primary">O que você terá acesso:</h4>
+                    <ul className="text-sm text-primary mt-1 space-y-1">
                       <li>• Gestão completa de funcionários</li>
                       <li>• Criação e edição de escalas</li>
                       <li>• Validação automática de turnos</li>

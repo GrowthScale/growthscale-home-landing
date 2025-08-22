@@ -121,14 +121,14 @@ export function SecurityDashboard() {
       case 'active':
       case 'protected':
       case 'secure':
-        return 'text-green-600 bg-green-100 dark:bg-green-900';
+        return 'text-accent bg-accent/10 dark:bg-accent';
       case 'warning':
-        return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900';
+        return 'text-accent bg-accent/10 dark:bg-accent';
       case 'error':
       case 'inactive':
-        return 'text-red-600 bg-red-100 dark:bg-red-900';
+        return 'text-destructive bg-destructive/10 dark:bg-destructive';
       default:
-        return 'text-gray-600 bg-gray-100 dark:bg-gray-900';
+        return 'text-muted-foreground bg-muted dark:bg-muted';
     }
   };
 
@@ -154,12 +154,12 @@ export function SecurityDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Security & Compliance Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground dark:text-muted-foreground">
             Monitoramento de segurança e compliance GDPR
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <Badge variant="outline" className={isOnline ? 'text-green-600' : 'text-red-600'}>
+          <Badge variant="outline" className={isOnline ? 'text-accent' : 'text-destructive'}>
             {isOnline ? <Globe className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
             {isOnline ? 'Online' : 'Offline'}
           </Badge>
@@ -189,7 +189,7 @@ export function SecurityDashboard() {
                 <h3 className="font-semibold mb-4">Threat Protection</h3>
                 <div className="space-y-3">
                   {securityStatus?.threats && Object.entries(securityStatus.threats).map(([threat, status]) => (
-                    <div key={threat} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div key={threat} className="flex items-center justify-between p-3 bg-muted dark:bg-muted rounded-lg">
                       <div className="flex items-center gap-2">
                         <Lock className="w-4 h-4" />
                         <span className="text-sm capitalize">{threat.replace('_', ' ')}</span>
@@ -208,7 +208,7 @@ export function SecurityDashboard() {
                 <h3 className="font-semibold mb-4">Security Headers</h3>
                 <div className="space-y-3">
                   {securityStatus?.headers && Object.entries(securityStatus.headers).map(([header, status]) => (
-                    <div key={header} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div key={header} className="flex items-center justify-between p-3 bg-muted dark:bg-muted rounded-lg">
                       <div className="flex items-center gap-2">
                         <Settings className="w-4 h-4" />
                         <span className="text-sm font-mono">{header}</span>
@@ -229,9 +229,9 @@ export function SecurityDashboard() {
                 <h3 className="font-semibold mb-3">Recommendations</h3>
                 <div className="space-y-2">
                   {securityStatus.recommendations.map((rec, index) => (
-                    <div key={index} className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
-                      <AlertTriangle className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm text-blue-800 dark:text-blue-200">{rec}</span>
+                    <div key={index} className="flex items-center gap-2 p-2 bg-primary dark:bg-primary/20 rounded">
+                      <AlertTriangle className="w-4 h-4 text-primary" />
+                      <span className="text-sm text-primary dark:text-primary">{rec}</span>
                     </div>
                   ))}
                 </div>
@@ -252,19 +252,19 @@ export function SecurityDashboard() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">{auditData?.compliance_summary?.gdpr_article_6 || 0}</div>
-                <div className="text-sm text-green-600">Article 6 (Legal Basis)</div>
+              <div className="text-center p-4 bg-accent dark:bg-accent/20 rounded-lg">
+                <div className="text-2xl font-bold text-accent">{auditData?.compliance_summary?.gdpr_article_6 || 0}</div>
+                <div className="text-sm text-accent">Article 6 (Legal Basis)</div>
               </div>
               
-              <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">{auditData?.compliance_summary?.gdpr_article_7 || 0}</div>
-                <div className="text-sm text-blue-600">Article 7 (Consent)</div>
+              <div className="text-center p-4 bg-primary dark:bg-primary/20 rounded-lg">
+                <div className="text-2xl font-bold text-primary">{auditData?.compliance_summary?.gdpr_article_7 || 0}</div>
+                <div className="text-sm text-primary">Article 7 (Consent)</div>
               </div>
               
-              <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                <div className="text-2xl font-bold text-yellow-600">{auditData?.compliance_summary?.gdpr_article_17 || 0}</div>
-                <div className="text-sm text-yellow-600">Article 17 (Right to be Forgotten)</div>
+              <div className="text-center p-4 bg-accent dark:bg-accent/20 rounded-lg">
+                <div className="text-2xl font-bold text-accent">{auditData?.compliance_summary?.gdpr_article_17 || 0}</div>
+                <div className="text-sm text-accent">Article 17 (Right to be Forgotten)</div>
               </div>
               
               <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
@@ -279,7 +279,7 @@ export function SecurityDashboard() {
                 onClick={handleGDPRDeletion} 
                 disabled={loading || gdprDeletionRequested}
                 variant="outline"
-                className="text-red-600 border-red-600 hover:bg-red-50"
+                className="text-destructive border-red-600 hover:bg-destructive"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
                 {gdprDeletionRequested ? 'Exclusão Solicitada' : 'Solicitar Exclusão GDPR'}
@@ -315,7 +315,7 @@ export function SecurityDashboard() {
                 <h3 className="font-semibold mb-3">Events by Category</h3>
                 <div className="space-y-2">
                   {auditData?.events_by_category && Object.entries(auditData.events_by_category).map(([category, count]) => (
-                    <div key={category} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                    <div key={category} className="flex items-center justify-between p-2 bg-muted dark:bg-muted rounded">
                       <span className="text-sm capitalize">{category.replace('_', ' ')}</span>
                       <Badge variant="secondary">{count}</Badge>
                     </div>
@@ -328,7 +328,7 @@ export function SecurityDashboard() {
                 <h3 className="font-semibold mb-3">Events by Severity</h3>
                 <div className="space-y-2">
                   {auditData?.events_by_severity && Object.entries(auditData.events_by_severity).map(([severity, count]) => (
-                    <div key={severity} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                    <div key={severity} className="flex items-center justify-between p-2 bg-muted dark:bg-muted rounded">
                       <span className="text-sm capitalize">{severity}</span>
                       <Badge variant="secondary">{count}</Badge>
                     </div>
@@ -340,11 +340,11 @@ export function SecurityDashboard() {
             {/* Recent Events List */}
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {auditData?.recent_events && auditData.recent_events.slice(0, 10).map((event, index) => (
-                <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                <div key={index} className="flex items-center justify-between p-2 bg-muted dark:bg-muted rounded">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-sm font-medium">{event.event}</span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-muted-foreground">
                       {new Date(event.timestamp).toLocaleTimeString()}
                     </span>
                   </div>
@@ -368,16 +368,16 @@ export function SecurityDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-              <div className="text-xl font-bold text-green-600">Compliant</div>
-              <div className="text-sm text-green-600">Data Retention</div>
-              <div className="text-xs text-green-500 mt-1">7 years retention</div>
+            <div className="text-center p-4 bg-accent dark:bg-accent/20 rounded-lg">
+              <div className="text-xl font-bold text-accent">Compliant</div>
+              <div className="text-sm text-accent">Data Retention</div>
+              <div className="text-xs text-accent mt-1">7 years retention</div>
             </div>
             
-            <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-              <div className="text-xl font-bold text-blue-600">Active</div>
-              <div className="text-sm text-blue-600">Audit Logging</div>
-              <div className="text-xs text-blue-500 mt-1">Real-time monitoring</div>
+            <div className="text-center p-4 bg-primary dark:bg-primary/20 rounded-lg">
+              <div className="text-xl font-bold text-primary">Active</div>
+              <div className="text-sm text-primary">Audit Logging</div>
+              <div className="text-xs text-primary mt-1">Real-time monitoring</div>
             </div>
             
             <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">

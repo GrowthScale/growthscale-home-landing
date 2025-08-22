@@ -40,7 +40,7 @@ export const Default: Story = {
 
 export const Success: Story = {
   render: () => (
-    <Alert className="border-green-200 bg-green-50 text-green-800">
+    <Alert className="border-green-200 bg-accent text-accent">
       <CheckCircle className="h-4 w-4" />
       <AlertTitle>Sucesso!</AlertTitle>
       <AlertDescription>
@@ -52,7 +52,7 @@ export const Success: Story = {
 
 export const Warning: Story = {
   render: () => (
-    <Alert className="border-yellow-200 bg-yellow-50 text-yellow-800">
+    <Alert className="border-yellow-200 bg-accent text-accent">
       <AlertCircle className="h-4 w-4" />
       <AlertTitle>Atenção</AlertTitle>
       <AlertDescription>
@@ -88,7 +88,7 @@ export const ScheduleValidation: Story = {
 
 export const CostAlert: Story = {
   render: () => (
-    <Alert className="border-blue-200 bg-blue-50 text-blue-800">
+    <Alert className="border-blue-200 bg-primary text-primary">
       <Info className="h-4 w-4" />
       <AlertTitle>Custo Estimado</AlertTitle>
       <AlertDescription>
@@ -100,7 +100,7 @@ export const CostAlert: Story = {
 
 export const NotificationSuccess: Story = {
   render: () => (
-    <Alert className="border-green-200 bg-green-50 text-green-800">
+    <Alert className="border-green-200 bg-accent text-accent">
       <CheckCircle className="h-4 w-4" />
       <AlertTitle>Notificações Enviadas</AlertTitle>
       <AlertDescription>
@@ -112,7 +112,7 @@ export const NotificationSuccess: Story = {
 
 export const ComplianceWarning: Story = {
   render: () => (
-    <Alert className="border-red-200 bg-red-50 text-red-800">
+    <Alert className="border-red-200 bg-destructive text-destructive">
       <XCircle className="h-4 w-4" />
       <AlertTitle>Violação de Conformidade</AlertTitle>
       <AlertDescription>
@@ -124,7 +124,7 @@ export const ComplianceWarning: Story = {
 
 export const EmployeeLimit: Story = {
   render: () => (
-    <Alert className="border-yellow-200 bg-yellow-50 text-yellow-800">
+    <Alert className="border-yellow-200 bg-accent text-accent">
       <AlertCircle className="h-4 w-4" />
       <AlertTitle>Limite de Funcionários</AlertTitle>
       <AlertDescription>
@@ -189,7 +189,7 @@ export const AllVariants: Story = {
         </AlertDescription>
       </Alert>
       
-      <Alert className="border-green-200 bg-green-50 text-green-800">
+      <Alert className="border-green-200 bg-accent text-accent">
         <CheckCircle className="h-4 w-4" />
         <AlertTitle>Sucesso</AlertTitle>
         <AlertDescription>
@@ -197,7 +197,7 @@ export const AllVariants: Story = {
         </AlertDescription>
       </Alert>
       
-      <Alert className="border-yellow-200 bg-yellow-50 text-yellow-800">
+      <Alert className="border-yellow-200 bg-accent text-accent">
         <AlertCircle className="h-4 w-4" />
         <AlertTitle>Aviso</AlertTitle>
         <AlertDescription>

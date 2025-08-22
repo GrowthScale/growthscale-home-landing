@@ -99,11 +99,11 @@ export const ScheduleSuggestion: React.FC<ScheduleSuggestionProps> = ({
             <div className="text-xs text-muted-foreground">Alocações</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">{stats.uniqueEmployees}</div>
+            <div className="text-2xl font-bold text-accent">{stats.uniqueEmployees}</div>
             <div className="text-xs text-muted-foreground">Funcionários</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">{stats.uniqueShifts}</div>
+            <div className="text-2xl font-bold text-primary">{stats.uniqueShifts}</div>
             <div className="text-xs text-muted-foreground">Turnos</div>
           </div>
           <div className="text-center">
@@ -170,13 +170,13 @@ export const ScheduleSuggestion: React.FC<ScheduleSuggestionProps> = ({
         )}
 
         {/* Disclaimer */}
-        <div className="flex items-start gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+        <div className="flex items-start gap-2 p-3 bg-accent border border-yellow-200 rounded-lg">
+          <AlertTriangle className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" />
           <div>
-            <p className="text-sm font-medium text-yellow-800">
+            <p className="text-sm font-medium text-accent">
               Sugestão Gerada por IA
             </p>
-            <p className="text-xs text-yellow-700">
+            <p className="text-xs text-accent">
               Esta sugestão foi gerada automaticamente. Revise as alocações antes de aplicar.
             </p>
           </div>

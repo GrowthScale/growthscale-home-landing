@@ -169,8 +169,8 @@ const Dashboard = () => {
       {/* Seção de Status da Versão 1.0 */}
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border p-6">
         <div className="flex items-center space-x-3 mb-4">
-          <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-            <CheckCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <div className="p-2 bg-primary/10 dark:bg-primary/30 rounded-lg">
+            <CheckCircle className="h-5 w-5 text-primary dark:text-primary" />
           </div>
           <div>
             <h3 className="font-semibold text-lg">Versão 1.0 - Funcionalidades Essenciais</h3>
@@ -183,13 +183,13 @@ const Dashboard = () => {
           conectadas ao backend e prontas para uso em produção.
         </p>
         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <CheckCircle className="h-4 w-4 text-green-500" />
+          <CheckCircle className="h-4 w-4 text-accent" />
           <span>Dashboard funcional</span>
-          <CheckCircle className="h-4 w-4 text-green-500" />
+          <CheckCircle className="h-4 w-4 text-accent" />
           <span>Gestão de escalas ativa</span>
-          <CheckCircle className="h-4 w-4 text-green-500" />
+          <CheckCircle className="h-4 w-4 text-accent" />
           <span>CRUD de funcionários</span>
-          <CheckCircle className="h-4 w-4 text-green-500" />
+          <CheckCircle className="h-4 w-4 text-accent" />
           <span>Relatórios de compliance</span>
         </div>
       </div>

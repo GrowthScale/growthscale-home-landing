@@ -123,16 +123,16 @@ export function EdgeAnalyticsDashboard() {
     switch (status) {
       case 'healthy':
       case 'excellent':
-        return 'text-green-600 bg-green-100 dark:bg-green-900';
+        return 'text-accent bg-accent/10 dark:bg-accent';
       case 'good':
-        return 'text-blue-600 bg-blue-100 dark:bg-blue-900';
+        return 'text-primary bg-primary/10 dark:bg-primary';
       case 'needsImprovement':
-        return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900';
+        return 'text-accent bg-accent/10 dark:bg-accent';
       case 'poor':
       case 'error':
-        return 'text-red-600 bg-red-100 dark:bg-red-900';
+        return 'text-destructive bg-destructive/10 dark:bg-destructive';
       default:
-        return 'text-gray-600 bg-gray-100 dark:bg-gray-900';
+        return 'text-muted-foreground bg-muted dark:bg-muted';
     }
   };
 
@@ -159,12 +159,12 @@ export function EdgeAnalyticsDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Edge Analytics Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground dark:text-muted-foreground">
             Monitoramento em tempo real com edge functions
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <Badge variant="outline" className={isOnline ? 'text-green-600' : 'text-red-600'}>
+          <Badge variant="outline" className={isOnline ? 'text-accent' : 'text-destructive'}>
             {isOnline ? <Wifi className="w-3 h-3 mr-1" /> : <WifiOff className="w-3 h-3 mr-1" />}
             {isOnline ? 'Online' : 'Offline'}
           </Badge>
@@ -189,7 +189,7 @@ export function EdgeAnalyticsDashboard() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted dark:bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
                   <Database className="w-4 h-4" />
                   <span className="text-sm">Database</span>
@@ -200,7 +200,7 @@ export function EdgeAnalyticsDashboard() {
                 </Badge>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted dark:bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
                   <Globe className="w-4 h-4" />
                   <span className="text-sm">Fonts</span>
@@ -211,7 +211,7 @@ export function EdgeAnalyticsDashboard() {
                 </Badge>
               </div>
               
-              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-muted dark:bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   <span className="text-sm">Response Time</span>
@@ -223,7 +223,7 @@ export function EdgeAnalyticsDashboard() {
               </div>
             </div>
             
-            <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+            <div className="mt-4 text-sm text-muted-foreground dark:text-muted-foreground">
               <p>Region: {healthData?.region || 'Unknown'} | Version: {healthData?.version || 'Unknown'}</p>
               <p>Last Update: {lastUpdate?.toLocaleTimeString()}</p>
             </div>
@@ -244,49 +244,49 @@ export function EdgeAnalyticsDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <div className="text-center">
                 <div className="text-2xl font-bold">{performanceData?.averageScores?.overall || 0}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Overall Score</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">Overall Score</div>
                 <Progress value={performanceData?.averageScores?.overall || 0} className="mt-2" />
               </div>
               
               <div className="text-center">
                 <div className="text-2xl font-bold">{performanceData?.averageScores?.lcp || 0}ms</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">LCP</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">LCP</div>
                 <Progress value={Math.max(0, 100 - ((performanceData?.averageScores?.lcp || 0) - 2500) / 25)} className="mt-2" />
               </div>
               
               <div className="text-center">
                 <div className="text-2xl font-bold">{performanceData?.averageScores?.fid || 0}ms</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">FID</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">FID</div>
                 <Progress value={Math.max(0, 100 - ((performanceData?.averageScores?.fid || 0) - 100) / 10)} className="mt-2" />
               </div>
               
               <div className="text-center">
                 <div className="text-2xl font-bold">{(performanceData?.averageScores?.cls || 0).toFixed(3)}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">CLS</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">CLS</div>
                 <Progress value={Math.max(0, 100 - (performanceData?.averageScores?.cls || 0) * 1000)} className="mt-2" />
               </div>
             </div>
 
             {/* Performance Distribution */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="text-xl font-bold text-green-600">{performanceData?.performanceDistribution?.excellent || 0}</div>
-                <div className="text-sm text-green-600">Excellent (90-100)</div>
+              <div className="text-center p-3 bg-accent dark:bg-accent/20 rounded-lg">
+                <div className="text-xl font-bold text-accent">{performanceData?.performanceDistribution?.excellent || 0}</div>
+                <div className="text-sm text-accent">Excellent (90-100)</div>
               </div>
               
-              <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div className="text-xl font-bold text-blue-600">{performanceData?.performanceDistribution?.good || 0}</div>
-                <div className="text-sm text-blue-600">Good (70-89)</div>
+              <div className="text-center p-3 bg-primary dark:bg-primary/20 rounded-lg">
+                <div className="text-xl font-bold text-primary">{performanceData?.performanceDistribution?.good || 0}</div>
+                <div className="text-sm text-primary">Good (70-89)</div>
               </div>
               
-              <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                <div className="text-xl font-bold text-yellow-600">{performanceData?.performanceDistribution?.needsImprovement || 0}</div>
-                <div className="text-sm text-yellow-600">Needs Improvement (50-69)</div>
+              <div className="text-center p-3 bg-accent dark:bg-accent/20 rounded-lg">
+                <div className="text-xl font-bold text-accent">{performanceData?.performanceDistribution?.needsImprovement || 0}</div>
+                <div className="text-sm text-accent">Needs Improvement (50-69)</div>
               </div>
               
-              <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                <div className="text-xl font-bold text-red-600">{performanceData?.performanceDistribution?.poor || 0}</div>
-                <div className="text-sm text-red-600">Poor (0-49)</div>
+              <div className="text-center p-3 bg-destructive dark:bg-destructive/20 rounded-lg">
+                <div className="text-xl font-bold text-destructive">{performanceData?.performanceDistribution?.poor || 0}</div>
+                <div className="text-sm text-destructive">Poor (0-49)</div>
               </div>
             </div>
 
@@ -295,9 +295,9 @@ export function EdgeAnalyticsDashboard() {
               <div className="space-y-2">
                 <h3 className="font-semibold">Alerts</h3>
                 {performanceData.alerts.map((alert, index) => (
-                  <div key={index} className="flex items-center gap-2 p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
-                    <AlertTriangle className="w-4 h-4 text-yellow-600" />
-                    <span className="text-sm text-yellow-800 dark:text-yellow-200">
+                  <div key={index} className="flex items-center gap-2 p-2 bg-accent dark:bg-accent/20 rounded">
+                    <AlertTriangle className="w-4 h-4 text-accent" />
+                    <span className="text-sm text-accent dark:text-accent">
                       {alert.message}
                     </span>
                   </div>
@@ -321,17 +321,17 @@ export function EdgeAnalyticsDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="text-center">
                 <div className="text-2xl font-bold">{analyticsData?.totalEvents || 0}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Total Events</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">Total Events</div>
               </div>
               
               <div className="text-center">
                 <div className="text-2xl font-bold">{analyticsData?.performance?.avgResponseTime || 0}ms</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Avg Response Time</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">Avg Response Time</div>
               </div>
               
               <div className="text-center">
                 <div className="text-2xl font-bold">{((analyticsData?.performance?.errorRate || 0) * 100).toFixed(1)}%</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Error Rate</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">Error Rate</div>
               </div>
             </div>
 
@@ -340,7 +340,7 @@ export function EdgeAnalyticsDashboard() {
               <h3 className="font-semibold">Event Types</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 {analyticsData?.eventsByType && Object.entries(analyticsData.eventsByType).map(([eventType, count]) => (
-                  <div key={eventType} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                  <div key={eventType} className="flex items-center justify-between p-2 bg-muted dark:bg-muted rounded">
                     <span className="text-sm capitalize">{eventType.replace('_', ' ')}</span>
                     <Badge variant="secondary">{count}</Badge>
                   </div>
@@ -360,15 +360,15 @@ export function EdgeAnalyticsDashboard() {
           <CardContent>
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {analyticsData.recentEvents.slice(0, 10).map((event, index) => (
-                <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                <div key={index} className="flex items-center justify-between p-2 bg-muted dark:bg-muted rounded">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
                     <span className="text-sm font-medium">{event.event}</span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-muted-foreground">
                       {new Date(event.timestamp).toLocaleTimeString()}
                     </span>
                   </div>
-                  <span className="text-xs text-gray-500">{event.url}</span>
+                  <span className="text-xs text-muted-foreground">{event.url}</span>
                 </div>
               ))}
             </div>

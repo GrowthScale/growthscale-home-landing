@@ -308,7 +308,7 @@ const SetupWizard: React.FC = () => {
                     ${currentStep === step.id 
                       ? 'bg-primary text-primary-foreground shadow-soft' 
                       : completedSteps.includes(step.id)
-                      ? 'bg-green-500 text-white'
+                      ? 'bg-accent text-white'
                       : 'bg-muted text-foreground/80'
                     }
                   `}>

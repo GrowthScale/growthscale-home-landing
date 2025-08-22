@@ -50,7 +50,7 @@ export function CLTChatInput({
           className="min-h-[44px] max-h-32 resize-none pr-12"
           rows={1}
         />
-        <div className="absolute right-2 bottom-2 text-xs text-gray-400">
+        <div className="absolute right-2 bottom-2 text-xs text-muted-foreground">
           {message.length}/{maxLength}
         </div>
       </div>

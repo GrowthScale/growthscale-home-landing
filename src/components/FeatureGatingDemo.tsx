@@ -117,19 +117,19 @@ export function FeatureGatingDemo() {
       {/* Feature Gates Demo */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <FeatureGate feature="ai_suggestions">
-          <Card className="border-green-200 bg-green-50 dark:bg-green-950/20">
+          <Card className="border-green-200 bg-accent dark:bg-accent/20">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Brain className="h-5 w-5 text-green-600" />
+                <Brain className="h-5 w-5 text-accent" />
                 <span>IA para Otimização</span>
-                <Badge variant="default" className="bg-green-600">Disponível</Badge>
+                <Badge variant="default" className="bg-accent">Disponível</Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground mb-4">
                 Use inteligência artificial para otimizar suas escalas automaticamente.
               </p>
-              <Button size="sm" className="bg-green-600 hover:bg-green-700">
+              <Button size="sm" className="bg-accent hover:bg-accent">
                 <Zap className="h-4 w-4 mr-2" />
                 Gerar Sugestões
               </Button>
@@ -138,19 +138,19 @@ export function FeatureGatingDemo() {
         </FeatureGate>
 
         <FeatureGate feature="advanced_analytics">
-          <Card className="border-green-200 bg-green-50 dark:bg-green-950/20">
+          <Card className="border-green-200 bg-accent dark:bg-accent/20">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <TrendingUp className="h-5 w-5 text-green-600" />
+                <TrendingUp className="h-5 w-5 text-accent" />
                 <span>Analytics Avançados</span>
-                <Badge variant="default" className="bg-green-600">Disponível</Badge>
+                <Badge variant="default" className="bg-accent">Disponível</Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground mb-4">
                 Relatórios detalhados e insights para melhorar sua operação.
               </p>
-              <Button size="sm" className="bg-green-600 hover:bg-green-700">
+              <Button size="sm" className="bg-accent hover:bg-accent">
                 <TrendingUp className="h-4 w-4 mr-2" />
                 Ver Relatórios
               </Button>
@@ -159,19 +159,19 @@ export function FeatureGatingDemo() {
         </FeatureGate>
 
         <FeatureGate feature="whatsapp_notifications">
-          <Card className="border-green-200 bg-green-50 dark:bg-green-950/20">
+          <Card className="border-green-200 bg-accent dark:bg-accent/20">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Calendar className="h-5 w-5 text-green-600" />
+                <Calendar className="h-5 w-5 text-accent" />
                 <span>Notificações WhatsApp</span>
-                <Badge variant="default" className="bg-green-600">Disponível</Badge>
+                <Badge variant="default" className="bg-accent">Disponível</Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground mb-4">
                 Envie escalas e lembretes diretamente via WhatsApp.
               </p>
-              <Button size="sm" className="bg-green-600 hover:bg-green-700">
+              <Button size="sm" className="bg-accent hover:bg-accent">
                 <Calendar className="h-4 w-4 mr-2" />
                 Configurar
               </Button>
@@ -180,19 +180,19 @@ export function FeatureGatingDemo() {
         </FeatureGate>
 
         <FeatureGate feature="api_access">
-          <Card className="border-green-200 bg-green-50 dark:bg-green-950/20">
+          <Card className="border-green-200 bg-accent dark:bg-accent/20">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Star className="h-5 w-5 text-green-600" />
+                <Star className="h-5 w-5 text-accent" />
                 <span>Acesso à API</span>
-                <Badge variant="default" className="bg-green-600">Disponível</Badge>
+                <Badge variant="default" className="bg-accent">Disponível</Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground mb-4">
                 Integre o GrowthScale com seus sistemas existentes.
               </p>
-              <Button size="sm" className="bg-green-600 hover:bg-green-700">
+              <Button size="sm" className="bg-accent hover:bg-accent">
                 <Star className="h-4 w-4 mr-2" />
                 Ver Documentação
               </Button>
@@ -203,19 +203,19 @@ export function FeatureGatingDemo() {
 
       {/* Informações do Trial */}
       {isTrialActive && (
-        <Card className="border-yellow-200 bg-yellow-50 dark:bg-yellow-950/20">
+        <Card className="border-yellow-200 bg-accent dark:bg-accent/20">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Clock className="h-5 w-5 text-yellow-600" />
+              <Clock className="h-5 w-5 text-accent" />
               <span>Status do Trial</span>
-              <Badge variant="default" className="bg-yellow-600">Trial Ativo</Badge>
+              <Badge variant="default" className="bg-accent">Trial Ativo</Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <h4 className="font-medium">Dias Restantes</h4>
-                <p className="text-2xl font-bold text-yellow-600">{trialStatus.daysLeftInTrial}</p>
+                <p className="text-2xl font-bold text-accent">{trialStatus.daysLeftInTrial}</p>
               </div>
               <div>
                 <h4 className="font-medium">Data de Expiração</h4>
@@ -235,10 +235,10 @@ export function FeatureGatingDemo() {
       )}
 
       {isTrialExpired && (
-        <Card className="border-red-200 bg-red-50 dark:bg-red-950/20">
+        <Card className="border-red-200 bg-destructive dark:bg-destructive/20">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Clock className="h-5 w-5 text-red-600" />
+              <Clock className="h-5 w-5 text-destructive" />
               <span>Trial Expirado</span>
               <Badge variant="destructive">Expirado</Badge>
             </CardTitle>
@@ -247,7 +247,7 @@ export function FeatureGatingDemo() {
             <p className="text-sm text-muted-foreground mb-4">
               Seu período de teste expirou. Faça upgrade para continuar usando todas as funcionalidades.
             </p>
-            <Button className="bg-red-600 hover:bg-red-700">
+            <Button className="bg-destructive hover:bg-destructive">
               Fazer Upgrade Agora
             </Button>
           </CardContent>

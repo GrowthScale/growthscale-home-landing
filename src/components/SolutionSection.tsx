@@ -30,7 +30,7 @@ export function SolutionSection() {
                 <h3 className="text-2xl font-bold mb-2">Opere com 100% de segurança jurídica.</h3>
                 <p className="text-muted-foreground">A nossa IA audita cada turno em tempo real contra as regras da CLT. Receba alertas instantâneos sobre violações de intervalos, excesso de jornada e folgas obrigatórias, antes que se tornem um problema.</p>
               </div>
-              <div className="bg-slate-800 rounded-xl p-2 shadow-lg">
+              <div className="bg-background-dark rounded-xl p-2 shadow-lg">
                 {/* ANOTAÇÃO PARA O VISUAL: TODO: GIF do alerta de risco. */}
                 <img src="/placeholder-gif-1.png" alt="Demonstração do alerta de compliance" className="rounded-lg" />
               </div>
@@ -43,7 +43,7 @@ export function SolutionSection() {
                 <h3 className="text-2xl font-bold mb-2">Crie a escala perfeita em segundos.</h3>
                 <p className="text-muted-foreground">Esqueça o quebra-cabeça. Com um clique, a nossa IA sugere a escala ideal, considerando custo, habilidades da equipe e equidade. O que levava horas, agora é resolvido no tempo de um café.</p>
               </div>
-              <div className="bg-slate-800 rounded-xl p-2 shadow-lg">
+              <div className="bg-background-dark rounded-xl p-2 shadow-lg">
                 {/* ANOTAÇÃO PARA O VISUAL: TODO: GIF da sugestão de IA. */}
                 <img src="/placeholder-gif-2.png" alt="Demonstração da sugestão de IA" className="rounded-lg" />
               </div>
@@ -56,7 +56,7 @@ export function SolutionSection() {
                 <h3 className="text-2xl font-bold mb-2">Saiba o seu custo antes de gastar.</h3>
                 <p className="text-muted-foreground">Cada alteração na escala atualiza o seu custo em tempo real. Tenha uma visão de raio-x das suas despesas com horas extras e adicionais, assumindo o controle total da sua principal despesa operacional.</p>
               </div>
-              <div className="bg-slate-800 rounded-xl p-2 shadow-lg">
+              <div className="bg-background-dark rounded-xl p-2 shadow-lg">
                 {/* ANOTAÇÃO PARA O VISUAL: TODO: GIF do simulador de custo. */}
                 <img src="/placeholder-gif-3.png" alt="Demonstração do simulador de custo" className="rounded-lg" />
               </div>

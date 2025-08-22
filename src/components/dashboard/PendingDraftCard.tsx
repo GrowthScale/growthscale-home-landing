@@ -126,16 +126,16 @@ export function PendingDraftCard({ className }: PendingDraftCardProps) {
   const employeeCount = pendingDraft?.draft_data?.length || 0;
 
   return (
-    <Card className={`border-l-4 border-l-yellow-500 bg-yellow-50/50 ${className}`}>
+    <Card className={`border-l-4 border-l-yellow-500 bg-accent/50 ${className}`}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Clock className="h-5 w-5 text-yellow-600" />
-            <CardTitle className="text-base text-yellow-800">
+            <Clock className="h-5 w-5 text-accent" />
+            <CardTitle className="text-base text-accent">
               Rascunho de Escala Pendente
             </CardTitle>
           </div>
-          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+          <Badge variant="secondary" className="bg-accent/10 text-accent">
             Aguardando Revisão
           </Badge>
         </div>
@@ -173,7 +173,7 @@ export function PendingDraftCard({ className }: PendingDraftCardProps) {
             size="sm"
             onClick={() => approveMutation.mutate(pendingDraft!.id)}
             disabled={approveMutation.isPending || dismissMutation.isPending}
-            className="flex-1 bg-green-600 hover:bg-green-700"
+            className="flex-1 bg-accent hover:bg-accent"
           >
             {approveMutation.isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

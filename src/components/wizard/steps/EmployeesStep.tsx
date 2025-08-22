@@ -541,7 +541,7 @@ export const EmployeesStep: React.FC<EmployeesStepProps> = ({
         <Button 
           onClick={handleFinish}
           disabled={isFinishing}
-          className="bg-green-600 hover:bg-green-700"
+          className="bg-accent hover:bg-accent"
         >
           {isFinishing ? (
             <>

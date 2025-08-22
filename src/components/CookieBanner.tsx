@@ -35,14 +35,14 @@ export function CookieBanner() {
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex-1">
-            <p className="text-sm text-gray-700 leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               <strong>Utilizamos cookies</strong> para melhorar sua experiência, analisar o tráfego do site e personalizar conteúdo. 
               Ao continuar navegando, você concorda com nossa{' '}
-              <Link to="/legal" className="underline hover:text-blue-600">
+              <Link to="/legal" className="underline hover:text-primary">
                 Política de Cookies
               </Link>
               {' '}e{' '}
-              <Link to="/legal" className="underline hover:text-blue-600">
+              <Link to="/legal" className="underline hover:text-primary">
                 Política de Privacidade
               </Link>.
             </p>
@@ -50,19 +50,19 @@ export function CookieBanner() {
           <div className="flex items-center gap-3 flex-shrink-0">
             <button
               onClick={handleReject}
-              className="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+              className="px-4 py-2 text-sm bg-muted text-muted-foreground rounded-lg hover:bg-muted transition-colors"
             >
               Rejeitar
             </button>
             <button
               onClick={handleAccept}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 text-sm bg-primary text-white rounded-lg hover:bg-primary transition-colors"
             >
               Aceitar Todos
             </button>
             <button
               onClick={() => setShow(false)}
-              className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="p-2 text-muted-foreground hover:text-muted-foreground transition-colors"
             >
               <X className="w-4 h-4" />
             </button>

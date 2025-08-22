@@ -133,10 +133,10 @@ export default function AuthCallback() {
               <Loader2 className="h-12 w-12 text-primary animate-spin" />
             )}
             {status === 'success' && (
-              <CheckCircle className="h-12 w-12 text-green-500" />
+              <CheckCircle className="h-12 w-12 text-accent" />
             )}
             {status === 'error' && (
-              <XCircle className="h-12 w-12 text-red-500" />
+              <XCircle className="h-12 w-12 text-destructive" />
             )}
           </div>
           <CardTitle>

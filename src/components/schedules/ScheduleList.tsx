@@ -138,7 +138,7 @@ export const ScheduleList: React.FC = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Escalas</h1>
-          <p className="text-gray-600">Gerencie todas as suas escalas de trabalho</p>
+          <p className="text-muted-foreground">Gerencie todas as suas escalas de trabalho</p>
         </div>
         <Button>
           <Calendar className="w-4 h-4 mr-2" />
@@ -158,15 +158,15 @@ export const ScheduleList: React.FC = () => {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center space-x-2">
-                  <Calendar className="h-4 w-4 text-gray-500" />
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span>{formatDate(schedule.date)}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Users className="h-4 w-4 text-gray-500" />
+                  <Users className="h-4 w-4 text-muted-foreground" />
                   <span>{schedule.employeeCount} funcionários</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Clock className="h-4 w-4 text-gray-500" />
+                  <Clock className="h-4 w-4 text-muted-foreground" />
                   <span>{schedule.totalHours}h</span>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -238,7 +238,7 @@ export const ScheduleList: React.FC = () => {
   return (
     <div className="p-8 text-center">
       <h2 className="text-2xl font-bold mb-4">Lista de Escalas</h2>
-      <p className="text-gray-600">Funcionalidade temporariamente indisponível</p>
+      <p className="text-muted-foreground">Funcionalidade temporariamente indisponível</p>
     </div>
   );
 };

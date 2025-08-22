@@ -99,17 +99,17 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-secondary flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground">
           {isLogin ? 'Entrar na sua conta' : 'Criar nova conta'}
         </h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-card py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {successMessage && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <div className="bg-accent/10 border border-accent text-accent-foreground px-4 py-3 rounded relative mb-4" role="alert">
               <strong className="font-bold">Sucesso!</strong>
               <span className="block sm:inline"> {successMessage}</span>
             </div>
@@ -118,8 +118,8 @@ const Auth = () => {
             {!isLogin && (
               <>
                 <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-900">
-                    Nome Completo <span className="text-red-500">*</span>
+                  <label htmlFor="fullName" className="block text-sm font-medium text-foreground">
+                    Nome Completo <span className="text-destructive">*</span>
                   </label>
                   <input
                     id="fullName"
@@ -128,14 +128,14 @@ const Auth = () => {
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                     placeholder="Digite seu nome completo"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="companyName" className="block text-sm font-medium text-gray-900">
-                    Nome da Empresa <span className="text-red-500">*</span>
+                  <label htmlFor="companyName" className="block text-sm font-medium text-foreground">
+                    Nome da Empresa <span className="text-destructive">*</span>
                   </label>
                   <input
                     id="companyName"
@@ -144,14 +144,14 @@ const Auth = () => {
                     required
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                     placeholder="Digite o nome da empresa"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="companyEmail" className="block text-sm font-medium text-gray-900">
-                    Email da Empresa <span className="text-red-500">*</span>
+                  <label htmlFor="companyEmail" className="block text-sm font-medium text-foreground">
+                    Email da Empresa <span className="text-destructive">*</span>
                   </label>
                   <input
                     id="companyEmail"
@@ -160,14 +160,14 @@ const Auth = () => {
                     required
                     value={companyEmail}
                     onChange={(e) => setCompanyEmail(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                     placeholder="empresa@exemplo.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="employeeCount" className="block text-sm font-medium text-gray-900">
-                    Número de Funcionários <span className="text-red-500">*</span>
+                  <label htmlFor="employeeCount" className="block text-sm font-medium text-foreground">
+                    Número de Funcionários <span className="text-destructive">*</span>
                   </label>
                   <input
                     id="employeeCount"
@@ -178,10 +178,10 @@ const Auth = () => {
                     required
                     value={employeeCount}
                     onChange={(e) => setEmployeeCount(parseInt(e.target.value) || 0)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                     placeholder="Digite o número de funcionários"
                   />
-                  <div className="mt-1 text-xs text-gray-600">
+                  <div className="mt-1 text-xs text-muted-foreground">
                     Digite um número entre 1 e 9999
                   </div>
                 </div>
@@ -189,8 +189,8 @@ const Auth = () => {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-900">
-                Email <span className="text-red-500">*</span>
+              <label htmlFor="email" className="block text-sm font-medium text-foreground">
+                Email <span className="text-destructive">*</span>
               </label>
               <input
                 id="email"
@@ -200,14 +200,14 @@ const Auth = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                 placeholder="seu@email.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-900">
-                Senha <span className="text-red-500">*</span>
+              <label htmlFor="password" className="block text-sm font-medium text-foreground">
+                Senha <span className="text-destructive">*</span>
               </label>
               <input
                 id="password"
@@ -217,7 +217,7 @@ const Auth = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                 placeholder="Digite sua senha"
               />
             </div>
@@ -229,17 +229,17 @@ const Auth = () => {
                     id="terms"
                     checked={acceptedTerms}
                     onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                   />
                 </div>
                 <div className="ml-3 text-sm">
-                  <label htmlFor="terms" className="font-medium text-gray-900">
+                  <label htmlFor="terms" className="font-medium text-foreground">
                     Aceito os{' '}
-                    <a href="/legal/termos" className="text-blue-600 hover:text-blue-500">
+                    <a href="/legal/termos" className="text-primary hover:text-primary/80">
                       Termos de Uso
                     </a>{' '}
                     e{' '}
-                    <a href="/legal/privacidade" className="text-blue-600 hover:text-blue-500">
+                    <a href="/legal/privacidade" className="text-primary hover:text-primary/80">
                       Política de Privacidade
                     </a>
                   </label>
@@ -251,7 +251,7 @@ const Auth = () => {
               <button
                 type="submit"
                 disabled={loading || (!isLogin && !acceptedTerms)}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Processando...' : (isLogin ? 'Entrar' : 'Criar Conta')}
               </button>
@@ -261,10 +261,10 @@ const Auth = () => {
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
+                <div className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">ou</span>
+                <span className="px-2 bg-card text-muted-foreground">ou</span>
               </div>
             </div>
 
@@ -272,7 +272,7 @@ const Auth = () => {
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full flex justify-center py-2 px-4 border border-border rounded-md shadow-sm text-sm font-medium text-foreground bg-card hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 {isLogin ? 'Criar nova conta' : 'Já tenho uma conta'}
               </button>

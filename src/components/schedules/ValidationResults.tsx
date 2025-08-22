@@ -34,9 +34,9 @@ export const ValidationResults: React.FC<ValidationResultsProps> = ({
   const warningViolations = violations.filter(v => v.severity === 'warning');
 
   const getRiskColor = (score: number) => {
-    if (score > 75) {return 'text-red-600';}
-    if (score > 50) {return 'text-yellow-600';}
-    return 'text-green-600';
+    if (score > 75) {return 'text-destructive';}
+    if (score > 50) {return 'text-accent';}
+    return 'text-accent';
   };
 
   const getRiskLabel = (score: number) => {
@@ -101,14 +101,14 @@ export const ValidationResults: React.FC<ValidationResultsProps> = ({
         {/* Summary */}
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center space-x-2">
-            <AlertTriangle className="h-4 w-4 text-red-500" />
+            <AlertTriangle className="h-4 w-4 text-destructive" />
             <div>
               <p className="text-sm font-medium">{criticalViolations.length}</p>
               <p className="text-xs text-muted-foreground">Violações Críticas</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Info className="h-4 w-4 text-yellow-500" />
+            <Info className="h-4 w-4 text-accent" />
             <div>
               <p className="text-sm font-medium">{warningViolations.length}</p>
               <p className="text-xs text-muted-foreground">Avisos</p>

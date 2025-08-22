@@ -61,9 +61,9 @@ export function AdvancedPerformanceMonitor() {
   }, [metrics, bundleMetrics]);
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) {return 'text-green-600 bg-green-100 dark:bg-green-900';}
-    if (score >= 70) {return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900';}
-    return 'text-red-600 bg-red-100 dark:bg-red-900';
+    if (score >= 90) {return 'text-accent bg-accent/10 dark:bg-accent';}
+    if (score >= 70) {return 'text-accent bg-accent/10 dark:bg-accent';}
+    return 'text-destructive bg-destructive/10 dark:bg-destructive';
   };
 
   const getScoreIcon = (score: number) => {
@@ -73,12 +73,12 @@ export function AdvancedPerformanceMonitor() {
   };
 
   const getMetricStatus = (value: number | null, threshold: number, unit: string) => {
-    if (!value) {return { status: 'unknown', color: 'text-gray-500' };}
+    if (!value) {return { status: 'unknown', color: 'text-muted-foreground' };}
     
     const isGood = value <= threshold;
     return {
       status: isGood ? 'good' : 'poor',
-      color: isGood ? 'text-green-600' : 'text-red-600',
+      color: isGood ? 'text-accent' : 'text-destructive',
       value: `${value.toFixed(1)}${unit}`,
     };
   };
@@ -127,12 +127,12 @@ export function AdvancedPerformanceMonitor() {
 
         <CardContent className="space-y-4">
           {/* Overall Score */}
-          <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className="text-center p-4 bg-muted dark:bg-muted rounded-lg">
             <div className="text-2xl font-bold mb-2">
               {scores.overall}/100
             </div>
             <Progress value={scores.overall} className="h-2" />
-            <div className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+            <div className="text-sm text-muted-foreground dark:text-muted-foreground mt-2">
               Overall Performance Score
             </div>
           </div>
@@ -147,7 +147,7 @@ export function AdvancedPerformanceMonitor() {
             {/* LCP */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-blue-500" />
+                <Clock className="w-4 h-4 text-primary" />
                 <span className="text-sm">LCP</span>
               </div>
               <div className="flex items-center gap-2">
@@ -164,7 +164,7 @@ export function AdvancedPerformanceMonitor() {
             {/* FID */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-green-500" />
+                <Smartphone className="w-4 h-4 text-accent" />
                 <span className="text-sm">FID</span>
               </div>
               <div className="flex items-center gap-2">
@@ -222,7 +222,7 @@ export function AdvancedPerformanceMonitor() {
             {/* Chunks */}
             <div className="flex items-center justify-between">
               <span className="text-sm">Chunks</span>
-              <span className="text-xs text-gray-600 dark:text-gray-400">
+              <span className="text-xs text-muted-foreground dark:text-muted-foreground">
                 {bundleMetrics?.chunkCount || 'N/A'}
               </span>
             </div>
@@ -241,19 +241,19 @@ export function AdvancedPerformanceMonitor() {
             <h3 className="font-semibold text-sm">Recommendations</h3>
             <div className="text-xs space-y-1">
               {scores.lcp < 90 && (
-                <div className="text-yellow-600">• Optimize LCP: Reduce largest contentful paint time</div>
+                <div className="text-accent">• Optimize LCP: Reduce largest contentful paint time</div>
               )}
               {scores.fid < 90 && (
-                <div className="text-yellow-600">• Improve FID: Reduce first input delay</div>
+                <div className="text-accent">• Improve FID: Reduce first input delay</div>
               )}
               {scores.cls < 90 && (
-                <div className="text-yellow-600">• Fix CLS: Prevent cumulative layout shifts</div>
+                <div className="text-accent">• Fix CLS: Prevent cumulative layout shifts</div>
               )}
               {scores.bundle < 90 && (
-                <div className="text-yellow-600">• Reduce bundle size: Implement code splitting</div>
+                <div className="text-accent">• Reduce bundle size: Implement code splitting</div>
               )}
               {scores.overall >= 90 && (
-                <div className="text-green-600">• Excellent performance! Keep it up!</div>
+                <div className="text-accent">• Excellent performance! Keep it up!</div>
               )}
             </div>
           </div>

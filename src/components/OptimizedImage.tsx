@@ -127,10 +127,10 @@ export function OptimizedImage({
   if (isError) {
     return (
       <div
-        className={`flex items-center justify-center bg-gray-100 dark:bg-gray-800 ${className}`}
+        className={`flex items-center justify-center bg-muted ${className}`}
         style={{ width, height }}
       >
-        <div className="text-center text-gray-500 dark:text-gray-400">
+        <div className="text-center text-muted-foreground">
           <div className="text-sm">Erro ao carregar imagem</div>
           <div className="text-xs">{alt}</div>
         </div>
@@ -170,7 +170,7 @@ export function OptimizedImage({
       {/* Placeholder para lazy loading */}
       {!isInView && !priority && (
         <div
-          className="bg-gray-100 dark:bg-gray-800 animate-pulse"
+          className="bg-muted animate-pulse"
           style={{ width, height }}
         />
       )}

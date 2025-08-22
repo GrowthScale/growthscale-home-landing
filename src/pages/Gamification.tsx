@@ -511,9 +511,9 @@ const Gamification = () => {
                         }`}
                       >
                         <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ${
-                          index === 0 ? 'bg-yellow-500 text-white' :
-                          index === 1 ? 'bg-gray-400 text-white' :
-                          index === 2 ? 'bg-amber-600 text-white' :
+                          index === 0 ? 'bg-accent text-accent-foreground' :
+                          index === 1 ? 'bg-muted text-foreground' :
+                          index === 2 ? 'bg-accent text-accent-foreground' :
                           'bg-muted text-foreground/80'
                         }`}>
                           {index < 3 ? <Crown className="h-4 w-4" /> : user.position}

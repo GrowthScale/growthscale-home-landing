@@ -168,7 +168,7 @@ export const ScheduleTemplateManager: React.FC = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 {template.description || 'Sem descrição'}
               </p>
               <div className="flex gap-2">
@@ -245,7 +245,7 @@ export const ScheduleTemplateManager: React.FC = () => {
   return (
     <div className="p-8 text-center">
       <h2 className="text-2xl font-bold mb-4">Modelos de Escala</h2>
-      <p className="text-gray-600">Funcionalidade temporariamente indisponível</p>
+      <p className="text-muted-foreground">Funcionalidade temporariamente indisponível</p>
     </div>
   );
 };

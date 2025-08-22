@@ -206,7 +206,7 @@ const Contact = () => {
               <CardContent>
                 {isSubmitted ? (
                   <div className="text-center py-8">
-                    <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+                    <CheckCircle className="h-16 w-16 text-accent mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-foreground mb-2">
                       Mensagem Enviada!
                     </h3>

@@ -60,7 +60,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div 
           role="alert" 
-          className="p-6 rounded-lg bg-red-50 border border-red-200 text-red-700 max-w-md mx-auto mt-8"
+          className="p-6 rounded-lg bg-destructive border border-red-200 text-destructive max-w-md mx-auto mt-8"
           aria-live="polite"
         >
           <div className="flex items-center mb-4">
@@ -86,7 +86,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="flex gap-2">
             <button 
               onClick={this.handleRetry}
-              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+              className="px-4 py-2 bg-destructive text-white rounded-md hover:bg-destructive focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
               aria-label="Tentar novamente"
             >
               Tentar novamente
@@ -94,7 +94,7 @@ export class ErrorBoundary extends Component<Props, State> {
             
             <button 
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+              className="px-4 py-2 bg-muted text-white rounded-md hover:bg-muted focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
               aria-label="Recarregar página"
             >
               Recarregar
@@ -103,10 +103,10 @@ export class ErrorBoundary extends Component<Props, State> {
           
           {process.env.NODE_ENV === 'development' && this.state.error && (
             <details className="mt-4 text-xs">
-              <summary className="cursor-pointer hover:text-red-800">
+              <summary className="cursor-pointer hover:text-destructive">
                 Detalhes do erro (desenvolvimento)
               </summary>
-              <pre className="mt-2 p-2 bg-red-100 rounded overflow-auto">
+              <pre className="mt-2 p-2 bg-destructive/10 rounded overflow-auto">
                 {this.state.error.message}
                 {this.state.error.stack}
               </pre>

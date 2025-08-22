@@ -108,9 +108,9 @@ export function AdvancedMonitoringDashboard() {
   ];
 
   const deviceData = [
-    { name: 'Desktop', value: 65, color: '#3b82f6' },
-    { name: 'Mobile', value: 25, color: '#10b981' },
-    { name: 'Tablet', value: 10, color: '#f59e0b' },
+    { name: 'Desktop', value: 65, color: 'hsl(var(--primary))' },
+    { name: 'Mobile', value: 25, color: 'hsl(var(--accent))' },
+    { name: 'Tablet', value: 10, color: 'hsl(var(--accent))' },
   ];
 
   const pageViewsData = userBehavior.pageViews.slice(-10).map((pv, index) => ({
@@ -146,12 +146,12 @@ export function AdvancedMonitoringDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Advanced Monitoring & APM</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground dark:text-muted-foreground">
             Monitoramento avançado, analytics e performance tracking
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <Badge variant="outline" className={isTracking ? 'text-green-600' : 'text-red-600'}>
+          <Badge variant="outline" className={isTracking ? 'text-accent' : 'text-destructive'}>
             {isTracking ? <Play className="w-3 h-3 mr-1" /> : <Pause className="w-3 h-3 mr-1" />}
             {isTracking ? 'Tracking Ativo' : 'Tracking Pausado'}
           </Badge>
@@ -248,14 +248,14 @@ export function AdvancedMonitoringDashboard() {
                     <div key={metric.name} className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span>{metric.name}</span>
-                        <span className={metric.value <= metric.target ? 'text-green-600' : 'text-red-600'}>
+                        <span className={metric.value <= metric.target ? 'text-accent' : 'text-destructive'}>
                           {metric.value.toFixed(metric.name === 'CLS' ? 3 : 0)}
                           {metric.name === 'CLS' ? '' : 'ms'}
                         </span>
                       </div>
                       <Progress 
                         value={(metric.value / metric.target) * 100} 
-                        className={metric.value <= metric.target ? 'bg-green-100' : 'bg-red-100'}
+                        className={metric.value <= metric.target ? 'bg-accent/10' : 'bg-destructive/10'}
                       />
                     </div>
                   ))}
@@ -324,7 +324,7 @@ export function AdvancedMonitoringDashboard() {
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="views" stroke="#3b82f6" strokeWidth={2} />
+                    <Line type="monotone" dataKey="views" stroke="hsl(var(--primary))" strokeWidth={2} />
                   </RechartsLineChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -447,12 +447,12 @@ export function AdvancedMonitoringDashboard() {
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#3b82f6" />
+                  <Bar dataKey="count" fill="hsl(var(--primary))" />
                 </RechartsBarChart>
               </ResponsiveContainer>
               <div className="mt-4 space-y-2">
                 {funnelData.map((step) => (
-                  <div key={step.name} className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                  <div key={step.name} className="flex justify-between items-center p-2 bg-muted dark:bg-muted rounded">
                     <span className="font-medium">{step.name}</span>
                     <div className="flex gap-4">
                       <span>Usuários: {step.count}</span>

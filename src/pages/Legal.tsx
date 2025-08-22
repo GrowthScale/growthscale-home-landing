@@ -40,7 +40,7 @@ export default function LegalPage() {
               <CardTitle>Política de Privacidade - LGPD</CardTitle>
             </CardHeader>
             <CardContent className="prose prose-sm max-w-none">
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 <strong>Última atualização:</strong> 17 de agosto de 2024
               </p>
               

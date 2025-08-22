@@ -83,7 +83,7 @@ export const CTASection = () => {
             <div className="flex items-center space-x-1">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                  <Star key={i} className="h-4 w-4 text-accent fill-current" />
                 ))}
               </div>
               <span>4.9/5</span>

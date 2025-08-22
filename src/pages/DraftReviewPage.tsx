@@ -165,7 +165,7 @@ export default function DraftReviewPage() {
               </p>
             </div>
           </div>
-          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+          <Badge variant="secondary" className="bg-accent/10 text-accent">
             Aguardando Revisão
           </Badge>
         </div>
@@ -226,8 +226,8 @@ export default function DraftReviewPage() {
                 ))}
               </div>
               
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-sm text-blue-800">
+              <div className="mt-4 p-3 bg-primary border border-blue-200 rounded-lg">
+                <p className="text-sm text-primary">
                   <strong>💡 Dica:</strong> Esta escala foi otimizada considerando a carga de trabalho, 
                   habilidades dos funcionários e compliance com a CLT.
                 </p>
@@ -256,7 +256,7 @@ export default function DraftReviewPage() {
             size="lg"
             onClick={() => handleApprove(draft.draft_data as Record<string, unknown>)}
             disabled={approveMutation.isPending || dismissMutation.isPending}
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-accent hover:bg-accent"
           >
             {approveMutation.isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

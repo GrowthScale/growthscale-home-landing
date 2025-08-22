@@ -64,11 +64,11 @@ export function AIDashboard() {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'text-red-600 bg-red-100 dark:bg-red-900';
+      case 'critical': return 'text-destructive bg-destructive/10 dark:bg-destructive';
       case 'high': return 'text-orange-600 bg-orange-100 dark:bg-orange-900';
-      case 'medium': return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900';
-      case 'low': return 'text-green-600 bg-green-100 dark:bg-green-900';
-      default: return 'text-gray-600 bg-gray-100 dark:bg-gray-900';
+      case 'medium': return 'text-accent bg-accent/10 dark:bg-accent';
+      case 'low': return 'text-accent bg-accent/10 dark:bg-accent';
+      default: return 'text-muted-foreground bg-muted dark:bg-muted';
     }
   };
 
@@ -92,7 +92,7 @@ export function AIDashboard() {
   const alertData = alertInsights ? Object.entries(alertInsights.priorityCounts).map(([priority, count]) => ({
     name: priority,
     value: count,
-    color: priority === 'critical' ? '#ef4444' : priority === 'high' ? '#f97316' : priority === 'medium' ? '#eab308' : '#22c55e',
+    color: priority === 'critical' ? 'hsl(var(--destructive))' : priority === 'high' ? 'hsl(var(--accent))' : priority === 'medium' ? 'hsl(var(--accent))' : 'hsl(var(--accent))',
   })) : [];
 
   return (
@@ -101,12 +101,12 @@ export function AIDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">AI Intelligence Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground dark:text-muted-foreground">
             Análise inteligente e previsões baseadas em IA
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <Badge variant="outline" className={isAutoAnalysis ? 'text-green-600' : 'text-gray-600'}>
+          <Badge variant="outline" className={isAutoAnalysis ? 'text-accent' : 'text-muted-foreground'}>
             <Brain className="w-3 h-3 mr-1" />
             {isAutoAnalysis ? 'Auto-Análise Ativa' : 'Auto-Análise Pausada'}
           </Badge>
@@ -142,10 +142,10 @@ export function AIDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Alertas Críticos</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-500" />
+            <AlertTriangle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{insights.criticalAlerts}</div>
+            <div className="text-2xl font-bold text-destructive">{insights.criticalAlerts}</div>
             <p className="text-xs text-muted-foreground">
               Requer atenção imediata
             </p>
@@ -168,10 +168,10 @@ export function AIDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Recomendações</CardTitle>
-            <Lightbulb className="h-4 w-4 text-yellow-500" />
+            <Lightbulb className="h-4 w-4 text-accent" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{recommendations.length}</div>
+            <div className="text-2xl font-bold text-accent">{recommendations.length}</div>
             <p className="text-xs text-muted-foreground">
               Otimizações sugeridas
             </p>
@@ -203,7 +203,7 @@ export function AIDashboard() {
               <CardContent>
                 <div className="space-y-3 max-h-64 overflow-y-auto">
                   {aiAnalyses.slice(-5).map((analysis, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div key={index} className="flex items-center justify-between p-3 bg-muted dark:bg-muted rounded-lg">
                       <div className="flex items-center gap-2">
                         <Badge variant="outline" className={getSeverityColor(analysis.severity)}>
                           {getSeverityIcon(analysis.severity)}
@@ -211,7 +211,7 @@ export function AIDashboard() {
                         </Badge>
                         <span className="text-sm font-medium">{analysis.title}</span>
                       </div>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-muted-foreground">
                         {analysis.timestamp.toLocaleTimeString()}
                       </span>
                     </div>
@@ -273,9 +273,9 @@ export function AIDashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                        <div className="text-2xl font-bold text-red-600">{anomalyInsights.count}</div>
-                        <div className="text-sm text-red-600">Total</div>
+                      <div className="text-center p-4 bg-destructive dark:bg-destructive/20 rounded-lg">
+                        <div className="text-2xl font-bold text-destructive">{anomalyInsights.count}</div>
+                        <div className="text-sm text-destructive">Total</div>
                       </div>
                       <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
                         <div className="text-2xl font-bold text-orange-600">{anomalyInsights.highImpact}</div>
@@ -306,7 +306,7 @@ export function AIDashboard() {
                       .sort(([,a], [,b]) => b - a)
                       .slice(0, 5)
                       .map(([factor, count]) => (
-                        <div key={factor} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                        <div key={factor} className="flex items-center justify-between p-2 bg-muted dark:bg-muted rounded">
                           <span className="text-sm">{factor}</span>
                           <Badge variant="secondary">{count}</Badge>
                         </div>
@@ -318,9 +318,9 @@ export function AIDashboard() {
           ) : (
             <Card>
               <CardContent className="text-center py-8">
-                <Brain className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                <p className="text-gray-500">Nenhuma anomalia detectada ainda</p>
-                <p className="text-sm text-gray-400">Execute uma análise para detectar padrões anômalos</p>
+                <Brain className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">Nenhuma anomalia detectada ainda</p>
+                <p className="text-sm text-muted-foreground">Execute uma análise para detectar padrões anômalos</p>
               </CardContent>
             </Card>
           )}
@@ -344,8 +344,8 @@ export function AIDashboard() {
                       <XAxis dataKey="name" />
                       <YAxis />
                       <Tooltip />
-                      <Line type="monotone" dataKey="current" stroke="#3b82f6" name="Atual" />
-                      <Line type="monotone" dataKey="predicted" stroke="#10b981" name="Previsto" />
+                      <Line type="monotone" dataKey="current" stroke="hsl(var(--primary))" name="Atual" />
+                      <Line type="monotone" dataKey="predicted" stroke="hsl(var(--accent))" name="Previsto" />
                     </RechartsLineChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -361,17 +361,17 @@ export function AIDashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     <div className="grid grid-cols-3 gap-4">
-                      <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                        <div className="text-2xl font-bold text-green-600">{predictionInsights.increasing}</div>
-                        <div className="text-sm text-green-600">Crescendo</div>
+                      <div className="text-center p-4 bg-accent dark:bg-accent/20 rounded-lg">
+                        <div className="text-2xl font-bold text-accent">{predictionInsights.increasing}</div>
+                        <div className="text-sm text-accent">Crescendo</div>
                       </div>
-                      <div className="text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                        <div className="text-2xl font-bold text-red-600">{predictionInsights.decreasing}</div>
-                        <div className="text-sm text-red-600">Diminuindo</div>
+                      <div className="text-center p-4 bg-destructive dark:bg-destructive/20 rounded-lg">
+                        <div className="text-2xl font-bold text-destructive">{predictionInsights.decreasing}</div>
+                        <div className="text-sm text-destructive">Diminuindo</div>
                       </div>
-                      <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                        <div className="text-2xl font-bold text-blue-600">{predictionInsights.stable}</div>
-                        <div className="text-sm text-blue-600">Estável</div>
+                      <div className="text-center p-4 bg-primary dark:bg-primary/20 rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{predictionInsights.stable}</div>
+                        <div className="text-sm text-primary">Estável</div>
                       </div>
                     </div>
                     <div>
@@ -388,9 +388,9 @@ export function AIDashboard() {
           ) : (
             <Card>
               <CardContent className="text-center py-8">
-                <TrendingUp className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                <p className="text-gray-500">Nenhuma previsão disponível</p>
-                <p className="text-sm text-gray-400">Colete mais dados para gerar previsões</p>
+                <TrendingUp className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">Nenhuma previsão disponível</p>
+                <p className="text-sm text-muted-foreground">Colete mais dados para gerar previsões</p>
               </CardContent>
             </Card>
           )}
@@ -409,12 +409,12 @@ export function AIDashboard() {
               <CardContent>
                 <div className="space-y-4">
                   {Object.entries(recommendationCategories).map(([category, recs]) => (
-                    <div key={category} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div key={category} className="p-4 bg-muted dark:bg-muted rounded-lg">
                       <h3 className="font-semibold capitalize mb-2">{category}</h3>
                       <div className="space-y-2">
                         {recs.map((rec, index) => (
                           <div key={index} className="flex items-start gap-2">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                             <span className="text-sm">{rec}</span>
                           </div>
                         ))}
@@ -435,9 +435,9 @@ export function AIDashboard() {
               <CardContent>
                 <div className="space-y-3">
                   {recommendations.slice(0, 5).map((rec, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div key={index} className="flex items-center justify-between p-3 bg-muted dark:bg-muted rounded-lg">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div className="w-2 h-2 bg-accent rounded-full"></div>
                         <span className="text-sm">{rec}</span>
                       </div>
                       <Badge variant="outline" className="text-xs">
@@ -472,7 +472,7 @@ export function AIDashboard() {
                         labelLine={false}
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                         outerRadius={80}
-                        fill="#8884d8"
+                        fill="hsl(var(--primary))"
                         dataKey="value"
                       >
                         {alertData.map((entry, index) => (
@@ -498,15 +498,15 @@ export function AIDashboard() {
                       .filter(alert => alert.priority === 'critical' || alert.priority === 'high')
                       .slice(0, 5)
                       .map((alert, index) => (
-                        <div key={index} className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+                        <div key={index} className="p-3 bg-destructive dark:bg-destructive/20 rounded-lg border border-red-200 dark:border-red-800">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="font-semibold text-red-800 dark:text-red-200">{alert.condition}</span>
-                            <Badge variant="outline" className="text-red-600 border-red-600">
+                            <span className="font-semibold text-destructive dark:text-destructive">{alert.condition}</span>
+                            <Badge variant="outline" className="text-destructive border-red-600">
                               {alert.priority}
                             </Badge>
                           </div>
-                          <p className="text-sm text-red-700 dark:text-red-300">{alert.action}</p>
-                          <div className="flex justify-between text-xs text-red-600 mt-2">
+                          <p className="text-sm text-destructive dark:text-destructive">{alert.action}</p>
+                          <div className="flex justify-between text-xs text-destructive mt-2">
                             <span>Atual: {alert.currentValue}</span>
                             <span>Limite: {alert.threshold}</span>
                           </div>
@@ -519,9 +519,9 @@ export function AIDashboard() {
           ) : (
             <Card>
               <CardContent className="text-center py-8">
-                <Bell className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                <p className="text-gray-500">Nenhum alerta ativo</p>
-                <p className="text-sm text-gray-400">O sistema está funcionando normalmente</p>
+                <Bell className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">Nenhum alerta ativo</p>
+                <p className="text-sm text-muted-foreground">O sistema está funcionando normalmente</p>
               </CardContent>
             </Card>
           )}

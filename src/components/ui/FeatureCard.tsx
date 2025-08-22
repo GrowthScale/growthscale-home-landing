@@ -14,7 +14,7 @@ export function FeatureCard({
   icon: Icon, 
   title, 
   children, 
-  iconClassName = "text-blue-600",
+  iconClassName = "text-primary",
   className = "",
   onClick 
 }: FeatureCardProps) {
@@ -27,7 +27,7 @@ export function FeatureCard({
     >
       <CardHeader className="pb-4">
         <div className="flex items-center space-x-3">
-          <div className="p-2 bg-blue-100 rounded-lg">
+          <div className="p-2 bg-primary/10 rounded-lg">
             <Icon className={`h-6 w-6 ${iconClassName}`} />
           </div>
           <CardTitle className="text-lg font-semibold">{title}</CardTitle>

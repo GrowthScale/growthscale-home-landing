@@ -23,7 +23,7 @@ export function CLTChatBubble({
       isUser ? "justify-end" : "justify-start"
     )}>
       {!isUser && (
-        <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+        <div className="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
           <Bot className="w-4 h-4 text-white" />
         </div>
       )}
@@ -31,8 +31,8 @@ export function CLTChatBubble({
       <div className={cn(
         "max-w-[80%] rounded-lg px-4 py-3",
         isUser 
-          ? "bg-blue-600 text-white" 
-          : "bg-gray-100 text-gray-900"
+          ? "bg-primary text-white" 
+          : "bg-muted text-muted-foreground"
       )}>
         {isLoading ? (
           <div className="flex items-center space-x-2">
@@ -48,7 +48,7 @@ export function CLTChatBubble({
             {timestamp && (
               <p className={cn(
                 "text-xs mt-2",
-                isUser ? "text-blue-100" : "text-gray-500"
+                isUser ? "text-primary" : "text-muted-foreground"
               )}>
                 {timestamp}
               </p>
@@ -58,7 +58,7 @@ export function CLTChatBubble({
       </div>
       
       {isUser && (
-        <div className="flex-shrink-0 w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+        <div className="flex-shrink-0 w-8 h-8 bg-muted rounded-full flex items-center justify-center">
           <User className="w-4 h-4 text-white" />
         </div>
       )}
