@@ -1,7 +1,7 @@
 // src/pages/Index.tsx
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { PlayCircle, ShieldCheck, Clock, Check, Star, ArrowRight, Zap, Target, Users, TrendingUp } from 'lucide-react';
+import { PlayCircle, ShieldCheck, Clock, Check, Star, ArrowRight, Zap, Target, Users, TrendingUp, BarChart3, Calendar, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ComparisonSection } from '@/components/ComparisonSection';
@@ -53,64 +53,131 @@ const Header = () => (
   </header>
 );
 
-// --- HERO COM GATILHOS DE DOPAMINA ---
+// --- HERO COM ELEMENTOS VISUAIS ESTRATÉGICOS ---
 const HeroSection = () => (
   <section className="relative w-full py-20 md:py-32 lg:py-40 overflow-hidden">
     {/* Background com gradiente sutil */}
     <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary/30 to-background"></div>
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.1),transparent_50%)]"></div>
     
+    {/* Elementos visuais flutuantes */}
+    <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-xl animate-float"></div>
+    <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-r from-accent/20 to-primary/20 rounded-full blur-xl animate-float" style={{animationDelay: '2s'}}></div>
+    <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full blur-xl animate-float" style={{animationDelay: '4s'}}></div>
+    
     <div className="relative container mx-auto px-4">
-      <div className="max-w-5xl mx-auto text-center">
-        {/* Badge de urgência */}
-        <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent/10 to-primary/10 px-4 py-2 text-sm font-medium text-accent mb-8 animate-fade-in-up">
-          <Zap className="h-4 w-4" />
-          <span>Nova tecnologia de IA para gestão de escalas</span>
+      <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
+        {/* Conteúdo textual */}
+        <div className="text-center lg:text-left">
+          {/* Badge de urgência */}
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent/10 to-primary/10 px-4 py-2 text-sm font-medium text-accent mb-8 animate-fade-in-up">
+            <Zap className="h-4 w-4" />
+            <span>Nova tecnologia de IA para gestão de escalas</span>
+          </div>
+          
+          {/* Título principal com psicologia de transformação */}
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-8 animate-fade-in-up">
+            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              Transforme o caos
+            </span>
+            <br />
+            <span className="text-foreground">em controle absoluto</span>
+          </h1>
+          
+          {/* Subtítulo com benefício emocional */}
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-12 animate-fade-in-up leading-relaxed">
+            A plataforma que <strong className="text-foreground">elimina o stress</strong> da gestão de escalas e 
+            <strong className="text-foreground"> protege seu negócio</strong> contra riscos trabalhistas. 
+            <br />
+            <span className="text-lg">Opere com a tranquilidade de quem tem tudo sob controle.</span>
+          </p>
+          
+          {/* CTAs com psicologia de urgência e escassez */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-16 animate-fade-in-up">
+            <Button asChild size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <Link to="/auth" className="flex items-center space-x-3">
+                <span>Começar Gratuitamente</span>
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 border-2 hover:border-primary hover:text-primary transition-all duration-300">
+              <Link to="/#solucao" className="flex items-center space-x-3">
+                <PlayCircle className="h-5 w-5" />
+                <span>Ver Como Funciona</span>
+              </Link>
+            </Button>
+          </div>
+          
+          {/* Prova social sutil */}
+          <div className="text-sm text-muted-foreground animate-fade-in-up">
+            <span className="font-medium text-foreground">Gestores experientes</span> já confiam na tecnologia GrowthScale
+          </div>
         </div>
         
-        {/* Título principal com psicologia de transformação */}
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-8 animate-fade-in-up">
-          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            Transforme o caos
-          </span>
-          <br />
-          <span className="text-foreground">em controle absoluto</span>
-        </h1>
-        
-        {/* Subtítulo com benefício emocional */}
-        <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-12 animate-fade-in-up leading-relaxed">
-          A plataforma que <strong className="text-foreground">elimina o stress</strong> da gestão de escalas e 
-          <strong className="text-foreground"> protege seu negócio</strong> contra riscos trabalhistas. 
-          <br />
-          <span className="text-lg">Opere com a tranquilidade de quem tem tudo sob controle.</span>
-        </p>
-        
-        {/* CTAs com psicologia de urgência e escassez */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fade-in-up">
-          <Button asChild size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-            <Link to="/auth" className="flex items-center space-x-3">
-              <span>Começar Gratuitamente</span>
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 border-2 hover:border-primary hover:text-primary transition-all duration-300">
-            <Link to="/#solucao" className="flex items-center space-x-3">
-              <PlayCircle className="h-5 w-5" />
-              <span>Ver Como Funciona</span>
-            </Link>
-          </Button>
-        </div>
-        
-        {/* Prova social sutil */}
-        <div className="text-sm text-muted-foreground animate-fade-in-up">
-          <span className="font-medium text-foreground">Gestores experientes</span> já confiam na tecnologia GrowthScale
+        {/* Mockup principal da interface */}
+        <div className="relative">
+          {/* Efeito de profundidade */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-3xl blur-3xl"></div>
+          
+          {/* Mockup principal */}
+          <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 border border-border/20 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+            {/* Header do mockup */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+              <div className="text-white text-sm font-medium">GrowthScale Dashboard</div>
+            </div>
+            
+            {/* Conteúdo do mockup */}
+            <div className="space-y-4">
+              {/* Barra de status */}
+              <div className="flex items-center justify-between bg-slate-800 rounded-lg p-3">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <span className="text-white text-sm">Escala validada</span>
+                </div>
+                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Sem riscos</Badge>
+              </div>
+              
+              {/* Cards de métricas */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-slate-800 rounded-lg p-3">
+                  <div className="text-white text-xs text-muted-foreground">Funcionários</div>
+                  <div className="text-white text-lg font-bold">12</div>
+                </div>
+                <div className="bg-slate-800 rounded-lg p-3">
+                  <div className="text-white text-xs text-muted-foreground">Horas economizadas</div>
+                  <div className="text-white text-lg font-bold">8h</div>
+                </div>
+              </div>
+              
+              {/* Gráfico simplificado */}
+              <div className="bg-slate-800 rounded-lg p-3">
+                <div className="text-white text-xs text-muted-foreground mb-2">Produtividade</div>
+                <div className="flex items-end space-x-1 h-8">
+                  <div className="w-2 bg-primary rounded-t h-4"></div>
+                  <div className="w-2 bg-primary rounded-t h-6"></div>
+                  <div className="w-2 bg-accent rounded-t h-8"></div>
+                  <div className="w-2 bg-primary rounded-t h-5"></div>
+                  <div className="w-2 bg-accent rounded-t h-7"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Elementos flutuantes decorativos */}
+          <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-r from-accent/20 to-primary/20 rounded-full blur-lg animate-pulse"></div>
+          <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-lg animate-pulse" style={{animationDelay: '1s'}}></div>
         </div>
       </div>
     </div>
   </section>
 );
 
-// --- SEÇÃO DE PROBLEMA (AGITAÇÃO) ---
+// --- SEÇÃO DE PROBLEMA COM ELEMENTOS VISUAIS ---
 const ProblemSection = () => (
   <section id="problema" className="py-20 md:py-28 bg-secondary/50">
     <div className="container mx-auto px-4">
@@ -126,22 +193,25 @@ const ProblemSection = () => (
       <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
         {[
           {
-            icon: ShieldCheck,
+            icon: AlertTriangle,
             title: "Riscos Ocultos",
             description: "Processos trabalhistas que surgem quando você menos espera, comprometendo lucros e reputação.",
-            color: "text-destructive"
+            color: "text-destructive",
+            visual: "📊 Planilhas confusas e desorganizadas"
           },
           {
             icon: Clock,
             title: "Tempo Perdido",
             description: "Horas desperdiçadas criando escalas manualmente, quando poderiam ser investidas no crescimento.",
-            color: "text-destructive"
+            color: "text-destructive",
+            visual: "⏰ Horas gastas em tarefas repetitivas"
           },
           {
             icon: Users,
             title: "Gestão Ineficiente",
             description: "Decisões baseadas em 'achismo' em vez de dados, levando a custos desnecessários.",
-            color: "text-destructive"
+            color: "text-destructive",
+            visual: "📈 Falta de dados para decisões"
           }
         ].map((item, index) => (
           <Card key={index} className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
@@ -151,7 +221,8 @@ const ProblemSection = () => (
                 <item.icon className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-bold text-foreground mb-4">{item.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+              <p className="text-muted-foreground leading-relaxed mb-4">{item.description}</p>
+              <div className="text-2xl opacity-60">{item.visual}</div>
             </CardContent>
           </Card>
         ))}
@@ -160,7 +231,7 @@ const ProblemSection = () => (
   </section>
 );
 
-// --- SEÇÃO DE SOLUÇÃO (TRANSFORMAÇÃO) ---
+// --- SEÇÃO DE SOLUÇÃO COM MOCKUPS VISUAIS ---
 const SolutionSection = () => (
   <section id="solucao" className="py-20 md:py-28 bg-background">
     <div className="container mx-auto px-4">
@@ -184,19 +255,22 @@ const SolutionSection = () => (
               icon: ShieldCheck,
               title: "Proteção Inteligente",
               description: "IA que monitora cada escala em tempo real, alertando sobre riscos antes que se tornem problemas.",
-              benefit: "Durma tranquilo sabendo que está protegido"
+              benefit: "Durma tranquilo sabendo que está protegido",
+              visual: "🛡️ Alertas automáticos de compliance"
             },
             {
               icon: Zap,
               title: "Eficiência Radical",
               description: "Crie escalas otimizadas em segundos, não em horas. Recupere seu tempo mais valioso.",
-              benefit: "Mais tempo para focar no que realmente importa"
+              benefit: "Mais tempo para focar no que realmente importa",
+              visual: "⚡ Criação automática de escalas"
             },
             {
               icon: TrendingUp,
               title: "Decisões Informadas",
               description: "Dados claros e insights acionáveis para tomar decisões que reduzem custos e aumentam produtividade.",
-              benefit: "Transforme dados em vantagem competitiva"
+              benefit: "Transforme dados em vantagem competitiva",
+              visual: "📈 Dashboard com insights em tempo real"
             }
           ].map((item, index) => (
             <div key={index} className="flex gap-4 p-6 rounded-xl bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/10 hover:border-primary/20 transition-all duration-300">
@@ -206,16 +280,67 @@ const SolutionSection = () => (
               <div>
                 <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
                 <p className="text-muted-foreground mb-3 leading-relaxed">{item.description}</p>
-                <p className="text-sm font-medium text-primary">{item.benefit}</p>
+                <p className="text-sm font-medium text-primary mb-2">{item.benefit}</p>
+                <div className="text-lg opacity-60">{item.visual}</div>
               </div>
             </div>
           ))}
         </div>
         
+        {/* Mockup da interface principal */}
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl blur-3xl"></div>
-          <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-4 border border-border/20 shadow-2xl">
-            <img src="/placeholder-dashboard-dark.png" alt="Interface GrowthScale" className="rounded-xl w-full" />
+          <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 border border-border/20 shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-2">
+                <Calendar className="h-5 w-5 text-primary" />
+                <span className="text-white font-medium">Escala Semanal</span>
+              </div>
+              <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Validada</Badge>
+            </div>
+            
+            {/* Tabela de escala */}
+            <div className="space-y-3">
+              {[
+                { nome: "João Silva", cargo: "Garçom", seg: "08-16", ter: "08-16", qua: "Folga", qui: "16-24", sex: "16-24" },
+                { nome: "Maria Santos", cargo: "Cozinheira", seg: "06-14", ter: "06-14", qua: "06-14", qui: "Folga", sex: "06-14" },
+                { nome: "Pedro Costa", cargo: "Auxiliar", seg: "Folga", ter: "12-20", qua: "12-20", qui: "12-20", sex: "Folga" }
+              ].map((funcionario, index) => (
+                <div key={index} className="bg-slate-800 rounded-lg p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <div className="text-white font-medium">{funcionario.nome}</div>
+                      <div className="text-slate-400 text-sm">{funcionario.cargo}</div>
+                    </div>
+                    <CheckCircle className="h-4 w-4 text-green-400" />
+                  </div>
+                  <div className="grid grid-cols-5 gap-2 text-xs">
+                    <div className="text-center p-1 bg-slate-700 rounded text-white">{funcionario.seg}</div>
+                    <div className="text-center p-1 bg-slate-700 rounded text-white">{funcionario.ter}</div>
+                    <div className="text-center p-1 bg-accent/20 rounded text-accent">{funcionario.qua}</div>
+                    <div className="text-center p-1 bg-slate-700 rounded text-white">{funcionario.qui}</div>
+                    <div className="text-center p-1 bg-slate-700 rounded text-white">{funcionario.sex}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Métricas */}
+            <div className="mt-6 grid grid-cols-3 gap-3">
+              <div className="bg-slate-800 rounded-lg p-3 text-center">
+                <div className="text-white text-lg font-bold">3</div>
+                <div className="text-slate-400 text-xs">Funcionários</div>
+              </div>
+              <div className="bg-slate-800 rounded-lg p-3 text-center">
+                <div className="text-white text-lg font-bold">40h</div>
+                <div className="text-slate-400 text-xs">Total</div>
+              </div>
+              <div className="bg-green-500/20 rounded-lg p-3 text-center">
+                <div className="text-green-400 text-lg font-bold">100%</div>
+                <div className="text-green-400 text-xs">Compliance</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
