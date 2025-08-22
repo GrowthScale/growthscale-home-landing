@@ -55,7 +55,7 @@ function App() {
               <PWAInstallPrompt />
             
             {/* Development Monitors - Only show in development */}
-            {process.env.NODE_ENV === 'development' && (
+            {import.meta.env.DEV && (
               <div className="fixed bottom-4 right-4 space-y-2 z-50">
                 <PerformanceMonitor />
                 <AdvancedPerformanceMonitor />

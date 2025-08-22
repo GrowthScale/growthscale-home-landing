@@ -2,8 +2,8 @@
 import OpenAI from 'openai';
 
 // Initialize OpenAI with fallback
-const openai = process.env.VITE_OPENAI_API_KEY ? new OpenAI({
-  apiKey: process.env.VITE_OPENAI_API_KEY,
+const openai = import.meta.env.VITE_OPENAI_API_KEY ? new OpenAI({
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true, // Only for client-side analysis
 }) : null;
 
@@ -58,17 +58,17 @@ export class AIService {
   init() {
     if (this.isInitialized) {return;}
     
-    if (!process.env.VITE_OPENAI_API_KEY) {
+    if (!import.meta.env.VITE_OPENAI_API_KEY) {
       console.warn('OpenAI API key not configured. AI features will be limited.');
     }
     
     this.isInitialized = true;
-    if (process.env.NODE_ENV === 'development') { console.log('AI Service initialized'); }
+    if (import.meta.env.DEV) { console.log('AI Service initialized'); }
   }
 
   // Anomaly Detection
   async detectAnomalies(data: any[]): Promise<AnomalyDetection[]> {
-    if (!openai || !process.env.VITE_OPENAI_API_KEY) {
+    if (!openai || !import.meta.env.VITE_OPENAI_API_KEY) {
       return this.simulateAnomalyDetection(data);
     }
 
@@ -114,7 +114,7 @@ export class AIService {
 
   // Predictive Analytics
   async predictMetrics(historicalData: any[]): Promise<Prediction[]> {
-    if (!openai || !process.env.VITE_OPENAI_API_KEY) {
+    if (!openai || !import.meta.env.VITE_OPENAI_API_KEY) {
       return this.simulatePredictions(historicalData);
     }
 
@@ -162,7 +162,7 @@ export class AIService {
 
   // Smart Recommendations
   async generateRecommendations(data: any): Promise<string[]> {
-    if (!openai || !process.env.VITE_OPENAI_API_KEY) {
+    if (!openai || !import.meta.env.VITE_OPENAI_API_KEY) {
       return this.simulateRecommendations(data);
     }
 
@@ -203,7 +203,7 @@ export class AIService {
 
   // Smart Alerts
   async generateSmartAlerts(data: any): Promise<SmartAlert[]> {
-    if (!openai || !process.env.VITE_OPENAI_API_KEY) {
+    if (!openai || !import.meta.env.VITE_OPENAI_API_KEY) {
       return this.simulateSmartAlerts(data);
     }
 

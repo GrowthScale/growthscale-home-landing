@@ -1,4 +1,4 @@
-const isDevelopment = process.env.NODE_ENV === 'development';
+const isDevelopment = import.meta.env.DEV;
 
 const formatMessage = (level: string, msg: string, data?: any) => {
   const timestamp = new Date().toISOString();

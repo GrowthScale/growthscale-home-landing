@@ -55,12 +55,12 @@ export interface ErrorReport {
 
 // Configuração
 const CONFIG = {
-  logLevel: (process.env.NODE_ENV === 'development' ? 'debug' : 'info') as keyof LogLevel,
+  logLevel: (import.meta.env.DEV ? 'debug' : 'info') as keyof LogLevel,
   maxLogEntries: 1000,
   flushInterval: 5000, // 5 segundos
-  enableConsole: process.env.NODE_ENV === 'development',
-  enableRemote: process.env.NODE_ENV === 'production',
-  remoteEndpoint: process.env.VITE_MONITORING_ENDPOINT || '/api/monitoring',
+  enableConsole: import.meta.env.DEV,
+  enableRemote: import.meta.env.PROD,
+  remoteEndpoint: import.meta.env.VITE_MONITORING_ENDPOINT || '/api/monitoring',
 };
 
 // Classe de Monitoramento
@@ -167,7 +167,7 @@ export class MonitoringService {
         ...tags,
         userId: authService.getCurrentUser()?.id || 'anonymous',
         sessionId: authService.getCurrentSession()?.id || 'none',
-        environment: process.env.NODE_ENV || 'development',
+        environment: import.meta.env.MODE || 'development',
       },
       timestamp: new Date().toISOString(),
     };
