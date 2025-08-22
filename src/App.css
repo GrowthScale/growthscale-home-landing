@@ -364,9 +364,9 @@ body {
 /* === RESPONSIVIDADE AVANÇADA === */
 @media (max-width: 768px) {
   .card:hover {
-    transform: translateY(-2px);
-  }
-  
+  transform: translateY(-2px);
+}
+
   .btn-primary:hover {
     transform: translateY(-1px);
   }

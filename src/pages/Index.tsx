@@ -82,7 +82,7 @@ const HeroSection = () => (
             </span>
             <br />
             <span className="text-foreground">em controle absoluto</span>
-          </h1>
+        </h1>
           
           {/* Subtítulo com benefício emocional */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-12 animate-fade-in-up leading-relaxed">
@@ -165,8 +165,8 @@ const HeroSection = () => (
                   <div className="w-2 bg-accent rounded-t h-7"></div>
                 </div>
               </div>
-            </div>
-          </div>
+        </div>
+      </div>
           
           {/* Elementos flutuantes decorativos */}
           <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-r from-accent/20 to-primary/20 rounded-full blur-lg animate-pulse"></div>
@@ -226,9 +226,9 @@ const ProblemSection = () => (
             </CardContent>
           </Card>
         ))}
-      </div>
-    </div>
-  </section>
+            </div>
+        </div>
+    </section>
 );
 
 // --- SEÇÃO DE SOLUÇÃO COM MOCKUPS VISUAIS ---
@@ -309,7 +309,7 @@ const SolutionSection = () => (
               ].map((funcionario, index) => (
                 <div key={index} className="bg-muted rounded-lg p-3">
                   <div className="flex items-center justify-between mb-2">
-                    <div>
+        <div>
                       <div className="text-foreground-dark font-medium">{funcionario.nome}</div>
                       <div className="text-muted-foreground text-sm">{funcionario.cargo}</div>
                     </div>
@@ -393,7 +393,7 @@ const TestimonialsSection = () => (
             <p className="text-muted-foreground">Dona, Bistrô Sabor & Arte</p>
           </footer>
         </CardContent>
-      </Card>
+        </Card>
     </div>
   </section>
 );
@@ -401,7 +401,7 @@ const TestimonialsSection = () => (
 // --- PRICING COM PSICOLOGIA DE VALOR ---
 const PricingSection = () => (
   <section id="precos" className="py-20 md:py-28 bg-secondary/50">
-    <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4">
       <div className="text-center mb-16 max-w-3xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
           Investimento que se paga sozinho
@@ -411,7 +411,7 @@ const PricingSection = () => (
         </p>
       </div>
       
-      <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
         {/* Free - Ancoragem */}
         <Card className="flex flex-col relative border-2 hover:border-primary/30 transition-all duration-300">
           <CardHeader className="text-center pb-4">
@@ -520,9 +520,9 @@ const PricingSection = () => (
             </Button>
           </div>
         </Card>
-      </div>
-    </div>
-  </section>
+            </div>
+        </div>
+    </section>
 );
 
 // --- FOOTER COM AUTORIDADE ---

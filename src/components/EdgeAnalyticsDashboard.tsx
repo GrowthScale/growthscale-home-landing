@@ -194,9 +194,9 @@ export function EdgeAnalyticsDashboard() {
                   <Database className="w-4 h-4" />
                   <span className="text-sm">Database</span>
                 </div>
-                <Badge variant="outline" className={getStatusColor(healthData.checks.database)}>
-                  {getStatusIcon(healthData.checks.database)}
-                  {healthData.checks.database}
+                <Badge variant="outline" className={getStatusColor(healthData?.checks?.database || 'unknown')}>
+                  {getStatusIcon(healthData?.checks?.database || 'unknown')}
+                  {healthData?.checks?.database || 'Unknown'}
                 </Badge>
               </div>
               
@@ -205,9 +205,9 @@ export function EdgeAnalyticsDashboard() {
                   <Globe className="w-4 h-4" />
                   <span className="text-sm">Fonts</span>
                 </div>
-                <Badge variant="outline" className={getStatusColor(healthData.checks.fonts)}>
-                  {getStatusIcon(healthData.checks.fonts)}
-                  {healthData.checks.fonts}
+                <Badge variant="outline" className={getStatusColor(healthData?.checks?.fonts || 'unknown')}>
+                  {getStatusIcon(healthData?.checks?.fonts || 'unknown')}
+                  {healthData?.checks?.fonts || 'Unknown'}
                 </Badge>
               </div>
               
@@ -216,15 +216,15 @@ export function EdgeAnalyticsDashboard() {
                   <Clock className="w-4 h-4" />
                   <span className="text-sm">Response Time</span>
                 </div>
-                <Badge variant="outline" className={getStatusColor(healthData.checks.responseTime ? 'healthy' : 'error')}>
-                  {getStatusIcon(healthData.checks.responseTime ? 'healthy' : 'error')}
-                  {healthData.latency.total}ms
+                <Badge variant="outline" className={getStatusColor(healthData?.checks?.responseTime ? 'healthy' : 'error')}>
+                  {getStatusIcon(healthData?.checks?.responseTime ? 'healthy' : 'error')}
+                  {healthData?.latency?.total || 0}ms
                 </Badge>
               </div>
             </div>
             
             <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-              <p>Region: {healthData.region} | Version: {healthData.version}</p>
+              <p>Region: {healthData?.region || 'Unknown'} | Version: {healthData?.version || 'Unknown'}</p>
               <p>Last Update: {lastUpdate?.toLocaleTimeString()}</p>
             </div>
           </CardContent>
@@ -243,55 +243,55 @@ export function EdgeAnalyticsDashboard() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <div className="text-center">
-                <div className="text-2xl font-bold">{performanceData.averageScores.overall}</div>
+                <div className="text-2xl font-bold">{performanceData?.averageScores?.overall || 0}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Overall Score</div>
-                <Progress value={performanceData.averageScores.overall} className="mt-2" />
+                <Progress value={performanceData?.averageScores?.overall || 0} className="mt-2" />
               </div>
               
               <div className="text-center">
-                <div className="text-2xl font-bold">{performanceData.averageScores.lcp}ms</div>
+                <div className="text-2xl font-bold">{performanceData?.averageScores?.lcp || 0}ms</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">LCP</div>
-                <Progress value={Math.max(0, 100 - (performanceData.averageScores.lcp - 2500) / 25)} className="mt-2" />
+                <Progress value={Math.max(0, 100 - ((performanceData?.averageScores?.lcp || 0) - 2500) / 25)} className="mt-2" />
               </div>
               
               <div className="text-center">
-                <div className="text-2xl font-bold">{performanceData.averageScores.fid}ms</div>
+                <div className="text-2xl font-bold">{performanceData?.averageScores?.fid || 0}ms</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">FID</div>
-                <Progress value={Math.max(0, 100 - (performanceData.averageScores.fid - 100) / 10)} className="mt-2" />
+                <Progress value={Math.max(0, 100 - ((performanceData?.averageScores?.fid || 0) - 100) / 10)} className="mt-2" />
               </div>
               
               <div className="text-center">
-                <div className="text-2xl font-bold">{performanceData.averageScores.cls.toFixed(3)}</div>
+                <div className="text-2xl font-bold">{(performanceData?.averageScores?.cls || 0).toFixed(3)}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">CLS</div>
-                <Progress value={Math.max(0, 100 - performanceData.averageScores.cls * 1000)} className="mt-2" />
+                <Progress value={Math.max(0, 100 - (performanceData?.averageScores?.cls || 0) * 1000)} className="mt-2" />
               </div>
             </div>
 
             {/* Performance Distribution */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
               <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="text-xl font-bold text-green-600">{performanceData.performanceDistribution.excellent}</div>
+                <div className="text-xl font-bold text-green-600">{performanceData?.performanceDistribution?.excellent || 0}</div>
                 <div className="text-sm text-green-600">Excellent (90-100)</div>
               </div>
               
               <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div className="text-xl font-bold text-blue-600">{performanceData.performanceDistribution.good}</div>
+                <div className="text-xl font-bold text-blue-600">{performanceData?.performanceDistribution?.good || 0}</div>
                 <div className="text-sm text-blue-600">Good (70-89)</div>
               </div>
               
               <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                <div className="text-xl font-bold text-yellow-600">{performanceData.performanceDistribution.needsImprovement}</div>
+                <div className="text-xl font-bold text-yellow-600">{performanceData?.performanceDistribution?.needsImprovement || 0}</div>
                 <div className="text-sm text-yellow-600">Needs Improvement (50-69)</div>
               </div>
               
               <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                <div className="text-xl font-bold text-red-600">{performanceData.performanceDistribution.poor}</div>
+                <div className="text-xl font-bold text-red-600">{performanceData?.performanceDistribution?.poor || 0}</div>
                 <div className="text-sm text-red-600">Poor (0-49)</div>
               </div>
             </div>
 
             {/* Alerts */}
-            {performanceData.alerts.length > 0 && (
+            {performanceData?.alerts && performanceData.alerts.length > 0 && (
               <div className="space-y-2">
                 <h3 className="font-semibold">Alerts</h3>
                 {performanceData.alerts.map((alert, index) => (
@@ -320,17 +320,17 @@ export function EdgeAnalyticsDashboard() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="text-center">
-                <div className="text-2xl font-bold">{analyticsData.totalEvents}</div>
+                <div className="text-2xl font-bold">{analyticsData?.totalEvents || 0}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Total Events</div>
               </div>
               
               <div className="text-center">
-                <div className="text-2xl font-bold">{analyticsData.performance.avgResponseTime}ms</div>
+                <div className="text-2xl font-bold">{analyticsData?.performance?.avgResponseTime || 0}ms</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Avg Response Time</div>
               </div>
               
               <div className="text-center">
-                <div className="text-2xl font-bold">{(analyticsData.performance.errorRate * 100).toFixed(1)}%</div>
+                <div className="text-2xl font-bold">{((analyticsData?.performance?.errorRate || 0) * 100).toFixed(1)}%</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Error Rate</div>
               </div>
             </div>
@@ -339,7 +339,7 @@ export function EdgeAnalyticsDashboard() {
             <div className="space-y-2">
               <h3 className="font-semibold">Event Types</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {Object.entries(analyticsData.eventsByType).map(([eventType, count]) => (
+                {analyticsData?.eventsByType && Object.entries(analyticsData.eventsByType).map(([eventType, count]) => (
                   <div key={eventType} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
                     <span className="text-sm capitalize">{eventType.replace('_', ' ')}</span>
                     <Badge variant="secondary">{count}</Badge>
