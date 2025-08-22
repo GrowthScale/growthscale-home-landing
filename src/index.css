@@ -1,10 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind base;
-/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind components;
-/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind utilities;
  
 @layer base {
@@ -35,18 +32,14 @@
     --destructive-foreground: 0 0% 98%;
     
     --border: 214.3 31.8% 91.4%;
-    --border-dark: 214.3 31.8% 20%; /* Borda escura para fundos escuros */
+    --border-dark: 217.2 32.6% 17.5%;
     --radius: 0.75rem;
   }
 }
  
 @layer base {
-  * { 
-    /* stylelint-disable-next-line at-rule-no-unknown */
-    @apply border-border; 
-  }
+  * { @apply border-border; }
   body {
-    /* stylelint-disable-next-line at-rule-no-unknown */
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;

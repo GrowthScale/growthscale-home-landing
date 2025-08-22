@@ -7,6 +7,39 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [3.8.2] - 2025-08-19
+
+### 🎨 **Design System "Equilíbrio Sofisticado"**
+- **Refundação Visual Completa:** Implementação do design system "Equilíbrio Sofisticado" com paleta de cores contrastante e moderna
+- **Paleta de Cores Premium:** Azul forte (primary), laranja/dourado (accent), fundos escuros para impacto
+- **Tipografia Inter:** Fonte Google Fonts com pesos 400-900 e antialiasing otimizado
+- **Animações Suaves:** Fade-in-up com delays sequenciais para experiência premium
+- **Landing Page Reconstruída:** Estrutura completamente refatorada com seções otimizadas
+
+### 🏗️ **Estrutura da Landing Page**
+- **Header:** Sticky com backdrop blur e navegação limpa
+- **Hero Section:** Título impactante "Onde a gestão de escalas encontra a paz de espírito"
+- **Social Proof:** Grid 3 colunas com métricas (5/5 avaliações, 100% compliance, 80% menos tempo)
+- **Solution Section:** Fundo escuro com segmentos (Restaurantes, Bares, Cafés, Fast Food)
+- **Testimonial:** Citação centralizada com avatar e destaque visual
+- **Pricing:** 3 planos (Free, Business, Enterprise) com destaque no Business
+- **Footer:** Grid 4 colunas com links organizados
+
+### 📊 **Performance e Build**
+- **CSS Bundle:** 99.59 kB (16.13 kB gzipped)
+- **JavaScript Bundle:** 330.19 kB (89.85 kB gzipped)
+- **Build Time:** 6.10s otimizado
+- **Total Assets:** 4070 modules transformados
+- **PWA:** Service worker funcional
+
+### 🎯 **Princípios de Design**
+- **Contraste Estratégico:** Fundos escuros para seções de alto impacto
+- **Hierarquia Visual:** Tipografia escalonada e espaçamento consistente
+- **Interatividade:** Hover effects e animações suaves
+- **Responsividade:** Grid adaptativo e breakpoints consistentes
+
+---
+
 ## [3.8.1] - 2025-08-18
 
 ### �� **Melhorias**
