@@ -13,8 +13,11 @@ export default {
     extend: {
       colors: {
         border: "hsl(var(--border))",
+        "border-dark": "hsl(var(--border-dark))",
         background: "hsl(var(--background))",
+        "background-dark": "hsl(var(--background-dark))",
         foreground: "hsl(var(--foreground))",
+        "foreground-dark": "hsl(var(--foreground-dark))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -106,6 +109,7 @@ export default {
         "premium-gradient": "linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--accent) / 0.2), hsl(var(--primary) / 0.1))",
         "glass-effect": "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
         "magnetic-border": "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)))",
+        "grid-pattern": "radial-gradient(circle, hsl(var(--primary) / 0.1) 1px, transparent 1px)",
       },
       backdropFilter: {
         'glass': 'blur(16px) saturate(180%)',
