@@ -564,4 +564,28 @@ export async function calculateScheduleCost(shifts: any[], employees: any[]): Pr
   }
 }
 
+// Sugerir escala usando edge function
+export async function suggestSchedule(shifts: any[], employees: any[]): Promise<{ data: any; error: string | null }> {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/suggest-schedule`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({ shifts, employees })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return { data, error: null };
+  } catch (error) {
+    console.error('Erro ao sugerir escala:', error);
+    return { data: null, error: 'Erro ao sugerir escala' };
+  }
+}
+
  

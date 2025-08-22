@@ -2,7 +2,7 @@
 import React, { useState, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { createScheduleWithShifts, type ScheduleData, type ShiftData, validateSchedule, calculateScheduleCost } from '@/services/api';
+import { createScheduleWithShifts, type ScheduleData, type ShiftData, validateSchedule, calculateScheduleCost, suggestSchedule } from '@/services/api';
 import { useTenant } from '@/contexts/TenantContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -166,6 +166,56 @@ export function ScheduleEditor() {
       return result.data as CostResult;
     },
     enabled: Boolean(shifts.length > 0 && employees && employees.length > 0),
+  });
+
+  // Mutation para sugestão de IA
+  const suggestMutation = useMutation({
+    mutationFn: async () => {
+      if (!employees?.length) throw new Error('Nenhum funcionário disponível');
+      
+      // Preparar dados para sugestão
+      const shiftsForSuggestion = shifts.map(shift => ({
+        date: shift.date,
+        start_time: shift.startTime,
+        end_time: shift.endTime,
+        employee_id: shift.employeeId
+      }));
+
+      const employeesForSuggestion = employees.map(emp => ({
+        id: emp.id,
+        name: emp.name,
+        position: emp.position,
+        hourly_rate: emp.hourly_rate || 20
+      }));
+
+      const result = await suggestSchedule(shiftsForSuggestion, employeesForSuggestion);
+      if (result.error) throw new Error(result.error);
+      return result.data;
+    },
+    onSuccess: (data) => {
+      // Aplicar sugestões ao estado de shifts
+      if (data.suggestions) {
+        const updatedShifts = shifts.map(shift => {
+          const suggestion = data.suggestions.find((s: any) => 
+            s.date === shift.date && s.start_time === shift.startTime && s.end_time === shift.endTime
+          );
+          return suggestion ? { ...shift, employeeId: suggestion.employee_id } : shift;
+        });
+        setShifts(updatedShifts);
+      }
+      
+      toast({
+        title: "🤖 Sugestão aplicada!",
+        description: "A IA otimizou a distribuição de funcionários na escala.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "❌ Erro na IA",
+        description: error.message || "Não foi possível gerar sugestões. Tente novamente.",
+        variant: 'destructive'
+      });
+    }
   });
 
   const createScheduleMutation = useMutation({
@@ -794,20 +844,25 @@ export function ScheduleEditor() {
 
         {/* Actions */}
         <div className="flex justify-between items-center pt-6">
-          {/* Botão de Otimização IA */}
-          {shifts.length > 0 && (
+          {/* Botão de Sugestão IA */}
+          {shifts.length > 0 && employees && employees.length > 0 && (
             <Button 
               variant="outline" 
               className="border-orange-200 text-orange-700 hover:bg-orange-50"
-              onClick={() => {
-                toast({
-                  title: "🤖 Otimização IA",
-                  description: "Funcionalidade de otimização automática será implementada em breve!",
-                });
-              }}
+              onClick={() => suggestMutation.mutate()}
+              disabled={suggestMutation.isPending}
             >
-              <Brain className="mr-2 h-4 w-4" />
-              Otimizar com IA
+              {suggestMutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Pensando...
+                </>
+              ) : (
+                <>
+                  <Brain className="mr-2 h-4 w-4" />
+                  Sugerir com IA
+                </>
+              )}
             </Button>
           )}
           
