@@ -7,6 +7,17 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [3.8.1] - 2025-08-18
+
+### 🔧 **Melhorias**
+- **Ativação da Página de Compliance:** A página de Relatório de Compliance foi conectada ao backend. Todos os dados "mock" foram removidos e substituídos por uma análise em tempo real das escalas dos usuários, exibindo alertas críticos e violações frequentes com base nos dados reais da operação.
+
+### 🚀 **Deploy**
+- **Vercel**: Deploy automático com build limpo
+- **URL Ativa**: https://growthscale-home-landing-luupvsd9h.vercel.app
+
+---
+
 ## [3.8.0] - 2025-08-18
 
 ### 🔒 **LGPD Compliance 100%**
