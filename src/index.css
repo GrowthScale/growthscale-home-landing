@@ -3,51 +3,103 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-    /* Paleta de Cores "Equilíbrio Sofisticado" */
-    --background: 0 0% 100%; /* Fundo principal claro */
-    --foreground: 222.2 84% 4.9%; /* Texto principal escuro */
+    /* PALETA PERFEITA NEUROCIENTÍFICA */
     
-    --background-dark: 224 71% 4%; /* Apenas para seções de alto impacto */
-    --foreground-dark: 210 40% 98%; /* Texto sobre fundo escuro */
+    /* AZUL PROFISSIONAL - Confiança e Estabilidade */
+    --primary: 221.2 83.2% 53.3%; /* #3B82F6 */
+    --primary-dark: 221.2 83.2% 43.3%; /* #2563EB */
     
+    /* VERDE SUCESSO - Crescimento e Eficiência */
+    --success: 142 76% 36%; /* #059669 */
+    --success-light: 142 76% 46%; /* #10B981 */
+    
+    /* LARANJA AÇÃO - Urgência e Conversão */
+    --accent: 38 92% 50%; /* #F59E0B */
+    --accent-dark: 38 92% 40%; /* #D97706 */
+    
+    /* CINZA SOFISTICADO - Profissionalismo */
+    --neutral: 215 25% 27%; /* #374151 */
+    --neutral-light: 210 40% 98%; /* #F8FAFC */
+    
+    /* BRANCO LIMPO - Clareza */
+    --white: 0 0% 100%; /* #FFFFFF */
+    
+    /* CORES DE FUNDO */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    
-    --primary: 221.2 83.2% 53.3%; /* Azul forte e confiável para AÇÃO */
-    --primary-foreground: 210 40% 98%;
-    
-    --secondary: 210 40% 98%; /* Cinza muito claro para fundos de seções */
+    --secondary: 210 40% 98%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --accent: 38 92% 50%; /* Laranja/Dourado para VALIDAÇÃO e SUCESSO */
-    --accent-foreground: 24 9.8% 10%;
-    
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    
     --border: 214.3 31.8% 91.4%;
     --radius: 0.75rem;
   }
 }
- 
+
 @layer base {
-  * { @apply border-border; }
+  * {
+    @apply border-border;
+  }
+  
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  html { scroll-behavior: smooth; }
+  
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer utilities {
-  @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+  }
+  
+  /* UTILITÁRIOS PARA A PALETA PERFEITA */
+  .bg-primary-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
+  }
+  
+  .bg-success-gradient {
+    background: linear-gradient(135deg, hsl(var(--success)) 0%, hsl(var(--success-light)) 100%);
+  }
+  
+  .bg-accent-gradient {
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-dark)) 100%);
+  }
+  
+  .text-gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-gradient-accent {
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-dark)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
