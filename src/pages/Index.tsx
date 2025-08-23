@@ -623,11 +623,18 @@ export default function Index() {
 
     if (code) {
       // Se há um código de autenticação, redirecionar para o AuthCallback
-      console.log('🔗 Código de autenticação detectado, redirecionando para AuthCallback...');
+      console.log('🔗 Código de autenticação detectado na página inicial, redirecionando para AuthCallback...');
+      console.log('📍 URL atual:', window.location.href);
+      console.log('🔑 Código:', code);
+      
+      // Usar replace para não adicionar à história do navegador
       navigate(`/auth/callback?code=${code}`, { replace: true });
     } else if (error) {
       // Se há um erro, redirecionar para a página de auth com mensagem de erro
-      console.log('❌ Erro de autenticação detectado, redirecionando para Auth...');
+      console.log('❌ Erro de autenticação detectado na página inicial, redirecionando para Auth...');
+      console.log('📍 Erro:', error);
+      console.log('📍 Descrição:', errorDescription);
+      
       navigate(`/auth?error=${error}&error_description=${errorDescription || ''}`, { replace: true });
     }
   }, [searchParams, navigate]);

@@ -40,7 +40,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // CORREÇÃO: Usar a porta correta para redirecionamento
     const getRedirectUrl = () => {
       if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-        const currentPort = window.location.port || '3000';
+        // Usar a porta atual do servidor ou fallback para 3001
+        const currentPort = window.location.port || '3001';
+        console.log('🔗 Configurando redirect URL para porta:', currentPort);
         return `http://localhost:${currentPort}/auth/callback`;
       }
       return 'https://growthscale-home-landing-edpw6muof.vercel.app/auth/callback';

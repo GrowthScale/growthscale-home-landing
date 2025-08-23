@@ -77,7 +77,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 3001, // CORREÇÃO: Usar porta 3001 para corresponder ao servidor atual
     host: true,
     hmr: {
       overlay: false,
