@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { Checkbox } from '@/components/ui/checkbox'
 import { type LoginInput, type RegisterInput } from '@/lib/validation'
+import { useToast } from '@/hooks/use-toast'
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -21,6 +22,7 @@ const Auth = () => {
   const { signIn, signUp } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  const { toast } = useToast()
 
   // Capturar mensagem de sucesso do estado de navegação
   useEffect(() => {
@@ -39,37 +41,49 @@ const Auth = () => {
     try {
       if (isLogin) {
         const loginData: LoginInput = { email, password, rememberMe: false }
-        const { error } = await signIn(loginData)
-        if (!error) {
-          navigate('/dashboard')
-        } else {
-          alert('Erro no login: ' + error)
-        }
+        await signIn(loginData)
+        // Se chegou aqui, o login foi bem-sucedido
+        navigate('/dashboard')
       } else {
         // Validação para campos obrigatórios no cadastro
         if (!fullName.trim()) {
-          alert('Por favor, preencha o nome completo')
-          setLoading(false)
+          toast({
+            title: "Campo obrigatório",
+            description: "Por favor, preencha o nome completo",
+            variant: 'destructive',
+          })
           return
         }
         if (!companyName.trim()) {
-          alert('Por favor, preencha o nome da empresa')
-          setLoading(false)
+          toast({
+            title: "Campo obrigatório",
+            description: "Por favor, preencha o nome da empresa",
+            variant: 'destructive',
+          })
           return
         }
         if (!companyEmail.trim()) {
-          alert('Por favor, preencha o email da empresa')
-          setLoading(false)
+          toast({
+            title: "Campo obrigatório",
+            description: "Por favor, preencha o email da empresa",
+            variant: 'destructive',
+          })
           return
         }
         if (!employeeCount || employeeCount < 1) {
-          alert('Por favor, preencha o número de funcionários (mínimo 1)')
-          setLoading(false)
+          toast({
+            title: "Campo obrigatório",
+            description: "Por favor, preencha o número de funcionários (mínimo 1)",
+            variant: 'destructive',
+          })
           return
         }
         if (!acceptedTerms) {
-          alert('Por favor, aceite os termos de uso')
-          setLoading(false)
+          toast({
+            title: "Termos não aceitos",
+            description: "Por favor, aceite os termos de uso",
+            variant: 'destructive',
+          })
           return
         }
 
@@ -85,14 +99,26 @@ const Auth = () => {
         }
         const { error } = await signUp(registerData)
         if (!error) {
-          alert('Cadastro realizado com sucesso! Verifique seu email para confirmar a conta e criar sua empresa.')
+          toast({
+            title: "Cadastro realizado!",
+            description: "Verifique seu email para confirmar a conta e criar sua empresa.",
+            variant: 'default',
+          })
           setIsLogin(true)
         } else {
-          alert('Erro no cadastro: ' + error)
+          toast({
+            title: "Erro no cadastro",
+            description: error.message,
+            variant: 'destructive',
+          })
         }
       }
-    } catch (error) {
-      alert('Erro: ' + error)
+    } catch (error: any) {
+      toast({
+        title: "Erro no Login",
+        description: error.message,
+        variant: 'destructive',
+      })
     } finally {
       setLoading(false)
     }
