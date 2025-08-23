@@ -1,7 +1,5 @@
-const http = require('http');
-const url = require('url');
-const fs = require('fs');
-const path = require('path');
+import http from 'http';
+import url from 'url';
 
 const PORT = 3000;
 const TARGET_PORT = 3001;

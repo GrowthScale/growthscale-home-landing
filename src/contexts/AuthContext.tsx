@@ -40,8 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // CORREÇÃO: Usar a porta correta para redirecionamento
     const getRedirectUrl = () => {
       if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-        // Usar a porta atual do servidor ou fallback para 3001
-        const currentPort = window.location.port || '3001';
+        const currentPort = window.location.port || '3000'; // Use 3000 como fallback
         console.log('🔗 Configurando redirect URL para porta:', currentPort);
         return `http://localhost:${currentPort}/auth/callback`;
       }

@@ -621,17 +621,6 @@ export default function Index() {
     const error = searchParams.get('error');
     const errorDescription = searchParams.get('error_description');
 
-    // CORREÇÃO: Detectar se estamos na porta errada e corrigir automaticamente
-    if (code && window.location.port === '3000' && window.location.hostname === 'localhost') {
-      console.log('🔧 CORREÇÃO: Detectado redirecionamento para porta incorreta (3000)');
-      console.log('🔄 Redirecionando para porta correta (3001)...');
-      
-      // Redirecionar para a porta correta com o código
-      const correctUrl = `http://localhost:3001/auth/callback?code=${code}`;
-      window.location.href = correctUrl;
-      return;
-    }
-
     if (code) {
       // Se há um código de autenticação, redirecionar para o AuthCallback
       console.log('🔗 Código de autenticação detectado na página inicial, redirecionando para AuthCallback...');

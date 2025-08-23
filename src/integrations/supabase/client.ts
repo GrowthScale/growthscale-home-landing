@@ -8,14 +8,11 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "plac
 
 // Determine the redirect URL based on environment
 const getRedirectUrl = () => {
-  // CORREÇÃO: Usar porta dinâmica em desenvolvimento
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-    const currentPort = window.location.port || '3000';
+    const currentPort = window.location.port || '3000'; // Use 3000 como fallback
     console.log('🔗 Configurando redirect URL para porta:', currentPort);
     return `http://localhost:${currentPort}/auth/callback`;
   }
-  
-  // Para todos os outros casos (produção, preview, etc.), usar a URL de produção
   return 'https://growthscale-home-landing-edpw6muof.vercel.app/auth/callback';
 };
 
