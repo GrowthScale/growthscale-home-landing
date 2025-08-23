@@ -33,86 +33,11 @@ const Auth = () => {
     }
   }, [location, navigate])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setSuccessMessage(null) // Limpar mensagem ao submeter
-    
+  const handleLoginSubmit = async (data: LoginInput) => {
     try {
-      if (isLogin) {
-        const loginData: LoginInput = { email, password, rememberMe: false }
-        await signIn(loginData)
-        // Se chegou aqui, o login foi bem-sucedido
-        navigate('/dashboard')
-      } else {
-        // Validação para campos obrigatórios no cadastro
-        if (!fullName.trim()) {
-          toast({
-            title: "Campo obrigatório",
-            description: "Por favor, preencha o nome completo",
-            variant: 'destructive',
-          })
-          return
-        }
-        if (!companyName.trim()) {
-          toast({
-            title: "Campo obrigatório",
-            description: "Por favor, preencha o nome da empresa",
-            variant: 'destructive',
-          })
-          return
-        }
-        if (!companyEmail.trim()) {
-          toast({
-            title: "Campo obrigatório",
-            description: "Por favor, preencha o email da empresa",
-            variant: 'destructive',
-          })
-          return
-        }
-        if (!employeeCount || employeeCount < 1) {
-          toast({
-            title: "Campo obrigatório",
-            description: "Por favor, preencha o número de funcionários (mínimo 1)",
-            variant: 'destructive',
-          })
-          return
-        }
-        if (!acceptedTerms) {
-          toast({
-            title: "Termos não aceitos",
-            description: "Por favor, aceite os termos de uso",
-            variant: 'destructive',
-          })
-          return
-        }
-
-        const registerData: RegisterInput = {
-          email,
-          password,
-          confirmPassword: password, // Assumindo que não há campo de confirmação separado
-          fullName,
-          companyName,
-          companyEmail,
-          employeeCount,
-          acceptTerms: acceptedTerms
-        }
-        const { error } = await signUp(registerData)
-        if (!error) {
-          toast({
-            title: "Cadastro realizado!",
-            description: "Verifique seu email para confirmar a conta e criar sua empresa.",
-            variant: 'default',
-          })
-          setIsLogin(true)
-        } else {
-          toast({
-            title: "Erro no cadastro",
-            description: error.message,
-            variant: 'destructive',
-          })
-        }
-      }
+      setLoading(true)
+      await signIn(data)
+      navigate('/dashboard') // Redireciona para o dashboard em caso de sucesso
     } catch (error: any) {
       toast({
         title: "Erro no Login",
@@ -120,7 +45,100 @@ const Auth = () => {
         variant: 'destructive',
       })
     } finally {
+      setLoading(false) // Desativa o estado de loading
+    }
+  }
+
+  const handleRegisterSubmit = async (data: RegisterInput) => {
+    try {
+      setLoading(true)
+      const { error } = await signUp(data)
+      if (!error) {
+        toast({
+          title: "Cadastro realizado!",
+          description: "Verifique seu email para confirmar a conta e criar sua empresa.",
+          variant: 'default',
+        })
+        setIsLogin(true)
+      } else {
+        toast({
+          title: "Erro no cadastro",
+          description: error.message,
+          variant: 'destructive',
+        })
+      }
+    } catch (error: any) {
+      toast({
+        title: "Erro no Cadastro",
+        description: error.message,
+        variant: 'destructive',
+      })
+    } finally {
       setLoading(false)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSuccessMessage(null) // Limpar mensagem ao submeter
+    
+    if (isLogin) {
+      const loginData: LoginInput = { email, password, rememberMe: false }
+      await handleLoginSubmit(loginData)
+    } else {
+      // Validação para campos obrigatórios no cadastro
+      if (!fullName.trim()) {
+        toast({
+          title: "Campo obrigatório",
+          description: "Por favor, preencha o nome completo",
+          variant: 'destructive',
+        })
+        return
+      }
+      if (!companyName.trim()) {
+        toast({
+          title: "Campo obrigatório",
+          description: "Por favor, preencha o nome da empresa",
+          variant: 'destructive',
+        })
+        return
+      }
+      if (!companyEmail.trim()) {
+        toast({
+          title: "Campo obrigatório",
+          description: "Por favor, preencha o email da empresa",
+          variant: 'destructive',
+        })
+        return
+      }
+      if (!employeeCount || employeeCount < 1) {
+        toast({
+          title: "Campo obrigatório",
+          description: "Por favor, preencha o número de funcionários (mínimo 1)",
+          variant: 'destructive',
+        })
+        return
+      }
+      if (!acceptedTerms) {
+        toast({
+          title: "Termos não aceitos",
+          description: "Por favor, aceite os termos de uso",
+          variant: 'destructive',
+        })
+        return
+      }
+
+      const registerData: RegisterInput = {
+        email,
+        password,
+        confirmPassword: password, // Assumindo que não há campo de confirmação separado
+        fullName,
+        companyName,
+        companyEmail,
+        employeeCount,
+        acceptTerms: acceptedTerms
+      }
+      await handleRegisterSubmit(registerData)
     }
   }
 
