@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { createScheduleWithShifts, type ScheduleData, type ShiftData, validateSchedule, calculateScheduleCost } from '@/services/api';
+import { createScheduleWithShifts, type ScheduleData, type ShiftData, validateSchedule, calculateScheduleCost, suggestSchedule } from '@/services/api';
 import { useTenant } from '@/contexts/TenantContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -125,6 +125,33 @@ export function ScheduleEditor() {
       });
     }
   }, [costError, toast]);
+
+  // 🧠 MUTATION DE SUGESTÃO DE IA
+  const suggestMutation = useMutation({
+    mutationFn: () => suggestSchedule(shifts, employees || []),
+    onSuccess: (data) => {
+      // Lógica para aplicar a sugestão ao estado 'shifts'
+      if (data.data?.suggestion) {
+        const suggestedShifts = data.data.suggestion;
+        const newShifts = shifts.map(shift => {
+          const suggestion = suggestedShifts.find((s: any) => s.shiftId === shift.id);
+          return suggestion ? { ...shift, employeeId: suggestion.employeeId } : shift;
+        });
+        setShifts(newShifts);
+        toast({ 
+          title: "Sugestão aplicada!", 
+          description: "A IA otimizou sua escala com base nas melhores práticas."
+        });
+      }
+    },
+    onError: (error: any) => {
+      toast({ 
+        title: "Erro na IA", 
+        description: error.message || "Não foi possível gerar sugestões.", 
+        variant: 'destructive' 
+      });
+    }
+  });
 
   const createScheduleMutation = useMutation({
     mutationFn: async (data: { 
@@ -290,6 +317,17 @@ export function ScheduleEditor() {
                 {isCalculatingCost && <Loader2 className="h-3 w-3 animate-spin text-accent" />}
               </div>
             )}
+
+            {/* Indicador de IA Processando */}
+            {suggestMutation.isPending && (
+              <div className="flex items-center space-x-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-md">
+                <Brain className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium text-primary-foreground">
+                  IA Processando
+                </span>
+                <Loader2 className="h-3 w-3 animate-spin text-primary" />
+              </div>
+            )}
           </DialogTitle>
         </DialogHeader>
 
@@ -419,6 +457,30 @@ export function ScheduleEditor() {
                     </Button>
                   </div>
                 </div>
+
+                {/* Botão de Sugestão de IA */}
+                {shifts.length > 0 && (
+                  <div className="flex justify-center pt-4">
+                    <Button 
+                      onClick={() => suggestMutation.mutate()} 
+                      disabled={suggestMutation.isPending || shifts.length === 0}
+                      variant="outline"
+                      className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20 hover:from-primary/20 hover:to-accent/20"
+                    >
+                      {suggestMutation.isPending ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Pensando...
+                        </>
+                      ) : (
+                        <>
+                          <Brain className="mr-2 h-4 w-4" />
+                          Sugerir com IA
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -823,6 +885,27 @@ export function ScheduleEditor() {
                         <span className="text-accent-foreground">{suggestion}</span>
                       </div>
                     ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Status da IA */}
+            {suggestMutation.isPending && (
+              <Card className="border-accent/20 bg-gradient-to-r from-accent/5 to-primary/5">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Brain className="h-5 w-5 text-accent" />
+                    <span>IA Processando</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Loader2 className="h-4 w-4 animate-spin text-accent" />
+                    <span className="font-medium">Analisando escala...</span>
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    A IA está analisando sua escala e gerando sugestões de otimização baseadas nas melhores práticas.
                   </div>
                 </CardContent>
               </Card>
