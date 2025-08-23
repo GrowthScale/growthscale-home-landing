@@ -11,11 +11,12 @@ const getRedirectUrl = () => {
   // CORREÇÃO: Usar porta dinâmica em desenvolvimento
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     const currentPort = window.location.port || '3000';
+    console.log('🔗 Configurando redirect URL para porta:', currentPort);
     return `http://localhost:${currentPort}/auth/callback`;
   }
   
   // Para todos os outros casos (produção, preview, etc.), usar a URL de produção
-  return 'https://growthscale-home-landing-luupvsd9h.vercel.app/auth/callback';
+  return 'https://growthscale-home-landing-edpw6muof.vercel.app/auth/callback';
 };
 
 // Import the supabase client like this:
