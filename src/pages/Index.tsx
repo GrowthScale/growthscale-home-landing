@@ -1,8 +1,8 @@
 // src/pages/Index.tsx
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { PlayCircle, ShieldCheck, Clock, Check, Star, ArrowRight, Zap, Target, Users, TrendingUp, Calendar, AlertTriangle, CheckCircle } from 'lucide-react';
+import { PlayCircle, ShieldCheck, Clock, Check, Star, ArrowRight, Zap, Target, Users, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ComparisonSection } from '@/components/ComparisonSection';
