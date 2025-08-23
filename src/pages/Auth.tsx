@@ -1,3 +1,4 @@
+// src/pages/Auth.tsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Eye, EyeOff, Mail, Lock, User, Building2, CheckCircle } from 'lucide-react';
+import { Loader2, Eye, EyeOff, Mail, Lock, User, Building2, CheckCircle, MailCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface LoginForm {
@@ -24,12 +25,75 @@ interface RegisterForm {
   employeeCount: string;
 }
 
-export default function Auth() {
+const CheckEmailCard = ({ email }: { email: string }) => (
+  <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="w-full max-w-md">
+      {/* Logo e Header */}
+      <div className="text-center mb-8">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-lg opacity-20 blur-sm"></div>
+            <div className="relative bg-gradient-to-r from-primary to-accent p-2 rounded-lg">
+              <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+            </div>
+          </div>
+          <span className="font-bold text-2xl text-foreground">GrowthScale</span>
+        </div>
+        <p className="text-muted-foreground">
+          Gestão inteligente de escalas para food service
+        </p>
+      </div>
+
+      {/* Card de Verificação */}
+      <Card className="shadow-xl border-0 bg-card/50 backdrop-blur-sm">
+        <CardContent className="text-center p-8">
+          <MailCheck className="mx-auto h-12 w-12 text-green-500 mb-4" />
+          <h1 className="text-2xl font-bold mb-4">Quase lá! Verifique seu e-mail.</h1>
+          <p className="text-muted-foreground mb-2">
+            Enviamos um link de confirmação para{' '}
+            <strong className="text-foreground">{email}</strong>.
+          </p>
+          <p className="text-muted-foreground mb-6">
+            Por favor, clique no link para ativar sua conta.
+          </p>
+          
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Não recebeu o e-mail? Verifique sua pasta de spam.
+            </p>
+            <Button 
+              variant="outline" 
+              onClick={() => window.location.reload()}
+              className="w-full"
+            >
+              Tentar novamente
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Footer */}
+      <div className="text-center mt-8">
+        <p className="text-sm text-muted-foreground">
+          Precisa de ajuda?{' '}
+          <Link to="/contact" className="text-primary hover:underline">
+            Entre em contato
+          </Link>
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
+export default function AuthPage() {
   const navigate = useNavigate();
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   
-  const [activeTab, setActiveTab] = useState('login');
+  const [view, setView] = useState<'signIn' | 'signUp'>('signUp');
+  const [emailForVerification, setEmailForVerification] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -49,7 +113,7 @@ export default function Auth() {
     employeeCount: ''
   });
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -73,7 +137,7 @@ export default function Auth() {
     }
   };
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -105,8 +169,7 @@ export default function Auth() {
         description: "Verifique seu email para confirmar a conta.",
       });
 
-      // Redirecionar para onboarding
-      navigate('/onboarding');
+      setEmailForVerification(registerForm.email);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Erro ao criar conta');
       toast({
@@ -118,6 +181,10 @@ export default function Auth() {
       setLoading(false);
     }
   };
+
+  if (emailForVerification) {
+    return <CheckEmailCard email={emailForVerification} />;
+  }
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -146,21 +213,21 @@ export default function Auth() {
             <CardTitle className="text-xl">Acesse sua conta</CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs value={view} onValueChange={(value) => setView(value as 'signIn' | 'signUp')} className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="login">Entrar</TabsTrigger>
-                <TabsTrigger value="register">Criar Conta</TabsTrigger>
+                <TabsTrigger value="signIn">Entrar</TabsTrigger>
+                <TabsTrigger value="signUp">Criar Conta</TabsTrigger>
               </TabsList>
 
               {/* Login Tab */}
-              <TabsContent value="login" className="space-y-4">
+              <TabsContent value="signIn" className="space-y-4">
                 {error && (
                   <Alert variant="destructive">
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
 
-                <form onSubmit={handleLogin} className="space-y-4">
+                <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="login-email">Email</Label>
                     <div className="relative">
@@ -216,14 +283,14 @@ export default function Auth() {
               </TabsContent>
 
               {/* Register Tab */}
-              <TabsContent value="register" className="space-y-4">
+              <TabsContent value="signUp" className="space-y-4">
                 {error && (
                   <Alert variant="destructive">
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
 
-                <form onSubmit={handleRegister} className="space-y-4">
+                <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="register-name">Nome Completo</Label>
                     <div className="relative">
