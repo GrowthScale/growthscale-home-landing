@@ -1,14 +1,15 @@
 // src/pages/Auth.tsx
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Eye, EyeOff, Mail, Lock, User, Building2, CheckCircle, MailCheck } from 'lucide-react';
+import { Loader2, Eye, EyeOff, Mail, Lock, User, Building2, MailCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface LoginForm {
@@ -89,6 +90,7 @@ const CheckEmailCard = ({ email }: { email: string }) => (
 
 export default function AuthPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   
@@ -98,6 +100,48 @@ export default function AuthPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Tratamento de erros de URL
+  useEffect(() => {
+    const urlError = searchParams.get('error');
+    const errorDescription = searchParams.get('error_description');
+
+    if (urlError) {
+      let errorMessage = '';
+      
+      switch (urlError) {
+        case 'invalid_code':
+          errorMessage = 'O link de confirmação expirou ou é inválido. Por favor, solicite um novo email de confirmação.';
+          break;
+        case 'no_code':
+          errorMessage = 'Link de confirmação inválido. Tente acessar novamente pelo email.';
+          break;
+        case 'invalid_session':
+          errorMessage = 'Sessão inválida. Por favor, faça login novamente.';
+          break;
+        case 'callback_error':
+          errorMessage = 'Erro inesperado durante a confirmação. Tente fazer login novamente.';
+          break;
+        case 'company_creation_failed':
+          errorMessage = 'Erro ao configurar sua empresa. Tente fazer login novamente.';
+          break;
+        default:
+          errorMessage = errorDescription || 'Erro de autenticação. Tente novamente.';
+      }
+
+      setError(errorMessage);
+      toast({
+        title: "Erro de Autenticação",
+        description: errorMessage,
+        variant: "destructive",
+        duration: 8000
+      });
+
+      // Limpar a URL dos parâmetros de erro
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, [searchParams, toast]);
 
   const [loginForm, setLoginForm] = useState<LoginForm>({
     email: '',
@@ -224,6 +268,53 @@ export default function AuthPage() {
                 {error && (
                   <Alert variant="destructive">
                     <AlertDescription>{error}</AlertDescription>
+                    {searchParams.get('error') === 'invalid_code' && (
+                      <div className="mt-3">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={async () => {
+                            if (!loginForm.email) {
+                              setError('Por favor, insira seu email abaixo e clique novamente para reenviar.');
+                              return;
+                            }
+                            
+                            setLoading(true);
+                            try {
+                              const { error } = await supabase.auth.resend({
+                                type: 'signup',
+                                email: loginForm.email,
+                                options: {
+                                  emailRedirectTo: `${window.location.origin}/auth/callback`,
+                                }
+                              });
+                              
+                              if (error) throw error;
+                              
+                              toast({
+                                title: "Email reenviado!",
+                                description: "Verifique sua caixa de entrada e spam.",
+                                duration: 5000
+                              });
+                              setError(null);
+                            } catch (error) {
+                              toast({
+                                title: "Erro ao reenviar",
+                                description: error instanceof Error ? error.message : 'Tente novamente',
+                                variant: "destructive"
+                              });
+                            } finally {
+                              setLoading(false);
+                            }
+                          }}
+                          disabled={loading}
+                          className="w-full"
+                        >
+                          {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                          Reenviar Email de Confirmação
+                        </Button>
+                      </div>
+                    )}
                   </Alert>
                 )}
 
