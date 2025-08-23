@@ -1,40 +1,33 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+// src/contexts/AuthContext.tsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { registerSchema, validateInputSafe, type LoginInput, type RegisterInput } from '@/lib/validation';
-import { createCompanyForUser } from '@/services/api';
+import { Session, User } from '@supabase/supabase-js';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signIn: (input: LoginInput) => Promise<{ user: User; session: Session }>;
-  signUp: (data: RegisterInput) => Promise<{ error: Error | null }>;
-  signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<{ error: Error | null }>;
+  signUp: (data: any) => Promise<any>;
+  signIn: (data: any) => Promise<any>;
+  signOut: () => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export { AuthContext };
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    // Pega a sessão inicial
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -43,141 +36,53 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (input: LoginInput) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
+  const signUp = async (userData: any) => {
+    const { error } = await supabase.auth.signUp({
+      email: userData.email,
+      password: userData.password,
+      options: {
+        data: {
+          full_name: userData.fullName,
+          pending_company: {
+            name: userData.companyName,
+            employee_count: userData.employeeCount,
+          },
+        },
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+    if (error) throw error;
+  };
+
+  const signIn = async (input: any) => {
+    const { error } = await supabase.auth.signInWithPassword({
       email: input.email,
       password: input.password,
     });
-
-    if (error) {
-      // Traduz erros comuns do Supabase para mensagens amigáveis
-      if (error.message === 'Invalid login credentials') {
-        throw new Error('E-mail ou senha inválidos. Por favor, verifique os seus dados.');
-      }
-      throw new Error(error.message);
-    }
-
-    // A verificação do onboarding será feita pelo hook useOnboardingStatus no MainLayout
-    return data;
+    if (error) throw new Error('Email ou senha inválidos.');
   };
 
-  const signUp = async (data: RegisterInput) => {
-    try {
-      // Validar dados de entrada
-      const validation = validateInputSafe(registerSchema, data);
-      if (!validation.success) {
-        return { error: new Error(validation.errors.join(', ')) };
-      }
-
-      // CORREÇÃO: Usar porta dinâmica em desenvolvimento
-      const getRedirectUrl = () => {
-        if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-          const currentPort = window.location.port || '3000';
-          return `http://localhost:${currentPort}/auth/callback`;
-        }
-        return 'https://growthscale-home-landing-luupvsd9h.vercel.app/auth/callback';
-      };
-
-      // 1. Criar usuário no Supabase Auth (SEM criar empresa ainda)
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            full_name: data.fullName,
-            // Armazenar dados da empresa temporariamente nos metadados
-            pending_company: {
-              name: data.companyName,
-              companyEmail: data.companyEmail,
-              employeeCount: data.employeeCount,
-              fullName: data.fullName,
-            }
-          },
-          emailRedirectTo: getRedirectUrl(),
-        },
-      });
-
-      if (authError) {
-        console.error('AuthProvider: Sign up auth error:', authError);
-        return { error: authError as Error };
-      }
-
-      if (!authData.user) {
-        return { error: new Error("Criação de usuário falhou.") };
-      }
-
-      // 2. IMPORTANTE: NÃO criar empresa aqui - aguardar confirmação de email
-      // A empresa será criada no AuthCallback após confirmação
-      console.log('✅ Usuário criado com sucesso. Aguardando confirmação de email...');
-      
-      return { error: null };
-    } catch (error) {
-      console.error('AuthProvider: Sign up exception:', error);
-      
-      // Verificar se é um erro de conectividade/timeout
-      if (error instanceof Error && error.message.includes('Failed to fetch')) {
-        console.log('⚠️ Erro de conectividade detectado, verificando se o cadastro foi realizado...');
-        
-        try {
-          // Tentar buscar a sessão atual para verificar se o usuário foi criado
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session?.user) {
-            console.log('✅ Usuário encontrado na sessão, cadastro pode ter sido realizado com sucesso');
-            return { error: null };
-          }
-        } catch (sessionError) {
-          console.error('Erro ao verificar sessão:', sessionError);
-        }
-      }
-      
-      return { error: error as Error };
-    }
-  }
-
   const signOut = async () => {
-    try {
-      await supabase.auth.signOut();
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('AuthProvider: Sign out error:', error);
-      }
-    }
-  }
-
-  const resetPassword = async (email: string) => {
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email);
-      
-      if (error && process.env.NODE_ENV === 'development') {
-        console.error('AuthProvider: Reset password error:', error);
-      }
-      
-      return { error: error as Error | null };
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('AuthProvider: Reset password exception:', error);
-      }
-      return { error: error as Error };
-    }
-  }
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  };
 
   const value = {
     user,
     session,
     loading,
-    signIn,
     signUp,
+    signIn,
     signOut,
-    resetPassword,
-  }
+  };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    throw new Error('useAuth must be used within an AuthProvider');
   }
-  return context
-}
+  return context;
+};

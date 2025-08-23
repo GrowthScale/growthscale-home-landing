@@ -23,10 +23,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   
   // Hook para verificar status do onboarding
   const { 
-    onboardingComplete, 
+    isComplete: onboardingComplete, 
     isLoading: isLoadingOnboarding, 
-    shouldShowOnboarding, 
-    shouldShowAuth 
+    hasCompany,
+    hasPendingCompany
   } = useOnboardingStatus();
 
   // Se estiver carregando autenticação ou onboarding
@@ -44,24 +44,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
-  // Se deve mostrar auth (usuário autenticado mas sem tenant)
-  if (shouldShowAuth) {
-    return (
-      <LoadingSpinner 
-        message="Redirecionando para autenticação..." 
-        size="lg" 
-      />
-    );
-  }
-
-  // Se deve mostrar onboarding (usuário autenticado com tenant mas setup incompleto)
-  if (shouldShowOnboarding) {
-    return (
-      <LoadingSpinner 
-        message="Redirecionando para configuração..." 
-        size="lg" 
-      />
-    );
+  // Se não tem empresa configurada, redirecionar para onboarding
+  if (!hasCompany) {
+    return <Navigate to="/onboarding" replace />;
   }
 
   // Se onboarding não está completo

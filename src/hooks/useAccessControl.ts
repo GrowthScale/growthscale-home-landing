@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { AuthContext } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useTenant } from '@/contexts/TenantContext';
 import { userProfileService } from '@/services/userProfileService';
 
@@ -92,7 +92,7 @@ type Role = 'owner' | 'admin' | 'manager' | 'employee';
 type Plan = keyof typeof planPermissions;
 
 export function useAccessControl() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const { currentTenant } = useTenant();
   const [userRole, setUserRole] = useState<Role>('employee');
   const [userCompanyId, setUserCompanyId] = useState<string | null>(null);

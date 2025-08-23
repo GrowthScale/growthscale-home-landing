@@ -1,331 +1,372 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useAuth } from '@/contexts/AuthContext'
-import { Checkbox } from '@/components/ui/checkbox'
-import { type LoginInput, type RegisterInput } from '@/lib/validation'
-import { useToast } from '@/hooks/use-toast'
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Loader2, Eye, EyeOff, Mail, Lock, User, Building2, CheckCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
-const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true)
-  const [loading, setLoading] = useState(false)
-  const [acceptedTerms, setAcceptedTerms] = useState(false)
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
+interface RegisterForm {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  companyName: string;
+  employeeCount: string;
+}
+
+export default function Auth() {
+  const navigate = useNavigate();
+  const { signIn, signUp } = useAuth();
+  const { toast } = useToast();
   
-  // Form states
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [fullName, setFullName] = useState('')
-  const [companyName, setCompanyName] = useState('')
-  const [companyEmail, setCompanyEmail] = useState('')
-  const [employeeCount, setEmployeeCount] = useState<number>(10)
+  const [activeTab, setActiveTab] = useState('login');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { signIn, signUp } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { toast } = useToast()
+  const [loginForm, setLoginForm] = useState<LoginForm>({
+    email: '',
+    password: ''
+  });
 
-  // Capturar mensagem de sucesso do estado de navegação
-  useEffect(() => {
-    if (location.state?.message && location.state?.type === 'success') {
-      setSuccessMessage(location.state.message)
-      // Limpar o estado para evitar que a mensagem apareça novamente
-      navigate(location.pathname, { replace: true })
-    }
-  }, [location, navigate])
+  const [registerForm, setRegisterForm] = useState<RegisterForm>({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    companyName: '',
+    employeeCount: ''
+  });
 
-  const handleLoginSubmit = async (data: LoginInput) => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true)
-      await signIn(data)
-      navigate('/dashboard') // Redireciona para o dashboard em caso de sucesso
-    } catch (error: any) {
+      await signIn(loginForm);
       toast({
-        title: "Erro no Login",
-        description: error.message,
-        variant: 'destructive',
-      })
+        title: "Login realizado com sucesso!",
+        description: "Redirecionando para o dashboard...",
+      });
+      navigate('/dashboard');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Erro ao fazer login');
+      toast({
+        title: "Erro no login",
+        description: error instanceof Error ? error.message : 'Tente novamente',
+        variant: "destructive"
+      });
     } finally {
-      setLoading(false) // Desativa o estado de loading
+      setLoading(false);
     }
-  }
+  };
 
-  const handleRegisterSubmit = async (data: RegisterInput) => {
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    // Validações
+    if (registerForm.password !== registerForm.confirmPassword) {
+      setError('As senhas não coincidem');
+      setLoading(false);
+      return;
+    }
+
+    if (registerForm.password.length < 6) {
+      setError('A senha deve ter pelo menos 6 caracteres');
+      setLoading(false);
+      return;
+    }
+
     try {
-      setLoading(true)
-      const { error } = await signUp(data)
-      if (!error) {
-        toast({
-          title: "Cadastro realizado!",
-          description: "Verifique seu email para confirmar a conta e criar sua empresa.",
-          variant: 'default',
-        })
-        setIsLogin(true)
-      } else {
-        toast({
-          title: "Erro no cadastro",
-          description: error.message,
-          variant: 'destructive',
-        })
-      }
-    } catch (error: any) {
+      await signUp({
+        fullName: registerForm.fullName,
+        email: registerForm.email,
+        password: registerForm.password,
+        companyName: registerForm.companyName,
+        employeeCount: registerForm.employeeCount
+      });
+
       toast({
-        title: "Erro no Cadastro",
-        description: error.message,
-        variant: 'destructive',
-      })
+        title: "Conta criada com sucesso!",
+        description: "Verifique seu email para confirmar a conta.",
+      });
+
+      // Redirecionar para onboarding
+      navigate('/onboarding');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Erro ao criar conta');
+      toast({
+        title: "Erro ao criar conta",
+        description: error instanceof Error ? error.message : 'Tente novamente',
+        variant: "destructive"
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSuccessMessage(null) // Limpar mensagem ao submeter
-    
-    if (isLogin) {
-      const loginData: LoginInput = { email, password, rememberMe: false }
-      await handleLoginSubmit(loginData)
-    } else {
-      // Validação para campos obrigatórios no cadastro
-      if (!fullName.trim()) {
-        toast({
-          title: "Campo obrigatório",
-          description: "Por favor, preencha o nome completo",
-          variant: 'destructive',
-        })
-        return
-      }
-      if (!companyName.trim()) {
-        toast({
-          title: "Campo obrigatório",
-          description: "Por favor, preencha o nome da empresa",
-          variant: 'destructive',
-        })
-        return
-      }
-      if (!companyEmail.trim()) {
-        toast({
-          title: "Campo obrigatório",
-          description: "Por favor, preencha o email da empresa",
-          variant: 'destructive',
-        })
-        return
-      }
-      if (!employeeCount || employeeCount < 1) {
-        toast({
-          title: "Campo obrigatório",
-          description: "Por favor, preencha o número de funcionários (mínimo 1)",
-          variant: 'destructive',
-        })
-        return
-      }
-      if (!acceptedTerms) {
-        toast({
-          title: "Termos não aceitos",
-          description: "Por favor, aceite os termos de uso",
-          variant: 'destructive',
-        })
-        return
-      }
-
-      const registerData: RegisterInput = {
-        email,
-        password,
-        confirmPassword: password, // Assumindo que não há campo de confirmação separado
-        fullName,
-        companyName,
-        companyEmail,
-        employeeCount,
-        acceptTerms: acceptedTerms
-      }
-      await handleRegisterSubmit(registerData)
-    }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-secondary flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground">
-          {isLogin ? 'Entrar na sua conta' : 'Criar nova conta'}
-        </h2>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-card py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {successMessage && (
-            <div className="bg-accent/10 border border-accent text-accent-foreground px-4 py-3 rounded relative mb-4" role="alert">
-              <strong className="font-bold">Sucesso!</strong>
-              <span className="block sm:inline"> {successMessage}</span>
-            </div>
-          )}
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {!isLogin && (
-              <>
-                <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium text-foreground">
-                    Nome Completo <span className="text-destructive">*</span>
-                  </label>
-                  <input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    required
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                    placeholder="Digite seu nome completo"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="companyName" className="block text-sm font-medium text-foreground">
-                    Nome da Empresa <span className="text-destructive">*</span>
-                  </label>
-                  <input
-                    id="companyName"
-                    name="companyName"
-                    type="text"
-                    required
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                    placeholder="Digite o nome da empresa"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="companyEmail" className="block text-sm font-medium text-foreground">
-                    Email da Empresa <span className="text-destructive">*</span>
-                  </label>
-                  <input
-                    id="companyEmail"
-                    name="companyEmail"
-                    type="email"
-                    required
-                    value={companyEmail}
-                    onChange={(e) => setCompanyEmail(e.target.value)}
-                    className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                    placeholder="empresa@exemplo.com"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="employeeCount" className="block text-sm font-medium text-foreground">
-                    Número de Funcionários <span className="text-destructive">*</span>
-                  </label>
-                  <input
-                    id="employeeCount"
-                    name="employeeCount"
-                    type="number"
-                    min="1"
-                    max="9999"
-                    required
-                    value={employeeCount}
-                    onChange={(e) => setEmployeeCount(parseInt(e.target.value) || 0)}
-                    className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                    placeholder="Digite o número de funcionários"
-                  />
-                  <div className="mt-1 text-xs text-muted-foreground">
-                    Digite um número entre 1 e 9999
-                  </div>
-                </div>
-              </>
-            )}
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground">
-                Email <span className="text-destructive">*</span>
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                placeholder="seu@email.com"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-foreground">
-                Senha <span className="text-destructive">*</span>
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full border border-border rounded-md px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                placeholder="Digite sua senha"
-              />
-            </div>
-
-            {!isLogin && (
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <Checkbox
-                    id="terms"
-                    checked={acceptedTerms}
-                    onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
-                    className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label htmlFor="terms" className="font-medium text-foreground">
-                    Aceito os{' '}
-                    <a href="/legal/termos" className="text-primary hover:text-primary/80">
-                      Termos de Uso
-                    </a>{' '}
-                    e{' '}
-                    <a href="/legal/privacidade" className="text-primary hover:text-primary/80">
-                      Política de Privacidade
-                    </a>
-                  </label>
-                </div>
-              </div>
-            )}
-
-            <div>
-              <button
-                type="submit"
-                disabled={loading || (!isLogin && !acceptedTerms)}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? 'Processando...' : (isLogin ? 'Entrar' : 'Criar Conta')}
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-6">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Logo e Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-4">
             <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-card text-muted-foreground">ou</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-lg opacity-20 blur-sm"></div>
+              <div className="relative bg-gradient-to-r from-primary to-accent p-2 rounded-lg">
+                <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
               </div>
             </div>
-
-            <div className="mt-6">
-              <button
-                type="button"
-                onClick={() => setIsLogin(!isLogin)}
-                className="w-full flex justify-center py-2 px-4 border border-border rounded-md shadow-sm text-sm font-medium text-foreground bg-card hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-              >
-                {isLogin ? 'Criar nova conta' : 'Já tenho uma conta'}
-              </button>
-            </div>
+            <span className="font-bold text-2xl text-foreground">GrowthScale</span>
           </div>
+          <p className="text-muted-foreground">
+            Gestão inteligente de escalas para food service
+          </p>
+        </div>
+
+        {/* Card Principal */}
+        <Card className="shadow-xl border-0 bg-card/50 backdrop-blur-sm">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-xl">Acesse sua conta</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="login">Entrar</TabsTrigger>
+                <TabsTrigger value="register">Criar Conta</TabsTrigger>
+              </TabsList>
+
+              {/* Login Tab */}
+              <TabsContent value="login" className="space-y-4">
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+
+                <form onSubmit={handleLogin} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="login-email">Email</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="login-email"
+                        type="email"
+                        placeholder="seu@email.com"
+                        value={loginForm.email}
+                        onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="login-password">Senha</Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="login-password"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Sua senha"
+                        value={loginForm.password}
+                        onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
+                        className="pl-10 pr-10"
+                        required
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                  </div>
+
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                    Entrar
+                  </Button>
+                </form>
+
+                <div className="text-center">
+                  <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+                    Esqueceu sua senha?
+                  </Link>
+                </div>
+              </TabsContent>
+
+              {/* Register Tab */}
+              <TabsContent value="register" className="space-y-4">
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+
+                <form onSubmit={handleRegister} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="register-name">Nome Completo</Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="register-name"
+                        type="text"
+                        placeholder="Seu nome completo"
+                        value={registerForm.fullName}
+                        onChange={(e) => setRegisterForm(prev => ({ ...prev, fullName: e.target.value }))}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="register-email">Email</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="register-email"
+                        type="email"
+                        placeholder="seu@email.com"
+                        value={registerForm.email}
+                        onChange={(e) => setRegisterForm(prev => ({ ...prev, email: e.target.value }))}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="register-company">Nome da Empresa</Label>
+                    <div className="relative">
+                      <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="register-company"
+                        type="text"
+                        placeholder="Nome da sua empresa"
+                        value={registerForm.companyName}
+                        onChange={(e) => setRegisterForm(prev => ({ ...prev, companyName: e.target.value }))}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="register-employees">Número de Funcionários</Label>
+                    <select
+                      id="register-employees"
+                      value={registerForm.employeeCount}
+                      onChange={(e) => setRegisterForm(prev => ({ ...prev, employeeCount: e.target.value }))}
+                      className="w-full p-2 border border-input rounded-md bg-background"
+                      required
+                    >
+                      <option value="">Selecione...</option>
+                      <option value="1-5">1-5 funcionários</option>
+                      <option value="6-10">6-10 funcionários</option>
+                      <option value="11-25">11-25 funcionários</option>
+                      <option value="26-50">26-50 funcionários</option>
+                      <option value="50+">50+ funcionários</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="register-password">Senha</Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="register-password"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Mínimo 6 caracteres"
+                        value={registerForm.password}
+                        onChange={(e) => setRegisterForm(prev => ({ ...prev, password: e.target.value }))}
+                        className="pl-10 pr-10"
+                        required
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="register-confirm-password">Confirmar Senha</Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="register-confirm-password"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        placeholder="Confirme sua senha"
+                        value={registerForm.confirmPassword}
+                        onChange={(e) => setRegisterForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                        className="pl-10 pr-10"
+                        required
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                  </div>
+
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                    Criar Conta
+                  </Button>
+                </form>
+
+                <div className="text-center text-sm text-muted-foreground">
+                  Ao criar uma conta, você concorda com nossos{' '}
+                  <Link to="/legal" className="text-primary hover:underline">
+                    Termos de Serviço
+                  </Link>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+
+        {/* Footer */}
+        <div className="text-center mt-8">
+          <p className="text-sm text-muted-foreground">
+            Precisa de ajuda?{' '}
+            <Link to="/contact" className="text-primary hover:underline">
+              Entre em contato
+            </Link>
+          </p>
         </div>
       </div>
     </div>
   );
-};
-
-export default Auth;
+}
