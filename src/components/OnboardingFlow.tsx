@@ -276,19 +276,47 @@ export const OnboardingFlow: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [companyData, setCompanyData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
 
-  // Se já tem tenant, redirecionar para dashboard
-  if (currentTenant) {
-    navigate('/dashboard', { replace: true });
-    return null;
-  }
+  // Verificar estado inicial
+  React.useEffect(() => {
+    const checkState = async () => {
+      setIsChecking(true);
+      
+      // Se já tem tenant, redirecionar para dashboard
+      if (currentTenant) {
+        console.log('✅ Usuário já tem empresa configurada, redirecionando para dashboard');
+        navigate('/dashboard', { replace: true });
+        return;
+      }
 
-  // Verificar se tem dados pendentes de empresa
-  const pendingCompany = user?.user_metadata?.pending_company;
-  if (!pendingCompany) {
-    // Se não tem dados pendentes, redirecionar para dashboard
-    navigate('/dashboard', { replace: true });
-    return null;
+      // Verificar se tem dados pendentes de empresa
+      const pendingCompany = user?.user_metadata?.pending_company;
+      if (!pendingCompany) {
+        console.log('❌ Usuário não tem dados pendentes de empresa, redirecionando para dashboard');
+        navigate('/dashboard', { replace: true });
+        return;
+      }
+
+      console.log('✅ Usuário tem dados pendentes, iniciando onboarding');
+      setIsChecking(false);
+    };
+
+    checkState();
+  }, [user, currentTenant, navigate]);
+
+  // Mostrar loading enquanto verifica
+  if (isChecking) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="w-full max-w-md mx-auto">
+          <CardContent className="text-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+            <p>Verificando configuração...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   const steps: OnboardingStep[] = [
@@ -331,9 +359,10 @@ export const OnboardingFlow: React.FC = () => {
       // Criar empresa usando dados pendentes ou dados do formulário
       setLoading(true);
       try {
+        const pendingCompany = user?.user_metadata?.pending_company;
         const companyToCreate = {
-          name: data.companyName || pendingCompany.name,
-          employeeCount: data.employeeCount || pendingCompany.employee_count,
+          name: data.companyName || pendingCompany?.name,
+          employeeCount: data.employeeCount || pendingCompany?.employee_count,
           companyEmail: user!.email || '',
           fullName: user!.user_metadata?.full_name || ''
         };
