@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, CheckCircle, Building2, Users, Calendar, Shield, Sparkles } from 'lucide-react';
 import { createCompanyForUser } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface OnboardingStep {
   id: string;
@@ -282,6 +283,14 @@ export const OnboardingFlow: React.FC = () => {
     return null;
   }
 
+  // Verificar se tem dados pendentes de empresa
+  const pendingCompany = user?.user_metadata?.pending_company;
+  if (!pendingCompany) {
+    // Se não tem dados pendentes, redirecionar para dashboard
+    navigate('/dashboard', { replace: true });
+    return null;
+  }
+
   const steps: OnboardingStep[] = [
     {
       id: 'welcome',
@@ -319,13 +328,21 @@ export const OnboardingFlow: React.FC = () => {
     }
 
     if (currentStep === 1 && data) {
-      // Criar empresa
+      // Criar empresa usando dados pendentes ou dados do formulário
       setLoading(true);
       try {
-        await createCompanyForUser(user!.id, {
-          name: data.companyName,
-          employeeCount: data.employeeCount,
-          industry: data.industry
+        const companyToCreate = {
+          name: data.companyName || pendingCompany.name,
+          employeeCount: data.employeeCount || pendingCompany.employee_count,
+          companyEmail: user!.email || '',
+          fullName: user!.user_metadata?.full_name || ''
+        };
+
+        await createCompanyForUser(user!.id, companyToCreate);
+        
+        // Limpar dados pendentes após criar empresa
+        await supabase.auth.updateUser({
+          data: { pending_company: null }
         });
         
         toast({

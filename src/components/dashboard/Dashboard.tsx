@@ -27,8 +27,6 @@ import {
 } from 'lucide-react';
 import { useTenant } from '@/contexts/TenantContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { createCompanyForUser } from '@/services/api';
-import { supabase } from '@/integrations/supabase/client';
 
 const Dashboard = () => {
   const { can } = useAccessControl();
@@ -52,43 +50,11 @@ const Dashboard = () => {
       return;
     }
 
-    // REFATORAÇÃO: Processar dados pendentes de empresa primeiro
-    const processPendingCompany = async () => {
-      const pendingCompany = user?.user_metadata?.pending_company;
-      
-      if (pendingCompany && !tenant) {
-        console.log('🏢 Processando dados pendentes de empresa...');
-        
-        try {
-          // Criar a empresa para o usuário confirmado
-          await createCompanyForUser(user.id, pendingCompany);
-          
-          // Limpar os dados pendentes dos metadados
-          await supabase.auth.updateUser({
-            data: { pending_company: null }
-          });
-          
-          console.log('✅ Empresa criada com sucesso!');
-          
-          // Recarregar a página para atualizar o contexto do tenant
-          window.location.reload();
-          return;
-        } catch (companyError) {
-          console.error('❌ Erro ao criar empresa:', companyError);
-          // Em caso de erro, redirecionar para setup manual
-          navigate('/setup', { replace: true });
-          return;
-        }
-      }
-
-      // Se o utilizador está logado, já não está a carregar os tenants, e não tem tenant configurado, força o redirecionamento
-      if (user && !isLoadingTenant && !tenant) {
-        console.log('🚨 Usuário sem empresa configurada - redirecionando para setup');
-        navigate('/setup', { replace: true });
-      }
-    };
-
-    processPendingCompany();
+    // Se o utilizador está logado, já não está a carregar os tenants, e não tem tenant configurado, redirecionar para onboarding
+    if (user && !isLoadingTenant && !tenant) {
+      console.log('🚨 Usuário sem empresa configurada - redirecionando para onboarding');
+      navigate('/onboarding', { replace: true });
+    }
   }, [user, tenant, isLoadingTenant, navigate]);
 
   // Detectar trial expirado e mostrar modal

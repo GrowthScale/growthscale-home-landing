@@ -65,34 +65,12 @@ export default function AuthCallback() {
         console.log('🏢 Dados pendentes da empresa:', pendingCompany);
 
         if (pendingCompany) {
-          setStatus('Criando sua empresa...');
-          console.log('🏢 Criando empresa para usuário:', user.email);
-          
-          try {
-            // Cria a empresa e limpa os metadados
-            await createCompanyForUser(user.id, {
-              name: pendingCompany.name,
-              employeeCount: parseInt(pendingCompany.employee_count) || 10,
-              companyEmail: user.email || '',
-              fullName: user.user_metadata?.full_name || ''
-            });
-            
-            console.log('✅ Empresa criada com sucesso');
-            setStatus('Limpando dados temporários...');
-            
-            await supabase.auth.updateUser({ 
-              data: { pending_company: null } 
-            });
-            
-            console.log('✅ Dados temporários limpos');
-            setStatus('Redirecionando para configuração...');
-            navigate('/onboarding', { replace: true });
-          } catch (error) {
-            console.error("❌ Erro ao criar empresa no callback:", error);
-            setStatus('Erro ao configurar empresa. Redirecionando...');
-            navigate('/auth?error=company_creation_failed', { replace: true });
-          }
+          // Se tem dados pendentes, redirecionar para onboarding
+          console.log('🔄 Redirecionando para onboarding para configurar empresa...');
+          setStatus('Redirecionando para configuração...');
+          navigate('/onboarding', { replace: true });
         } else {
+          // Se não tem dados pendentes, verificar se já tem empresa
           console.log('✅ Usuário já tem empresa configurada, redirecionando para dashboard');
           setStatus('Redirecionando para o dashboard...');
           navigate('/dashboard', { replace: true });
