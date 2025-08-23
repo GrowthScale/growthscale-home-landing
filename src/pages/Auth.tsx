@@ -111,19 +111,25 @@ export default function AuthPage() {
       
       switch (urlError) {
         case 'invalid_code':
-          errorMessage = 'O link de confirmação expirou ou é inválido. Por favor, solicite um novo email de confirmação.';
+          errorMessage = 'O link de confirmação expirou ou é inválido. Por favor, faça login para acessar sua conta.';
+          // Mudar para aba de login quando for erro de código inválido
+          setView('signIn');
           break;
         case 'no_code':
-          errorMessage = 'Link de confirmação inválido. Tente acessar novamente pelo email.';
+          errorMessage = 'Link de confirmação inválido. Tente fazer login para acessar sua conta.';
+          setView('signIn');
           break;
         case 'invalid_session':
           errorMessage = 'Sessão inválida. Por favor, faça login novamente.';
+          setView('signIn');
           break;
         case 'callback_error':
           errorMessage = 'Erro inesperado durante a confirmação. Tente fazer login novamente.';
+          setView('signIn');
           break;
         case 'company_creation_failed':
           errorMessage = 'Erro ao configurar sua empresa. Tente fazer login novamente.';
+          setView('signIn');
           break;
         default:
           errorMessage = errorDescription || 'Erro de autenticação. Tente novamente.';
@@ -269,7 +275,10 @@ export default function AuthPage() {
                   <Alert variant="destructive">
                     <AlertDescription>{error}</AlertDescription>
                     {searchParams.get('error') === 'invalid_code' && (
-                      <div className="mt-3">
+                      <div className="mt-3 space-y-2">
+                        <p className="text-sm text-muted-foreground">
+                          Se você já se cadastrou, pode fazer login diretamente ou solicitar um novo email de confirmação.
+                        </p>
                         <Button
                           variant="outline"
                           size="sm"
