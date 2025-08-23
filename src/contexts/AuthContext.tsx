@@ -8,7 +8,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signIn: (data: LoginInput) => Promise<{ error: Error | null }>;
+  signIn: (input: LoginInput) => Promise<{ user: User; session: Session }>;
   signUp: (data: RegisterInput) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: Error | null }>;
@@ -43,25 +43,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (data: LoginInput) => {
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
-      });
-      
-      if (error && process.env.NODE_ENV === 'development') {
-        console.error('AuthProvider: Sign in error:', error);
+  const signIn = async (input: LoginInput) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: input.email,
+      password: input.password,
+    });
+
+    if (error) {
+      // Traduz erros comuns do Supabase para mensagens amigáveis
+      if (error.message === 'Invalid login credentials') {
+        throw new Error('E-mail ou senha inválidos. Por favor, verifique os seus dados.');
       }
-      
-      return { error: error as Error | null };
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('AuthProvider: Sign in exception:', error);
-      }
-      return { error: error as Error };
+      throw new Error(error.message);
     }
-  }
+
+    // A verificação do onboarding será feita pelo hook useOnboardingStatus no MainLayout
+    return data;
+  };
 
   const signUp = async (data: RegisterInput) => {
     try {
