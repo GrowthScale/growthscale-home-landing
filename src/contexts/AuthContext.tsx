@@ -37,16 +37,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signUp = async (userData: any) => {
-    // CORREÇÃO: Usar a porta correta para redirecionamento
-    const getRedirectUrl = () => {
-      if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-        const currentPort = window.location.port || '3000'; // Use 3000 como fallback
-        console.log('🔗 Configurando redirect URL para porta:', currentPort);
-        return `http://localhost:${currentPort}/auth/callback`;
-      }
-      return 'https://growthscale-home-landing-edpw6muof.vercel.app/auth/callback';
-    };
-
     const { error } = await supabase.auth.signUp({
       email: userData.email,
       password: userData.password,
@@ -58,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             employee_count: userData.employeeCount,
           },
         },
-        emailRedirectTo: getRedirectUrl(),
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
     if (error) throw error;

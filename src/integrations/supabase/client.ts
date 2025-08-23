@@ -21,11 +21,8 @@ const getRedirectUrl = () => {
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    storage: localStorage,
-    persistSession: true,
     autoRefreshToken: true,
-    flowType: 'pkce',
+    persistSession: true,
     detectSessionInUrl: true,
-    redirectTo: getRedirectUrl(),
   }
 });

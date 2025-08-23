@@ -44,6 +44,11 @@ export default function AuthCallback() {
         
         if (exchangeError) {
           console.error('❌ Erro ao trocar código por sessão:', exchangeError);
+          console.error('❌ Detalhes do erro:', {
+            message: exchangeError.message,
+            status: exchangeError.status,
+            name: exchangeError.name
+          });
           setStatus('Erro ao processar código. Redirecionando...');
           navigate('/auth?error=invalid_code', { replace: true });
           return;
