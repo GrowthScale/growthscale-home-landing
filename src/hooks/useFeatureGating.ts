@@ -21,9 +21,9 @@ export interface PlanLimits {
 
 export const PLAN_LIMITS: Record<PlanType, PlanLimits> = {
   freemium: {
-    maxEmployees: 3,
+    maxEmployees: 5,
     maxBranches: 1,
-    maxSchedules: 5,
+    maxSchedules: 3,
     features: {
       aiSuggestions: false,
       advancedAnalytics: false,
@@ -96,7 +96,7 @@ export function useFeatureGating() {
     // Por exemplo, baseado no número de funcionários ou configurações
     const employeeCount = currentTenant.settings?.employee_count || 0;
     
-    if (employeeCount <= 3) return 'freemium';
+    if (employeeCount <= 5) return 'freemium';
     if (employeeCount <= 10) return 'starter';
     if (employeeCount <= 25) return 'professional';
     return 'enterprise';

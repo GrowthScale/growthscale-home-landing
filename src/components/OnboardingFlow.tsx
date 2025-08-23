@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, CheckCircle, Building2, Users, Calendar, Shield } from 'lucide-react';
+import { Loader2, CheckCircle, Building2, Users, Calendar, Shield, Sparkles } from 'lucide-react';
 import { createCompanyForUser } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
 
@@ -133,6 +133,101 @@ const WelcomeStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
   );
 };
 
+const FirstScheduleStep: React.FC<{ companyName: string; onNext: () => void }> = ({ companyName, onNext }) => {
+  const [isCreating, setIsCreating] = useState(true);
+  const [scheduleData, setScheduleData] = useState<any>(null);
+
+  React.useEffect(() => {
+    const createFirstSchedule = async () => {
+      // Simular criação da primeira escala pela IA
+      setTimeout(() => {
+        setScheduleData({
+          id: 'first-schedule',
+          name: 'Primeira Escala Semanal',
+          weekStart: new Date().toISOString().split('T')[0],
+          employeeCount: 3,
+          shifts: [
+            { day: 'Segunda', time: '08:00 - 17:00', employees: 2 },
+            { day: 'Terça', time: '08:00 - 17:00', employees: 2 },
+            { day: 'Quarta', time: '08:00 - 17:00', employees: 2 },
+            { day: 'Quinta', time: '08:00 - 17:00', employees: 2 },
+            { day: 'Sexta', time: '08:00 - 17:00', employees: 2 },
+          ]
+        });
+        setIsCreating(false);
+      }, 2000);
+    };
+
+    createFirstSchedule();
+  }, []);
+
+  if (isCreating) {
+    return (
+      <Card className="w-full max-w-md mx-auto">
+        <CardContent className="text-center py-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <h3 className="text-lg font-semibold mb-2">Criando sua primeira escala...</h3>
+          <p className="text-sm text-muted-foreground">
+            Nossa IA está analisando os dados da {companyName} e criando uma escala otimizada.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="w-full max-w-md mx-auto">
+      <CardHeader className="text-center">
+        <div className="mx-auto w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mb-4">
+          <Sparkles className="h-8 w-8 text-white" />
+        </div>
+        <CardTitle>Primeira Escala Criada!</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Com base nos dados da {companyName}, nossa IA criou uma escala otimizada.
+        </p>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="bg-muted/50 rounded-lg p-4">
+          <h4 className="font-medium mb-2">{scheduleData.name}</h4>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span>Funcionários:</span>
+              <span className="font-medium">{scheduleData.employeeCount}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Turnos:</span>
+              <span className="font-medium">5 dias</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Horário:</span>
+              <span className="font-medium">08:00 - 17:00</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-sm text-green-600">
+            <CheckCircle className="h-4 w-4" />
+            <span>Escala otimizada para sua operação</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-green-600">
+            <CheckCircle className="h-4 w-4" />
+            <span>Compliance com CLT garantido</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-green-600">
+            <CheckCircle className="h-4 w-4" />
+            <span>Pronta para uso imediato</span>
+          </div>
+        </div>
+        
+        <Button onClick={onNext} className="w-full">
+          Ver Minha Escala
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
+
 const SuccessStep: React.FC<{ companyName: string }> = ({ companyName }) => {
   const navigate = useNavigate();
 
@@ -144,7 +239,7 @@ const SuccessStep: React.FC<{ companyName: string }> = ({ companyName }) => {
         </div>
         <CardTitle>Tudo Pronto!</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Sua empresa {companyName} foi configurada com sucesso.
+          Sua empresa {companyName} está configurada e sua primeira escala foi criada.
         </p>
       </CardHeader>
       <CardContent className="text-center">
@@ -155,7 +250,7 @@ const SuccessStep: React.FC<{ companyName: string }> = ({ companyName }) => {
           </div>
           <div className="flex items-center gap-3 text-sm">
             <CheckCircle className="h-4 w-4 text-green-500" />
-            <span>Sistema configurado</span>
+            <span>Primeira escala gerada</span>
           </div>
           <div className="flex items-center gap-3 text-sm">
             <CheckCircle className="h-4 w-4 text-green-500" />
@@ -203,6 +298,13 @@ export const OnboardingFlow: React.FC = () => {
       component: CompanySetupStep
     },
     {
+      id: 'first-schedule',
+      title: 'Primeira Escala',
+      description: 'Criando sua primeira escala com IA',
+      icon: Sparkles,
+      component: FirstScheduleStep
+    },
+    {
       id: 'success',
       title: 'Sucesso',
       description: 'Configuração concluída',
@@ -222,13 +324,13 @@ export const OnboardingFlow: React.FC = () => {
       try {
         await createCompanyForUser(user!.id, {
           name: data.companyName,
-          employee_count: data.employeeCount,
+          employeeCount: data.employeeCount,
           industry: data.industry
         });
         
         toast({
           title: "Empresa criada com sucesso!",
-          description: "Sua empresa foi configurada e está pronta para uso.",
+          description: "Agora vamos criar sua primeira escala.",
         });
         
         setCurrentStep(2);

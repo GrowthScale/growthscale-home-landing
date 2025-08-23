@@ -4,6 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useAccessControl } from '@/hooks/useAccessControl';
 import { TrialUpgradeBanner } from '@/components/TrialUpgradeBanner';
 import { FeatureGate } from '@/components/FeatureGate';
+import { FirstTimeUserCard } from './FirstTimeUserCard';
+import { PlanBadge } from '@/components/PlanBadge';
+import { UpgradeModal } from '@/components/UpgradeModal';
+import { useUpgradeModal } from '@/hooks/useUpgradeModal';
+import { useTrialStatus } from '@/hooks/useTrialStatus';
 import DashboardHeader from './DashboardHeader';
 import KPICard from './KPICard';
 import ActivityFeed from './ActivityFeed';
@@ -18,7 +23,7 @@ import {
   Sparkles,
   Zap,
   Brain,
-  Button
+  CheckCircle
 } from 'lucide-react';
 import { useTenant } from '@/contexts/TenantContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -30,6 +35,15 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { currentTenant: tenant, loading: isLoadingTenant } = useTenant();
   const { user } = useAuth();
+  const { 
+    isModalOpen, 
+    modalTrigger, 
+    modalMessage, 
+    hideUpgradeModal, 
+    checkAndShowUpgrade,
+    showUpgradeModal
+  } = useUpgradeModal();
+  const { isTrialExpired } = useTrialStatus();
 
   // LÓGICA CRÍTICA: Verificar se o utilizador já configurou a sua empresa
   useEffect(() => {
@@ -77,8 +91,15 @@ const Dashboard = () => {
     processPendingCompany();
   }, [user, tenant, isLoadingTenant, navigate]);
 
+  // Detectar trial expirado e mostrar modal
+  useEffect(() => {
+    if (isTrialExpired && !isModalOpen) {
+      showUpgradeModal('trial_expired', 'Seu período de teste de 14 dias expirou!');
+    }
+  }, [isTrialExpired, isModalOpen, showUpgradeModal]);
+
   // Buscar rascunho pendente para o card proativo (simplificado)
-  const { data: pendingDraft, isLoading: isLoadingDraft } = useQuery({
+  const { data: pendingDraft } = useQuery({
     queryKey: ['pendingDraft', tenant?.id],
     queryFn: async () => {
       if (!tenant?.id) {return null;}
@@ -88,6 +109,11 @@ const Dashboard = () => {
     enabled: !!tenant?.id,
     refetchInterval: 30000, // Refetch a cada 30 segundos
   });
+
+  // Verificar se é um usuário novo (primeira vez no dashboard)
+  const isFirstTimeUser = tenant?.created_at && 
+    new Date(tenant.created_at).getTime() > Date.now() - (24 * 60 * 60 * 1000); // Últimas 24 horas
+
   const kpiData = [
     {
       title: "Taxa de Rotatividade",
@@ -139,6 +165,31 @@ const Dashboard = () => {
     }
   ];
 
+  const handleQuickAction = (action: string) => {
+    switch (action) {
+      case 'add_employee':
+        if (checkAndShowUpgrade('add_employee')) {
+          return;
+        }
+        navigate('/dashboard/employees');
+        break;
+      case 'add_schedule':
+        if (checkAndShowUpgrade('create_schedule')) {
+          return;
+        }
+        navigate('/dashboard/schedules');
+        break;
+      case 'add_branch':
+        if (checkAndShowUpgrade('add_branch')) {
+          return;
+        }
+        navigate('/dashboard/branches');
+        break;
+      default:
+        navigate(`/dashboard/${action}`);
+    }
+  };
+
   if (isLoadingTenant) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -151,83 +202,101 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Trial Upgrade Banner */}
-      <TrialUpgradeBanner className="mb-6" />
+    <>
+      <div className="space-y-6">
+        {/* Trial Upgrade Banner */}
+        <TrialUpgradeBanner className="mb-6" />
 
-      {/* Dashboard Header */}
-      <DashboardHeader />
+        {/* First Time User Card - Mostrar apenas para usuários novos */}
+        {isFirstTimeUser && (
+          <FirstTimeUserCard className="mb-6" />
+        )}
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {kpiData.map((kpi, index) => (
-          <KPICard key={index} {...kpi} />
-        ))}
-      </div>
+        {/* Dashboard Header com Badge de Plano */}
+        <div className="flex items-center justify-between">
+          <DashboardHeader />
+          <PlanBadge />
+        </div>
 
-      {/* Activity Feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <div className="bg-card border rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-4">Ações Rápidas</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <button 
-                className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                onClick={() => navigate('/dashboard/schedules')}
-              >
-                <Calendar className="h-6 w-6 text-primary" />
-                <span className="text-sm font-medium">Nova Escala</span>
-              </button>
-              <button 
-                className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                onClick={() => navigate('/dashboard/employees')}
-              >
-                <Users className="h-6 w-6 text-primary" />
-                <span className="text-sm font-medium">Adicionar Funcionário</span>
-              </button>
-              <button 
-                className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                onClick={() => navigate('/dashboard/compliance')}
-              >
-                <Shield className="h-6 w-6 text-primary" />
-                <span className="text-sm font-medium">Ver Compliance</span>
-              </button>
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {kpiData.map((kpi, index) => (
+            <KPICard key={index} {...kpi} />
+          ))}
+        </div>
+
+        {/* Activity Feed */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <div className="bg-card border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-4">Ações Rápidas</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <button 
+                  className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
+                  onClick={() => handleQuickAction('add_schedule')}
+                >
+                  <Calendar className="h-6 w-6 text-primary" />
+                  <span className="text-sm font-medium">Nova Escala</span>
+                </button>
+                <button 
+                  className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
+                  onClick={() => handleQuickAction('add_employee')}
+                >
+                  <Users className="h-6 w-6 text-primary" />
+                  <span className="text-sm font-medium">Adicionar Funcionário</span>
+                </button>
+                <button 
+                  className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
+                  onClick={() => handleQuickAction('compliance')}
+                >
+                  <Shield className="h-6 w-6 text-primary" />
+                  <span className="text-sm font-medium">Ver Compliance</span>
+                </button>
+              </div>
             </div>
           </div>
+          <div>
+            <ActivityFeed />
+          </div>
         </div>
-        <div>
-          <ActivityFeed />
+
+        {/* Seção de Status da Versão 1.0 */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border p-6">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="p-2 bg-primary/10 dark:bg-primary/30 rounded-lg">
+              <CheckCircle className="h-5 w-5 text-primary dark:text-primary" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg">Versão 1.0 - Funcionalidades Essenciais</h3>
+              <p className="text-sm text-muted-foreground">Foco na experiência do usuário</p>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Esta versão inclui as funcionalidades essenciais para gestão de escalas: 
+            Dashboard, Escalas, Funcionários e Compliance. Todas as funcionalidades estão 
+            conectadas ao backend e prontas para uso em produção.
+          </p>
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <CheckCircle className="h-4 w-4 text-accent" />
+            <span>Dashboard funcional</span>
+            <CheckCircle className="h-4 w-4 text-accent" />
+            <span>Gestão de escalas ativa</span>
+            <CheckCircle className="h-4 w-4 text-accent" />
+            <span>CRUD de funcionários</span>
+            <CheckCircle className="h-4 w-4 text-accent" />
+            <span>Relatórios de compliance</span>
+          </div>
         </div>
       </div>
 
-      {/* Seção de Status da Versão 1.0 */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border p-6">
-        <div className="flex items-center space-x-3 mb-4">
-          <div className="p-2 bg-primary/10 dark:bg-primary/30 rounded-lg">
-            <CheckCircle className="h-5 w-5 text-primary dark:text-primary" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-lg">Versão 1.0 - Funcionalidades Essenciais</h3>
-            <p className="text-sm text-muted-foreground">Foco na experiência do usuário</p>
-          </div>
-        </div>
-        <p className="text-sm text-muted-foreground mb-4">
-          Esta versão inclui as funcionalidades essenciais para gestão de escalas: 
-          Dashboard, Escalas, Funcionários e Compliance. Todas as funcionalidades estão 
-          conectadas ao backend e prontas para uso em produção.
-        </p>
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <CheckCircle className="h-4 w-4 text-accent" />
-          <span>Dashboard funcional</span>
-          <CheckCircle className="h-4 w-4 text-accent" />
-          <span>Gestão de escalas ativa</span>
-          <CheckCircle className="h-4 w-4 text-accent" />
-          <span>CRUD de funcionários</span>
-          <CheckCircle className="h-4 w-4 text-accent" />
-          <span>Relatórios de compliance</span>
-        </div>
-      </div>
-    </div>
+      {/* Modal de Upgrade */}
+      <UpgradeModal
+        isOpen={isModalOpen}
+        onClose={hideUpgradeModal}
+        trigger={modalTrigger || 'employee_limit'}
+        message={modalMessage}
+      />
+    </>
   );
 };
 
