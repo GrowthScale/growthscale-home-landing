@@ -58,7 +58,7 @@ export const PlanBadge: React.FC<PlanBadgeProps> = ({
     return `Plano ${currentPlan.charAt(0).toUpperCase() + currentPlan.slice(1)}`;
   };
 
-  const getPlanLimits = () => {
+  const getPlanLimitsInfo = () => {
     const employeeInfo = getLimitInfo('employees');
     const branchInfo = getLimitInfo('branches');
     const scheduleInfo = getLimitInfo('schedules');
@@ -70,7 +70,7 @@ export const PlanBadge: React.FC<PlanBadgeProps> = ({
     };
   };
 
-  const planLimits = getPlanLimits();
+  const planLimitsInfo = getPlanLimitsInfo();
 
   const badge = (
     <Badge 
@@ -115,15 +115,15 @@ export const PlanBadge: React.FC<PlanBadgeProps> = ({
             <div className="text-sm space-y-1">
               <div className="flex justify-between">
                 <span>Funcionários:</span>
-                <span className="font-medium">{planLimits.employees}</span>
+                <span className="font-medium">{planLimitsInfo.employees}</span>
               </div>
               <div className="flex justify-between">
                 <span>Filiais:</span>
-                <span className="font-medium">{planLimits.branches}</span>
+                <span className="font-medium">{planLimitsInfo.branches}</span>
               </div>
               <div className="flex justify-between">
                 <span>Escalas:</span>
-                <span className="font-medium">{planLimits.schedules}</span>
+                <span className="font-medium">{planLimitsInfo.schedules}</span>
               </div>
             </div>
             
