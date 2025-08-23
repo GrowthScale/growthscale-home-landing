@@ -172,7 +172,7 @@ export const LongDescription: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div className="space-y-4 w-[500px]">
+    <div className="space-y-4 w-full max-w-lg">
       <Alert>
         <Info className="h-4 w-4" />
         <AlertTitle>Padrão</AlertTitle>

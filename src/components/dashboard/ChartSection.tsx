@@ -40,7 +40,7 @@ const ChartSection = () => {
     { category: "Horas Extras", value: 35, color: "hsl(var(--destructive))" },
     { category: "Ausências", value: 25, color: "hsl(var(--accent))" },
     { category: "Ineficiência", value: 20, color: "hsl(var(--muted-foreground))" },
-    { category: "Otimizado", value: 20, color: "hsl(var(--success))" },
+    { category: "Otimizado", value: 20, color: "hsl(var(--accent))" },
   ];
 
   const productivityData = [
@@ -208,7 +208,7 @@ const ChartSection = () => {
               />
               <Bar 
                 dataKey="eficiencia" 
-                fill="hsl(var(--success))"
+                fill="hsl(var(--accent))"
                 radius={[2, 2, 0, 0]}
                 name="Eficiência"
               />

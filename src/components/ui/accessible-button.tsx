@@ -48,7 +48,7 @@ export const AccessibleButton = React.forwardRef<HTMLButtonElement, AccessibleBu
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2',
       'disabled:opacity-50 disabled:pointer-events-none',
       'active:scale-95',
-      'min-h-[44px] min-w-[44px]', // WCAG AA touch target size
+      'min-h-11 min-w-11', // WCAG AA touch target size (44px = 11 * 4px)
       {
         // Variants
         'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800': variant === 'primary',

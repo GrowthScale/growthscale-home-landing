@@ -58,7 +58,7 @@ const HeroSection = () => (
   <section className="relative w-full py-20 md:py-32 lg:py-40 overflow-hidden">
     {/* Background com gradiente sutil */}
     <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary/30 to-background"></div>
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.1),transparent_50%)]"></div>
+    <div className="absolute inset-0 bg-hero-pattern"></div>
     
     {/* Elementos visuais flutuantes */}
     <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-xl animate-float"></div>

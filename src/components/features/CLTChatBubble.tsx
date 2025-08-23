@@ -29,7 +29,7 @@ export function CLTChatBubble({
       )}
       
       <div className={cn(
-        "max-w-[80%] rounded-lg px-4 py-3",
+        "max-w-[85%] sm:max-w-[75%] md:max-w-[70%] rounded-lg px-4 py-3",
         isUser 
           ? "bg-primary text-white" 
           : "bg-muted text-muted-foreground"

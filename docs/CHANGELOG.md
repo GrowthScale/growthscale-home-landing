@@ -16,6 +16,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Animações Suaves:** Fade-in-up com delays sequenciais para experiência premium
 - **Landing Page Reconstruída:** Estrutura completamente refatorada com seções otimizadas
 
+### 📱 **Melhorias**
+- **Refatoração Completa da Responsividade:** Todas as larguras fixas ("hardcoded") em componentes de UI, modais e layouts de página foram substituídas por classes responsivas do Tailwind CSS. A plataforma está agora totalmente adaptada para uma experiência de utilizador consistente e fluida em todos os dispositivos, do telemóvel ao desktop.
+
 ### 🏗️ **Estrutura da Landing Page**
 - **Header:** Sticky com backdrop blur e navegação limpa
 - **Hero Section:** Título impactante "Onde a gestão de escalas encontra a paz de espírito"

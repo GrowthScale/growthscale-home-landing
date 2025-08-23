@@ -54,20 +54,20 @@ const getThemeColors = (isDark: boolean) => ({
   cardForeground: 'hsl(var(--card-foreground))',
   
   // Cores primárias
-  primary: 'hsl(var(--primary-600))',
-  primaryLight: 'hsl(var(--primary-400))',
-  primaryDark: 'hsl(var(--primary-800))',
+      primary: 'hsl(var(--primary))',
+    primaryLight: 'hsl(var(--primary))',
+    primaryDark: 'hsl(var(--primary))',
   
   // Cores secundárias
-  secondary: 'hsl(var(--secondary-500))',
-  secondaryLight: 'hsl(var(--secondary-400))',
-  secondaryDark: 'hsl(var(--secondary-600))',
+      secondary: 'hsl(var(--accent))',
+    secondaryLight: 'hsl(var(--accent))',
+    secondaryDark: 'hsl(var(--accent))',
   
   // Cores de feedback
-  success: 'hsl(var(--success))',
-  warning: 'hsl(var(--warning))',
-  destructive: 'hsl(var(--destructive))',
-  info: 'hsl(var(--info))',
+      success: 'hsl(var(--accent))',
+    warning: 'hsl(var(--accent))',
+    destructive: 'hsl(var(--destructive))',
+    info: 'hsl(var(--primary))',
   
   // Cores neutras
   border: 'hsl(var(--border))',
@@ -75,14 +75,14 @@ const getThemeColors = (isDark: boolean) => ({
   
   // Cores específicas para gráficos
   chartColors: [
-    'hsl(var(--primary-600))',    // Azul principal
-    'hsl(var(--secondary-500))',  // Laranja
-    'hsl(var(--success))',        // Verde
-    'hsl(var(--warning))',        // Amarelo
+    'hsl(var(--primary))',        // Azul principal
+    'hsl(var(--accent))',         // Laranja
+    'hsl(var(--accent))',         // Verde/Sucesso
+    'hsl(var(--accent))',         // Amarelo/Aviso
     'hsl(var(--destructive))',    // Vermelho
-    'hsl(var(--info))',           // Azul info
-    'hsl(var(--primary-400))',    // Azul claro
-    'hsl(var(--secondary-400))',  // Laranja claro
+    'hsl(var(--primary))',        // Azul info
+    'hsl(var(--primary))',        // Azul claro
+    'hsl(var(--accent))',         // Laranja claro
   ]
 });
 

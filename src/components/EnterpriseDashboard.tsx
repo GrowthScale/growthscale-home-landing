@@ -680,7 +680,7 @@ export function EnterpriseDashboard() {
                     <tr>
                       <th className="text-left p-2 border-b font-medium">Permissão</th>
                       {permissionMatrix.roles.map(role => (
-                        <th key={role.id} className="text-center p-2 border-b font-medium min-w-[80px]">
+                        <th key={role.id} className="text-center p-2 border-b font-medium min-w-20">
                           {role.name}
                         </th>
                       ))}
