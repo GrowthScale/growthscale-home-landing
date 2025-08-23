@@ -1,8 +1,8 @@
 // src/components/schedules/ScheduleEditor.tsx
-import React, { useState, useCallback } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { createScheduleWithShifts, type ScheduleData, type ShiftData } from '@/services/api';
+import { createScheduleWithShifts, type ScheduleData, type ShiftData, validateSchedule, calculateScheduleCost } from '@/services/api';
 import { useTenant } from '@/contexts/TenantContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,10 +10,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { getEmployees, type EmployeeData } from '@/services/api';
-import { useQuery } from '@tanstack/react-query';
 import { 
   Calendar, 
   Users, 
@@ -21,7 +22,15 @@ import {
   Trash2, 
   Save, 
   X, 
-  Loader2
+  Loader2,
+  Brain,
+  DollarSign,
+  AlertTriangle,
+  CheckCircle,
+  TrendingUp,
+  Clock,
+  Zap,
+  ShieldCheck
 } from 'lucide-react';
 
 // Defina os tipos aqui se ainda não estiverem num arquivo global
@@ -73,6 +82,48 @@ export function ScheduleEditor() {
     },
     enabled: !!tenant?.id && isOpen,
   });
+
+  // 🧠 QUERIES DE INTELIGÊNCIA ARTIFICIAL - ATIVADAS EM TEMPO REAL
+  const { data: validationResult, isLoading: isValidating, error: validationError } = useQuery({
+    queryKey: ['validateSchedule', shifts, employees], // A chave reage a mudanças em turnos e funcionários
+    queryFn: () => validateSchedule(shifts, employees || []),
+    enabled: Boolean(shifts.length > 0 && employees && employees.length > 0), // Só executa se houver dados
+    refetchInterval: 5000, // Revalida a cada 5 segundos
+  });
+
+  const { data: costResult, isLoading: isCalculatingCost, error: costError } = useQuery({
+    queryKey: ['calculateScheduleCost', shifts, employees],
+    queryFn: () => {
+      const employeesWithRate = employees?.map(e => ({ 
+        ...e, 
+        hourly_rate: e.hourly_rate || 20 
+      })) || [];
+      return calculateScheduleCost(shifts, employeesWithRate);
+    },
+    enabled: Boolean(shifts.length > 0 && employees && employees.length > 0),
+    refetchInterval: 3000, // Recalcula a cada 3 segundos
+  });
+
+  // Tratar erros das queries de IA
+  useEffect(() => {
+    if (validationError) {
+      toast({ 
+        title: "Erro na Validação", 
+        description: "Não foi possível validar a escala em tempo real.", 
+        variant: "destructive" 
+      });
+    }
+  }, [validationError, toast]);
+
+  useEffect(() => {
+    if (costError) {
+      toast({ 
+        title: "Erro no Cálculo de Custo", 
+        description: "Não foi possível calcular o custo em tempo real.", 
+        variant: "destructive" 
+      });
+    }
+  }, [costError, toast]);
 
   const createScheduleMutation = useMutation({
     mutationFn: async (data: { 
@@ -222,9 +273,22 @@ export function ScheduleEditor() {
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
-            <Calendar className="h-5 w-5 text-primary" />
-            <span>Criar Nova Escala</span>
+          <DialogTitle className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Calendar className="h-5 w-5 text-primary" />
+              <span>Criar Nova Escala</span>
+            </div>
+            
+            {/* Indicador de Custo Total */}
+            {costResult?.data && (
+              <div className="flex items-center space-x-2 px-3 py-1 bg-accent/10 border border-accent/20 rounded-md">
+                <DollarSign className="h-4 w-4 text-accent" />
+                <span className="text-sm font-medium text-accent-foreground">
+                  R$ {costResult.data.totalCost?.toFixed(2) || '0.00'}
+                </span>
+                {isCalculatingCost && <Loader2 className="h-3 w-3 animate-spin text-accent" />}
+              </div>
+            )}
           </DialogTitle>
         </DialogHeader>
 
@@ -286,7 +350,15 @@ export function ScheduleEditor() {
           {/* Adicionar Turnos */}
           <Card>
             <CardHeader>
-              <CardTitle>Adicionar Turnos</CardTitle>
+              <CardTitle className="flex items-center justify-between">
+                <span>Adicionar Turnos</span>
+                {(isValidating || isCalculatingCost) && (
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    <span>Analisando em tempo real...</span>
+                  </div>
+                )}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
@@ -347,6 +419,190 @@ export function ScheduleEditor() {
             </CardContent>
           </Card>
 
+          {/* Cockpit de Decisão Inteligente */}
+          {(shifts.length > 0 || isValidating || isCalculatingCost) && (
+            <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-accent/5">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Brain className="h-5 w-5 text-primary" />
+                  <span>Cockpit de Decisão Inteligente</span>
+                  {(isValidating || isCalculatingCost) && (
+                    <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Resumo Executivo */}
+                <div className="p-3 bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg">
+                  <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-center">
+                    <div>
+                      <div className="text-2xl font-bold text-primary">{shifts.length}</div>
+                      <div className="text-xs text-muted-foreground">Turnos</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">
+                        {new Set(shifts.map(s => s.employeeId)).size}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Funcionários</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">
+                        {validationResult?.data?.violations?.length || 0}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Violações</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">
+                        R$ {costResult?.data?.totalCost?.toFixed(0) || '0'}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Custo Total</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">
+                        {validationResult?.data?.violations?.length === 0 ? (
+                          <span className="text-accent">✓</span>
+                        ) : (
+                          <span className="text-destructive">⚠</span>
+                        )}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Qualidade</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">
+                        R$ {(costResult?.data?.totalCost / costResult?.data?.totalHours)?.toFixed(0) || '0'}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Custo/Hora</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Validação em Tempo Real */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <ShieldCheck className="h-4 w-4 text-primary" />
+                      <span className="font-medium">Validação CLT</span>
+                      {isValidating && <Loader2 className="h-3 w-3 animate-spin" />}
+                    </div>
+                    
+                    {validationResult?.data ? (
+                      <div className="space-y-2">
+                        {validationResult.data.violations?.length > 0 ? (
+                          <Alert variant="destructive">
+                            <AlertTriangle className="h-4 w-4" />
+                            <AlertDescription>
+                              <strong>{validationResult.data.violations.length}</strong> violação(ões) detectada(s)
+                            </AlertDescription>
+                          </Alert>
+                        ) : (
+                          <Alert className="border-green-200 bg-green-50">
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                            <AlertDescription className="text-green-800">
+                              Escala em conformidade com a CLT
+                            </AlertDescription>
+                          </Alert>
+                        )}
+                        
+                        {validationResult.data.violations?.map((violation: any, index: number) => (
+                          <div key={index} className="text-sm p-2 bg-red-50 border border-red-200 rounded">
+                            <strong className="text-red-800">{violation.type}:</strong> {violation.message}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-sm text-muted-foreground">
+                        {isValidating ? "Validando..." : "Adicione turnos para validar"}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Análise de Custos */}
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <DollarSign className="h-4 w-4 text-primary" />
+                      <span className="font-medium">Análise de Custos</span>
+                      {isCalculatingCost && <Loader2 className="h-3 w-3 animate-spin" />}
+                    </div>
+                    
+                    {costResult?.data ? (
+                      <div className="space-y-3">
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div className="p-2 bg-blue-50 border border-blue-200 rounded">
+                            <div className="font-medium text-blue-800">Custo Total</div>
+                            <div className="text-lg font-bold text-blue-900">
+                              R$ {costResult.data.totalCost?.toFixed(2) || '0.00'}
+                            </div>
+                          </div>
+                          <div className="p-2 bg-green-50 border border-green-200 rounded">
+                            <div className="font-medium text-green-800">Horas Totais</div>
+                            <div className="text-lg font-bold text-green-900">
+                              {costResult.data.totalHours?.toFixed(1) || '0'}h
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {costResult.data.breakdown && (
+                          <div className="text-xs space-y-1">
+                            <div className="font-medium text-muted-foreground">Detalhamento:</div>
+                            {Object.entries(costResult.data.breakdown).map(([key, value]: [string, any]) => (
+                              <div key={key} className="flex justify-between">
+                                <span className="capitalize">{key}:</span>
+                                <span className="font-medium">R$ {value?.toFixed(2) || '0.00'}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-sm text-muted-foreground">
+                        {isCalculatingCost ? "Calculando..." : "Adicione turnos para calcular custos"}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Sugestões de Otimização */}
+                {validationResult?.data?.suggestions && validationResult.data.suggestions.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Zap className="h-4 w-4 text-accent" />
+                      <span className="font-medium">Sugestões de Otimização</span>
+                    </div>
+                    <div className="space-y-1">
+                      {validationResult.data.suggestions.map((suggestion: any, index: number) => (
+                        <div key={index} className="text-sm p-2 bg-accent/10 border border-accent/20 rounded">
+                          <span className="text-accent-foreground">{suggestion}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Indicadores de Performance */}
+                {costResult?.data && (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+                    <div className="p-2 bg-muted rounded text-center">
+                      <div className="font-medium">Custo/Hora</div>
+                      <div className="text-lg font-bold text-primary">
+                        R$ {(costResult.data.totalCost / costResult.data.totalHours)?.toFixed(2) || '0.00'}
+                      </div>
+                    </div>
+                    <div className="p-2 bg-muted rounded text-center">
+                      <div className="font-medium">Turnos</div>
+                      <div className="text-lg font-bold text-primary">{shifts.length}</div>
+                    </div>
+                    <div className="p-2 bg-muted rounded text-center">
+                      <div className="font-medium">Funcionários</div>
+                      <div className="text-lg font-bold text-primary">
+                        {new Set(shifts.map(s => s.employeeId)).size}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           {/* Lista de Turnos */}
           {shifts.length > 0 && (
             <Card>
@@ -355,27 +611,55 @@ export function ScheduleEditor() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {shifts.map((shift, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center space-x-4">
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                        <div>
-                          <p className="font-medium">{shift.employeeName}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {shift.date} • {shift.startTime} - {shift.endTime}
-                          </p>
-                        </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleRemoveShift(index)}
-                        className="text-destructive hover:text-destructive"
+                  {shifts.map((shift, index) => {
+                    // Verificar se este turno tem violações
+                    const shiftViolations = validationResult?.data?.violations?.filter((v: any) => 
+                      v.employeeId === shift.employeeId && v.date === shift.date
+                    ) || [];
+                    
+                    const hasViolations = shiftViolations.length > 0;
+                    
+                    return (
+                      <div 
+                        key={index} 
+                        className={`flex items-center justify-between p-3 border rounded-lg ${
+                          hasViolations 
+                            ? 'border-destructive/50 bg-destructive/5' 
+                            : 'border-border'
+                        }`}
                       >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center space-x-2">
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                            {hasViolations && (
+                              <AlertTriangle className="h-4 w-4 text-destructive" />
+                            )}
+                          </div>
+                          <div>
+                            <p className="font-medium">{shift.employeeName}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {shift.date} • {shift.startTime} - {shift.endTime}
+                            </p>
+                            {hasViolations && (
+                              <div className="mt-1">
+                                <Badge variant="destructive" className="text-xs">
+                                  {shiftViolations.length} violação(ões)
+                                </Badge>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleRemoveShift(index)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
@@ -388,16 +672,56 @@ export function ScheduleEditor() {
             <X className="mr-2 h-4 w-4" />
             Cancelar
           </Button>
+          
+          {/* Status da Validação */}
+          {validationResult?.data && (
+            <div className="flex items-center space-x-2 px-3 py-2 rounded-md bg-muted">
+              {validationResult.data.violations?.length > 0 ? (
+                <>
+                  <AlertTriangle className="h-4 w-4 text-destructive" />
+                  <span className="text-sm text-destructive font-medium">
+                    {validationResult.data.violations.length} violação(ões)
+                  </span>
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="h-4 w-4 text-accent" />
+                  <span className="text-sm text-accent font-medium">Validado</span>
+                </>
+              )}
+            </div>
+          )}
+          
           <Button 
             onClick={handleSaveSchedule} 
-            disabled={createScheduleMutation.isPending || shifts.length === 0}
-            className="bg-primary hover:bg-primary/90"
+            disabled={
+              createScheduleMutation.isPending || 
+              shifts.length === 0 || 
+              isValidating || 
+              isCalculatingCost ||
+              (validationResult?.data?.violations?.length > 0)
+            }
+            className={`${
+              validationResult?.data?.violations?.length > 0 
+                ? 'bg-destructive hover:bg-destructive/90' 
+                : 'bg-primary hover:bg-primary/90'
+            }`}
             size="lg"
           >
             {createScheduleMutation.isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Salvando...
+              </>
+            ) : isValidating || isCalculatingCost ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Analisando...
+              </>
+            ) : validationResult?.data?.violations?.length > 0 ? (
+              <>
+                <AlertTriangle className="mr-2 h-4 w-4" />
+                Salvar com Violações
               </>
             ) : (
               <>
