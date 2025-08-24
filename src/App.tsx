@@ -9,7 +9,6 @@ import { Toaster } from "@/components/ui/toaster";
 const Index = lazy(() => import("@/pages/Index"));
 const AuthPage = lazy(() => import("@/pages/Auth"));
 const AuthCallback = lazy(() => import("@/pages/AuthCallback"));
-const Onboarding = lazy(() => import("@/pages/Onboarding"));
 const ForgotPassword = lazy(() => import("@/pages/ForgotPassword"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const FAQ = lazy(() => import("@/pages/FAQ"));
@@ -17,12 +16,12 @@ const Legal = lazy(() => import("@/pages/Legal"));
 
 // Páginas Protegidas
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Setup = lazy(() => import("@/pages/Setup"));
 const Schedules = lazy(() => import("@/pages/Schedules"));
 const Employees = lazy(() => import("@/pages/Employees"));
 const Companies = lazy(() => import("@/pages/Companies"));
 const Templates = lazy(() => import("@/pages/Templates"));
 const Settings = lazy(() => import("@/pages/Settings"));
-const Setup = lazy(() => import("@/pages/Setup"));
 const CLTAssistant = lazy(() => import("@/pages/CLTAssistant"));
 const Compliance = lazy(() => import("@/pages/Compliance"));
 const Integrations = lazy(() => import("@/pages/Integrations"));
@@ -48,7 +47,6 @@ export default function App() {
         <Route path="/" element={<Index />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
-        <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/faq" element={<FAQ />} />

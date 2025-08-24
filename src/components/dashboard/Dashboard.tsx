@@ -50,10 +50,10 @@ const Dashboard = () => {
       return;
     }
 
-    // Se o utilizador está logado, já não está a carregar os tenants, e não tem tenant configurado, redirecionar para onboarding
+    // Se o utilizador está logado, já não está a carregar os tenants, e não tem tenant configurado, redirecionar para setup
     if (user && !isLoadingTenant && !tenant) {
-      console.log('🚨 Usuário sem empresa configurada - redirecionando para onboarding');
-      navigate('/onboarding', { replace: true });
+      console.log('🚨 Usuário sem empresa configurada - redirecionando para setup');
+      navigate('/dashboard/setup', { replace: true });
     }
   }, [user, tenant, isLoadingTenant, navigate]);
 
@@ -83,186 +83,200 @@ const Dashboard = () => {
   const kpiData = [
     {
       title: "Taxa de Rotatividade",
-      value: "8.5%",
-      description: "↓ 2.3% vs mês anterior",
-      icon: Users,
-      trend: "down" as const,
-      status: "good" as const
+      value: "12%",
+      change: "-2.5%",
+      changeType: "positive",
+      icon: "📈"
     },
     {
-      title: "Previsão de Ausências",
-      value: "12",
-      description: "Para próxima semana",
-      icon: Clock,
-      trend: "up" as const,
-      status: "warning" as const
-    },
-    {
-      title: "Compliance Score",
-      value: "98%",
-      description: "↑ 5% vs mês anterior",
-      icon: Shield,
-      trend: "up" as const,
-      status: "good" as const
-    },
-    {
-      title: "Economia Realizada",
-      value: "R$ 12.5k",
-      description: "Este mês",
-      icon: DollarSign,
-      trend: "up" as const,
-      status: "good" as const
+      title: "Horas Trabalhadas",
+      value: "1,240h",
+      change: "+5.2%",
+      changeType: "positive",
+      icon: "⏰"
     },
     {
       title: "Produtividade",
-      value: "87%",
-      description: "Média da equipe",
-      icon: TrendingUp,
-      trend: "up" as const,
-      status: "good" as const
+      value: "94%",
+      change: "+1.8%",
+      changeType: "positive",
+      icon: "🚀"
     },
     {
-      title: "Escalas Ativas",
-      value: "24",
-      description: "Nesta semana",
-      icon: Calendar,
-      trend: "neutral" as const,
-      status: "good" as const
+      title: "Custos",
+      value: "R$ 45.2k",
+      change: "-3.1%",
+      changeType: "positive",
+      icon: "💰"
     }
   ];
 
-  const handleQuickAction = (action: string) => {
-    switch (action) {
-      case 'add_employee':
-        if (checkAndShowUpgrade('add_employee')) {
-          return;
-        }
-        navigate('/dashboard/employees');
-        break;
-      case 'add_schedule':
-        if (checkAndShowUpgrade('create_schedule')) {
-          return;
-        }
-        navigate('/dashboard/schedules');
-        break;
-      case 'add_branch':
-        if (checkAndShowUpgrade('add_branch')) {
-          return;
-        }
-        navigate('/dashboard/employees');
-        break;
-      default:
-        navigate(`/dashboard/${action}`);
-    }
-  };
-
+  // Se ainda está carregando, mostrar loading
   if (isLoadingTenant) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Carregando dashboard...</p>
-        </div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
       </div>
     );
   }
 
+  // Se não tem tenant, não deveria chegar aqui (seria redirecionado)
+  if (!tenant) {
+    return null;
+  }
+
   return (
-    <>
-      <div className="space-y-6">
-        {/* Trial Upgrade Banner */}
-        <TrialUpgradeBanner className="mb-6" />
+    <div className="container mx-auto px-6 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Dashboard
+        </h1>
+        <p className="text-gray-600">
+          Bem-vindo de volta, {user?.user_metadata?.full_name || 'Usuário'}!
+        </p>
+      </div>
 
-        {/* First Time User Card - Mostrar apenas para usuários novos */}
-        {isFirstTimeUser && (
-          <FirstTimeUserCard className="mb-6" />
-        )}
+      {/* KPIs */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {kpiData.map((kpi, index) => (
+          <div key={index} className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">{kpi.title}</p>
+                <p className="text-2xl font-bold text-gray-900">{kpi.value}</p>
+              </div>
+              <div className="text-2xl">{kpi.icon}</div>
+            </div>
+            <div className="mt-4">
+              <span className={`text-sm font-medium ${
+                kpi.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
+              }`}>
+                {kpi.change}
+              </span>
+              <span className="text-sm text-gray-600 ml-1">vs mês anterior</span>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Dashboard Header com Badge de Plano */}
-        <div className="flex items-center justify-between">
-          <DashboardHeader />
-          <PlanBadge />
+      {/* Welcome Card for New Users */}
+      {isFirstTimeUser && (
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-6 mb-8 text-white">
+          <h2 className="text-xl font-bold mb-2">🎉 Bem-vindo ao GrowthScale!</h2>
+          <p className="mb-4">
+            Sua empresa {tenant.name} foi configurada com sucesso. 
+            Agora você pode começar a usar todas as funcionalidades.
+          </p>
+          <div className="flex space-x-4">
+            <button 
+              onClick={() => navigate('/dashboard/employees')}
+              className="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+            >
+              Adicionar Funcionários
+            </button>
+            <button 
+              onClick={() => navigate('/dashboard/schedules')}
+              className="bg-white/20 text-white px-4 py-2 rounded-lg font-medium hover:bg-white/30 transition-colors"
+            >
+              Criar Primeira Escala
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-semibold mb-4">Ações Rápidas</h3>
+          <div className="space-y-3">
+            <button 
+              onClick={() => navigate('/dashboard/employees')}
+              className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-center">
+                <span className="text-2xl mr-3">👥</span>
+                <div>
+                  <p className="font-medium">Gerenciar Funcionários</p>
+                  <p className="text-sm text-gray-600">Adicionar ou editar funcionários</p>
+                </div>
+              </div>
+            </button>
+            
+            <button 
+              onClick={() => navigate('/dashboard/schedules')}
+              className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-center">
+                <span className="text-2xl mr-3">📅</span>
+                <div>
+                  <p className="font-medium">Criar Escala</p>
+                  <p className="text-sm text-gray-600">Gerar nova escala com IA</p>
+                </div>
+              </div>
+            </button>
+            
+            <button 
+              onClick={() => navigate('/dashboard/compliance')}
+              className="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-center">
+                <span className="text-2xl mr-3">🛡️</span>
+                <div>
+                  <p className="font-medium">Verificar Compliance</p>
+                  <p className="text-sm text-gray-600">Analisar conformidade CLT</p>
+                </div>
+              </div>
+            </button>
+          </div>
         </div>
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {kpiData.map((kpi, index) => (
-            <KPICard key={index} {...kpi} />
-          ))}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-semibold mb-4">Status da Empresa</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Plano Atual</span>
+              <span className="font-medium text-blue-600">Free</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Status</span>
+              <span className="font-medium text-green-600">{tenant.status}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Membros</span>
+              <span className="font-medium">1</span>
+            </div>
+          </div>
         </div>
 
-        {/* Activity Feed */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <div className="bg-card border rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-4">Ações Rápidas</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <button 
-                  className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                  onClick={() => handleQuickAction('add_schedule')}
-                >
-                  <Calendar className="h-6 w-6 text-primary" />
-                  <span className="text-sm font-medium">Nova Escala</span>
-                </button>
-                <button 
-                  className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                  onClick={() => handleQuickAction('add_employee')}
-                >
-                  <Users className="h-6 w-6 text-primary" />
-                  <span className="text-sm font-medium">Adicionar Funcionário</span>
-                </button>
-                <button 
-                  className="flex flex-col items-center space-y-2 p-4 border border-border rounded-lg hover:shadow-card transition-smooth hover:border-primary/20"
-                  onClick={() => handleQuickAction('compliance')}
-                >
-                  <Shield className="h-6 w-6 text-primary" />
-                  <span className="text-sm font-medium">Ver Compliance</span>
-                </button>
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-semibold mb-4">Recursos Recentes</h3>
+          <div className="space-y-3">
+            <div className="flex items-center">
+              <span className="text-2xl mr-3">🤖</span>
+              <div>
+                <p className="font-medium">IA para Escalas</p>
+                <p className="text-sm text-gray-600">Otimização automática</p>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl mr-3">📱</span>
+              <div>
+                <p className="font-medium">App Mobile</p>
+                <p className="text-sm text-gray-600">Disponível em breve</p>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl mr-3">🔗</span>
+              <div>
+                <p className="font-medium">Integrações</p>
+                <p className="text-sm text-gray-600">WhatsApp, ERP</p>
               </div>
             </div>
           </div>
-          <div>
-            <ActivityFeed />
-          </div>
-        </div>
-
-        {/* Seção de Status da Versão 1.0 */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border p-6">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-primary/10 dark:bg-primary/30 rounded-lg">
-              <CheckCircle className="h-5 w-5 text-primary dark:text-primary" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg">Versão 1.0 - Funcionalidades Essenciais</h3>
-              <p className="text-sm text-muted-foreground">Foco na experiência do usuário</p>
-            </div>
-          </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Esta versão inclui as funcionalidades essenciais para gestão de escalas: 
-            Dashboard, Escalas, Funcionários e Compliance. Todas as funcionalidades estão 
-            conectadas ao backend e prontas para uso em produção.
-          </p>
-          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-            <CheckCircle className="h-4 w-4 text-accent" />
-            <span>Dashboard funcional</span>
-            <CheckCircle className="h-4 w-4 text-accent" />
-            <span>Gestão de escalas ativa</span>
-            <CheckCircle className="h-4 w-4 text-accent" />
-            <span>CRUD de funcionários</span>
-            <CheckCircle className="h-4 w-4 text-accent" />
-            <span>Relatórios de compliance</span>
-          </div>
         </div>
       </div>
-
-      {/* Modal de Upgrade */}
-      <UpgradeModal
-        isOpen={isModalOpen}
-        onClose={hideUpgradeModal}
-        trigger={modalTrigger || 'employee_limit'}
-        message={modalMessage}
-      />
-    </>
+    </div>
   );
 };
 
