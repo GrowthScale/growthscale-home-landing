@@ -24,7 +24,7 @@ import { DataManagement } from '@/components/settings/DataManagement';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 // import { deleteUserAccount } from '@/services/api';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function SettingsPage() {
   const navigate = useNavigate();

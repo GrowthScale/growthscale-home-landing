@@ -83,7 +83,7 @@ export function UpgradeBanner({
 
   const handleUpgrade = () => {
     // Redirecionar para página de upgrade
-    navigate('/pricing', { 
+            navigate('/#precos', { 
       state: { 
         highlightPlan: getNextPlan(),
         reason: variant 

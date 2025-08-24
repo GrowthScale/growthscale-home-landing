@@ -256,7 +256,7 @@ const CompanySettings = () => {
                   
                   <Button 
                     variant="outline" 
-                    onClick={() => navigate('/funcionarios')}
+                    onClick={() => navigate('/dashboard/employees')}
                     className="w-full"
                   >
                     <Users className="mr-2 h-4 w-4" />
@@ -266,7 +266,7 @@ const CompanySettings = () => {
                   <AccessControl requiredPermission="view:billing">
                     <Button 
                       variant="outline" 
-                      onClick={() => navigate('/faturamento')}
+                      onClick={() => navigate('/dashboard/billing')}
                       className="w-full"
                     >
                       <CreditCard className="mr-2 h-4 w-4" />

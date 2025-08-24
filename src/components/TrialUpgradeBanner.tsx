@@ -44,7 +44,7 @@ export function TrialUpgradeBanner({
   }
 
   const handleUpgrade = () => {
-    navigate('/pricing', { 
+            navigate('/#precos', { 
       state: { 
         highlightPlan: 'starter',
         reason: isTrialExpired ? 'trial_expired' : 'trial_warning'

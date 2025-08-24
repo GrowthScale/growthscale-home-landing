@@ -10,7 +10,7 @@ export default function Templates() {
 
   const handleTemplateSelect = (template: ScheduleTemplate) => {
     // Redirecionar para a página de escalas com o modelo selecionado
-    navigate('/schedules', { 
+    navigate('/dashboard/schedules', { 
       state: { 
         selectedTemplate: template,
         message: `Modelo "${template.name}" aplicado com sucesso!`

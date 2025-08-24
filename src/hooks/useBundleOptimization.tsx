@@ -73,10 +73,10 @@ export function useBundleOptimization() {
   const preloadRouteChunks = useCallback((route: string) => {
     const routeChunks: Record<string, string[]> = {
       '/dashboard': ['/assets/Dashboard-*.js'],
-      '/schedules': ['/assets/Schedules-*.js'],
-      '/employees': ['/assets/Employees-*.js'],
-      '/companies': ['/assets/Companies-*.js'],
-      '/settings': ['/assets/Settings-*.js'],
+      '/dashboard/schedules': ['/assets/Schedules-*.js'],
+      '/dashboard/employees': ['/assets/Employees-*.js'],
+      '/dashboard/companies': ['/assets/Companies-*.js'],
+      '/dashboard/settings': ['/assets/Settings-*.js'],
     };
 
     const chunks = routeChunks[route] || [];

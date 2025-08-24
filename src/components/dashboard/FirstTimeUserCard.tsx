@@ -54,7 +54,7 @@ export function FirstTimeUserCard({ className }: FirstTimeUserCardProps) {
 
         <div className="flex gap-2">
           <Button 
-            onClick={() => navigate('/schedules')} 
+            onClick={() => navigate('/dashboard/schedules')} 
             size="sm" 
             className="bg-green-600 hover:bg-green-700 text-white"
           >
@@ -63,7 +63,7 @@ export function FirstTimeUserCard({ className }: FirstTimeUserCardProps) {
           </Button>
           
           <Button 
-            onClick={() => navigate('/employees')} 
+            onClick={() => navigate('/dashboard/employees')} 
             variant="outline" 
             size="sm"
             className="border-green-200 text-green-700 hover:bg-green-50"

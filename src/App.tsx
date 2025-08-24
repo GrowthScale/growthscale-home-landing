@@ -4,7 +4,9 @@ import { Toaster } from 'sonner';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { TenantProvider } from '@/contexts/TenantContext';
+import { AppStateProvider } from '@/hooks/useAppState';
 import { AccessibilityProvider } from '@/components/AccessibilityProvider';
+import { GlobalLoading } from '@/components/GlobalLoading';
 import { initializeAPM } from '@/lib/apm';
 import { ai } from '@/lib/ai';
 import AppRoutes from '@/routes';
@@ -22,6 +24,10 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 5 * 60 * 1000, // 5 minutes
       retry: 1,
+      refetchOnWindowFocus: false,
+    },
+    mutations: {
+      retry: 1,
     },
   },
 });
@@ -35,10 +41,12 @@ function App() {
     ai.init();
     
     // Log initial page view
-    console.log('App Initialized', {
+    console.log('🚀 App: Inicializando aplicação', {
       timestamp: new Date().toISOString(),
       userAgent: navigator.userAgent,
       language: navigator.language,
+      environment: import.meta.env.MODE,
+      version: import.meta.env.VITE_APP_VERSION || '1.0.0'
     });
   }, []);
 
@@ -47,37 +55,45 @@ function App() {
       <AccessibilityProvider>
         <ThemeProvider>
           <AuthProvider>
-                      <TenantProvider>
-            <div className="App">
-              <div id="main-content">
-                <AppRoutes />
+            <TenantProvider>
+              <AppStateProvider>
+                <div className="App">
+                  <div id="main-content">
+                    <AppRoutes />
+                  </div>
+                  <PWAInstallPrompt />
+                
+                {/* Development Monitors - Only show in development */}
+                {import.meta.env.DEV && (
+                  <div className="fixed bottom-4 right-4 space-y-2 z-50">
+                    <PerformanceMonitor />
+                    <AdvancedPerformanceMonitor />
+                    <EdgeAnalyticsDashboard />
+                    <SecurityDashboard />
+                    <AIDashboard />
+                  </div>
+                )}
+                
+                <Toaster 
+                  position="top-right"
+                  richColors
+                  closeButton
+                  duration={4000}
+                  toastOptions={{
+                    style: {
+                      background: 'hsl(var(--background))',
+                      color: 'hsl(var(--foreground))',
+                      border: '1px solid hsl(var(--border))',
+                    },
+                  }}
+                />
+                
+                {/* ARIA live regions for accessibility */}
+                <div aria-live="polite" aria-atomic="true" className="sr-only" id="status-updates"></div>
+                <div aria-live="assertive" aria-atomic="true" className="sr-only" id="error-announcements"></div>
               </div>
-              <PWAInstallPrompt />
-            
-            {/* Development Monitors - Only show in development */}
-            {/* Temporarily disabled to show clean landing page */}
-            {/* {import.meta.env.DEV && (
-              <div className="fixed bottom-4 right-4 space-y-2 z-50">
-                <PerformanceMonitor />
-                <AdvancedPerformanceMonitor />
-                <EdgeAnalyticsDashboard />
-                <SecurityDashboard />
-                <AIDashboard />
-              </div>
-            )} */}
-            
-            <Toaster 
-              position="top-right"
-              richColors
-              closeButton
-              duration={4000}
-            />
-            
-            {/* ARIA live regions for accessibility */}
-            <div aria-live="polite" aria-atomic="true" className="sr-only" id="status-updates"></div>
-            <div aria-live="assertive" aria-atomic="true" className="sr-only" id="error-announcements"></div>
-          </div>
-        </TenantProvider>
+            </AppStateProvider>
+          </TenantProvider>
         </AuthProvider>
       </ThemeProvider>
       </AccessibilityProvider>
@@ -86,13 +102,3 @@ function App() {
 }
 
 export default App;
-// Force deploy - Tue Aug 19 13:57:04 -03 2025
-// Force deploy - Tue Aug 19 14:16:09 -03 2025
-// ULTIMO DEPLOY FORÇADO - Tue Aug 19 14:40:22 -03 2025 - Vercel não está aplicando deploys
-// DEPLOY FORÇADO - Tue Aug 19 15:00:35 -03 2025 - Cache reduzido para 5 minutos
-// DEPLOY OTIMIZADO - Tue Aug 19 15:12:39 -03 2025 - Correções aplicadas: console.log, vite config, bundle size
-// DEPLOY FINAL - Tue Aug 19 15:26:11 -03 2025 - vercel.json corrigido e validado
-// DEPLOY RADICAL - Tue Aug 19 15:41:22 -03 2025 - vercel.json removido para resolver conflito
-// DEPLOY FORÇADO - Tue Aug 19 16:06:33 -03 2025 - vercel.json aplicado
-// DEPLOY FINAL - Tue Aug 19 16:14:58 -03 2025 - vercel.json definitivo aplicado
-// DEPLOY DEFINITIVO - Tue Aug 19 16:23:46 -03 2025 - vercel.json perfeito aplicado

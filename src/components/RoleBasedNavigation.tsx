@@ -28,37 +28,31 @@ const RoleBasedNavigation: React.FC = () => {
       label: 'Escalas',
       icon: Calendar,
       permission: 'manage:schedules' as const,
-      href: '/schedules'
+      href: '/dashboard/schedules'
     },
     {
       label: 'Funcionários',
       icon: Users,
       permission: 'manage:users' as const,
-      href: '/employees'
-    },
-    {
-      label: 'Empresas',
-      icon: Building2,
-      permission: 'manage:companies' as const,
-      href: '/companies'
+      href: '/dashboard/employees'
     },
     {
       label: 'Compliance',
       icon: Shield,
       permission: 'view:compliance' as const,
-      href: '/compliance'
+      href: '/dashboard/compliance'
+    },
+    {
+      label: 'Faturamento',
+      icon: CreditCard,
+      permission: 'view:billing' as const,
+      href: '/dashboard/billing'
     },
     {
       label: 'Configurações',
       icon: Settings,
       permission: 'manage:settings' as const,
-      href: '/settings'
-    },
-    {
-      label: 'Integrações',
-      icon: Zap,
-      permission: 'manage:integrations' as const,
-      href: '/integracoes'
+      href: '/dashboard/settings'
     }
   ];
 

@@ -329,10 +329,11 @@ interface MonthlyCostsData {
   revenue?: number[];
 }
 
-interface EmployeePerformanceData {
-  labels?: string[];
-  performance?: number[];
-}
+// Interface removida temporariamente até implementação com dados reais
+// interface EmployeePerformanceData {
+//   labels?: string[];
+//   performance?: number[];
+// }
 
 // Componentes específicos para o dashboard
 
@@ -444,41 +445,41 @@ export const MonthlyCostsChart: React.FC<{ data: MonthlyCostsData }> = ({ data }
   return <BarChart data={chartData} options={options} height={300} />;
 };
 
-// Gráfico de performance por funcionário
-export const EmployeePerformanceChart: React.FC<{ data: EmployeePerformanceData }> = ({ data }) => {
-  const { isDark } = useTheme();
-  const themeColors = getThemeColors(isDark);
-  
-  const chartData: ChartData<'line'> = {
-    labels: data.labels || ['João', 'Maria', 'Pedro', 'Ana', 'Carlos'],
-    datasets: [
-      {
-        label: 'Performance',
-        data: data.performance || [85, 92, 78, 95, 88],
-        borderColor: themeColors.info,
-        backgroundColor: `${themeColors.info}20`, // 20% de opacidade
-        fill: true,
-        tension: 0.4
-      }
-    ]
-  };
-
-  const options: ChartOptions<'line'> = {
-    plugins: {
-      title: {
-        display: true,
-        text: 'Performance por Funcionário',
-        font: { size: 16, weight: 'bold' },
-        color: themeColors.foreground
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 100
-      }
-    }
-  };
-
-  return <LineChart data={chartData} options={options} height={250} />;
-};
+// Gráfico de performance por funcionário - Removido temporariamente até implementação com dados reais
+// export const EmployeePerformanceChart: React.FC<{ data: EmployeePerformanceData }> = ({ data }) => {
+//   const { isDark } = useTheme();
+//   const themeColors = getThemeColors(isDark);
+//   
+//   const chartData: ChartData<'line'> = {
+//     labels: data.labels || ['João', 'Maria', 'Pedro', 'Ana', 'Carlos'],
+//     datasets: [
+//       {
+//         label: 'Performance',
+//         data: data.performance || [85, 92, 78, 95, 88],
+//         borderColor: themeColors.info,
+//         backgroundColor: `${themeColors.info}20`, // 20% de opacidade
+//         fill: true,
+//         tension: 0.4
+//       }
+//     ]
+//   };
+//
+//   const options: ChartOptions<'line'> = {
+//     plugins: {
+//       title: {
+//         display: true,
+//         text: 'Performance por Funcionário',
+//         font: { size: 16, weight: 'bold' },
+//         color: themeColors.foreground
+//       }
+//     },
+//     scales: {
+//       y: {
+//         beginAtZero: true,
+//         max: 100
+//       }
+//     }
+//   };
+//
+//   return <LineChart data={chartData} options={options} height={250} />;
+// };

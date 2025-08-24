@@ -149,7 +149,7 @@ const Dashboard = () => {
         if (checkAndShowUpgrade('add_branch')) {
           return;
         }
-        navigate('/dashboard/branches');
+        navigate('/dashboard/employees');
         break;
       default:
         navigate(`/dashboard/${action}`);

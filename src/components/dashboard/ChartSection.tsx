@@ -43,15 +43,16 @@ const ChartSection = () => {
     { category: "Otimizado", value: 20, color: "hsl(var(--accent))" },
   ];
 
-  const productivityData = [
-    { day: "Seg", produtividade: 78, eficiencia: 85 },
-    { day: "Ter", produtividade: 82, eficiencia: 88 },
-    { day: "Qua", produtividade: 75, eficiencia: 82 },
-    { day: "Qui", produtividade: 88, eficiencia: 92 },
-    { day: "Sex", produtividade: 92, eficiencia: 95 },
-    { day: "Sab", produtividade: 85, eficiencia: 89 },
-    { day: "Dom", produtividade: 80, eficiencia: 86 },
-  ];
+  // Dados de produtividade removidos - serão implementados com dados reais na V2.0
+  // const productivityData = [
+  //   { day: "Seg", produtividade: 78, eficiencia: 85 },
+  //   { day: "Ter", produtividade: 82, eficiencia: 88 },
+  //   { day: "Qua", produtividade: 75, eficiencia: 82 },
+  //   { day: "Qui", produtividade: 88, eficiencia: 92 },
+  //   { day: "Sex", produtividade: 92, eficiencia: 95 },
+  //   { day: "Sab", produtividade: 85, eficiencia: 89 },
+  //   { day: "Dom", produtividade: 80, eficiencia: 86 },
+  // ];
 
   return (
     <div className="grid lg:grid-cols-2 gap-6">
@@ -172,8 +173,8 @@ const ChartSection = () => {
         </CardContent>
       </Card>
 
-      {/* Produtividade Semanal */}
-      <Card>
+      {/* Produtividade Semanal - Removido temporariamente até implementação com dados reais */}
+      {/* <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold">Produtividade da Equipe</CardTitle>
         </CardHeader>
@@ -215,7 +216,7 @@ const ChartSection = () => {
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };

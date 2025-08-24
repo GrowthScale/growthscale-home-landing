@@ -29,6 +29,7 @@ const LazyEnterprise = React.lazy(() => import('@/pages/Enterprise'));
 const LazyBilling = React.lazy(() => import('@/pages/Billing'));
 const LazyBillingPage = React.lazy(() => import('@/pages/BillingPage'));
 const LazyOnboarding = React.lazy(() => import('@/pages/Onboarding'));
+const LazyForgotPassword = React.lazy(() => import('@/pages/ForgotPassword'));
 
 export default function AppRoutes() {
   return (
@@ -39,6 +40,7 @@ export default function AppRoutes() {
         <Route path="/auth" element={<LazyAuth />} />
         <Route path="/auth/callback" element={<LazyAuthCallback />} />
         <Route path="/onboarding" element={<LazyOnboarding />} />
+        <Route path="/forgot-password" element={<LazyForgotPassword />} />
         <Route path="/contact" element={<LazyContact />} />
         <Route path="/faq" element={<LazyFAQ />} />
         <Route path="/legal" element={<LazyLegal />} />

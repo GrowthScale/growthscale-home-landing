@@ -556,7 +556,7 @@ const PricingSection = () => (
           </CardContent>
           <div className="p-6 pt-0">
             <Button asChild variant="outline" className="w-full">
-              <Link to="/contato">Agendar Demonstração</Link>
+              <Link to="/contact">Agendar Demonstração</Link>
             </Button>
           </div>
         </Card>
@@ -579,15 +579,15 @@ const Footer = () => (
       <div>
         <h3 className="font-semibold text-foreground mb-4">Empresa</h3>
         <ul className="space-y-2">
-          <li><Link to="/sobre" className="text-muted-foreground hover:text-foreground transition-colors">Sobre Nós</Link></li>
-          <li><Link to="/contato" className="text-muted-foreground hover:text-foreground transition-colors">Contato</Link></li>
+                      <li><Link to="/#solucao" className="text-muted-foreground hover:text-foreground transition-colors">Sobre Nós</Link></li>
+                          <li><Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">Contato</Link></li>
         </ul>
       </div>
       <div>
         <h3 className="font-semibold text-foreground mb-4">Legal</h3>
         <ul className="space-y-2">
-          <li><Link to="/legal/termos" className="text-muted-foreground hover:text-foreground transition-colors">Termos de Uso</Link></li>
-          <li><Link to="/legal/privacidade" className="text-muted-foreground hover:text-foreground transition-colors">Privacidade</Link></li>
+                      <li><Link to="/legal" className="text-muted-foreground hover:text-foreground transition-colors">Termos de Uso</Link></li>
+            <li><Link to="/legal" className="text-muted-foreground hover:text-foreground transition-colors">Privacidade</Link></li>
         </ul>
       </div>
       <div className="col-span-2 md:col-span-1">

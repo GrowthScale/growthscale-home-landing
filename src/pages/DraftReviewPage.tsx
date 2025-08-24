@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { scheduleDraftService } from '@/services/api';
@@ -19,14 +18,12 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { useTenant } from '@/contexts/TenantContext';
 import { toast } from '@/hooks/use-toast';
 
 export default function DraftReviewPage() {
   const { draftId } = useParams<{ draftId: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { currentTenant } = useTenant();
 
   const { data: draft, isLoading, isError } = useQuery({
     queryKey: ['scheduleDraft', draftId],
@@ -52,7 +49,7 @@ export default function DraftReviewPage() {
         description: "A escala foi criada e publicada com sucesso." 
       });
       queryClient.invalidateQueries({ queryKey: ['pendingDraft'] });
-      navigate('/schedules'); // Navega para a lista de escalas oficiais
+      navigate('/dashboard/schedules'); // Navega para a lista de escalas oficiais
     },
     onError: (error: Error) => {
       toast({ 
@@ -121,25 +118,25 @@ export default function DraftReviewPage() {
   }
 
   // Formatar data da semana
-  const weekStart = draft.target_week_start 
-    ? format(new Date(draft.target_week_start), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+  const weekStart = draft.week_start_date 
+    ? format(new Date(draft.week_start_date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
     : '';
 
   // Contar funcionários na sugestão
-  const employeeCount = draft.draft_data?.length || 0;
+  const employeeCount = draft.shifts?.length || 0;
 
   // Função para ser chamada pelo editor quando a escala for salva/aprovada
   const handleApprove = (finalScheduleState: Record<string, unknown>) => {
     // Formate os dados aqui para o formato da sua tabela 'schedules' oficial
     const officialScheduleData = {
-      tenant_id: draft.tenant_id,
-      start_date: draft.target_week_start,
-      end_date: draft.target_week_start, // Ajuste conforme necessário
-      status: 'active',
+      company_id: draft.company_id,
+      start_date: draft.week_start_date,
+      end_date: draft.week_end_date,
+      status: 'published',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       // ... outros campos da tabela 'schedules'
-      shifts: finalScheduleState.shifts || draft.draft_data // os turnos, possivelmente ajustados pelo gestor
+      shifts: finalScheduleState.shifts || draft.shifts // os turnos, possivelmente ajustados pelo gestor
     };
     approveMutation.mutate(officialScheduleData);
   };
@@ -214,7 +211,7 @@ export default function DraftReviewPage() {
               </p>
               
               <div className="space-y-2">
-                {draft.draft_data?.map((allocation: Record<string, unknown>, index: number) => (
+                {draft.shifts?.map((allocation: Record<string, unknown>, index: number) => (
                   <div key={index} className="flex items-center justify-between p-2 bg-background rounded border">
                     <span className="text-sm">
                       Funcionário {(allocation.employeeId as string) || `#${index + 1}`}
@@ -254,7 +251,7 @@ export default function DraftReviewPage() {
           
           <Button 
             size="lg"
-            onClick={() => handleApprove(draft.draft_data as Record<string, unknown>)}
+            onClick={() => handleApprove({ shifts: draft.shifts })}
             disabled={approveMutation.isPending || dismissMutation.isPending}
             className="bg-accent hover:bg-accent"
           >

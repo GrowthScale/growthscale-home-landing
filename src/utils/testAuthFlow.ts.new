@@ -1,0 +1,10 @@
+// src/utils/testAuthFlow.ts
+import { supabase } from '@/integrations/supabase/client';
+
+export const testAuthFlow = async () => {
+  console.log('🧪 TESTE COMPLETO DO FLUXO DE AUTENTICAÇÃO');
+  console.log('==========================================');
+
+  // 1. Verificar configuração
+  console.log('1️⃣ CONFIGURAÇÃO:');
+  console.log('   - URL:', import.meta.env.VITE_SUPABASE_URL);

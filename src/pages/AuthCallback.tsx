@@ -1,103 +1,87 @@
 // src/pages/AuthCallback.tsx
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { createCompanyForUser } from '@/services/api';
+import { Loader2 } from 'lucide-react';
+
+interface CompanyData {
+  name: string;
+  employee_count: string;
+}
+
+interface CreateCompanyData {
+  name: string;
+  cnpj: string;
+  trade_name?: string;
+  description?: string;
+  status?: string;
+  settings?: any;
+}
+
+// Crie esta função no seu service layer (`api.ts`)
+const createCompanyForUser = async (userId: string, companyData: CompanyData) => {
+    const trialEndDate = new Date();
+    trialEndDate.setDate(trialEndDate.getDate() + 14);
+    
+    const companyInsertData: CreateCompanyData = {
+        name: companyData.name,
+        cnpj: `TEMP-${Date.now()}`, // CNPJ temporário, pode ser atualizado depois
+        trade_name: companyData.name,
+        description: `Empresa criada automaticamente para ${companyData.name}`,
+        status: 'active',
+        settings: {
+            plan: 'free',
+            subscription_status: 'trialing',
+            trial_ends_at: trialEndDate.toISOString(),
+            employee_count: companyData.employee_count,
+            owner_id: userId
+        }
+    };
+    
+    const { data, error } = await supabase
+        .from('companies')
+        .insert(companyInsertData)
+        .select()
+        .single();
+    if (error) throw error;
+    return data;
+};
 
 export default function AuthCallback() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [status, setStatus] = useState<string>('Verificando sua conta...');
 
   useEffect(() => {
-    const processAuthCallback = async () => {
-      try {
-        const code = searchParams.get('code');
-        const error = searchParams.get('error');
-        const errorDescription = searchParams.get('error_description');
-
-        console.log('🔄 Iniciando processamento do AuthCallback...');
-        console.log('📍 URL atual:', window.location.href);
-        console.log('🔑 Código:', code);
-        console.log('❌ Erro:', error);
-        console.log('📝 Descrição do erro:', errorDescription);
-
-        if (error) {
-          console.error('❌ Erro de autenticação detectado:', error, errorDescription);
-          setStatus('Erro na autenticação. Redirecionando...');
-          navigate('/auth?error=' + encodeURIComponent(error), { replace: true });
-          return;
-        }
-
-        if (!code) {
-          console.error('❌ Nenhum código de autenticação encontrado');
-          setStatus('Nenhum código encontrado. Redirecionando...');
-          navigate('/auth?error=no_code', { replace: true });
-          return;
-        }
-
-        setStatus('Processando código de autenticação...');
-        console.log('🔄 Processando código de autenticação...');
-
-        // Trocar o código por uma sessão
-        const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        subscription.unsubscribe();
         
-        if (exchangeError) {
-          console.error('❌ Erro ao trocar código por sessão:', exchangeError);
-          console.error('❌ Detalhes do erro:', {
-            message: exchangeError.message,
-            status: exchangeError.status,
-            name: exchangeError.name
-          });
-          setStatus('Erro ao processar código. Redirecionando...');
-          navigate('/auth?error=invalid_code', { replace: true });
-          return;
-        }
-
-        if (!data.session || !data.user) {
-          console.error('❌ Sessão inválida após troca de código');
-          setStatus('Sessão inválida. Redirecionando...');
-          navigate('/auth?error=invalid_session', { replace: true });
-          return;
-        }
-
-        console.log('✅ Sessão criada com sucesso:', data.user.email);
-        setStatus('Verificando dados da empresa...');
-
-        const user = data.user;
-        const pendingCompany = user.user_metadata?.pending_company;
-
-        console.log('🏢 Dados pendentes da empresa:', pendingCompany);
+        const user = session.user;
+        const pendingCompany = user?.user_metadata?.pending_company;
 
         if (pendingCompany) {
-          // Se tem dados pendentes, redirecionar para onboarding
-          console.log('🔄 Redirecionando para onboarding para configurar empresa...');
-          setStatus('Redirecionando para configuração...');
-          navigate('/onboarding', { replace: true });
+          try {
+            // Cria a empresa e limpa os metadados
+            await createCompanyForUser(user.id, pendingCompany);
+            await supabase.auth.updateUser({ data: { pending_company: null } });
+            navigate('/dashboard/setup'); // Redireciona para o ONBOARDING
+          } catch (error) {
+            console.error("Erro ao criar empresa no callback:", error);
+            navigate('/auth'); 
+          }
         } else {
-          // Se não tem dados pendentes, verificar se já tem empresa
-          console.log('✅ Usuário já tem empresa configurada, redirecionando para dashboard');
-          setStatus('Redirecionando para o dashboard...');
-          navigate('/dashboard', { replace: true });
+          navigate('/dashboard'); 
         }
-
-      } catch (error) {
-        console.error('❌ Erro geral no callback:', error);
-        setStatus('Erro inesperado. Redirecionando...');
-        navigate('/auth?error=callback_error', { replace: true });
       }
-    };
+    });
 
-    processAuthCallback();
-  }, [searchParams, navigate]);
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-        <h2 className="text-xl font-semibold mb-2">Verificando sua conta...</h2>
-        <p className="text-muted-foreground">{status}</p>
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center">
+      <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+      <h1 className="text-2xl font-bold">Autenticando sua sessão...</h1>
+      <p className="text-muted-foreground">Você será redirecionado em breve.</p>
     </div>
   );
 }

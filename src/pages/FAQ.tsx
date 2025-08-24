@@ -305,12 +305,12 @@ const FAQ = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg">
-                  <Link to="/contato">
-                    Entre em Contato
+                                <Link to="/contact">
+                Entre em Contato
                   </Link>
                 </Button>
                 <Button variant="outline" size="lg" asChild>
-                  <Link to="/central-de-ajuda">
+                  <Link to="/faq">
                     Central de Ajuda
                   </Link>
                 </Button>

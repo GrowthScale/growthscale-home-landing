@@ -1,29 +1,29 @@
 // Routes
 export const ROUTES = {
   HOME: '/',
-  LOGIN: '/login',
+  LOGIN: '/auth',
   DASHBOARD: '/dashboard',
-  EMPLOYEES: '/funcionarios',
-  SCHEDULES: '/escalas',
-  COMPLIANCE: '/compliance',
-  SETTINGS: '/configuracoes',
-  COMPANIES: '/empresas',
-  SETUP: '/setup',
-  CONTACT: '/contato',
+  EMPLOYEES: '/dashboard/employees',
+  SCHEDULES: '/dashboard/schedules',
+  COMPLIANCE: '/dashboard/compliance',
+  SETTINGS: '/dashboard/settings',
+  COMPANIES: '/dashboard/companies',
+  SETUP: '/dashboard/setup',
+  CONTACT: '/contact',
   FAQ: '/faq',
   LEGAL: {
-    PRIVACY: '/politica-de-privacidade',
-    TERMS: '/termos-de-uso',
-    COOKIES: '/politica-de-cookies',
-    HELP: '/central-de-ajuda'
+    PRIVACY: '/legal',
+    TERMS: '/legal',
+    COOKIES: '/legal',
+    HELP: '/faq'
   }
 } as const;
 
 // API Endpoints
 export const API_ENDPOINTS = {
-  EMPLOYEES: '/employees',
-  COMPANIES: '/companies',
-  SCHEDULES: '/schedules',
+  EMPLOYEES: '/dashboard/employees',
+  COMPANIES: '/dashboard/companies',
+  SCHEDULES: '/dashboard/schedules',
   AUTH: {
     LOGIN: '/auth/login',
     REGISTER: '/auth/register',

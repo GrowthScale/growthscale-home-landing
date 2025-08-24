@@ -35,6 +35,7 @@ interface EmployeesStepProps {
   onComplete: (data: EmployeeData[]) => void;
   onPrev: () => void;
   onFinish: () => void;
+  isGeneratingAI?: boolean;
 }
 
 const daysOfWeek = [
@@ -63,7 +64,8 @@ export const EmployeesStep: React.FC<EmployeesStepProps> = ({
   branchesData, 
   onComplete, 
   onPrev, 
-  onFinish 
+  onFinish,
+  isGeneratingAI = false
 }) => {
   const [employees, setEmployees] = useState<EmployeeData[]>(data);
   const [shifts, setShifts] = useState<ShiftData[]>([]);
@@ -540,7 +542,7 @@ export const EmployeesStep: React.FC<EmployeesStepProps> = ({
         
         <Button 
           onClick={handleFinish}
-          disabled={isFinishing}
+          disabled={isFinishing || isGeneratingAI}
           className="bg-accent hover:bg-accent"
         >
           {isFinishing ? (
@@ -548,10 +550,15 @@ export const EmployeesStep: React.FC<EmployeesStepProps> = ({
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
               Finalizando...
             </>
+          ) : isGeneratingAI ? (
+            <>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+              Gerando sua primeira escala...
+            </>
           ) : (
             <>
               <CheckCircle className="h-4 w-4 mr-2" />
-              Finalizar Configuração
+              Concluir e Ver a Mágica
             </>
           )}
         </Button>

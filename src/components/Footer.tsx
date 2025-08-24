@@ -33,10 +33,10 @@ export function Footer() {
       { name: 'Contato', href: '/contact' }
     ],
     legal: [
-      { name: 'Termos de Uso', href: '/terms' },
-      { name: 'Política de Privacidade', href: '/privacy' },
-      { name: 'LGPD', href: '/lgpd' },
-      { name: 'Cookies', href: '/cookies' }
+      { name: 'Termos de Uso', href: '/legal' },
+      { name: 'Política de Privacidade', href: '/legal' },
+      { name: 'LGPD', href: '/legal' },
+      { name: 'Cookies', href: '/legal' }
     ]
   };
 

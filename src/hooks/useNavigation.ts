@@ -22,18 +22,18 @@ export const useNavigation = () => {
   // Protected routes that require authentication
   const protectedRoutes = [
     { path: '/dashboard', label: 'Dashboard' },
-    { path: '/funcionarios', label: 'Funcionários' },
-    { path: '/escalas', label: 'Escalas' },
-    { path: '/compliance', label: 'Compliance' },
-    { path: '/empresas', label: 'Empresas' },
-    { path: '/configuracoes', label: 'Configurações' }
+    { path: '/dashboard/employees', label: 'Funcionários' },
+    { path: '/dashboard/schedules', label: 'Escalas' },
+    { path: '/dashboard/compliance', label: 'Compliance' },
+    { path: '/dashboard/billing', label: 'Faturamento' },
+    { path: '/dashboard/settings', label: 'Configurações' }
   ];
 
   // Legal pages
   const legalPages = [
-    { path: '/politica-de-privacidade', label: 'Política de Privacidade' },
-    { path: '/termos-de-uso', label: 'Termos de Uso' },
-    { path: '/politica-de-cookies', label: 'Política de Cookies' }
+    { path: '/legal', label: 'Política de Privacidade' },
+    { path: '/legal', label: 'Termos de Uso' },
+    { path: '/legal', label: 'Política de Cookies' }
   ];
 
   const scrollToSection = useCallback((sectionId: string) => {

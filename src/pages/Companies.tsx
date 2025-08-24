@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { Plus, Search, Building2, MapPin, Users, Calendar, Filter, ChevronRight } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '@/contexts/AuthContext';
+import { Plus, Search, Building2, MapPin, Users, Calendar, Filter, ChevronRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +15,7 @@ import { CompanyForm } from '@/components/companies/CompanyForm';
 import { CompanyDetails } from '@/components/companies/CompanyDetails';
 import { BranchList } from '@/components/companies/BranchList';
 import { CompanyFilters } from '@/components/companies/CompanyFilters';
+import { getCompaniesForUser } from '@/services/api';
 import PageLayout from '@/components/PageLayout';
 
 interface Company {
@@ -36,53 +39,32 @@ interface Company {
   };
 }
 
-const mockCompanies: Company[] = [
-  {
-    id: '1',
-    name: 'TechCorp Solutions',
-    cnpj: '12.345.678/0001-90',
-    status: 'active',
-    branchCount: 5,
-    employeeCount: 127,
-    createdAt: '2024-01-15',
-    address: {
-      street: 'Av. Paulista, 1000',
-      city: 'São Paulo',
-      state: 'SP',
-      zipCode: '01310-100'
-    },
-    contact: {
-      email: 'contato@techcorp.com.br',
-      phone: '(11) 9999-9999'
-    }
-  },
-  {
-    id: '2',
-    name: 'InnovaMed Clínicas',
-    cnpj: '23.456.789/0001-80',
-    status: 'active',
-    branchCount: 12,
-    employeeCount: 243,
-    createdAt: '2024-02-20',
-    address: {
-      street: 'Rua das Flores, 500',
-      city: 'Rio de Janeiro',
-      state: 'RJ',
-      zipCode: '22071-900'
-    },
-    contact: {
-      email: 'contato@innovamed.com.br',
-      phone: '(21) 8888-8888'
-    }
-  }
-];
+// Dados mock removidos - agora usando dados reais da API
 
 const Companies = () => {
+  const { user } = useAuth();
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [showCompanyDetails, setShowCompanyDetails] = useState(false);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredCompanies, setFilteredCompanies] = useState(mockCompanies);
+
+  // Buscar empresas do usuário
+  const { data: companies, isLoading, error } = useQuery({
+    queryKey: ['companies', user?.id],
+    queryFn: async () => {
+      if (!user?.id) throw new Error('Usuário não autenticado');
+      const result = await getCompaniesForUser(user.id);
+      if (result.error) throw new Error(result.error);
+      return result.data || [];
+    },
+    enabled: !!user?.id,
+  });
+
+  // Filtrar empresas baseado na busca
+  const filteredCompanies = companies?.filter(company =>
+    company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    company.cnpj.includes(searchTerm)
+  ) || [];
 
   const handleCompanySelect = useCallback((company: Company) => {
     setSelectedCompany(company);
@@ -96,11 +78,6 @@ const Companies = () => {
 
   const handleSearch = useCallback((value: string) => {
     setSearchTerm(value);
-    const filtered = mockCompanies.filter(company =>
-      company.name.toLowerCase().includes(value.toLowerCase()) ||
-      company.cnpj.includes(value)
-    );
-    setFilteredCompanies(filtered);
   }, []);
 
   const getStatusColor = (status: Company['status']) => {
@@ -179,64 +156,88 @@ const Companies = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-6 py-6">
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Empresas</CardTitle>
-              <Building2 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{mockCompanies.length}</div>
-              <p className="text-xs text-muted-foreground">
-                {mockCompanies.filter(c => c.status === 'active').length} ativas
-              </p>
-            </CardContent>
-          </Card>
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+              <p className="text-muted-foreground">Carregando empresas...</p>
+            </div>
+          </div>
+        )}
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Filiais</CardTitle>
-              <MapPin className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {mockCompanies.reduce((acc, company) => acc + company.branchCount, 0)}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Distribuídas em {mockCompanies.length} empresas
-              </p>
-            </CardContent>
-          </Card>
+        {/* Error State */}
+        {error && (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-destructive mb-4">Erro ao carregar empresas</h2>
+              <p className="text-muted-foreground mb-4">{error.message}</p>
+              <Button onClick={() => window.location.reload()}>Tentar novamente</Button>
+            </div>
+          </div>
+        )}
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Funcionários</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {mockCompanies.reduce((acc, company) => acc + company.employeeCount, 0)}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Across all companies
-              </p>
-            </CardContent>
-          </Card>
+        {/* Content when data is loaded */}
+        {!isLoading && !error && (
+          <>
+            {/* Quick Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total de Empresas</CardTitle>
+                  <Building2 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{companies?.length || 0}</div>
+                  <p className="text-xs text-muted-foreground">
+                    {companies?.filter(c => c.status === 'active').length || 0} ativas
+                  </p>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Última Atualização</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">Hoje</div>
-              <p className="text-xs text-muted-foreground">
-                Dados sincronizados
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total de Filiais</CardTitle>
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {companies?.reduce((acc, company) => acc + (company.branchCount || 0), 0) || 0}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Distribuídas em {companies?.length || 0} empresas
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total de Funcionários</CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {companies?.reduce((acc, company) => acc + (company.employeeCount || 0), 0) || 0}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Em todas as empresas
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Última Atualização</CardTitle>
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">Hoje</div>
+                  <p className="text-xs text-muted-foreground">
+                    Dados sincronizados
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
 
         {/* Search and Filters */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -312,14 +313,8 @@ const Companies = () => {
           ))}
         </div>
 
-        {filteredCompanies.length === 0 && (
+        {filteredCompanies.length === 0 && !isLoading && !error && (
           <div className="text-center py-12">
-            {/* TODO: Substituir por EmptyStateIllustration com:
-              - Imagem: Prédios/empresas vazios
-              - Título: "Nenhuma empresa encontrada"
-              - Descrição: Dinâmica baseada na busca (pesquisa vs. primeira empresa)
-              - Botão: "Cadastrar Primeira Empresa" (quando não há busca)
-              - Ação: Abrir modal de criação */}
             <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-medium text-foreground mb-2">
               Nenhuma empresa encontrada
@@ -334,6 +329,8 @@ const Companies = () => {
               </Button>
             )}
           </div>
+        )}
+          </>
         )}
       </main>
 

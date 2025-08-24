@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
@@ -8,9 +9,12 @@ import { CompanyStep } from './steps/CompanyStep';
 import { BranchesStep } from './steps/BranchesStep';
 import { EmployeesStep } from './steps/EmployeesStep';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { generateFirstDraftSchedule, createScheduleWithShifts, getEmployees } from '@/services/api';
+import { useTenant } from '@/contexts/TenantContext';
+import { AIGenerationFeedback } from '@/components/AIGenerationFeedback';
 
 export interface CompanyData {
   name: string;
@@ -76,7 +80,75 @@ const SetupWizard: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { currentTenant } = useTenant();
   const navigate = useNavigate();
+
+  // Buscar funcionários para a IA
+  const { data: employees } = useQuery({
+    queryKey: ['employees', currentTenant?.id],
+    queryFn: async () => {
+      if (!currentTenant?.id) return [];
+      const result = await getEmployees(currentTenant.id);
+      if (result.error) throw new Error(result.error);
+      return result.data || [];
+    },
+    enabled: !!currentTenant?.id,
+  });
+
+  // Mutation para gerar primeira escala com IA
+  const generateFirstScheduleMutation = useMutation({
+    mutationFn: async () => {
+      if (!currentTenant?.id || !employees || employees.length === 0) {
+        throw new Error("Dados insuficientes para gerar a primeira escala.");
+      }
+
+      // Preparar dados dos funcionários para a IA
+      const employeesForAI = employees.map(emp => ({
+        id: emp.id,
+        name: emp.name,
+        position: emp.position,
+        hourly_rate: emp.hourly_rate || 15,
+        workload: 44
+      }));
+
+      // Gerar primeira escala com IA
+      const { data: firstSchedule, error: aiError } = await generateFirstDraftSchedule(
+        currentTenant.id,
+        employeesForAI
+      );
+
+      if (aiError || !firstSchedule) {
+        throw new Error(aiError || "Erro ao gerar escala com IA");
+      }
+
+      // Salvar a escala gerada pela IA
+      const { error: saveError } = await createScheduleWithShifts(
+        firstSchedule.schedule,
+        firstSchedule.shifts
+      );
+
+      if (saveError) {
+        throw new Error(saveError);
+      }
+
+      return firstSchedule;
+    },
+    onSuccess: (data) => {
+      toast({ 
+        title: "🎉 Mágica concluída!", 
+        description: `Sua primeira escala com ${data.shifts.length} turnos foi criada automaticamente pela IA!` 
+      });
+      navigate('/dashboard');
+    },
+    onError: (error: any) => {
+      toast({ 
+        title: "⚠️ Aviso", 
+        description: error.message || "Setup concluído, mas houve um problema com a IA. Você pode criar escalas manualmente.", 
+        variant: 'default' 
+      });
+      navigate('/dashboard');
+    }
+  });
 
   const progress = ((currentStep - 1) / (steps.length - 1)) * 100;
 
@@ -194,8 +266,19 @@ const SetupWizard: React.FC = () => {
         description: "Sua empresa foi configurada com sucesso.",
       });
 
-      // Redirecionar para dashboard
-      navigate('/dashboard');
+      // 🚀 MOMENTO "UAU!" - Gerar primeira escala com IA usando mutation
+      if (employeesData.length > 0) {
+        toast({ 
+          title: "🤖 Mágica em andamento!", 
+          description: "Sua primeira escala otimizada está sendo gerada pela nossa IA." 
+        });
+        
+        // Chamar a mutation para gerar a primeira escala
+        generateFirstScheduleMutation.mutate();
+      } else {
+        // Se não há funcionários, apenas redirecionar
+        navigate('/dashboard');
+      }
 
     } catch (error) {
       console.error('Erro no setup:', error);
@@ -259,6 +342,7 @@ const SetupWizard: React.FC = () => {
             onComplete={handleStepComplete}
             onPrev={prevStep}
             onFinish={handleFinish}
+            isGeneratingAI={generateFirstScheduleMutation.isPending}
           />
         );
       default:
@@ -267,8 +351,20 @@ const SetupWizard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container mx-auto px-6 py-8">
+    <>
+      {/* Feedback Visual da IA */}
+      <AIGenerationFeedback
+        isGenerating={generateFirstScheduleMutation.isPending}
+        progress={generateFirstScheduleMutation.isPending ? 75 : 0}
+        currentStep="Gerando primeira escala"
+        employeesCount={employeesData.length}
+        onComplete={() => {
+          // O feedback visual será fechado automaticamente
+        }}
+      />
+
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+        <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -351,7 +447,7 @@ const SetupWizard: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

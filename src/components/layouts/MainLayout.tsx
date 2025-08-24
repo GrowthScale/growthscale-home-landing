@@ -44,10 +44,10 @@ export function MainLayout() {
   
   // Hook para verificar status do onboarding
   const { 
-    onboardingComplete, 
+    isComplete: onboardingComplete, 
     isLoading, 
-    shouldShowOnboarding, 
-    shouldShowAuth 
+    hasPendingCompany: shouldShowOnboarding, 
+    hasCompany: hasCompany 
   } = useOnboardingStatus();
 
   // Redirecionamento forçado quando o trial acabar
@@ -72,9 +72,9 @@ export function MainLayout() {
     return <LoadingSpinner message="Redirecionando para configuração..." />;
   }
 
-  // Se deve mostrar auth, não renderizar o layout (o hook já redirecionou)
-  if (shouldShowAuth) {
-    return <LoadingSpinner message="Redirecionando para autenticação..." />;
+  // Se não tem empresa e não tem dados pendentes, redirecionar para onboarding
+  if (!hasCompany && !shouldShowOnboarding) {
+    return <LoadingSpinner message="Redirecionando para configuração..." />;
   }
 
   // Se onboarding não está completo, não renderizar o layout
@@ -92,21 +92,33 @@ export function MainLayout() {
     },
     {
       label: 'Escalas',
-      href: '/schedules',
+      href: '/dashboard/schedules',
       icon: 'Calendar',
       roles: ['owner', 'admin', 'manager'],
     },
     {
       label: 'Funcionários',
-      href: '/employees',
+      href: '/dashboard/employees',
       icon: 'Users',
       roles: ['owner', 'admin', 'manager'],
     },
     {
       label: 'Compliance',
-      href: '/compliance',
+      href: '/dashboard/compliance',
       icon: 'ShieldCheck',
       roles: ['owner', 'admin', 'manager'],
+    },
+    {
+      label: 'Faturamento',
+      href: '/dashboard/billing',
+      icon: 'CreditCard',
+      roles: ['owner', 'admin'],
+    },
+    {
+      label: 'Configurações',
+      href: '/dashboard/settings',
+      icon: 'Settings',
+      roles: ['owner', 'admin', 'manager', 'employee'],
     },
   ];
 

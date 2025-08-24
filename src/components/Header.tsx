@@ -41,6 +41,14 @@ const Header = () => {
     }
   }, [navigate]);
 
+  // Funções de navegação refatoradas
+  const handleNavigateToDashboard = useCallback(() => navigate('/dashboard'), [navigate]);
+  const handleNavigateToEmployees = useCallback(() => navigate('/dashboard/employees'), [navigate]);
+  const handleNavigateToSchedules = useCallback(() => navigate('/dashboard/schedules'), [navigate]);
+  const handleNavigateToCompliance = useCallback(() => navigate('/dashboard/compliance'), [navigate]);
+  const handleNavigateToSettings = useCallback(() => navigate('/dashboard/settings'), [navigate]);
+  const handleToggleMobileMenu = useCallback(() => setIsMobileMenuOpen(!isMobileMenuOpen), [isMobileMenuOpen]);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
@@ -59,34 +67,19 @@ const Header = () => {
           {isHomePage ? (
             <>
               <button 
-                onClick={() => {
-                  const element = document.getElementById('recursos');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }
-                }}
+                onClick={scrollToSection}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Recursos
               </button>
               <button 
-                onClick={() => {
-                  const element = document.getElementById('precos');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }
-                }}
+                onClick={() => scrollToSection('precos')}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Preços
               </button>
               <button 
-                onClick={() => {
-                  const element = document.getElementById('contato');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }
-                }}
+                onClick={() => scrollToSection('contato')}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Contato
@@ -95,22 +88,28 @@ const Header = () => {
           ) : (
             <>
               <button 
-                onClick={() => navigate('/dashboard')}
+                onClick={handleNavigateToDashboard}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Dashboard
               </button>
               <button 
-                onClick={() => navigate('/employees')}
+                onClick={handleNavigateToEmployees}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Funcionários
               </button>
               <button 
-                onClick={() => navigate('/schedules')}
+                onClick={handleNavigateToSchedules}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Escalas
+              </button>
+              <button 
+                onClick={handleNavigateToCompliance}
+                className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+              >
+                Compliance
               </button>
             </>
           )}
@@ -143,11 +142,11 @@ const Header = () => {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate('/settings')}>
+                <DropdownMenuItem onClick={handleNavigateToSettings}>
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Configurações</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/profile')}>
+                <DropdownMenuItem onClick={handleNavigateToSettings}>
                   <User className="mr-2 h-4 w-4" />
                   <span>Perfil</span>
                 </DropdownMenuItem>
@@ -175,7 +174,7 @@ const Header = () => {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={handleToggleMobileMenu}
           className="lg:hidden ml-2"
         >
           {isMobileMenuOpen ? (
@@ -233,7 +232,7 @@ const Header = () => {
                 </button>
                 <button 
                   onClick={() => {
-                    navigate('/employees');
+                    navigate('/dashboard/employees');
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
@@ -242,12 +241,39 @@ const Header = () => {
                 </button>
                 <button 
                   onClick={() => {
-                    navigate('/schedules');
+                    navigate('/dashboard/schedules');
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
                 >
                   Escalas
+                </button>
+                <button 
+                  onClick={() => {
+                    navigate('/dashboard/compliance');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
+                >
+                  Compliance
+                </button>
+                <button 
+                  onClick={() => {
+                    navigate('/dashboard/billing');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
+                >
+                  Faturamento
+                </button>
+                <button 
+                  onClick={() => {
+                    navigate('/dashboard/settings');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
+                >
+                  Configurações
                 </button>
               </>
             )}

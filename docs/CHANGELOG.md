@@ -18,6 +18,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### 📱 **Melhorias**
 - **Refatoração Completa da Responsividade:** Todas as larguras fixas ("hardcoded") em componentes de UI, modais e layouts de página foram substituídas por classes responsivas do Tailwind CSS. A plataforma está agora totalmente adaptada para uma experiência de utilizador consistente e fluida em todos os dispositivos, do telemóvel ao desktop.
+- **Simplificação Estratégica da Navegação (Foco na V1.0):** O menu principal da aplicação foi simplificado para focar nas funcionalidades essenciais e 100% operacionais. As seções de Analytics, AI, Enterprise e Gamification foram temporariamente ocultadas para garantir uma jornada de usuário sem "becos sem saída" e perfeitamente funcional para o lançamento.
+- **Remoção de Dados Mock de Performance:** Eliminados todos os dados mock de performance e produtividade da aplicação, incluindo o componente `EmployeePerformanceChart` e o card de "Produtividade da Equipe" no dashboard. Garantindo que apenas dados reais sejam exibidos aos usuários, evitando informações falsas.
 
 ### 🏗️ **Estrutura da Landing Page**
 - **Header:** Sticky com backdrop blur e navegação limpa
