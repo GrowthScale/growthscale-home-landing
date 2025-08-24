@@ -89,13 +89,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { success: false, message: 'Todos os campos são obrigatórios' };
       }
 
-      // Determinar URL de redirecionamento
-      const SITE_URL = import.meta.env.VITE_SITE_URL || "https://growthscale-home-landing.vercel.app";
-      const redirectUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-        ? `${window.location.origin}/auth/callback`
-        : `${SITE_URL}/auth/callback`;
+      // USA A VARIÁVEL DE AMBIENTE CORRETA, RESOLVENDO O PROBLEMA DO LOCALHOST
+      const redirectURL = `${import.meta.env.VITE_SITE_URL}/auth/callback`;
 
-      console.log('🔗 AuthProvider: URL de redirecionamento:', redirectUrl);
+      console.log('🔗 AuthProvider: URL de redirecionamento:', redirectURL);
       
       const { data, error } = await supabase.auth.signUp({
         email: userData.email,
@@ -108,7 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               employee_count: userData.employeeCount,
             },
           },
-          emailRedirectTo: redirectUrl,
+          emailRedirectTo: redirectURL,
         },
       });
       
