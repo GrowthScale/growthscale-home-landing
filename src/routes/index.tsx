@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { MainLayout } from '@/components/layouts/MainLayout';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import LoadingScreen from '@/components/LoadingScreen';
 
 // Lazy load pages
