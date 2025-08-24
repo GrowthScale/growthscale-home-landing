@@ -1,105 +1,87 @@
-import React, { useEffect } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from 'sonner';
-import { HelmetProvider } from 'react-helmet-async';
-import { ThemeProvider } from '@/contexts/ThemeContext';
-import { TenantProvider } from '@/contexts/TenantContext';
-import { AppStateProvider } from '@/hooks/useAppState';
-import { AccessibilityProvider } from '@/components/AccessibilityProvider';
-import { GlobalLoading } from '@/components/GlobalLoading';
-import { initializeAPM } from '@/lib/apm';
-import { ai } from '@/lib/ai';
-import AppRoutes from '@/routes';
-import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
-import { PerformanceMonitor } from '@/components/PerformanceMonitor';
-import { AdvancedPerformanceMonitor } from '@/components/AdvancedPerformanceMonitor';
-import { EdgeAnalyticsDashboard } from '@/components/EdgeAnalyticsDashboard';
-import { SecurityDashboard } from '@/components/SecurityDashboard';
-import { AIDashboard } from '@/components/AIDashboard';
-import './App.css';
+// src/App.tsx
+import React, { Suspense, lazy } from 'react';
+import { Routes, Route } from "react-router-dom";
+import { MainLayout } from '@/components/layouts/MainLayout'; // O nosso novo layout principal
+import { ProtectedRoute } from '@/components/ProtectedRoute'; // O nosso guarda
+import { Toaster } from "@/components/ui/toaster";
 
-// Create a client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-    mutations: {
-      retry: 1,
-    },
-  },
-});
+// Páginas Públicas
+const Index = lazy(() => import("@/pages/Index"));
+const AuthPage = lazy(() => import("@/pages/Auth"));
+const AuthCallback = lazy(() => import("@/pages/AuthCallback"));
+const Onboarding = lazy(() => import("@/pages/Onboarding"));
+const ForgotPassword = lazy(() => import("@/pages/ForgotPassword"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const FAQ = lazy(() => import("@/pages/FAQ"));
+const Legal = lazy(() => import("@/pages/Legal"));
 
-function App() {
-  useEffect(() => {
-    // Initialize APM
-    initializeAPM();
-    
-    // Initialize AI
-    ai.init();
-    
-    // Log initial page view
-    console.log('🚀 App: Inicializando aplicação', {
-      timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent,
-      language: navigator.language,
-      environment: import.meta.env.MODE,
-      version: import.meta.env.VITE_APP_VERSION || '1.0.0',
-      siteUrl: import.meta.env.VITE_SITE_URL || 'https://growthscale-home-landing.vercel.app'
-    });
-  }, []);
+// Páginas Protegidas
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Schedules = lazy(() => import("@/pages/Schedules"));
+const Employees = lazy(() => import("@/pages/Employees"));
+const Companies = lazy(() => import("@/pages/Companies"));
+const Templates = lazy(() => import("@/pages/Templates"));
+const Settings = lazy(() => import("@/pages/Settings"));
+const Setup = lazy(() => import("@/pages/Setup"));
+const CLTAssistant = lazy(() => import("@/pages/CLTAssistant"));
+const Compliance = lazy(() => import("@/pages/Compliance"));
+const Integrations = lazy(() => import("@/pages/Integrations"));
+const Analytics = lazy(() => import("@/pages/Analytics"));
+const Security = lazy(() => import("@/pages/Security"));
+const AI = lazy(() => import("@/pages/AI"));
+const Enterprise = lazy(() => import("@/pages/Enterprise"));
+const Billing = lazy(() => import("@/pages/Billing"));
+const BillingPage = lazy(() => import("@/pages/BillingPage"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
 
+const LoadingSpinner = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>
+  </div>
+);
+
+export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <AccessibilityProvider>
-          <ThemeProvider>
-            <TenantProvider>
-              <AppStateProvider>
-                <div className="App">
-                  <div id="main-content">
-                    <AppRoutes />
-                  </div>
-                  <PWAInstallPrompt />
-                
-                {/* Development Monitors - Only show in development */}
-                {import.meta.env.DEV && (
-                  <div className="fixed bottom-4 right-4 space-y-2 z-50">
-                    <PerformanceMonitor />
-                    <AdvancedPerformanceMonitor />
-                    <EdgeAnalyticsDashboard />
-                    <SecurityDashboard />
-                    <AIDashboard />
-                  </div>
-                )}
-                
-                <Toaster 
-                  position="top-right"
-                  richColors
-                  closeButton
-                  duration={4000}
-                  toastOptions={{
-                    style: {
-                      background: 'hsl(var(--background))',
-                      color: 'hsl(var(--foreground))',
-                      border: '1px solid hsl(var(--border))',
-                    },
-                  }}
-                />
-                
-                {/* ARIA live regions for accessibility */}
-                <div aria-live="polite" aria-atomic="true" className="sr-only" id="status-updates"></div>
-                <div aria-live="assertive" aria-atomic="true" className="sr-only" id="error-announcements"></div>
-              </div>
-            </AppStateProvider>
-          </TenantProvider>
-        </ThemeProvider>
-      </AccessibilityProvider>
-      </HelmetProvider>
-    </QueryClientProvider>
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        {/* Rotas Públicas */}
+        <Route path="/" element={<Index />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/legal" element={<Legal />} />
+
+        {/* Rotas Protegidas que usam o MainLayout */}
+        <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/schedules" element={<Schedules />} />
+          <Route path="/dashboard/employees" element={<Employees />} />
+          <Route path="/dashboard/companies" element={<Companies />} />
+          <Route path="/dashboard/templates" element={<Templates />} />
+          <Route path="/dashboard/settings" element={<Settings />} />
+          <Route path="/dashboard/clt-assistant" element={<CLTAssistant />} />
+          <Route path="/dashboard/compliance" element={<Compliance />} />
+          <Route path="/dashboard/integrations" element={<Integrations />} />
+          <Route path="/dashboard/analytics" element={<Analytics />} />
+          <Route path="/dashboard/security" element={<Security />} />
+          <Route path="/dashboard/ai" element={<AI />} />
+          <Route path="/dashboard/enterprise" element={<Enterprise />} />
+          <Route path="/dashboard/billing" element={<Billing />} />
+        </Route>
+        
+        {/* Rota de Onboarding, que é protegida mas não usa o layout principal */}
+        <Route path="/dashboard/setup" element={<ProtectedRoute><Setup /></ProtectedRoute>} />
+
+        {/* Rota de Billing - Protegida mas sem MainLayout */}
+        <Route path="/billing" element={<ProtectedRoute><BillingPage /></ProtectedRoute>} />
+
+        {/* Rota 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Toaster />
+    </Suspense>
   );
 }
-
-export default App;
