@@ -14,7 +14,7 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProps) {
-  const { signUp, loading } = useAuth();
+  const { signUp } = useAuth();
   const { toast } = useToast();
   
   const [formData, setFormData] = useState({
@@ -27,11 +27,21 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validações
+    // Validações básicas
+    if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword || !formData.companyName || !formData.employeeCount) {
+      toast({
+        title: "Erro de validação",
+        description: "Todos os campos são obrigatórios",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       toast({
         title: "Erro de validação",
@@ -50,7 +60,11 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
       return;
     }
 
+    setIsLoading(true);
+
     try {
+      console.log('📝 RegisterForm: Iniciando cadastro...');
+      
       const result = await signUp({
         fullName: formData.fullName,
         email: formData.email,
@@ -58,6 +72,8 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
         companyName: formData.companyName,
         employeeCount: formData.employeeCount,
       });
+
+      console.log('📝 RegisterForm: Resultado do cadastro:', result);
 
       if (result.success) {
         if (result.message.includes('confirmada automaticamente')) {
@@ -82,11 +98,14 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
         });
       }
     } catch (error) {
+      console.error('❌ RegisterForm: Erro no cadastro:', error);
       toast({
         title: "Erro inesperado",
         description: "Tente novamente em alguns segundos.",
         variant: "destructive"
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -109,6 +128,7 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
                 onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
                 className="pl-10"
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -125,6 +145,7 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 className="pl-10"
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -141,6 +162,7 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
                 onChange={(e) => setFormData(prev => ({ ...prev, companyName: e.target.value }))}
                 className="pl-10"
                 required
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -153,6 +175,7 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
               onChange={(e) => setFormData(prev => ({ ...prev, employeeCount: e.target.value }))}
               className="w-full p-2 border border-input rounded-md bg-background"
               required
+              disabled={isLoading}
             >
               <option value="">Selecione...</option>
               <option value="1-5">1-5 funcionários</option>
@@ -175,6 +198,7 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
                 onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                 className="pl-10 pr-10"
                 required
+                disabled={isLoading}
               />
               <Button
                 type="button"
@@ -182,6 +206,7 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
                 size="sm"
                 className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                 onClick={() => setShowPassword(!showPassword)}
+                disabled={isLoading}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
@@ -200,6 +225,7 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
                 onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                 className="pl-10 pr-10"
                 required
+                disabled={isLoading}
               />
               <Button
                 type="button"
@@ -207,19 +233,20 @@ export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProp
                 size="sm"
                 className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                disabled={isLoading}
               >
                 {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
             </div>
           </div>
 
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Criando conta...' : 'Criar Conta'}
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? 'Criando conta...' : 'Criar Conta'}
           </Button>
         </form>
 
         <div className="mt-4 text-center">
-          <Button variant="link" onClick={onSwitchView}>
+          <Button variant="link" onClick={onSwitchView} disabled={isLoading}>
             Já tem uma conta? Entrar
           </Button>
         </div>
