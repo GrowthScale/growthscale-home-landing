@@ -5,20 +5,22 @@ import type { Database } from './types';
 // Use environment variables with safe fallbacks for no-code deployment
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://placeholder.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "placeholder-key";
+const SITE_URL = import.meta.env.VITE_SITE_URL || "https://growthscale-home-landing.vercel.app";
 
 // Determine the redirect URL based on environment - UNIFICADO
 const getRedirectUrl = () => {
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     const currentPort = window.location.port || '3000';
     console.log('🔗 Configurando redirect URL para porta:', currentPort);
-    return `http://localhost:${currentPort}/auth?verified=true`;
+    return `http://localhost:${currentPort}/auth/callback`;
   }
-  return 'https://growthscale-home-landing-edpw6muof.vercel.app/auth?verified=true';
+  return `${SITE_URL}/auth/callback`;
 };
 
 console.log('🔧 Configuração do Supabase Client:');
 console.log('📍 URL:', SUPABASE_URL);
 console.log('🔑 Chave:', SUPABASE_PUBLISHABLE_KEY ? 'Configurada' : 'Não configurada');
+console.log('🌐 Site URL:', SITE_URL);
 console.log('🔄 Redirect URL:', getRedirectUrl());
 
 // Import the supabase client like this:

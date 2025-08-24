@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
+import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from '@/contexts/ThemeContext';
-import { AuthProvider } from '@/contexts/AuthContext';
 import { TenantProvider } from '@/contexts/TenantContext';
 import { AppStateProvider } from '@/hooks/useAppState';
 import { AccessibilityProvider } from '@/components/AccessibilityProvider';
@@ -46,15 +46,16 @@ function App() {
       userAgent: navigator.userAgent,
       language: navigator.language,
       environment: import.meta.env.MODE,
-      version: import.meta.env.VITE_APP_VERSION || '1.0.0'
+      version: import.meta.env.VITE_APP_VERSION || '1.0.0',
+      siteUrl: import.meta.env.VITE_SITE_URL || 'https://growthscale-home-landing.vercel.app'
     });
   }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AccessibilityProvider>
-        <ThemeProvider>
-          <AuthProvider>
+      <HelmetProvider>
+        <AccessibilityProvider>
+          <ThemeProvider>
             <TenantProvider>
               <AppStateProvider>
                 <div className="App">
@@ -94,9 +95,9 @@ function App() {
               </div>
             </AppStateProvider>
           </TenantProvider>
-        </AuthProvider>
-      </ThemeProvider>
+        </ThemeProvider>
       </AccessibilityProvider>
+      </HelmetProvider>
     </QueryClientProvider>
   );
 }

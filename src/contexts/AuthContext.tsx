@@ -90,9 +90,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Determinar URL de redirecionamento
-      const redirectUrl = typeof window !== 'undefined' 
+      const SITE_URL = import.meta.env.VITE_SITE_URL || "https://growthscale-home-landing.vercel.app";
+      const redirectUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
         ? `${window.location.origin}/auth/callback`
-        : 'https://growthscale-home-landing-edpw6muof.vercel.app/auth/callback';
+        : `${SITE_URL}/auth/callback`;
 
       console.log('🔗 AuthProvider: URL de redirecionamento:', redirectUrl);
       
