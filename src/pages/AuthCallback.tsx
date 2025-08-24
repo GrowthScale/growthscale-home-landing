@@ -9,7 +9,6 @@ interface CompanyData {
   employee_count: string;
 }
 
-// Crie esta função no seu service layer (`api.ts`)
 const createCompanyForUser = async (userId: string, companyData: CompanyData) => {
     console.log('🏢 createCompanyForUser: Iniciando criação da empresa...');
     console.log('📊 Dados recebidos:', { userId, companyData });
@@ -19,7 +18,7 @@ const createCompanyForUser = async (userId: string, companyData: CompanyData) =>
     
     const companyInsertData = {
         name: companyData.name,
-        cnpj: `TEMP-${Date.now()}`, // CNPJ temporário, pode ser atualizado depois
+        cnpj: `TEMP-${Date.now()}`,
         trade_name: companyData.name,
         description: `Empresa criada automaticamente para ${companyData.name}`,
         status: 'active',
@@ -61,7 +60,6 @@ export default function AuthCallback() {
         console.log('🔄 AuthCallback: Iniciando processamento...');
         setStatus('Processando código de autenticação...');
 
-        // Pegar o código da URL
         const code = searchParams.get('code');
         if (!code) {
           console.error('❌ AuthCallback: Código não encontrado na URL');
@@ -73,7 +71,7 @@ export default function AuthCallback() {
         console.log('🔑 AuthCallback: Código encontrado, trocando por sessão...');
         setStatus('Trocando código por sessão...');
 
-        // Trocar o código por uma sessão
+        // Usar o método correto para trocar o código por sessão
         const { data, error } = await supabase.auth.exchangeCodeForSession(code);
         
         if (error) {
@@ -105,13 +103,12 @@ export default function AuthCallback() {
           setStatus('Criando sua empresa...');
           
           try {
-            // Cria a empresa e limpa os metadados
             await createCompanyForUser(user.id, pendingCompany);
             await supabase.auth.updateUser({ data: { pending_company: null } });
             
             console.log('✅ AuthCallback: Empresa criada, redirecionando para setup');
             setStatus('Empresa criada! Redirecionando...');
-            navigate('/dashboard/setup'); // Redireciona para o ONBOARDING
+            navigate('/dashboard/setup');
           } catch (error) {
             console.error("❌ AuthCallback: Erro ao criar empresa:", error);
             setStatus('Erro ao criar empresa');
@@ -130,36 +127,7 @@ export default function AuthCallback() {
       }
     };
 
-    // Processar imediatamente
     handleAuthCallback();
-
-    // Também escutar mudanças de estado de auth como backup
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('🔄 AuthCallback: Evento de auth detectado:', event);
-      
-      if (event === 'SIGNED_IN' && session) {
-        console.log('✅ AuthCallback: Usuário assinado via evento');
-        subscription.unsubscribe();
-        
-        const user = session.user;
-        const pendingCompany = user?.user_metadata?.pending_company;
-
-        if (pendingCompany) {
-          try {
-            await createCompanyForUser(user.id, pendingCompany);
-            await supabase.auth.updateUser({ data: { pending_company: null } });
-            navigate('/dashboard/setup');
-          } catch (error) {
-            console.error("Erro ao criar empresa no callback:", error);
-            navigate('/auth'); 
-          }
-        } else {
-          navigate('/dashboard'); 
-        }
-      }
-    });
-
-    return () => subscription.unsubscribe();
   }, [navigate, searchParams]);
 
   return (

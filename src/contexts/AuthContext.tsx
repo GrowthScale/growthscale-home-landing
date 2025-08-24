@@ -23,8 +23,6 @@ interface AuthContextType {
   signUp: (data: UserSignUpData) => Promise<{ success: boolean; message: string }>;
   signIn: (data: UserSignInData) => Promise<{ success: boolean; message: string }>;
   signOut: () => Promise<void>;
-  checkEmailConfirmation: (email: string, password: string) => Promise<boolean>;
-  checkUserStatus: (email: string) => Promise<{ confirmed: boolean; message: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -37,7 +35,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     console.log('🔧 AuthProvider: Inicializando...');
     
-    // Função para atualizar estado de forma segura
     const updateAuthState = (session: Session | null) => {
       console.log('🔄 AuthProvider: Atualizando estado', {
         hasSession: !!session,
@@ -50,13 +47,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     };
 
-    // Listener para mudanças de autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('🔔 AuthProvider: Auth state change', { event, hasSession: !!session });
       updateAuthState(session);
     });
 
-    // Obter sessão inicial
     const initializeAuth = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
@@ -84,14 +79,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('🚀 AuthProvider: Iniciando cadastro para:', userData.email);
       
-      // Validar dados de entrada
       if (!userData.email || !userData.password || !userData.fullName || !userData.companyName) {
         return { success: false, message: 'Todos os campos são obrigatórios' };
       }
 
-      // USA A VARIÁVEL DE AMBIENTE CORRETA, RESOLVENDO O PROBLEMA DO LOCALHOST
+      // URL de redirecionamento correta
       const redirectURL = `${import.meta.env.VITE_SITE_URL}/auth/callback`;
-
       console.log('🔗 AuthProvider: URL de redirecionamento:', redirectURL);
       
       const { data, error } = await supabase.auth.signUp({
@@ -112,7 +105,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) {
         console.error('❌ AuthProvider: Erro no cadastro:', error);
         
-        // Tratamento específico de erros
         if (error.message.includes('User already registered')) {
           return { success: false, message: 'Este e-mail já está cadastrado. Tente fazer o login.' };
         }
@@ -190,79 +182,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (error) {
         console.error('❌ AuthProvider: Erro no logout:', error);
-        throw error;
+      } else {
+        console.log('✅ AuthProvider: Logout realizado com sucesso');
       }
-      
-      console.log('✅ AuthProvider: Logout realizado com sucesso');
     } catch (error) {
       console.error('❌ AuthProvider: Erro geral no logout:', error);
-      throw error;
-    }
-  };
-
-  const checkEmailConfirmation = async (email: string, password: string): Promise<boolean> => {
-    try {
-      console.log('🔍 AuthProvider: Verificando confirmação para:', email);
-      
-      // Primeiro, tentar fazer login
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        console.log('❌ AuthProvider: Usuário ainda não confirmado:', error.message);
-        return false;
-      }
-
-      if (data.user && data.session) {
-        console.log('✅ AuthProvider: Usuário confirmado e logado!');
-        
-        // Fazer logout para não manter a sessão
-        await supabase.auth.signOut();
-        
-        return true;
-      }
-
-      return false;
-    } catch (error) {
-      console.error('❌ AuthProvider: Erro ao verificar confirmação:', error);
-      return false;
-    }
-  };
-
-  const checkUserStatus = async (email: string): Promise<{ confirmed: boolean; message: string }> => {
-    try {
-      console.log('🔍 AuthProvider: Verificando status do usuário:', email);
-      
-      // Buscar usuário por email (requer admin ou função específica)
-      const { data: { users }, error } = await supabase.auth.admin.listUsers();
-      
-      if (error) {
-        console.log('❌ AuthProvider: Erro ao buscar usuários:', error.message);
-        return { confirmed: false, message: 'Erro ao verificar status' };
-      }
-      
-      const user = users?.find(u => u.email === email);
-      
-      if (user) {
-        const confirmed = user.email_confirmed_at !== null;
-        console.log('📊 AuthProvider: Status do usuário:', {
-          email: user.email,
-          confirmed: confirmed,
-          confirmedAt: user.email_confirmed_at
-        });
-        
-        return { 
-          confirmed, 
-          message: confirmed ? 'Email confirmado' : 'Email não confirmado' 
-        };
-      }
-      
-      return { confirmed: false, message: 'Usuário não encontrado' };
-    } catch (error) {
-      console.error('❌ AuthProvider: Erro ao verificar status:', error);
-      return { confirmed: false, message: 'Erro ao verificar status' };
     }
   };
 
@@ -273,15 +197,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signUp,
     signIn,
     signOut,
-    checkEmailConfirmation,
-    checkUserStatus,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {
