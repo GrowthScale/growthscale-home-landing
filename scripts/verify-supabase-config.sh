@@ -1,0 +1,78 @@
+#!/bin/bash
+
+echo "🔧 VERIFICAÇÃO DA CONFIGURAÇÃO DO SUPABASE"
+echo "=========================================="
+
+echo ""
+echo "📋 PROBLEMA IDENTIFICADO:"
+echo "O redirecionamento para localhost:3000 indica configuração incorreta"
+echo ""
+
+echo "🎯 SOLUÇÃO NECESSÁRIA:"
+echo ""
+
+echo "1️⃣ CONFIGURAR SUPABASE DASHBOARD:"
+echo "   - Vá para: https://supabase.com/dashboard"
+echo "   - Selecione seu projeto"
+echo "   - Authentication > URL Configuration"
+echo "   - Site URL: https://growthscale-home-landing.vercel.app"
+echo "   - Redirect URLs:"
+echo "     * https://growthscale-home-landing.vercel.app/auth/callback"
+echo "     * https://growthscale-home-landing.vercel.app/auth"
+echo "     * http://localhost:3000/auth/callback"
+echo "     * http://localhost:3000/auth"
+echo ""
+
+echo "2️⃣ CONFIGURAR VERCEL DASHBOARD:"
+echo "   - Vá para: https://vercel.com/dashboard"
+echo "   - Selecione: growthscale-home-landing"
+echo "   - Settings > Environment Variables"
+echo "   - Adicione:"
+echo "     * VITE_SITE_URL = https://growthscale-home-landing.vercel.app"
+echo "     * VITE_SUPABASE_URL = [sua-url-do-supabase]"
+echo "     * VITE_SUPABASE_ANON_KEY = [sua-chave-anonima]"
+echo ""
+
+echo "3️⃣ VERIFICAR EMAIL TEMPLATES:"
+echo "   - Supabase Dashboard > Authentication > Email Templates"
+echo "   - Template: Confirm signup"
+echo "   - Verificar se o link está correto"
+echo ""
+
+echo "4️⃣ VERIFICAR PROVIDERS:"
+echo "   - Supabase Dashboard > Authentication > Providers"
+echo "   - Email deve estar ativado"
+echo "   - Confirm email deve estar ativado"
+echo ""
+
+echo "🔍 VERIFICAÇÃO NO NAVEGADOR:"
+echo ""
+
+echo "Abra o console do navegador e execute:"
+echo "console.log('VITE_SITE_URL:', import.meta.env.VITE_SITE_URL);"
+echo "console.log('VITE_SUPABASE_URL:', import.meta.env.VITE_SUPABASE_URL);"
+echo ""
+
+echo "✅ RESULTADO ESPERADO:"
+echo "VITE_SITE_URL: https://growthscale-home-landing.vercel.app"
+echo "VITE_SUPABASE_URL: https://[seu-projeto].supabase.co"
+echo ""
+
+echo "❌ SE MOSTRAR 'undefined':"
+echo "- As variáveis não estão configuradas no Vercel"
+echo "- Faça um novo deploy após configurar"
+echo ""
+
+echo "🚀 APÓS CONFIGURAR:"
+echo "1. Faça um novo deploy: vercel --prod"
+echo "2. Teste o cadastro novamente"
+echo "3. Verifique se o email chega com link correto"
+echo "4. Confirme se o redirecionamento funciona"
+echo ""
+
+echo "📞 SE AINDA HOUVER PROBLEMAS:"
+echo "1. Verifique os logs do console"
+echo "2. Confirme a configuração do Supabase"
+echo "3. Teste em modo incógnito"
+echo "4. Verifique se não há cache do navegador"
+echo ""

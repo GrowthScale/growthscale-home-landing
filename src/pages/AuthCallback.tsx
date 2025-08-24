@@ -9,41 +9,44 @@ interface CompanyData {
   employee_count: string;
 }
 
-interface CreateCompanyData {
-  name: string;
-  cnpj: string;
-  trade_name?: string;
-  description?: string;
-  status?: string;
-  settings?: any;
-}
-
 // Crie esta função no seu service layer (`api.ts`)
 const createCompanyForUser = async (userId: string, companyData: CompanyData) => {
+    console.log('🏢 createCompanyForUser: Iniciando criação da empresa...');
+    console.log('📊 Dados recebidos:', { userId, companyData });
+    
     const trialEndDate = new Date();
     trialEndDate.setDate(trialEndDate.getDate() + 14);
     
-    const companyInsertData: CreateCompanyData = {
+    const companyInsertData = {
         name: companyData.name,
         cnpj: `TEMP-${Date.now()}`, // CNPJ temporário, pode ser atualizado depois
         trade_name: companyData.name,
         description: `Empresa criada automaticamente para ${companyData.name}`,
         status: 'active',
+        owner_id: userId,
+        plan: 'free',
+        subscription_status: 'trialing',
+        trial_ends_at: trialEndDate.toISOString(),
         settings: {
-            plan: 'free',
-            subscription_status: 'trialing',
-            trial_ends_at: trialEndDate.toISOString(),
             employee_count: companyData.employee_count,
-            owner_id: userId
+            created_at: new Date().toISOString()
         }
     };
+    
+    console.log('📝 Dados para inserção:', companyInsertData);
     
     const { data, error } = await supabase
         .from('companies')
         .insert(companyInsertData)
         .select()
         .single();
-    if (error) throw error;
+        
+    if (error) {
+        console.error('❌ Erro ao criar empresa:', error);
+        throw error;
+    }
+    
+    console.log('✅ Empresa criada com sucesso:', data);
     return data;
 };
 
@@ -88,10 +91,14 @@ export default function AuthCallback() {
         }
 
         console.log('✅ AuthCallback: Sessão criada com sucesso');
+        console.log('👤 Usuário:', data.user);
+        console.log('📋 Metadata:', data.user.user_metadata);
         setStatus('Sessão criada, verificando dados da empresa...');
 
         const user = data.user;
         const pendingCompany = user?.user_metadata?.pending_company;
+
+        console.log('🏢 Dados da empresa pendente:', pendingCompany);
 
         if (pendingCompany) {
           console.log('🏢 AuthCallback: Criando empresa para usuário...');
