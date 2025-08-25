@@ -66,6 +66,9 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
 
+      // Adicionar delay para permitir que a empresa seja criada
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       const userCompanies = await getUserCompanies(user.id);
       
       if (userCompanies && userCompanies.length > 0) {

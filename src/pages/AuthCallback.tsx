@@ -1,15 +1,11 @@
 // src/pages/AuthCallback.tsx
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 
-interface CompanyData {
-  name: string;
-  employee_count: string;
-}
-
-const createCompanyForUser = async (userId: string, companyData: CompanyData) => {
+// Função para criar empresa para o usuário
+const createCompanyForUser = async (userId: string, companyData: any) => {
     console.log('🏢 createCompanyForUser: Iniciando criação da empresa...');
     console.log('📊 Dados recebidos:', { userId, companyData });
     
@@ -51,79 +47,85 @@ const createCompanyForUser = async (userId: string, companyData: CompanyData) =>
 
 export default function AuthCallback() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [status, setStatus] = useState('Iniciando autenticação...');
 
   useEffect(() => {
-    const handleAuthCallback = async () => {
+    const processCallback = async () => {
       try {
         console.log('🔄 AuthCallback: Iniciando processamento...');
-        setStatus('Processando código de autenticação...');
-
-        // Usar o método getSession() para detectar automaticamente a sessão
-        const { data: { session }, error } = await supabase.auth.getSession();
         
+        // O Supabase já lida com a troca do código pela sessão automaticamente no background
+        // quando o AuthProvider é inicializado. O nosso trabalho aqui é garantir que a lógica
+        // de criação da empresa seja executada no momento certo.
+
+        const { data: { session }, error } = await supabase.auth.getSession();
+
         if (error) {
           console.error('❌ AuthCallback: Erro ao obter sessão:', error);
-          setStatus('Erro na autenticação');
-          setTimeout(() => navigate('/auth'), 3000);
+          navigate('/auth?error=session_failed', { replace: true });
           return;
         }
 
-        if (!session || !session.user) {
+        if (!session?.user) {
           console.error('❌ AuthCallback: Sessão não encontrada');
-          setStatus('Erro: Sessão não encontrada');
-          setTimeout(() => navigate('/auth'), 3000);
+          navigate('/auth?error=session_failed', { replace: true });
           return;
         }
 
         console.log('✅ AuthCallback: Sessão obtida com sucesso');
         console.log('👤 Usuário:', session.user);
         console.log('📋 Metadata:', session.user.user_metadata);
-        setStatus('Sessão obtida, verificando dados da empresa...');
 
         const user = session.user;
-        const pendingCompany = user?.user_metadata?.pending_company;
+        const pendingCompany = user.user_metadata?.pending_company;
 
         console.log('🏢 Dados da empresa pendente:', pendingCompany);
 
         if (pendingCompany) {
-          console.log('🏢 AuthCallback: Criando empresa para usuário...');
-          setStatus('Criando sua empresa...');
-          
           try {
-            await createCompanyForUser(user.id, pendingCompany);
-            await supabase.auth.updateUser({ data: { pending_company: null } });
+            console.log('🏢 AuthCallback: Criando empresa para usuário...');
             
+            // 1. Cria a empresa na base de dados
+            await createCompanyForUser(user.id, pendingCompany);
+            
+            // 2. Limpa os metadados para não executar esta lógica novamente
+            await supabase.auth.updateUser({ data: { pending_company: null } });
+
+            // 3. Força um refresh da sessão para garantir que todos os contextos sejam atualizados
+            await supabase.auth.refreshSession();
+
+            // 4. Adiciona um delay para permitir que o contexto se atualize
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
             console.log('✅ AuthCallback: Empresa criada, redirecionando para setup');
-            setStatus('Empresa criada! Redirecionando...');
-            navigate('/dashboard/setup');
+            navigate('/dashboard/setup', { replace: true });
+
           } catch (error) {
-            console.error("❌ AuthCallback: Erro ao criar empresa:", error);
-            setStatus('Erro ao criar empresa');
-            setTimeout(() => navigate('/auth'), 3000);
+            console.error("❌ AuthCallback: Erro crítico ao criar empresa:", error);
+            // Em caso de erro, envie o usuário de volta para o login com uma mensagem de erro
+            navigate('/auth?error=setup_failed', { replace: true });
           }
         } else {
           console.log('✅ AuthCallback: Usuário já tem empresa, redirecionando para dashboard');
-          setStatus('Redirecionando para o dashboard...');
-          navigate('/dashboard'); 
+          // Se não há empresa pendente, o usuário é antigo. Vai para o dashboard.
+          navigate('/dashboard', { replace: true });
         }
-
       } catch (error) {
         console.error('❌ AuthCallback: Erro geral:', error);
-        setStatus('Erro inesperado');
-        setTimeout(() => navigate('/auth'), 3000);
+        navigate('/auth?error=unexpected_error', { replace: true });
       }
     };
+    
+    // Adiciona um pequeno delay para garantir que a sessão do Supabase seja estabelecida
+    const timer = setTimeout(processCallback, 500);
 
-    handleAuthCallback();
-  }, [navigate, searchParams]);
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
       <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-      <h1 className="text-2xl font-bold">Autenticando sua sessão...</h1>
-      <p className="text-muted-foreground">{status}</p>
+      <h1 className="text-2xl font-bold">A finalizar a sua configuração...</h1>
+      <p className="text-muted-foreground">Estamos a preparar o seu ambiente. Será redirecionado em breve.</p>
     </div>
   );
 }

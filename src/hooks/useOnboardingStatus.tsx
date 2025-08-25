@@ -38,7 +38,7 @@ export const useOnboardingStatus = () => {
     if (hasCompany && !hasPendingCompany) {
       return '/dashboard';
     } else if (hasPendingCompany || (!hasCompany && !hasPendingCompany)) {
-      return '/onboarding';
+      return '/dashboard/setup';
     } else {
       return '/auth';
     }
@@ -61,11 +61,11 @@ export const useOnboardingStatus = () => {
     // Se estamos em auth mas deveríamos estar em outro lugar
     if (currentPath === '/auth' && targetPath !== '/auth') return true;
     
-    // Se estamos em onboarding mas deveríamos estar em dashboard
-    if (currentPath === '/onboarding' && targetPath === '/dashboard') return true;
+    // Se estamos em setup mas deveríamos estar em dashboard
+    if (currentPath === '/dashboard/setup' && targetPath === '/dashboard') return true;
     
-    // Se estamos em dashboard mas deveríamos estar em onboarding
-    if (currentPath === '/dashboard' && targetPath === '/onboarding') return true;
+    // Se estamos em dashboard mas deveríamos estar em setup
+    if (currentPath === '/dashboard' && targetPath === '/dashboard/setup') return true;
     
     return false;
   }, []);
@@ -149,7 +149,7 @@ export const useOnboardingStatus = () => {
           
           // Adicionar parâmetros de contexto se necessário
           let targetUrl = onboardingStatus.targetPath;
-          if (isVerified && onboardingStatus.targetPath === '/onboarding') {
+          if (isVerified && onboardingStatus.targetPath === '/dashboard/setup') {
             targetUrl += '?verified=true';
           }
           
@@ -201,7 +201,7 @@ export const useOnboardingStatus = () => {
     switch (route) {
       case '/dashboard':
         return status.isComplete && status.hasCompany;
-      case '/onboarding':
+      case '/dashboard/setup':
         return !status.isComplete || status.hasPendingCompany;
       case '/auth':
         return !status.hasCompany && !status.hasPendingCompany;

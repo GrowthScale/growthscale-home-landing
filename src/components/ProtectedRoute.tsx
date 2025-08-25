@@ -87,8 +87,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       // Verificar onboarding se necessário
       if (requiredOnboarding && user) {
         if (!isComplete || !hasCompany) {
-          console.log('🏢 ProtectedRoute: Onboarding incompleto, redirecionando para onboarding');
-          navigate('/onboarding', { replace: true });
+          console.log('🏢 ProtectedRoute: Onboarding incompleto, redirecionando para setup');
+          navigate('/dashboard/setup', { replace: true });
           return;
         }
       }
@@ -104,7 +104,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           if (isComplete && hasCompany) {
             targetPath = '/dashboard';
           } else if (hasPendingCompany || (!hasCompany && !hasPendingCompany)) {
-            targetPath = '/onboarding';
+            targetPath = '/dashboard/setup';
           }
           
           console.log('🔄 ProtectedRoute: Rota incorreta, redirecionando para:', targetPath);
