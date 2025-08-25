@@ -101,8 +101,8 @@ export const SEOHead = ({
       <meta name="revisit-after" content="7 days" />
       <meta name="distribution" content="global" />
       <meta name="rating" content="general" />
-              <meta name="theme-color" content="hsl(var(--accent))" />
-        <meta name="msapplication-TileColor" content="hsl(var(--accent))" />
+      <meta name="theme-color" content="#667eea" />
+      <meta name="msapplication-TileColor" content="#667eea" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="apple-mobile-web-app-title" content="GrowthScale" />
