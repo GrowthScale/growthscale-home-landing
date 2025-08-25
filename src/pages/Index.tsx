@@ -6,6 +6,19 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ComparisonSection } from '@/components/ComparisonSection';
 import { FaqSection } from '@/components/FAQSection';
+import { useEffect } from 'react';
+
+// Função para corrigir redirecionamento automaticamente
+const fixRedirectIfNeeded = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get('code');
+  
+  if (code && window.location.pathname === '/') {
+    console.log('🔧 CORREÇÃO AUTOMÁTICA: Redirecionando para callback...');
+    const callbackUrl = `${window.location.origin}/auth/callback?code=${code}`;
+    window.location.href = callbackUrl;
+  }
+};
 
 // --- HEADER COM PSICOLOGIA DE AUTORIDADE ---
 const Header = () => (
@@ -572,6 +585,10 @@ const Footer = () => (
 
 // --- PÁGINA PRINCIPAL COM JORNADA DE VENDAS ---
 export default function Index() {
+  useEffect(() => {
+    fixRedirectIfNeeded();
+  }, []);
+
   return (
     <>
       <Header />
