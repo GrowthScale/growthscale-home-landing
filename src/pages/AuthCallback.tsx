@@ -60,40 +60,29 @@ export default function AuthCallback() {
         console.log('🔄 AuthCallback: Iniciando processamento...');
         setStatus('Processando código de autenticação...');
 
-        const code = searchParams.get('code');
-        if (!code) {
-          console.error('❌ AuthCallback: Código não encontrado na URL');
-          setStatus('Erro: Código de autenticação não encontrado');
-          setTimeout(() => navigate('/auth'), 3000);
-          return;
-        }
-
-        console.log('🔑 AuthCallback: Código encontrado, trocando por sessão...');
-        setStatus('Trocando código por sessão...');
-
-        // Usar o método correto para trocar o código por sessão
-        const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+        // Usar o método getSession() para detectar automaticamente a sessão
+        const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
-          console.error('❌ AuthCallback: Erro ao trocar código:', error);
+          console.error('❌ AuthCallback: Erro ao obter sessão:', error);
           setStatus('Erro na autenticação');
           setTimeout(() => navigate('/auth'), 3000);
           return;
         }
 
-        if (!data.session || !data.user) {
-          console.error('❌ AuthCallback: Sessão não criada');
-          setStatus('Erro: Sessão não criada');
+        if (!session || !session.user) {
+          console.error('❌ AuthCallback: Sessão não encontrada');
+          setStatus('Erro: Sessão não encontrada');
           setTimeout(() => navigate('/auth'), 3000);
           return;
         }
 
-        console.log('✅ AuthCallback: Sessão criada com sucesso');
-        console.log('👤 Usuário:', data.user);
-        console.log('📋 Metadata:', data.user.user_metadata);
-        setStatus('Sessão criada, verificando dados da empresa...');
+        console.log('✅ AuthCallback: Sessão obtida com sucesso');
+        console.log('👤 Usuário:', session.user);
+        console.log('📋 Metadata:', session.user.user_metadata);
+        setStatus('Sessão obtida, verificando dados da empresa...');
 
-        const user = data.user;
+        const user = session.user;
         const pendingCompany = user?.user_metadata?.pending_company;
 
         console.log('🏢 Dados da empresa pendente:', pendingCompany);
