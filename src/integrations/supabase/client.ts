@@ -5,7 +5,13 @@ import type { Database } from './types';
 // Use environment variables with safe fallbacks for no-code deployment
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://placeholder.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "placeholder-key";
-const SITE_URL = import.meta.env.VITE_SITE_URL;
+
+// Forçar URL atual para resolver problema de PKCE
+const SITE_URL = import.meta.env.VITE_SITE_URL || "https://growthscale-home-landing-7osne7xeg.vercel.app";
+
+console.log('🔧 DEBUG - Variáveis de ambiente:');
+console.log('📍 VITE_SITE_URL:', import.meta.env.VITE_SITE_URL);
+console.log('📍 SITE_URL final:', SITE_URL);
 
 // Determine the redirect URL based on environment - UNIFICADO
 const getRedirectUrl = () => {

@@ -56,12 +56,19 @@ export default function AuthCallback() {
     const processCallback = async () => {
       try {
         console.log('🔄 AuthCallback: Iniciando processamento...');
+        console.log('🔧 AuthCallback: URL atual:', window.location.href);
         setMessage('Verificando autenticação...');
 
         // Obter parâmetros da URL
         const code = searchParams.get('code');
         const error = searchParams.get('error');
         const errorDescription = searchParams.get('error_description');
+
+        console.log('🔧 AuthCallback: Parâmetros da URL:', {
+          code: code ? 'presente' : 'ausente',
+          error,
+          errorDescription
+        });
 
         if (error) {
           console.error('❌ AuthCallback: Erro na URL:', error, errorDescription);
@@ -86,7 +93,55 @@ export default function AuthCallback() {
         console.log('✅ AuthCallback: Código encontrado, processando...');
         setMessage('Validando código de autenticação...');
 
-        // Trocar código por sessão
+        // Aguardar um pouco para garantir que o Supabase esteja pronto
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Tentar obter a sessão atual primeiro
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        
+        if (currentSession) {
+          console.log('✅ AuthCallback: Sessão já existe, usando ela...');
+          const user = currentSession.user;
+          const pendingCompany = user.user_metadata?.pending_company;
+
+          if (pendingCompany) {
+            try {
+              console.log('🏢 AuthCallback: Criando empresa para usuário...');
+              setMessage('Criando sua empresa...');
+
+              await createCompanyForUser(user.id, pendingCompany);
+              await supabase.auth.updateUser({ data: { pending_company: null } });
+              await supabase.auth.refreshSession();
+
+              console.log('✅ AuthCallback: Empresa criada, redirecionando para setup');
+              setStatus('success');
+              setMessage('Empresa criada com sucesso! Redirecionando...');
+
+              setTimeout(() => {
+                navigate('/dashboard/setup', { replace: true });
+              }, 2000);
+            } catch (error: any) {
+              console.error("❌ AuthCallback: Erro crítico ao criar empresa:", error);
+              setStatus('error');
+              setMessage(`Erro ao criar empresa: ${error.message}`);
+              setTimeout(() => {
+                navigate('/auth?error=' + encodeURIComponent('Erro ao configurar empresa'), { replace: true });
+              }, 3000);
+            }
+          } else {
+            console.log('✅ AuthCallback: Usuário já tem empresa, redirecionando para dashboard');
+            setStatus('success');
+            setMessage('Redirecionando para o dashboard...');
+
+            setTimeout(() => {
+              navigate('/dashboard', { replace: true });
+            }, 2000);
+          }
+          return;
+        }
+
+        // Se não há sessão, tentar trocar o código
+        console.log('🔄 AuthCallback: Tentando trocar código por sessão...');
         const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
 
         if (exchangeError) {
