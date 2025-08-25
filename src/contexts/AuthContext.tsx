@@ -45,7 +45,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (userData: any) => {
     console.log('📝 AuthProvider: Iniciando cadastro...', { email: userData.email });
     
-    const redirectURL = `${import.meta.env.VITE_SITE_URL}/auth/callback`;
+    // Garantir que a URL de redirecionamento está limpa e válida
+    const baseUrl = import.meta.env.VITE_SITE_URL?.trim();
+    if (!baseUrl) {
+      throw new Error('VITE_SITE_URL não está configurada');
+    }
+    
+    const redirectURL = `${baseUrl}/auth/callback`;
     console.log('🔗 AuthProvider: URL de redirecionamento:', redirectURL);
     
     const { error } = await supabase.auth.signUp({
