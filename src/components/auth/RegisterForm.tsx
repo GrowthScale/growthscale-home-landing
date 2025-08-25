@@ -4,253 +4,210 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Eye, EyeOff, Mail, Lock, User, Building2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Loader2, Mail, Lock, User, Building, Users, ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface RegisterFormProps {
   onSwitchView: () => void;
   onSignUpSuccess: (email: string) => void;
 }
 
+interface RegisterFormData {
+  email: string;
+  password: string;
+  fullName: string;
+  companyName: string;
+  employeeCount: number;
+}
+
 export function RegisterForm({ onSwitchView, onSignUpSuccess }: RegisterFormProps) {
   const { signUp } = useAuth();
-  const { toast } = useToast();
   
-  const [formData, setFormData] = useState({
-    fullName: '',
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  const [formData, setFormData] = useState<RegisterFormData>({
     email: '',
     password: '',
-    confirmPassword: '',
+    fullName: '',
     companyName: '',
-    employeeCount: ''
+    employeeCount: 10
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validações básicas
-    if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword || !formData.companyName || !formData.employeeCount) {
-      toast({
-        title: "Erro de validação",
-        description: "Todos os campos são obrigatórios",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Erro de validação",
-        description: "As senhas não coincidem",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      toast({
-        title: "Erro de validação",
-        description: "A senha deve ter pelo menos 6 caracteres",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setIsLoading(true);
+    setLoading(true);
+    setError(null);
 
     try {
-      console.log('📝 RegisterForm: Iniciando cadastro...');
-      
-      const result = await signUp({
-        fullName: formData.fullName,
-        email: formData.email,
-        password: formData.password,
-        companyName: formData.companyName,
-        employeeCount: formData.employeeCount,
-      });
-
-      console.log('📝 RegisterForm: Resultado do cadastro:', result);
-
-      if (result.success) {
-        if (result.message.includes('confirmada automaticamente')) {
-          // Usuário já confirmado
-          toast({
-            title: "Conta criada com sucesso!",
-            description: "Redirecionando para configuração...",
-          });
-        } else {
-          // Usuário precisa confirmar email
-          onSignUpSuccess(formData.email);
-          toast({
-            title: "Conta criada!",
-            description: "Verifique seu email para confirmar a conta.",
-          });
-        }
-      } else {
-        toast({
-          title: "Erro no cadastro",
-          description: result.message,
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      console.error('❌ RegisterForm: Erro no cadastro:', error);
-      toast({
-        title: "Erro inesperado",
-        description: "Tente novamente em alguns segundos.",
-        variant: "destructive"
-      });
+      await signUp(formData);
+      onSignUpSuccess(formData.email);
+    } catch (err: any) {
+      setError(err.message || 'Ocorreu um erro. Tente novamente.');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
+  const handleInputChange = (field: keyof RegisterFormData, value: string | number) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Criar Conta</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="fullName">Nome Completo</Label>
-            <div className="relative">
-              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="fullName"
-                type="text"
-                placeholder="Seu nome completo"
-                value={formData.fullName}
-                onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-                className="pl-10"
-                required
-                disabled={isLoading}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="email"
-                type="email"
-                placeholder="seu@email.com"
-                value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="pl-10"
-                required
-                disabled={isLoading}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="companyName">Nome da Empresa</Label>
-            <div className="relative">
-              <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="companyName"
-                type="text"
-                placeholder="Nome da sua empresa"
-                value={formData.companyName}
-                onChange={(e) => setFormData(prev => ({ ...prev, companyName: e.target.value }))}
-                className="pl-10"
-                required
-                disabled={isLoading}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="employeeCount">Número de Funcionários</Label>
-            <select
-              id="employeeCount"
-              value={formData.employeeCount}
-              onChange={(e) => setFormData(prev => ({ ...prev, employeeCount: e.target.value }))}
-              className="w-full p-2 border border-input rounded-md bg-background"
-              required
-              disabled={isLoading}
-            >
-              <option value="">Selecione...</option>
-              <option value="1-5">1-5 funcionários</option>
-              <option value="6-10">6-10 funcionários</option>
-              <option value="11-25">11-25 funcionários</option>
-              <option value="26-50">26-50 funcionários</option>
-              <option value="50+">50+ funcionários</option>
-            </select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Mínimo 6 caracteres"
-                value={formData.password}
-                onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                className="pl-10 pr-10"
-                required
-                disabled={isLoading}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowPassword(!showPassword)}
-                disabled={isLoading}
-              >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </Button>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirmar Senha</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="confirmPassword"
-                type={showConfirmPassword ? 'text' : 'password'}
-                placeholder="Confirme sua senha"
-                value={formData.confirmPassword}
-                onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                className="pl-10 pr-10"
-                required
-                disabled={isLoading}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                disabled={isLoading}
-              >
-                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </Button>
-            </div>
-          </div>
-
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Criando conta...' : 'Criar Conta'}
-          </Button>
-        </form>
-
-        <div className="mt-4 text-center">
-          <Button variant="link" onClick={onSwitchView} disabled={isLoading}>
-            Já tem uma conta? Entrar
-          </Button>
+    <div className="w-full max-w-md">
+      {/* Logo */}
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl mb-4">
+          <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
         </div>
-      </CardContent>
-    </Card>
+        <h1 className="text-2xl font-bold text-foreground">GrowthScale</h1>
+        <p className="text-muted-foreground">Gestão inteligente de escalas</p>
+      </div>
+
+      {/* Card de Cadastro */}
+      <Card className="shadow-xl border-0 bg-card/50 backdrop-blur-sm">
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Criar Conta</CardTitle>
+          <CardDescription>
+            Comece sua jornada de gestão inteligente
+          </CardDescription>
+        </CardHeader>
+        
+        <CardContent>
+          {/* Alertas */}
+          {error && (
+            <Alert className="mb-4 border-red-200 bg-red-50">
+              <AlertDescription className="text-red-800">
+                {error}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Formulário */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Nome Completo</Label>
+              <div className="relative">
+                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="fullName"
+                  type="text"
+                  placeholder="Seu nome completo"
+                  value={formData.fullName}
+                  onChange={(e) => handleInputChange('fullName', e.target.value)}
+                  className="pl-10"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="companyName">Nome da Empresa</Label>
+              <div className="relative">
+                <Building className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="companyName"
+                  type="text"
+                  placeholder="Nome da sua empresa"
+                  value={formData.companyName}
+                  onChange={(e) => handleInputChange('companyName', e.target.value)}
+                  className="pl-10"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="employeeCount">Número de Funcionários</Label>
+              <div className="relative">
+                <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="employeeCount"
+                  type="number"
+                  min="1"
+                  max="1000"
+                  placeholder="Quantos funcionários?"
+                  value={formData.employeeCount}
+                  onChange={(e) => handleInputChange('employeeCount', parseInt(e.target.value) || 1)}
+                  className="pl-10"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">E-mail</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  className="pl-10"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Senha</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Sua senha"
+                  value={formData.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  className="pl-10"
+                  required
+                  minLength={6}
+                />
+              </div>
+            </div>
+
+            <Button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Criando conta...
+                </>
+              ) : (
+                <>
+                  Criar Conta
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </Button>
+          </form>
+
+          {/* Alternar para Login */}
+          <div className="mt-6 text-center">
+            <Button
+              variant="link"
+              onClick={onSwitchView}
+              className="text-muted-foreground hover:text-primary"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Já tem uma conta? Faça login
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Footer */}
+      <div className="text-center mt-8 text-sm text-muted-foreground">
+        <p>© 2024 GrowthScale. Todos os direitos reservados.</p>
+      </div>
+    </div>
   );
 }

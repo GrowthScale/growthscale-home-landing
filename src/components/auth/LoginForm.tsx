@@ -1,13 +1,13 @@
 // src/components/auth/LoginForm.tsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Loader2, Mail, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface LoginFormProps {
   onSwitchView: () => void;
@@ -15,102 +15,149 @@ interface LoginFormProps {
 
 export function LoginForm({ onSwitchView }: LoginFormProps) {
   const navigate = useNavigate();
-  const { signIn, loading } = useAuth();
-  const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const { signIn } = useAuth();
+  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [showPassword, setShowPassword] = useState(false);
+
+  // Verificar se há erro na URL
+  const urlError = searchParams.get('error');
+
+  React.useEffect(() => {
+    if (urlError) {
+      setError(decodeURIComponent(urlError));
+    }
+  }, [urlError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setLoading(true);
+    setError(null);
+
     try {
-      const result = await signIn(formData);
-      
-      if (result.success) {
-        toast({
-          title: "Login realizado com sucesso!",
-          description: "Redirecionando para o dashboard...",
-        });
-        navigate('/dashboard');
-      } else {
-        toast({
-          title: "Erro no login",
-          description: result.message,
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Erro inesperado",
-        description: "Tente novamente em alguns segundos.",
-        variant: "destructive"
-      });
+      await signIn(formData);
+      navigate('/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Ocorreu um erro. Tente novamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
+  const handleInputChange = (field: keyof typeof formData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Entrar</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="email"
-                type="email"
-                placeholder="seu@email.com"
-                value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="pl-10"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Sua senha"
-                value={formData.password}
-                onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                className="pl-10 pr-10"
-                required
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </Button>
-            </div>
-          </div>
-
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Entrando...' : 'Entrar'}
-          </Button>
-        </form>
-
-        <div className="mt-4 text-center">
-          <Button variant="link" onClick={onSwitchView}>
-            Não tem uma conta? Criar conta
-          </Button>
+    <div className="w-full max-w-md">
+      {/* Logo */}
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-2xl mb-4">
+          <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
         </div>
-      </CardContent>
-    </Card>
+        <h1 className="text-2xl font-bold text-foreground">GrowthScale</h1>
+        <p className="text-muted-foreground">Gestão inteligente de escalas</p>
+      </div>
+
+      {/* Card de Login */}
+      <Card className="shadow-xl border-0 bg-card/50 backdrop-blur-sm">
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Entrar</CardTitle>
+          <CardDescription>
+            Acesse sua conta para continuar
+          </CardDescription>
+        </CardHeader>
+        
+        <CardContent>
+          {/* Alertas */}
+          {error && (
+            <Alert className="mb-4 border-red-200 bg-red-50">
+              <AlertDescription className="text-red-800">
+                {error}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Formulário */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">E-mail</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  className="pl-10"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Senha</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Sua senha"
+                  value={formData.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  className="pl-10"
+                  required
+                  minLength={6}
+                />
+              </div>
+            </div>
+
+            <Button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Entrando...
+                </>
+              ) : (
+                <>
+                  Entrar
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </Button>
+          </form>
+
+          {/* Alternar para Cadastro */}
+          <div className="mt-6 text-center">
+            <Button
+              variant="link"
+              onClick={onSwitchView}
+              className="text-muted-foreground hover:text-primary"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Não tem conta? Cadastre-se
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Footer */}
+      <div className="text-center mt-8 text-sm text-muted-foreground">
+        <p>© 2024 GrowthScale. Todos os direitos reservados.</p>
+      </div>
+    </div>
   );
 }
