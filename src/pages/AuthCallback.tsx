@@ -9,10 +9,10 @@ import { SEOHead } from '@/components/SEOHead';
 const createCompanyForUser = async (userId: string, companyData: any) => {
   console.log('🏢 AuthCallback: Iniciando criação da empresa...');
   console.log('📊 Dados recebidos:', { userId, companyData });
-  
+
   const trialEndDate = new Date();
   trialEndDate.setDate(trialEndDate.getDate() + 14);
-  
+
   const companyInsertData = {
     name: companyData.name,
     cnpj: `TEMP-${Date.now()}`,
@@ -28,20 +28,20 @@ const createCompanyForUser = async (userId: string, companyData: any) => {
       created_at: new Date().toISOString()
     }
   };
-  
+
   console.log('📝 Dados para inserção:', companyInsertData);
-  
+
   const { data, error } = await supabase
     .from('companies')
     .insert(companyInsertData)
     .select()
     .single();
-    
+
   if (error) {
     console.error('❌ Erro ao criar empresa:', error);
     throw error;
   }
-  
+
   console.log('✅ Empresa criada com sucesso:', data);
   return data;
 };
@@ -57,12 +57,12 @@ export default function AuthCallback() {
       try {
         console.log('🔄 AuthCallback: Iniciando processamento...');
         setMessage('Verificando autenticação...');
-        
+
         // Obter parâmetros da URL
         const code = searchParams.get('code');
         const error = searchParams.get('error');
         const errorDescription = searchParams.get('error_description');
-        
+
         if (error) {
           console.error('❌ AuthCallback: Erro na URL:', error, errorDescription);
           setStatus('error');
@@ -72,7 +72,7 @@ export default function AuthCallback() {
           }, 3000);
           return;
         }
-        
+
         if (!code) {
           console.error('❌ AuthCallback: Nenhum código encontrado');
           setStatus('error');
@@ -82,13 +82,13 @@ export default function AuthCallback() {
           }, 3000);
           return;
         }
-        
+
         console.log('✅ AuthCallback: Código encontrado, processando...');
         setMessage('Validando código de autenticação...');
-        
+
         // Trocar código por sessão
         const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-        
+
         if (exchangeError) {
           console.error('❌ AuthCallback: Erro ao trocar código:', exchangeError);
           setStatus('error');
@@ -98,7 +98,7 @@ export default function AuthCallback() {
           }, 3000);
           return;
         }
-        
+
         if (!data.session?.user) {
           console.error('❌ AuthCallback: Sessão não criada');
           setStatus('error');
@@ -108,41 +108,41 @@ export default function AuthCallback() {
           }, 3000);
           return;
         }
-        
+
         console.log('✅ AuthCallback: Sessão criada com sucesso');
         console.log('👤 Usuário:', data.session.user);
         console.log('📋 Metadata:', data.session.user.user_metadata);
-        
+
         const user = data.session.user;
         const pendingCompany = user.user_metadata?.pending_company;
-        
+
         console.log('🏢 Dados da empresa pendente:', pendingCompany);
-        
+
         if (pendingCompany) {
           try {
             console.log('🏢 AuthCallback: Criando empresa para usuário...');
             setMessage('Criando sua empresa...');
-            
+
             // 1. Cria a empresa na base de dados
             await createCompanyForUser(user.id, pendingCompany);
-            
+
             // 2. Limpa os metadados para não executar esta lógica novamente
             await supabase.auth.updateUser({ data: { pending_company: null } });
-            
+
             // 3. Força um refresh da sessão para garantir que todos os contextos sejam atualizados
             await supabase.auth.refreshSession();
-            
+
             // 4. Adiciona um delay para permitir que o contexto se atualize
             await new Promise(resolve => setTimeout(resolve, 2000));
-            
+
             console.log('✅ AuthCallback: Empresa criada, redirecionando para setup');
             setStatus('success');
             setMessage('Empresa criada com sucesso! Redirecionando...');
-            
+
             setTimeout(() => {
               navigate('/dashboard/setup', { replace: true });
             }, 2000);
-            
+
           } catch (error: any) {
             console.error("❌ AuthCallback: Erro crítico ao criar empresa:", error);
             setStatus('error');
@@ -155,12 +155,12 @@ export default function AuthCallback() {
           console.log('✅ AuthCallback: Usuário já tem empresa, redirecionando para dashboard');
           setStatus('success');
           setMessage('Redirecionando para o dashboard...');
-          
+
           setTimeout(() => {
             navigate('/dashboard', { replace: true });
           }, 2000);
         }
-        
+
       } catch (error: any) {
         console.error('❌ AuthCallback: Erro geral:', error);
         setStatus('error');
@@ -170,20 +170,20 @@ export default function AuthCallback() {
         }, 3000);
       }
     };
-    
+
     // Adiciona um pequeno delay para garantir que a sessão do Supabase seja estabelecida
     const timer = setTimeout(processCallback, 500);
-    
+
     return () => clearTimeout(timer);
   }, [navigate, searchParams]);
 
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title="Autenticando - GrowthScale"
         description="Processando sua autenticação"
       />
-      
+
       <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-md text-center">
           {/* Logo */}
@@ -194,7 +194,7 @@ export default function AuthCallback() {
             <h1 className="text-2xl font-bold text-foreground">GrowthScale</h1>
             <p className="text-muted-foreground">Processando autenticação</p>
           </div>
-          
+
           {/* Status Card */}
           <div className="bg-card/50 backdrop-blur-sm rounded-lg p-8 shadow-xl border">
             {status === 'loading' && (
@@ -204,7 +204,7 @@ export default function AuthCallback() {
                 <p className="text-muted-foreground">{message}</p>
               </>
             )}
-            
+
             {status === 'success' && (
               <>
                 <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
@@ -212,7 +212,7 @@ export default function AuthCallback() {
                 <p className="text-muted-foreground">{message}</p>
               </>
             )}
-            
+
             {status === 'error' && (
               <>
                 <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
@@ -221,7 +221,7 @@ export default function AuthCallback() {
               </>
             )}
           </div>
-          
+
           {/* Footer */}
           <div className="mt-8 text-sm text-muted-foreground">
             <p>© 2024 GrowthScale. Todos os direitos reservados.</p>
