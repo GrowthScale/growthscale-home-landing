@@ -3,26 +3,13 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
 
-interface UserSignUpData {
-  email: string;
-  password: string;
-  fullName: string;
-  companyName: string;
-  employeeCount: string;
-}
-
-interface UserSignInData {
-  email: string;
-  password: string;
-}
-
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (data: UserSignUpData) => Promise<{ success: boolean; message: string }>;
-  signIn: (data: UserSignInData) => Promise<{ success: boolean; message: string }>;
-  signOut: () => Promise<void>;
+  signUp: (data: any) => Promise<any>;
+  signIn: (data: any) => Promise<any>;
+  signOut: () => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,39 +22,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     console.log('🔧 AuthProvider: Inicializando...');
     
-    const updateAuthState = (session: Session | null) => {
-      console.log('🔄 AuthProvider: Atualizando estado', {
-        hasSession: !!session,
-        hasUser: !!session?.user,
-        userId: session?.user?.id
-      });
-      
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('🔄 AuthProvider: Mudança de estado detectada', { event: _event, hasSession: !!session });
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
-    };
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('🔔 AuthProvider: Auth state change', { event, hasSession: !!session });
-      updateAuthState(session);
     });
 
-    const initializeAuth = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.error('❌ AuthProvider: Erro ao obter sessão inicial', error);
-        }
-        
-        updateAuthState(session);
-      } catch (error) {
-        console.error('❌ AuthProvider: Erro crítico na inicialização', error);
-        setLoading(false);
-      }
-    };
-
-    initializeAuth();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('✅ AuthProvider: Sessão inicial obtida', { hasSession: !!session });
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
     return () => {
       console.log('🧹 AuthProvider: Limpando subscription');
@@ -75,131 +42,63 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const signUp = async (userData: UserSignUpData): Promise<{ success: boolean; message: string }> => {
-    try {
-      console.log('🚀 AuthProvider: Iniciando cadastro para:', userData.email);
-      
-      if (!userData.email || !userData.password || !userData.fullName || !userData.companyName) {
-        return { success: false, message: 'Todos os campos são obrigatórios' };
-      }
-
-      // URL de redirecionamento correta
-      const redirectURL = `${import.meta.env.VITE_SITE_URL}/auth/callback`;
-      console.log('🔗 AuthProvider: URL de redirecionamento:', redirectURL);
-      
-      const { data, error } = await supabase.auth.signUp({
-        email: userData.email,
-        password: userData.password,
-        options: {
-          data: {
-            full_name: userData.fullName,
-            pending_company: {
-              name: userData.companyName,
-              employee_count: userData.employeeCount,
-            },
+  const signUp = async (userData: any) => {
+    console.log('📝 AuthProvider: Iniciando cadastro...', { email: userData.email });
+    
+    const redirectURL = `${import.meta.env.VITE_SITE_URL}/auth/callback`;
+    console.log('🔗 AuthProvider: URL de redirecionamento:', redirectURL);
+    
+    const { error } = await supabase.auth.signUp({
+      email: userData.email,
+      password: userData.password,
+      options: {
+        data: {
+          full_name: userData.fullName,
+          pending_company: {
+            name: userData.companyName,
+            employee_count: userData.employeeCount,
           },
-          emailRedirectTo: redirectURL,
         },
-      });
-      
-      if (error) {
-        console.error('❌ AuthProvider: Erro no cadastro:', error);
-        
-        if (error.message.includes('User already registered')) {
-          return { success: false, message: 'Este e-mail já está cadastrado. Tente fazer o login.' };
-        }
-        if (error.message.includes('Password should be at least')) {
-          return { success: false, message: 'A senha deve ter pelo menos 6 caracteres.' };
-        }
-        if (error.message.includes('Invalid email')) {
-          return { success: false, message: 'E-mail inválido.' };
-        }
-        
-        return { success: false, message: error.message };
+        emailRedirectTo: redirectURL,
+      },
+    });
+    
+    if (error) {
+      console.error('❌ AuthProvider: Erro no cadastro:', error);
+      if (error.message.includes('User already registered')) {
+        throw new Error('Este e-mail já está cadastrado. Tente fazer o login.');
       }
-      
-      if (data.user && data.session) {
-        console.log('✅ AuthProvider: Usuário já confirmado, sessão criada');
-        return { success: true, message: 'Conta criada e confirmada automaticamente!' };
-      }
-      
-      if (data.user && !data.session) {
-        console.log('✅ AuthProvider: Usuário criado, aguardando confirmação de email');
-        return { success: true, message: 'Email de confirmação enviado! Verifique sua caixa de entrada.' };
-      }
-      
-      return { success: false, message: 'Erro desconhecido no cadastro' };
-      
-    } catch (error) {
-      console.error('❌ AuthProvider: Erro geral no cadastro:', error);
-      return { success: false, message: 'Erro interno do servidor. Tente novamente.' };
+      throw error;
     }
+    
+    console.log('✅ AuthProvider: Cadastro realizado com sucesso');
   };
 
-  const signIn = async (input: UserSignInData): Promise<{ success: boolean; message: string }> => {
-    try {
-      console.log('🔐 AuthProvider: Tentando login para:', input.email);
-      
-      if (!input.email || !input.password) {
-        return { success: false, message: 'Email e senha são obrigatórios' };
-      }
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: input.email,
-        password: input.password,
-      });
-
-      if (error) {
-        console.error('❌ AuthProvider: Erro no login:', error);
-        
-        if (error.message.includes('Invalid login credentials')) {
-          return { success: false, message: 'Email ou senha inválidos.' };
-        }
-        if (error.message.includes('Email not confirmed')) {
-          return { success: false, message: 'Email não confirmado. Verifique sua caixa de entrada.' };
-        }
-        
-        return { success: false, message: error.message };
-      }
-
-      if (data.user && data.session) {
-        console.log('✅ AuthProvider: Login realizado com sucesso');
-        return { success: true, message: 'Login realizado com sucesso!' };
-      }
-
-      return { success: false, message: 'Erro desconhecido no login' };
-      
-    } catch (error) {
-      console.error('❌ AuthProvider: Erro geral no login:', error);
-      return { success: false, message: 'Erro interno do servidor. Tente novamente.' };
+  const signIn = async (input: any) => {
+    console.log('🔐 AuthProvider: Iniciando login...', { email: input.email });
+    
+    const { error } = await supabase.auth.signInWithPassword({
+      email: input.email,
+      password: input.password,
+    });
+    
+    if (error) {
+      console.error('❌ AuthProvider: Erro no login:', error);
+      throw new Error('Email ou senha inválidos.');
     }
+    
+    console.log('✅ AuthProvider: Login realizado com sucesso');
   };
 
   const signOut = async () => {
-    try {
-      console.log('🚪 AuthProvider: Fazendo logout...');
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        console.error('❌ AuthProvider: Erro no logout:', error);
-      } else {
-        console.log('✅ AuthProvider: Logout realizado com sucesso');
-      }
-    } catch (error) {
-      console.error('❌ AuthProvider: Erro geral no logout:', error);
-    }
+    console.log('🚪 AuthProvider: Iniciando logout...');
+    await supabase.auth.signOut();
+    console.log('✅ AuthProvider: Logout realizado com sucesso');
   };
 
-  const value = {
-    user,
-    session,
-    loading,
-    signUp,
-    signIn,
-    signOut,
-  };
+  const value = { user, session, loading, signUp, signIn, signOut };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {

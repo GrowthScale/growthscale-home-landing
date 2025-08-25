@@ -1,7 +1,6 @@
+// src/hooks/useOnboardingStatus.tsx
 import { useEffect, useState, useCallback } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTenant } from '@/contexts/TenantContext';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface OnboardingStatus {
@@ -10,189 +9,93 @@ export interface OnboardingStatus {
   hasPendingCompany: boolean;
   isLoading: boolean;
   error?: string;
-  shouldRedirect: boolean;
-  targetPath: string;
 }
 
 export const useOnboardingStatus = () => {
   const { user, session, loading: authLoading } = useAuth();
-  const { currentTenant, loading: tenantLoading } = useTenant();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  
   const [status, setStatus] = useState<OnboardingStatus>({
     isComplete: false,
     hasCompany: false,
     hasPendingCompany: false,
-    isLoading: true,
-    shouldRedirect: false,
-    targetPath: '/auth'
+    isLoading: true
   });
 
-  // Função para determinar o caminho correto baseado no status
-  const determineTargetPath = useCallback((
-    hasCompany: boolean, 
-    hasPendingCompany: boolean,
-    isVerified: boolean
-  ): string => {
-    if (hasCompany && !hasPendingCompany) {
-      return '/dashboard';
-    } else if (hasPendingCompany || (!hasCompany && !hasPendingCompany)) {
-      return '/dashboard/setup';
-    } else {
-      return '/auth';
+  const checkOnboardingStatus = useCallback(async () => {
+    if (!user || !session) {
+      setStatus({
+        isComplete: false,
+        hasCompany: false,
+        hasPendingCompany: false,
+        isLoading: false
+      });
+      return;
     }
-  }, []);
 
-  // Função para verificar se deve redirecionar
-  const shouldRedirect = useCallback((
-    currentPath: string,
-    targetPath: string,
-    isLoading: boolean
-  ): boolean => {
-    if (isLoading) return false;
-    
-    // Se estamos no callback, não redirecionar ainda
-    if (currentPath === '/auth/callback') return false;
-    
-    // Se estamos na página correta, não redirecionar
-    if (currentPath === targetPath) return false;
-    
-    // Se estamos em auth mas deveríamos estar em outro lugar
-    if (currentPath === '/auth' && targetPath !== '/auth') return true;
-    
-    // Se estamos em setup mas deveríamos estar em dashboard
-    if (currentPath === '/dashboard/setup' && targetPath === '/dashboard') return true;
-    
-    // Se estamos em dashboard mas deveríamos estar em setup
-    if (currentPath === '/dashboard' && targetPath === '/dashboard/setup') return true;
-    
-    return false;
-  }, []);
-
-  useEffect(() => {
-    const checkOnboardingStatus = async () => {
+    try {
       console.log('🔍 useOnboardingStatus: Verificando status...', {
-        hasUser: !!user,
-        hasSession: !!session,
-        authLoading,
-        tenantLoading,
-        currentPath: window.location.pathname
+        userId: user.id,
+        hasMetadata: !!user.user_metadata
       });
 
-      // Aguardar carregamento dos contextos
-      if (authLoading || tenantLoading) {
-        console.log('⏳ useOnboardingStatus: Aguardando carregamento dos contextos...');
-        return;
-      }
+      // Verificar se tem dados pendentes de empresa
+      const pendingCompany = user.user_metadata?.pending_company;
+      console.log('🏢 useOnboardingStatus: Dados pendentes de empresa:', pendingCompany);
 
-      // Se não há usuário, redirecionar para auth
-      if (!user || !session) {
-        console.log('🚪 useOnboardingStatus: Usuário não autenticado');
+      // Verificar se tem empresa no banco
+      const { data: userCompanies, error } = await supabase
+        .from('company_users')
+        .select('company_id, companies(*)')
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('❌ useOnboardingStatus: Erro ao buscar empresas:', error);
         setStatus({
           isComplete: false,
           hasCompany: false,
-          hasPendingCompany: false,
-          isLoading: false,
-          shouldRedirect: true,
-          targetPath: '/auth'
-        });
-        return;
-      }
-
-      try {
-        console.log('👤 useOnboardingStatus: Usuário autenticado:', {
-          userId: user.id,
-          email: user.email,
-          hasMetadata: !!user.user_metadata
-        });
-
-        // Verificar se tem dados pendentes de empresa
-        const pendingCompany = user.user_metadata?.pending_company;
-        console.log('🏢 useOnboardingStatus: Dados pendentes de empresa:', pendingCompany);
-        
-        // Verificar se tem tenant configurado
-        const hasCompany = !!currentTenant;
-        console.log('🏢 useOnboardingStatus: Tenant configurado:', {
-          hasCompany,
-          tenantId: currentTenant?.id
-        });
-
-        // Verificar se veio de uma confirmação de email
-        const isVerified = searchParams.get('verified') === 'true';
-        console.log('✅ useOnboardingStatus: Verificação de email:', isVerified);
-
-        const onboardingStatus: OnboardingStatus = {
-          isComplete: hasCompany && !pendingCompany,
-          hasCompany,
           hasPendingCompany: !!pendingCompany,
           isLoading: false,
-          shouldRedirect: false,
-          targetPath: determineTargetPath(hasCompany, !!pendingCompany, isVerified)
-        };
-
-        // Determinar se deve redirecionar
-        const currentPath = window.location.pathname;
-        onboardingStatus.shouldRedirect = shouldRedirect(
-          currentPath, 
-          onboardingStatus.targetPath, 
-          onboardingStatus.isLoading
-        );
-
-        console.log('📊 useOnboardingStatus: Status final:', onboardingStatus);
-
-        setStatus(onboardingStatus);
-
-        // Executar redirecionamento se necessário
-        if (onboardingStatus.shouldRedirect) {
-          console.log('🔄 useOnboardingStatus: Redirecionando para:', onboardingStatus.targetPath);
-          
-          // Adicionar parâmetros de contexto se necessário
-          let targetUrl = onboardingStatus.targetPath;
-          if (isVerified && onboardingStatus.targetPath === '/dashboard/setup') {
-            targetUrl += '?verified=true';
-          }
-          
-          navigate(targetUrl, { replace: true });
-        }
-
-      } catch (error) {
-        console.error('❌ useOnboardingStatus: Erro ao verificar status:', error);
-        setStatus({
-          isComplete: false,
-          hasCompany: false,
-          hasPendingCompany: false,
-          isLoading: false,
-          error: error instanceof Error ? error.message : 'Erro desconhecido',
-          shouldRedirect: true,
-          targetPath: '/auth'
+          error: error.message
         });
+        return;
       }
-    };
 
-    checkOnboardingStatus();
-  }, [
-    user, 
-    session, 
-    currentTenant, 
-    authLoading, 
-    tenantLoading, 
-    navigate, 
-    searchParams,
-    determineTargetPath,
-    shouldRedirect
-  ]);
+      const hasCompany = userCompanies && userCompanies.length > 0;
+      console.log('🏢 useOnboardingStatus: Empresas encontradas:', userCompanies?.length || 0);
+
+      const onboardingStatus: OnboardingStatus = {
+        isComplete: hasCompany && !pendingCompany,
+        hasCompany,
+        hasPendingCompany: !!pendingCompany,
+        isLoading: false
+      };
+
+      console.log('📊 useOnboardingStatus: Status final:', onboardingStatus);
+      setStatus(onboardingStatus);
+
+    } catch (error: any) {
+      console.error('❌ useOnboardingStatus: Erro ao verificar status:', error);
+      setStatus({
+        isComplete: false,
+        hasCompany: false,
+        hasPendingCompany: !!user.user_metadata?.pending_company,
+        isLoading: false,
+        error: error.message
+      });
+    }
+  }, [user, session]);
+
+  useEffect(() => {
+    if (!authLoading) {
+      checkOnboardingStatus();
+    }
+  }, [authLoading, checkOnboardingStatus]);
 
   // Função para forçar verificação de status
   const refreshStatus = useCallback(async () => {
     console.log('🔄 useOnboardingStatus: Forçando verificação de status...');
     setStatus(prev => ({ ...prev, isLoading: true }));
-    
-    // Aguardar um pouco para permitir que os contextos se atualizem
-    setTimeout(() => {
-      setStatus(prev => ({ ...prev, isLoading: false }));
-    }, 1000);
-  }, []);
+    await checkOnboardingStatus();
+  }, [checkOnboardingStatus]);
 
   // Função para verificar se o usuário pode acessar uma rota específica
   const canAccessRoute = useCallback((route: string): boolean => {
