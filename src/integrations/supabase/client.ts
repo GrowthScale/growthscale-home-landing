@@ -5,7 +5,7 @@ import type { Database } from './types';
 // Use environment variables with safe fallbacks for no-code deployment
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://placeholder.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "placeholder-key";
-const SITE_URL = import.meta.env.VITE_SITE_URL || "https://growthscale-home-landing.vercel.app";
+const SITE_URL = import.meta.env.VITE_SITE_URL || "https://growthscale-home-landing-60dy6g4if.vercel.app";
 
 // Determine the redirect URL based on environment - UNIFICADO
 const getRedirectUrl = () => {
